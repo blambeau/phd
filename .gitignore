@@ -1,0 +1,12 @@
+thesis.dvi
+thesis.pdf
+thesis.ps
+*.log
+*.out
+*.blg
+*.bbl
+*.toc
+*.lot
+*.lof
+*.aux
+

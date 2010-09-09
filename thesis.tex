@@ -1,0 +1,32 @@
+\documentclass[dvips,a4paper,12pt]{report}
+\usepackage{thesis}
+\begin{document}
+
+\pagenumbering{roman}
+
+\title{
+  Supporting Multi-View Models of Software Systems: \\
+  Synthesis Techniques
+}
+
+\include{src/abstract}
+\include{src/ack}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\pagenumbering{arabic}
+\include{src/1-introduction/main}
+\include{src/2-framework/main}
+\include{src/3-deductive/main}
+\include{src/4-inductive/main}
+\include{src/5-evaluation/main}
+\include{src/6-implementation/main}
+\include{src/7-discussion/main}
+\include{src/8-conclusion/main}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{thesis}
+
+\end{document}
