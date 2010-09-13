@@ -10,4 +10,6 @@ thesis.ps
 *.lot
 *.lof
 *.aux
-
+*.bib
+*.nav
+*.snm
