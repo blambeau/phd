@@ -14,9 +14,12 @@ def latex(who)
   latex(who) if rerun
 end
 
-CLEAN.include('*.ps','*.dvi','*.pdf',
-              '*.log','*.out','**/*.aux', '*.blg',
-              '*.bbl','*.toc','*.lot','*.lof')
+def bibtex(who)
+  sh "bibtex #{who}"
+end
+
+CLEAN.include('*.ps', '*.dvi', '*.log','*.out','**/*.aux', 
+              '*.blg','*.bbl','*.toc','*.lot','*.lof','*.nav','*.snm')
 NAME = "slides"
 MAIN = "#{NAME}.pdf"
 TEX = FileList["*.tex"]
@@ -28,6 +31,8 @@ file MAIN => DVI
 file DVI => TEX
 
 file DVI do     
+  latex MAIN.ext('.tex')
+  bibtex NAME
   latex MAIN.ext('.tex')
 end
 
