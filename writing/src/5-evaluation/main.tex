@@ -1,4 +1,29 @@
 \chapter{Evaluation}
 
-\section{Case studies}
-\section{Experimental results on grammar induction benchmarks}
+\section{Experimental results on case studies}
+
+\section{Experimental results on synthetic data}
+
+\section{Influence of the alphabet size: The Stamina Competition\label{section_stamina}}
+
+As shown previously, experimental evaluations of RPNI and its descendants allow drawing profiles illustrating the convergence of the algorithm when varying the size of the target machine, the sparsity of the learning sample as well as other specific parameters. However, available experimental evaluations \cite{Lang98,Damas06,Dupont08,Lambeau08} have all been made on machines presenting alphabets of two letters. Therefore, the effect of the alphabet size on the convergence of these algorithms has not been studied in depth. In contrast, it is not rare to encounter state machines with more than 30 events in the software engineering litterature. This observation initiated our setup of the Stamina competition, aiming at achieving two main objectives:
+
+\begin{itemize}
+\item Further investigate the influence of the alphabet size on the DFA induction problem, in particular its effect on the performance and/or convergence of state of the art algorithms. Also, the discovery of new induction techniques that potentially outperform these algorithms on problems presenting large alphabets,
+\item Provide a benchmarking framework inspired by previous competitions in grammar induction but also fitting specific criteria of state machines commonly encountered in the software engineering community (as empirically extracted from examples found in the litterature).
+\end{itemize}
+
+The competition has successfully ran between march and december 2010. Its main contributions are:
+
+\begin{itemize}
+\item It provides experimental results illustrating convergence profiles of RPNI and BlueFringe with respect to the alphabet size of the target machine. In particular, we confirm the expected effect of the alphabet size on the convergence of RPNI: if convergence in the limit is not hurted, increasing the size of the alphabet requires a similar increasing of the learning sample to converge in practice,
+\item It provides an evaluation protocol for regular inference that can be used as an alternative to the one of Abbadingo when dealing with alphabets of more than two letters. This protocol includes a procedure for randomly generating state machines mimicing state machines encountered in the software engineering litterature, a procedure for generating learning and test samples via a random walk of the generated state machine and a scoring metric which prove useful in presence of an unbalanced proportion of positive and negative strings in learning and test samples,
+\item Last but not least, the competition confirms the effectiveness a recent approach to the DFA induction problem mixing evidence-driven state merging and SAT solving~\cite{Heule10}.
+\end{itemize}
+
+The following sections present the competition and its results in more details. The competition setup is presented in section~\ref{subsection_stamina_protocol}. An overview of participation and main results are presented in~\ref{subsection_stamina_protocol}.
+
+\subsection{Competition protocol\label{subsection_stamina_protocol}}
+
+\subsection{Participation and results\label{subsection_stamina_results}}
+
