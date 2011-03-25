@@ -97,7 +97,13 @@ For this reason, training and test samples have been generated using a dedicated
 
 \end{description}
 
-\subsubsection{Scoring}
+\subsubsection{Submission and Scoring}
+
+Solutions are submitted as a binary string to the competition server. For this, the competitor is expected to produce a binary sequence of labels where, for each test string, a 1 is added to the sequence if the string is considered to be accepted, and a 0 otherwise. To establish the accuracy, the sequence is compared to a reference string representing the correct classifications of the test set on the target model. The overlap between the two binary strings is measured with the \emph{Balanced Classification Rate (BCR)}. The Harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of an inferred model in terms of its acceptance of positive sequences, as well as its rejection of sequences that should be rejected. It also does not require the test set to be balanced in terms of its positive / negative sequences. 
+
+Harmonic BCR combines two factors. $Sensitivity$ is the proportion of positive matches that are predicted to be positive. So in terms of the sets true positives ($TP$) and false positives ($FP$), $Sensitivity=\frac{|TP|}{|TP \cup FN|}$. $Specificity$ is the proportion of true negatives that are predicted to be negative, so $Specificity=\frac{|TN|}{|TN \cup FP|}$. Harmonic BCR\footnote{Conventionally, BCR is simply computed as the arithmetic mean of sensitivity and specificity, but the harmonic mean is preferred here because it favours balance between the two.} is the harmonic mean of the two: $$BCR=\frac{2*Sensitivity*Specificity}{Sensitivity + Specificity}$$
+
+To avoid hill-climbing -- where the competition server could be used as an oracle to help the learner interactively --, the competition server does not answer to a submission with the exact BCR score obtained. Instead, it gives a binary feedback according to whether the corresponding problem is considered broken or not. A problem is deemed to be solved if the BCR value is greater than or equal to 0.99. A cell is deemed to be solved if all of its 5 problems are solved. A section dedicated to each participant has been implemented on the website to provide visual feedback. In this section, problems and cells of a personal problem grid turn to green when solved.
 
 \subsection{Performance of RPNI and Blue-Fringe\label{subsection_stamina_baseline}}
 
