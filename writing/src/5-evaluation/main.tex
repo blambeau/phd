@@ -6,24 +6,58 @@
 
 \section{Influence of the alphabet size: The Stamina Competition\label{section_stamina}}
 
-As shown previously, experimental evaluations of RPNI and its descendants allow drawing profiles illustrating the convergence of the algorithm when varying the size of the target machine, the sparsity of the learning sample as well as other specific parameters. However, available experimental evaluations \cite{Lang98,Damas06,Dupont08,Lambeau08} have all been made on machines presenting alphabets of two letters. Therefore, the effect of the alphabet size on the convergence of these algorithms has not been studied in depth. In contrast, it is not rare to encounter state machines with more than 30 events in the software engineering litterature. This observation initiated our setup of the Stamina competition, aiming at achieving two main objectives:
+As shown previously, experimental evaluations of RPNI allow illustrating the practical convergence of this family of algorithms, typically by drwaing graphs reporting an accuracy measure versus the sparsity of the learning sample. Such experiments have been conducted on RPNI -- as well as numerous variants -- for different automaton sizes in \cite{Lang98,Damas06,Dupont08,Lambeau08}. However, these evaluations have all been made on machines presenting alphabets of two letters only. In contrast, it is not rare to encounter state machines with more than 30 events in the software engineering litterature. Among others, it is this lack of formal knowledge and experimental results about the effect of the alpĥabet size on the convergence of RPNI and therefore, the arguable relevance of interpreting available ones over our software engineering setup, that initiated the Stamina competition. More precisely the main objectives of the competition were:
 
 \begin{itemize}
-\item Further investigate the influence of the alphabet size on the DFA induction problem, in particular its effect on the performance and/or convergence of state of the art algorithms. Also, the discovery of new induction techniques that potentially outperform these algorithms on problems presenting large alphabets,
-\item Provide a benchmarking framework inspired by previous competitions in grammar induction but also fitting specific criteria of state machines commonly encountered in the software engineering community (as empirically extracted from examples found in the litterature).
+\item To further investigate the influence of the alphabet size on the DFA induction problem, in particular its effect on the performance and/or convergence of state of the art algorithms,
+\item To trigger the discovery of new induction techniques that potentially outperform state of the art algorithms on problems representative of what is encountered in the software engineering community and in particular when target state machines have large alphabets,
+\item To provide a benchmarking framework inspired by previous competitions in grammar induction but also fitting specific criteria of the software engineering community
 \end{itemize}
 
 The competition has successfully ran between march and december 2010. Its main contributions are:
 
 \begin{itemize}
-\item It provides experimental results illustrating convergence profiles of RPNI and BlueFringe with respect to the alphabet size of the target machine. In particular, we confirm the expected effect of the alphabet size on the convergence of RPNI: if convergence in the limit is not hurted, increasing the size of the alphabet requires a similar increasing of the learning sample to converge in practice,
-\item It provides an evaluation protocol for regular inference that can be used as an alternative to the one of Abbadingo when dealing with alphabets of more than two letters. This protocol includes a procedure for randomly generating state machines mimicing state machines encountered in the software engineering litterature, a procedure for generating learning and test samples via a random walk of the generated state machine and a scoring metric which prove useful in presence of an unbalanced proportion of positive and negative strings in learning and test samples,
-\item Last but not least, the competition confirms the effectiveness a recent approach to the DFA induction problem mixing evidence-driven state merging and SAT solving~\cite{Heule10}.
+\item It provides experimental results illustrating convergence profiles of RPNI and BlueFringe with respect to the alphabet size of the target machine. In particular, we confirm an expected effect: if convergence in the limit is not hurted, increasing the size of the alphabet requires a similar increasing of the learning sample to converge in practice,
+\item The competition provides an evaluation protocol for regular inference that can be used as an alternative to the one of Abbadingo when dealing with alphabets of more than two letters. This protocol includes a procedure for randomly generating state machines mimicing state machines encountered in the software engineering litterature, a procedure for generating learning and test samples via a random walk of the generated state machine and a scoring metric which prove useful in presence of an unbalanced proportion of positive and negative strings in learning and test samples,
+\item Last but not least, the competition confirms the effectiveness of a recent approach to the DFA induction problem mixing evidence-driven state merging and SAT solving~\cite{Heule10}.
 \end{itemize}
 
 The following sections present the competition and its results in more details. The competition setup is presented in section~\ref{subsection_stamina_protocol}. An overview of participation and main results are presented in~\ref{subsection_stamina_protocol}.
 
-\subsection{Competition protocol\label{subsection_stamina_protocol}}
+\subsection{Competition setup\label{subsection_stamina_protocol}}
+
+The competition consists in attempting to solve cells of a grid of 100 induction problems. Each problem consists in learning a regular language from a sample of positive and negative strings randomly drawn from a target machine. Following the competition objectives discussed in the previous section, the problems vary in terms of their difficulty, related to:
+
+\begin{itemize}
+\item the size of the alphabet in the target machine
+\item the sparsity of the sample, that is, the extent to which the sample covers the behaviour of the target machine
+\end{itemize}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c c c c}
+&\multicolumn{4}{|c}{Sparsity}\\ 
+\textbf{$|\Sigma|$} & \textbf{100\%} & \textbf{50\%} & \textbf{25\%} & \textbf{12.5\%}\\
+\hline
+\textbf{2}  & 1-5   & 6-10  & 11-15 & 16-20 \\
+\textbf{5}  & 21-25 & 26-30 & 31-35 & 36-40 \\
+\textbf{10} & 41-45 & 46-50 & 51-55 & 56-60 \\
+\textbf{20} & 61-65 & 66-70 & 71-75 & 76-80 \\
+\textbf{50} & 81-85 & 86-90 & 91-95 & 96-100\\
+\end{tabular}
+\end{center}
+\caption{\label{stamina:table:problem-grid}Grid of 100 problems distributing the induction difficulty among two dimensions: sparsity of the learning sample and alphabet size.}
+\end{table}
+
+The competition grid is divided in cells of 5 problems each, where each cell corresponds to a particular combination of sparsity and alphabet size. Table~\ref{stamina:table:problem-grid} shows how problems are distributed in cells. Easier problems (with a smaller alphabet and a larger sample) are towards the upper-left of the table, and the harder problems (larger alphabet and smaller sample) are towards the bottom-right. The conduct of the competition can be described as follows:
+
+\begin{itemize}
+\item Before launching, a target machine is randomly generated for each problem. A learning sample made of positive and negative strings is also drawn by randomly walking the obtained machine. The machine and the sample are generated so as to fit specific criteria of the cell holding the corresponding problem. Last, a test sample is similarly generated whose aim is to evaluate and score participant submissions later in the competition.
+\item The target machines are not disclosed to the participants, in contrast to learning and test samples that are made available for download on a competition server. However, unlike the learning sample, the test sample is distributed unlabeled. 
+\item For a specific problem of her choice, a participant is expected to run an induction algorithm on the corresponding learning sample. The model learned doing so is then used to label each string of the test sample. Such a sequence of binary labels is submitted on the competition server, which scores the submission by comparing that sequence to known labels for test strings. 
+\item For reasons detailed later, the competition used the balanced classification rate (BCR) as scoring measure. A problem is considered broken when the score obtained is greater or equal to 0.99. A cell is considered broken by a participant if she breaks the five problems it contains. 
+\item The winner of the competition was the first technique to solve a hardest cell, among those solved in the competition. In order to formally evaluate the respective difficulty of the different cells, each of them is given a number of points (from 1 to 4) based on the average performance of the Blue-Fringe algorithm. The latter is indeed considered as representative of the state of the art and an implementation has hence been made available for download. 
+\end{itemize}
 
 \subsection{Participation and results\label{subsection_stamina_results}}
 
