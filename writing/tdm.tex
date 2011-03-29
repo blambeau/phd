@@ -1,0 +1,64 @@
+\documentclass[dvips,a4paper,11pt]{report}
+\usepackage{thesis}
+\begin{document}
+
+\pagenumbering{roman}
+
+\title{
+  Synthesizing Multi-View Models of Software Systems
+}
+\author{Bernard Lambeau \\ bernard.lambeau@uclouvain.be}
+\maketitle
+
+\include{src/abstract}
+\include{src/ack}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\pagenumbering{arabic}
+
+\chapter{Introduction}
+\chapter{A multi-view modeling framework}
+  \section{Event-based behavior models}
+    \subsection{Message Sequence Charts for instance behaviors}
+    \subsection{Labelled Transition Systems for class behaviors}
+  \section{State-based abstractions}
+    \subsection{Fluents and state variables}
+    \subsection{Guards in behavior models}
+    \subsection{Decorations on behavior models}
+  \section{Intentional models as goal graphs on fluents}
+\chapter{Deductive synthesis of LTS models from guarded hMSCs}
+  \section{From guarded HMSC to guarded LTS}
+  \section{From guarded LTS to pure LTS}
+  \section{Model analysis perspectives of deductive synthesis}
+\chapter{Inductive synthesis of LTS models from MSC and hMSC models\label{chapter:inductive-synthesis}}
+  \section{From grammar induction to model induction}
+  \section{Interactive induction of LTS models from MSCs}
+  \section{Pruning the induction space with state information}
+  \section{Pruning the induction space with goals}
+  \section{Pruning the induction space with control information}
+\chapter{Evaluation}
+  \section{Experimental results on case studies}
+  \section{Experimental results on synthetic data}
+  \section{The Stamina Competition\label{section_stamina}}
+    \subsection{Motivation and overview\label{subsection_stamina_overview}}
+    \subsection{Scientific setup\label{subsection_stamina_setup}}
+      \subsubsection*{State machines}
+      \subsubsection*{Training and test samples}
+      \subsubsection*{Submission and scoring}
+    \subsection{Baseline: Performance of Blue-Fringe\label{subsection_stamina_baseline}}
+    \subsection{Competition results\label{subsection_stamina_results}}
+\chapter{Implementation}
+  \section{Automaton and Induction toolkit}
+  \section{Web Application Sketching from Scenarios}
+  \section{A FLTL Model-Checker for g-hMSC Models}
+  \section{The Gisele Clinical Pathway Analyzer}
+\chapter{Discussion and Related Work}
+\chapter{Conclusion}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{thesis}
+
+\end{document}

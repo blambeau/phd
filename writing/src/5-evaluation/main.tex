@@ -61,7 +61,7 @@ The competition grid is divided in cells of 5 problems each, where each cell cor
 
 \subsection{Competition setup\label{subsection_stamina_setup}}
 
-\subsubsection{State Machines}
+\subsubsection*{State Machines}
 
 In order to generate state machines representative of the ones encountered in the software engineering community, a quick review of software models has been conducted. Observations have been made on a small sample (about 20 systems) of case-study models found in research publications. State machine models were analyzed in terms of their states, transitions, alphabet sizes, in-/out degree and depth. Although the sample is too small to form any authoritative conclusions, findings can be interpreted as being indicative. Following these observations, the target machines used in the competition have been generated using a variant of the Forest-Fire algorithm~\cite{Leskovec2007}. The algorithm has been tuned to present the following characteristics:
 
@@ -79,7 +79,7 @@ In order to generate state machines representative of the ones encountered in th
 
 \end{description}
 
-\subsubsection{Training and test samples}
+\subsubsection*{Training and test samples}
 
 Generating random training and testing samples for past competitions has been straightforward. The approach for competitions such as Abbadingo has been to simply generate random binary sequences up to a prescribed length, and to subsequently use the target model to classify them as ``accept'' or ``reject''. However, doing so with machines that have a larger alphabet is no longer viable; an overwhelming majority of random sequences in $\Sigma^{*}$ is likely to be classified as ``reject'', and of the few sequences that are accepted, it is unlikely that they would provide any useful coverage of the target machine. 
 
@@ -97,7 +97,7 @@ For this reason, training and test samples have been generated using a dedicated
 
 \end{description}
 
-\subsubsection{Submission and Scoring}
+\subsubsection*{Submission and Scoring}
 
 Solutions are submitted as a binary string to the competition server. For this, the competitor is expected to produce a binary sequence of labels where, for each test string, a 1 is added to the sequence if the string is considered to be accepted, and a 0 otherwise. To establish the accuracy, the sequence is compared to a reference string representing the correct classifications of the test set on the target model. The overlap between the two binary strings is measured with the \emph{Balanced Classification Rate (BCR)}. The Harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of an inferred model in terms of its acceptance of positive sequences, as well as its rejection of sequences that should be rejected. It also does not require the test set to be balanced in terms of its positive / negative sequences~\cite{Walkinshaw2008}. Relaxing such assumptions is important here because the natural positive/negative balancing commonly induced by a binary alphabet disappears with larger alphabet sizes.
 
