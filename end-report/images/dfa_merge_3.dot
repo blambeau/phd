@@ -1,0 +1,16 @@
+digraph G {
+    graph [rankdir="LR" margin="0"];
+    node [shape="circle" height="0.5" width="0.5" fixedsize="true" style="filled" fillcolor="white"];
+	zz [height="0" width="0" fixedsize="true" label=""];
+    0 [label="{0,3}"];
+    1 [shape="doublecircle" label="{1}"];
+    2 [shape="doublecircle" label="{2,4}"];
+	zz -> 0 [label=""];
+    0 -> 1 [label="a"];
+    0 -> 2 [label="b"];
+    1 -> 0 [label="b"];
+    1 -> 2 [label="a"];
+    2 -> 2 [label="a"];
+    2 -> 2 [label="b"];
+}
+
