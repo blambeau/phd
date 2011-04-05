@@ -1,0 +1,20 @@
+digraph G {
+    graph [pack="true" rankdir="LR" margin="0" bgcolor=transparent];
+    node [fontsize=24 penwidth=4 shape="doublecircle" style="filled" height="1.0" width="1.0" fixedsize="true" fillcolor="white"];
+    edge [fontsize=28 penwidth=5]
+    zz [height="0" width="0" fixedsize="true" label="" fillcolor="black"];
+    0 [label="0"]
+    1 [label="1"]
+    2 [label="2"]
+    3 [label="3"]
+    zz -> 0 [label=""];
+    0 -> 1 [label="start"]
+    1 -> 0 [label="stop"]
+    0 -> 3 [label="open"]
+    3 -> 0 [label="close"]
+    1 -> 2 [label="a.propagated"]
+    2 -> 3 [label="e.stop"]
+    3 -> 3 [label="e.open"]
+    0 -> 3 [label="a.propagated"]
+}
+
