@@ -1,6 +1,4 @@
-\chapter{Discussion and Related Work}
-
-\section{The Stamina Competition\label{section:stamina}}
+\chapter{Towards an evaluation platform for inductive model synthesis\label{chapter:stamina}}
 
 As shown previously, experimental evaluations of RPNI allow illustrating the practical convergence of this family of algorithms, typically by drawing graphs reporting an accuracy measure versus the sparsity of the learning sample. Such experiments have been conducted on RPNI -- as well as numerous variants -- for different automaton sizes in \cite{Lang98,Damas06,Dupont08,Lambeau08}. However, these evaluations have all been made on machines presenting alphabets of two letters only. In contrast, it is not rare to encounter state machines with more than 30 events in the software engineering litterature. Among others, it is this lack of formal knowledge and experimental results about the effect of the alpĥabet size on the convergence of RPNI and therefore, the arguable relevance of interpreting available ones over our software engineering setup, that initiated the Stamina competition. More precisely the main objectives of the competition were:
 
@@ -20,7 +18,7 @@ The competition has successfully ran between march and december 2010. Its main c
 
 The following sections present the competition and its results in more details. An overview of the competition is presented in section~\ref{subsection_stamina_overview}. Details about the competition setup -- state machines and samples, their generation and links with software engineering models, motivation of the chosen evaluation protocol and scoring metrics -- are  given in~\ref{subsection_stamina_setup}. The performance of RPNI and Blue-Fringe on the competition problems are detailed in ~\ref{subsection_stamina_baseline}. Last, participation and main competition results are presented in~\ref{subsection_stamina_results}.
 
-\subsection{Competition overview\label{subsection_stamina_overview}}
+\section{Competition overview\label{subsection_stamina_overview}}
 
 The competition consists in attempting to solve cells of a grid of 100 induction problems. Each problem consists in learning a regular language from a sample of positive and negative strings randomly drawn from a target machine. Following the competition objectives discussed in the previous section, the problems vary in terms of their difficulty, related to:
 
@@ -55,9 +53,9 @@ The competition grid is divided in cells of 5 problems each, where each cell cor
 \item The winner of the competition was the first technique to solve a hardest cell, among those solved in the competition. In order to formally evaluate the respective difficulty of the different cells, each of them is given a number of points (from 1 to 4) based on the average performance of the Blue-Fringe algorithm. The latter is indeed considered as representative of the state of the art and an implementation has hence been made available for download. 
 \end{itemize}
 
-\subsection{Competition setup\label{subsection_stamina_setup}}
+\section{Competition setup\label{subsection_stamina_setup}}
 
-\subsubsection*{State Machines}
+\subsection{State Machines}
 
 In order to generate state machines representative of the ones encountered in the software engineering community, a quick review of software models has been conducted. Observations have been made on a small sample (about 20 systems) of case-study models found in research publications. State machine models were analyzed in terms of their states, transitions, alphabet sizes, in-/out degree and depth. Although the sample is too small to form any authoritative conclusions, findings can be interpreted as being indicative. Following these observations, the target machines used in the competition have been generated using a variant of the Forest-Fire algorithm~\cite{Leskovec2007}. The algorithm has been tuned to present the following characteristics:
 
@@ -75,7 +73,7 @@ In order to generate state machines representative of the ones encountered in th
 
 \end{description}
 
-\subsubsection*{Training and test samples}
+\subsection{Training and test samples}
 
 Generating random training and testing samples for past competitions has been straightforward. The approach for competitions such as Abbadingo has been to simply generate random binary sequences up to a prescribed length, and to subsequently use the target model to classify them as ``accept'' or ``reject''. However, doing so with machines that have a larger alphabet is no longer viable; an overwhelming majority of random sequences in $\Sigma^{*}$ is likely to be classified as ``reject'', and of the few sequences that are accepted, it is unlikely that they would provide any useful coverage of the target machine. 
 
@@ -93,7 +91,7 @@ For this reason, training and test samples have been generated using a dedicated
 
 \end{description}
 
-\subsubsection*{Submission and Scoring}
+\subsection{Submission and Scoring}
 
 Solutions are submitted as a binary string to the competition server. For this, the competitor is expected to produce a binary sequence of labels where, for each test string, a 1 is added to the sequence if the string is considered to be accepted, and a 0 otherwise. To establish the accuracy, the sequence is compared to a reference string representing the correct classifications of the test set on the target model. The overlap between the two binary strings is measured with the \emph{Balanced Classification Rate (BCR)}. The Harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of an inferred model in terms of its acceptance of positive sequences, as well as its rejection of sequences that should be rejected. It also does not require the test set to be balanced in terms of its positive / negative sequences~\cite{Walkinshaw2008}. Relaxing such assumptions is important here because the natural positive/negative balancing commonly induced by a binary alphabet disappears with larger alphabet sizes.
 
@@ -101,11 +99,11 @@ Harmonic BCR combines two factors. $Sensitivity$ is the proportion of positive m
 
 To avoid hill-climbing -- where the competition server could be used as an oracle to help the learner to interactively optimize a first solution --, the competition server does not respond to a submission with the exact BCR score that it has obtained. Instead, it gives a binary feedback according to whether the corresponding problem is considered broken or not. A problem is considered broken if the BCR value is greater than or equal to 0.99. A cell is considered broken if all of its 5 problems are broken. A section dedicated to each participant has been implemented on the website to provide visual feedback about the performance of their algorithm(s). In this section, problems and cells of a personal problem grid turn to green when broken.
 
-\subsection{Performance of RPNI and Blue-Fringe\label{subsection_stamina_baseline}}
+\section{Performance of RPNI and Blue-Fringe\label{subsection_stamina_baseline}}
 
 
 
-\subsection{Main results\label{subsection_stamina_results}}
+\section{Main results\label{subsection_stamina_results}}
 
 
 
