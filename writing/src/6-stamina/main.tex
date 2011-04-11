@@ -8,41 +8,59 @@ Fixing parameters of benchmarks and contests helps keeping competition objective
 
 Our use of the Abbadingo protocol was initially motivated by the necessity to compare our results with previous ones of grammatical inference. Unfortunately, restricting our attention to binary alphabets is arguable from a software engineering point of view, for two reasons. First because behavior models are often defined on 30 events or more. Second, and probably more important, because using binary alphabets has a strong influence on the class of automata considered. Therefore, one can certainly question the representativeness of synthetic machines and samples used in the previous chapter for mimicing behavior models. 
 
-This overal questioning of the influence of the alphabet size on induction performance motivated the Stamina competition (Stamina stands for \emph{State Machine Inference Approaches}) that we officially ran between march and december 2010. Its aim was to identify the best technique to infer state machines presenting characteristics of behavior models while focussing on the complexity of the learning with respect to the alphabet size. For this, Stamina extends Abbadingo -- with which it shares certain features -- but relies on adapted protocols for generating target machines and samples, among other differences. As presented later in this chapter, the competition helped identifying a new technique -- formally known as DFASAT -- for learning automata defined on large alphabets. The technique mixes SAT solving and state merging and, as an interresting side effect, identifies a new scoring heuristic that proved useful to tackle the learning task in presence of alphabets of more than two letters. The Stamina website\footnote{hosted at http://stamina.chefbe.net/} is still available and has been slightly updated to serve as an online benchmark and evaluation platform for model synthesis, instead of a formal competition.
+This overal questioning of the influence of the alphabet size on induction performance motivated the Stamina competition (Stamina stands for \emph{State Machine Inference Approaches}) that we ran between march and december 2010 in collaboration with the universities of Sheffield and Leicester, and officially sponsored by the Engineering and Physical Sciences Research Council\footnote{http://www.epsrc.ac.uk/}. Its aim was to identify the best technique to infer state machines presenting characteristics of behavior models while focussing on the complexity of the learning with respect to the alphabet size. For this, Stamina extends Abbadingo -- with which it shares certain features -- but relies on adapted protocols for generating target machines and samples, among other differences. As presented later in this chapter, the competition helped identifying a new technique -- formally known as DFASAT -- for learning automata defined on large alphabets. The technique mixes SAT solving and state merging and, as an interresting side effect, identifies a new scoring heuristic that proved useful to tackle the learning task in presence of alphabets of more than two letters. The Stamina website\footnote{hosted at http://stamina.chefbe.net/} is still available and has been slightly updated to serve as an online benchmark and evaluation platform for model synthesis, instead of a formal competition.
 
-This chapter presents this evaluation platform and the Stamina competition in more details. An overview of the competition is presented in section~\ref{subsection_stamina_overview}. Details about the competition setup -- state machines and samples, their generation and links with software engineering models, motivation of the chosen evaluation protocol and scoring metrics -- are  given in~\ref{subsection_stamina_setup}. The performance of RPNI and Blue-Fringe on the competition problems are detailed in ~\ref{subsection_stamina_baseline}. Last, participation and main competition results are presented in~\ref{subsection_stamina_results}.
+This chapter presents this evaluation platform and the Stamina competition in more details. Section~\ref{section:stamina-background} provides background on the Abbadingo competition and discusses the weaknesses of its protocol when considering behavior models. The detailed setup of the Stamina competition is explained in section~\ref{section:stamina-setup}. The main results of the competition are then summarized in section~\ref{section:stamina-results}.
 
-\section{From Abbadingo to Stamina}
+\section{From Abbadingo to Stamina\label{section:stamina-background}}
 
 \subsection{Background on Abbadingo}
 
-The Abbadingo competition was designed as a grid of 16 induction problems. The principle is straightforward: the learner is provided a set of training strings labeled as positive or negative by an unseen DFA and is required to predict the labels that the DFA would assign to a set of testing strings. The 16 problems formed a grid of two difficulty dimensions. The first dimension is the size of the target automata, as the number of its states (64, 128, 256 and 512 were considered). The second dimension is the sparsity of the training sample. Four sparsity levels were considered, with the exact number of strings -- a few thousands -- increasing also with the automaton size considered. The exact size of each training sample has been tuned by manually inspecting learning curves of the Trakhenbrot-Barzdin algorithm, considered as one of the state-of-the-art induction algorithm in 1997. The problem grid was adjusted in such a way that the latter algorithm solved the four problems with largest samples.
+The Abbadingo competition has been designed as a grid of 16 induction problems. The general principle of learning applies: the learner is provided a set of training strings labeled as positive or negative by an unseen DFA and is required to predict the labels that the DFA would assign to a set of testing strings. The 16 problems formed a grid of two difficulty dimensions. The first dimension is the size of the target automata, as the number of its states (64, 128, 256 and 512 states were considered). The second dimension is the sparsity of the training sample. Four sparsity levels were considered, with the exact number of strings -- a few thousands -- increasing also with the automaton size considered. The exact size of each training sample has been tuned by manually inspecting learning curves of the Trakhenbrot-Barzdin algorithm, considered as one of the state-of-the-art induction algorithm in 1997. The problem grid was adjusted in such a way that the latter algorithm solved the four problems with largest samples.
 
-In Abbadingo, the target automata, training and test strings were all drawn from uniform random distributions. Random automata were generated by constructing and minimizing degree-2 directed graphs (for recall, only alphabet of two letters were considered), with the label of edges (the letter) and states (final or not) being choosen by flipping a fair coin. To keep the generation of the training set sufficiently simple, only automata of depth of exactly $2log_2(n)-2$ were considered for the problem grid. A training set for a target of size $n$ consisted of a random sample drawn without replacement from a uniform distribution over the collection of $16n^2 -1$ binary strings whose length lies between 0 and $2log_2(n)+3$ inclusively. This latter bound was chosen to have a good chance of reaching the deepest state of the automaton, a necessary criteria towards a structurally complete sample, which was not guaranteed though. The testing set consisted in 1800 strings drawn from the remaining strings and, as a consequence, does not overlap with the training set.
+In Abbadingo, the target automata, training and test strings were all drawn from uniform random distributions. Random automata were generated by constructing and minimizing degree-2 directed graphs (for recall, only alphabet of two letters were considered), with the label of edges (the letter) and states (final or not) being choosen by flipping a fair coin. To keep the generation of the training set sufficiently simple, only automata of depth of exactly $2log_2(n)-2$ were considered for the problem grid. A training set for a target of size $n$ was made of a random sample drawn without replacement from a uniform distribution over the collection of $16n^2 -1$ binary strings whose length lies between 0 and $2log_2(n)+3$ inclusively. This latter bound was chosen to have a good chance of reaching the deepest state of the automaton, a necessary criteria towards a structurally complete sample, which was not guaranteed though. The testing set consisted in 1800 strings drawn from the remaining strings and, as a consequence, did not overlap with the training set.
 
-The testing protocol of Abbadingo consisted in the learner labeling each string of the test set and submitting these labelings to a testing oracle available online\footnote{the server is now hosted at http://abbadingo.cs.nuim.ie/}. To avoid hill climbing, this oracle only provided a 1 bit of feedback which told whether or not the accuracy (the ratio of the number of strings correctly labeled over the total number of strings, that is 1800) of the labeling was at least 99\%. In that case, the problem was considered solved and the participant gained credit for it provided that she was the first to break it. Abbadingo actually allowed multiple winners by defining a partial order of problem difficulty, namely, that a problem $A$ was harder than a problem $B$ if its DFA had more states \emph{and} its training sample was sparser. 
+The testing protocol of Abbadingo consisted in the learner labeling each string of the test set and submitting these labelings to a testing oracle available online\footnote{the server is now hosted at http://abbadingo.cs.nuim.ie/}. To avoid hill climbing -- where the feedback of the competition server could be used by the learner to iteratively optimize a first solution -- this oracle only provided a 1 bit of feedback which told whether or not the accuracy (the ratio of the number of strings correctly labeled over the total number of test strings, i.e. 1800) of the labeling was at least 99\%. In that case, the problem was considered solved and the participant gained credit for it provided that she was the first to break it. Abbadingo actually allowed multiple winners by defining a partial order of problem difficulty: a problem $A$ was harder than a problem $B$ if its DFA had more states \emph{and} its training sample was sparser. 
 
-Two winners, Rodney Price and Hugues Julli\'e, won the competition with similar algorithms relying on what has since been called \emph{evidence driven state merging} (EDSM). This term captures the strategy of first performing state merges that are supported by the most evidence and, among other contributions, the competition helped finding a good scoring heuristics based on the number of final states merged. Also, mixing this evidence driven idea with the red-blue merge order described previously (see chapter~\ref{chapter:inductive-synthesis}) leads to the particularly fast and simple algorithm known as \emph{Blue-fringe}, for which Abbadingo provided a reference description~\cite{Lang98}.
+Two winners, Rodney Price and Hugues Julli\'e, won the competition with similar algorithms relying on what has since been called \emph{evidence driven state merging} (EDSM). This term captures the strategy of first performing state merges that are supported by the most evidence. Among other contributions, the competition has helped finding a good scoring heuristics based on the number of final states merged. Also, mixing this evidence driven idea with the red-blue merge order described previously (see chapter~\ref{chapter:inductive-synthesis}) leads to the particularly fast and simple algorithm known as \emph{Blue-fringe}, for which Abbadingo provided a reference description~\cite{Lang98}.
 
-\subsection{Inadequacies for software engineering models}
+\subsection{Inadequacies for software behavior models}
 
-As stated earlier, the fact that Abbadingo fixed the size of the alphabet to only two letters limits the relevance of reusing its protocol for evaluating behavior model synthesis techniques. This is mainly because behavior models are commonly defined on larger sets of events. As an example, the small phone case-study of section~\ref{section:evaluation-re} already uses 16 distinct events for a state machine of only 23 states. This difference in sizes of the alphabets considered is probably not sufficient in itself to question the relevance of Abbadingo's protocol here. More problematic however are the implicit consequences of considering binary alphabets only:
+Since the end of the competition, Abbadingo has turned to a reusable protocol (and benchmark) for induction techniques. To situate and compare our results, the evaluations proposed in chapter~\ref{chapter:inductive-synthesis} of the present thesis have been precisely conducted on that protocol. However, as already stated, the fact that Abbadingo fixed the size of the alphabet to only two letters limits the relevance of reusing its protocol for evaluating behavior model synthesis techniques. This is mainly because behavior models are commonly defined on larger sets of events. As an example, the small phone case-study of section~\ref{section:evaluation-re} already uses 16 distinct events for a state machine of only 23 states. Moreover, considering binary alphabets only has deeper consequences than one would expect at first glance:
 
-\begin{itemize}
-\item The state degree of deterministic finite automata defined on binary alphabets ranges from 0 to 2.
+\begin{description}
+\item[Automata] The automata randomly generated by Abbadingo have a quasi-constant state degree (number of indident edges). This is a consequence of using binary alphabets: due to the its deterministic nature, an automaton of $n$ states has at least $n$ and at most $2n$ edges, randomly distributed between its states. 
 
-\end{itemize}
+In contrast, automata modeling software systems involve transitions that may be triggered by any of a large number of events (mouse clicks, function names IO events, etc.). The number of outgoing transitions for a given state can be very large and vary significantly from state to state. A review of the state machines found in the litterature shows that while most states have in- and out-degrees of one or two transitions, state machines tend to contain a small proportion of states with a high in-degree (e.g. modeling exception handling, typically) or a high out-degree (an \emph{idle} software agent waiting for external stimuli in terms of input events). Other states are \emph{sink} accepting states, that is, they have an out-degree of 0 (explicit modeling of the ability of a system to halt). And so on.
 
-\section{Competition overview\label{subsection_stamina_overview}}
+The automata generated by by Abbadingo do not present such characteristics, due to the small alphabet size. Moreover, the random generation procedure -- because of the uniform edge distribution it implies -- would not naturally lead to automata presenting such characteristics, even if adapted to consider larger alphabets.
 
-The competition consists in attempting to solve cells of a grid of 100 induction problems. Each problem consists in learning a regular language from a sample of positive and negative strings randomly drawn from a target machine. Following the competition objectives discussed in the previous section, the problems vary in terms of their difficulty, related to:
+\item[Samples] Samples in Abbadingo are simply drawn from uniform random distribution over the collection of all (binary) strings up to a prescribed length. The target machine was then used to classify these strings as positive or negative. For statistical reasons, this procedure leads to samples that are naturally balanced with respect to those positive vs. negative labels. 
 
-\begin{itemize}
-\item the size of the alphabet in the target machine
-\item the sparsity of the sample, that is, the extent to which the sample covers the behaviour of the target machine
-\end{itemize}
+Unfortunately, this procedure is no longer viable when considering larger alphabets (unless state machines present similar characteristics to the ones of Abbadingo, which is not the case, as previously discussed). The main reason is that an overwhelming majority of random sequences in $\Sigma^*$ is likely to be classified as negative. The few positive strings that would be made available is unlikely to provide a useful coverage of the target machine.
 
-\begin{table}
+\item[Scoring] The choice of the accuracy measure (defined in Abbadingo as the proportion of test strings that are correctly classified by the automaton learned) is also arguable if one relaxes the assumption of having balanced test samples~\cite{Walkinshaw2008}. In the extreme case of a test set largely overwhelmed by negative strings for example, a learner classifying all strings as negative would obtain a confortable score.
+\end{description}
+
+As shown, conducting evaluations while overcoming the usage of binary alphabets implies rethinking important parts of the underlying protocol. To capitalize over and share the cost of such a work, it took the form of launching the Stamina competition, whose setup is now described in more details.
+
+%%%%%%
+
+\section{Setup of Stamina\label{section:stamina-setup}}
+
+The competition scenario chosen for Stamina is very similar to the one of Abbadingo: 
+
+\begin{quotation}
+A learner downloads a training set made of positive and negative strings, infers a model using her induction technique, uses it to label strings of a test sample and finally, submits this labeling to the competition server. The latter scores the submission and provides a binary feedback, according to whether the problem is considered broken or not.
+\end{quotation}
+
+If the competition scenario is similar, Stamina differs from Abbadingo in that it focusses on the complexity of the learning with respect to the alphabet size, and therefore relies on an adapted generation protocol for target automata and samples. The next sections details the choices that have been made and the key differences with Abbadingo.
+
+\subsection{Competition grid}
+
+As in Abbadingo, induction problems are classified in a grid. Here, the competition grid is divided in cells of five problems each, where each cell corresponds to a particular combination of sparsity and alphabet size. Table~\ref{stamina:table:problem-grid} shows how problems are distributed in cells. Easier problems (with a smaller alphabet and a larger sample) are towards the upper-left of the table, and the harder problems (larger alphabet and smaller sample) are towards the bottom-right.
+
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c c c c}
 &\multicolumn{4}{|c}{Sparsity}\\ 
@@ -58,67 +76,115 @@ The competition consists in attempting to solve cells of a grid of 100 induction
 \caption{\label{stamina:table:problem-grid}Grid of 100 problems distributing the induction difficulty among two dimensions: sparsity of the learning sample and alphabet size.}
 \end{table}
 
-The competition grid is divided in cells of 5 problems each, where each cell corresponds to a particular combination of sparsity and alphabet size. Table~\ref{stamina:table:problem-grid} shows how problems are distributed in cells. Easier problems (with a smaller alphabet and a larger sample) are towards the upper-left of the table, and the harder problems (larger alphabet and smaller sample) are towards the bottom-right. The conduct of the competition can be described as follows:
+\noindent The key differences and similarities with Abbadingo are:
 
 \begin{itemize}
-\item Before launching, a target machine is randomly generated for each problem. A learning sample made of positive and negative strings is also drawn by randomly walking the obtained machine. The machine and the sample are generated so as to fit specific criteria of the cell holding the corresponding problem. Last, a test sample is similarly generated whose aim is to evaluate and score participant submissions later in the competition.
-\item The target machines are not disclosed to the participants, in contrast to learning and test samples that are made available for download on a competition server. However, unlike the learning sample, the test sample is distributed unlabeled. 
-\item For a specific problem of her choice, a participant is expected to run an induction algorithm on the corresponding learning sample. The model learned doing so is then used to label each string of the test sample. Such a sequence of binary labels is submitted on the competition server, which scores the submission by comparing that sequence to known labels for test strings. 
-\item For reasons detailed later, the competition used the balanced classification rate (BCR) as scoring measure. A problem is considered broken when the score obtained is greater or equal to 0.99. A cell is considered broken by a participant if she breaks the five problems it contains. 
-\item The winner of the competition was the first technique to solve a hardest cell, among those solved in the competition. In order to formally evaluate the respective difficulty of the different cells, each of them is given a number of points (from 1 to 4) based on the average performance of the Blue-Fringe algorithm. The latter is indeed considered as representative of the state of the art and an implementation has hence been made available for download. 
+
+\item An increasing size of the alphabet forms a first difficulty dimension, ranging from 2 to 50 letters. The lower bound allows comparing results with Abbadingo on easiest problems while the upper bound is representative of behavior models found in the litterature.
+
+\item Unlike Abbadingo in which the varying automaton size is a difficulty dimension (ranging from 64 to 512), Stamina only considers automata of roughly 50 states. However, these automata present characteristics of behavior models, in terms of the variance of their state degree, among others (see section~\ref{subsection:stamina-machines})
+
+\item The second difficulty dimension, namely a decreasing size of the training sample, is shared with Abbadingo. However, samples in Stamina are generated ``from the machine'' by a random walk procedure, instaed of randomly drawn from all possible strings (see section~\ref{subsection:stamina-samples}).
+
+\item In Stamina, each cell contains five similar problems and is given a difficulty level according to the average score obtained by Blue-fringe on the problems it contains (see section~\ref{subsection:stamina-baseline}). An implementation of this baseline algorithm was made available for download during the competition.
+
+\item Instead of an accuracy measure, submissions were scored using a \emph{binary classification rate} (BCR) because it places an equal emphasis on the accuracy of an inferred model in terms of its acceptance of positive sequences, as well as its rejection of sequences that should be rejected. A threshold of 99\% is required to consider a problem broken. A cell is broken if its five problems are broken by the same participant.
+
+\item The winner of the competition was the first technique to solve a hardest cell (in terms of the difficulty level aformentioned), among those solved in the competition. This contrasts with Abbadingo as it implies the existence of only one winner.
+
 \end{itemize}
 
-\section{Competition setup\label{subsection_stamina_setup}}
+\subsection{State Machines\label{subsection:stamina-machines}}
 
-\subsection{State Machines}
-
-In order to generate state machines representative of the ones encountered in the software engineering community, a quick review of software models has been conducted. Observations have been made on a small sample (about 20 systems) of case-study models found in research publications. State machine models were analyzed in terms of their states, transitions, alphabet sizes, in-/out degree and depth. Although the sample is too small to form any authoritative conclusions, findings can be interpreted as being indicative. Following these observations, the target machines used in the competition have been generated using a variant of the Forest-Fire algorithm~\cite{Leskovec2007}. The algorithm has been tuned to present the following characteristics:
+In order to generate state machines representative of the ones encountered in the software engineering community, a quick review of software models has been conducted. Observations have been made on a small sample (about 20 systems) of case-study models found in research publications. State machine models were analyzed in terms of their states, transitions, alphabet sizes, in-/out degree and depth. Although the sample is too small to form any authoritative conclusions, findings can be interpreted as being indicative. Following these observations, the target machines used in the competition have been generated using a variant of the Forest-Fire algorithm~\cite{Leskovec2007}. The algorithm has been tuned to generate state machines presenting the following characteristics:
 
 \begin{description}
 
-\item[Number of states] To keep the competition setup simple enough -- by keeping two difficulty dimensions only, namely sample sparsity and alphabet size --, all state machines have approximately 50 states. Although somewhat larger than the conventional state machines identified in the Software Engineering literature, this is to ensure that any techniques submitted to this competition could scale to infer models for reasonably complex software systems. 
+\item[Number of states] All state machines have approximately 50 states. Although somewhat larger than the conventional state machines identified in the literature, this is to ensure that any techniques submitted to this competition could scale to infer models for reasonably complex software systems. Also, is has been decided not to consider state machines of exactly 50 states to avoid having a very strong bias in the competition. Automaton sizes actually range from 41 to 59 states, even if this information was not disclosed as such during the competition.
 
-\item[Alphabet size] Alphabet sizes in the competition range from 2 to 50 symbols. For recall, previous competitions such as Abbadingo focussed on 2 letter alphabets. This lower bound has been kept to facilitate result comparisons. 50 symbols is representative of the upper bound found on software models extracted from the scientific litterature. 
+\item[Accepting ratio] A roughly equal proportion of accepting and rejecting states has been chosen, a feature is shared with Abbadingo. While most software models, and LTS in particular, have all accepting states it has been decided to keep non accepting states as well. Doing so keeps the competition sufficiently close to former regular induction setups, and avoids restricting it to the inference of prefix-closed regular languages in particular. As already discussed in chapter~\ref{chapter:inductive-synthesis}, infering prefix-closed languages looks an easier problem than general regular inference. Hence, a competition winner would be expected to perform equaly well, if not better, when infering machines with all accepting states.
 
-\item[Accepting ratio] A roughly equal proportion of accepting and rejecting states has been chosen, a feature is shared with Abbadingo. While most software models, and LTS in particular, have all accepting states it has been decided to keep non accepting states as well. Doing so keeps the competition sufficiently closed to former regular induction setups, and avoids restricting it to the inference of prefix-closed regular languages in particular. As already discussed in chapter~\ref{chapter:inductive-synthesis}, infering prefix-closed languages looks an easier problem than general regular inference. Hence, a competition winner would be expected to perform equaly well, if not better, when infering machines with all accepting states.
-
-\item[Degree distribution] While most states have in- and out-degrees of one or two transitions, state machines of software systems tend to contain a small proportion of states with a high in-degree (\emph{authority} states) or a high out-degree (\emph{hub} states). Some states are \emph{sink} accepting states, that is, they have an out-degree of 0. Hub and/or authority states, for example, typically capture specific \emph{idle} states where a software agent waits for external stimuli in terms of input events (with numerous )possible candidates). Sink states can be interpreted as explicit modeling of the ability of a system to halt, and so on. Those degree characteristics can be observed in state machines generated for the competition. It contrasts with target machines of Abbadingo where \emph{hub} or \emph{authority} states could not be present due to the small alphabet size, for example.
+\item[Degree distribution] Following observations from the litterature, state machines present an important variance of their state degree, especially on largest alphabets. Also, they may have sink accepting states, i.e. with no outgoing transition.
 
 \item[Deterministic and minimal] Following common setup of regular inference experiments, the machines considered in the competition are both deterministic and minimal.
 
 \end{description}
 
-\subsection{Training and test samples}
+\subsection{Training and test samples\label{subsection:stamina-samples}}
 
-Generating random training and testing samples for past competitions has been straightforward. The approach for competitions such as Abbadingo has been to simply generate random binary sequences up to a prescribed length, and to subsequently use the target model to classify them as ``accept'' or ``reject''. However, doing so with machines that have a larger alphabet is no longer viable; an overwhelming majority of random sequences in $\Sigma^{*}$ is likely to be classified as ``reject'', and of the few sequences that are accepted, it is unlikely that they would provide any useful coverage of the target machine. 
-
-For this reason, training and test samples have been generated using a dedicated generation procedure. This procedure aims at simulating the way examples of system behaviour are usually obtained in the software engineering community (a collection of program traces at an implementation level or the generation of scenarios at a design level, for instance). Samples generated present the following characteristics:
+Training and test samples have been generated using a dedicated generation procedure. This procedure aims at simulating the way examples of system behaviour are usually obtained in the software engineering community (a collection of program traces at an implementation level or the generation of scenarios at a design level, for instance). Samples generated present the following characteristics:
 
 \begin{description}
 
-\item[Generated by the target] Positive strings have been generated by randomly walking the target machines. A dedicated algorithm generates positive strings by walking through the automaton from the initial state, randomly selecting outgoing transitions with a uniform distribution. When an accepting state v is reached, the generation ends with a probability of $1.0/(1 + 2*outdegree(v))$. This procedure simulates an `'end of string'' transition from state $v$ with half the probability of an existing transition. The length distribution of the strings generated is approximately centered on $5 + depth(automaton)$, a feature shared with the Abbadingo competition.
+\item[Generated by the target] Positive strings have been generated by randomly walking the target machines. A dedicated algorithm generates positive strings by walking through the automaton from the initial state, randomly selecting outgoing transitions with a uniform distribution. When an accepting state v is reached, the generation ends with a probability of $1.0/(1 + 2*outdegree(v))$. This procedure simulates an ``end of string'' transition from state $v$ with half the probability of an existing transition. The length distribution of the strings generated is approximately centered on $5 + depth(automaton)$. As in Abbadingo, this provides a good chance to reach the deepest state of the automaton, even if no guarantee was given of having a structurally complete sample.
 
-\item[Negative strings] Negative strings are generated by randomly perturbing strings generated from the target machine. Three kinds of edit operation are considered: substituting, inserting, or deleting a symbol. The editing position is randomly chosen according to a uniform distribution over the string length. Substitution and insertion also use a uniform distribution over the alphabet. The number of editing operations is chosen according to a Poisson distribution (with a mean of 3) and the three editing operations have an equal change of being selected. The randomly edited string is included in the negative sample provided it is indeed rejected by the target machine. Otherwise, it is simply discarded.
-
-\item[Samples] The random walk algorithm and perturbation procedure serve as building blocks for the generation of training and test samples for each problem. Using them, a set of 20.000 strings has first been sampled from the target machine. This sample contains roughly equal number of positive and negative strings and usually contains duplicates. The distinct strings of the initial sample are then equally partitioned into two sets, taking care of respecting the positive and negative balance in each one. The first set is used to generate the test sample, the second one to generate the learning sample. The test sample contains 1,500 strings randomly drawn without replacement from the first set. The test set neither contains duplicates (to avoid favoring repeated strings in the scoring metric), nor intersects with the training set. The official training sets are sampled from the second set with different levels of sparsity (100\%, 50\%, 25\%, 12.5\%) and usually contain duplicates, as a consequence of the random walk generation from the target machine. As a consequence of this procedure, training and test sets do not intersect.
-
-\item[Empirically adjusted] the different parameters above (20,000 strings initially generated, 1,500 strings maximum in the test set and the learning sample size) have all been empirically adjusted to ensure good induction results using Blue-Fringe on the simplest problems (alphabet of size 2 with a learning sample sparsity of 100\%) without breaking the cell.
+\item[Negative strings] Negative strings are generated by randomly perturbing positive strings generated as above. Three kinds of edit operation are considered: substituting, inserting, or deleting a symbol. The editing position is randomly chosen according to an uniform distribution over the string length. Substitution and insertion also use an uniform distribution over the alphabet. The number of editing operations is chosen according to a Poisson distribution (with a mean of 3) and the three editing operations have an equal change of being selected. The randomly edited string is included in the negative sample provided it is indeed rejected by the target machine. Otherwise, it is simply discarded.
 
 \end{description}
 
+The random walk algorithm and perturbation procedure serve as building blocks for the generation of training and test samples for each problem. Using them, a set of 20.000 strings is first sampled from the target machine. This sample contains roughly equal number of positive and negative strings and usually contains duplicates. The distinct strings of the initial sample are then equally partitioned into two sets, taking care of respecting the positive and negative balance in each one. The first set is used to generate the test sample, the second one to generate the learning sample. The test sample contains 1,500 strings randomly drawn without replacement from the first set. The test set neither contains duplicates (to avoid favoring repeated strings in the scoring metric), nor intersects with the training set. The official training sets are sampled from the second set with different levels of sparsity (100\%, 50\%, 25\%, 12.5\%) and usually contain duplicates, as a consequence of the random walk generation from the target machine. As a consequence of this procedure, training and test sets do not intersect.
+
+\subsection{Blue-fringe baseline\label{subsection:stamina-baseline}}
+
+Blue-fringe has been ran on all problems of the grid with the main objective of adjusting the grid to guarantee the feasibility of the competition. Similarly to Abbadingo, the idea is to adjust free parameters (actual sizes of the training and test sets, average length of the strings with respect to the automaton depth, and so on) in such a way that the state of the art algorithm breaks the easiest problems. This trial-and-error process converged with three problems broken in the easiest cell (therefore not itself broken) and reasonnable scores for the two remaining problems as well as  immediately adjacent cells. 
+
+The performance of the baseline are summarized in Table~\ref{stamina:table:baseline} and illustrated with convergence curves in Figure~\ref{stamina:image:bluefringe-performance}. As shown, the BCR score decreases along each of the difficulty dimensions, experimentally confirming the expected effect of an increasing alphabet size on the indution difficulty. Using these scores, the difficulty level of each cell has been calibrated using the rules defined in Table~\ref{stamina:table:calibration}.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c c c c}
+&\multicolumn{4}{|c}{\textbf{Sparsity}}\\ 
+\textbf{$|\Sigma|$} & \textbf{100\%} & \textbf{50\%} & \textbf{25\%} & \textbf{12.5\%}\\
+\hline
+\textbf{2}  & 0.99 (1) & 0.95 (1) & 0.67 (3) & 0.66 (3)\\
+\textbf{5}  & 0.97 (1) & 0.78 (2) & 0.59 (4) & 0.52 (4)\\
+\textbf{10} & 0.93 (1) & 0.64 (3) & 0.51 (4) & 0.50 (4)\\
+\textbf{20} & 0.91 (1) & 0.63 (3) & 0.54 (4) & 0.51 (4)\\
+\textbf{50} & 0.81 (2) & 0.64 (3) & 0.57 (4) & 0.50 (4)\\
+\end{tabular}
+\end{center}
+\caption{Average BCR of Blue-fringe in each cell; the difficulty level is shown in parentheses.\label{stamina:table:baseline}}
+\end{table}
+
+\begin{figure}
+\centering\scalebox{.4}{
+  \includegraphics*{src/6-stamina/images/bluefringe-performance}}
+  \caption{Perfomance curves of Blue-fringe\label{stamina:image:bluefringe-performance}.}
+\end{figure}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c}
+Difficulty level & Score\\
+\hline
+1&$0.9 \leq score \leq 1$\\
+2&$0.7 \leq score < 0.9$\\
+3&$0.6 \leq score < 0.7$\\
+4&$0 \leq score < 0.6$\\
+\end{tabular}
+\end{center}
+\caption{\label{stamina:table:calibration}Calibrating cell difficulties, based on the scores given in Table~\ref{stamina:table:baseline}}
+\end{table}
+
 \subsection{Submission and Scoring}
 
-Solutions are submitted as a binary string to the competition server. For this, the competitor is expected to produce a binary sequence of labels where, for each test string, a 1 is added to the sequence if the string is considered to be accepted, and a 0 otherwise. To establish the accuracy, the sequence is compared to a reference string representing the correct classifications of the test set on the target model. The overlap between the two binary strings is measured with the \emph{Balanced Classification Rate (BCR)}. The Harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of an inferred model in terms of its acceptance of positive sequences, as well as its rejection of sequences that should be rejected. It also does not require the test set to be balanced in terms of its positive / negative sequences~\cite{Walkinshaw2008}. Relaxing such assumptions is important here because the natural positive/negative balancing commonly induced by a binary alphabet disappears with larger alphabet sizes.
+As in Abbadingo, solutions in Stamina had to be submitted as a binary string to the competition server. For this, the competitor was expected to produce a binary sequence of labels where, for each test string, a 1 is added to the sequence if the string is considered to be accepted, and a 0 otherwise. To establish the accuracy, such a sequence is compared to a reference string representing the correct classifications of the test set on the target model. The overlap between the two binary strings is measured with the \emph{Balanced Classification Rate (BCR)}. The Harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of an inferred model in terms of its acceptance of positive sequences, as well as its rejection of sequences that should be rejected. It also does not require the test set to be balanced in terms of its positive / negative sequences~\cite{Walkinshaw2008}. 
 
-Harmonic BCR combines two factors. $Sensitivity$ is the proportion of positive matches that are predicted to be positive. So in terms of the sets true positives ($TP$) and false positives ($FP$), $Sensitivity=\frac{|TP|}{|TP \cup FN|}$. $Specificity$ is the proportion of true negatives that are predicted to be negative, so $Specificity=\frac{|TN|}{|TN \cup FP|}$. Harmonic BCR is the harmonic mean of the two: $$BCR=\frac{2*Sensitivity*Specificity}{Sensitivity + Specificity}$$. Note that conventionally, BCR is simply computed as the arithmetic mean of sensitivity and specificity, but the harmonic mean is preferred here because it favours balance between the two.
+Harmonic BCR is the harmonic mean of two factors. $Sensitivity$ is the proportion of positive matches that are predicted to be positive and $Specificity$ is the proportion of true negatives that are predicted to be negative. So in terms of the sets true positives ($TP$) and false positives ($FP$), 
 
-To avoid hill-climbing -- where the competition server could be used as an oracle to help the learner to interactively optimize a first solution --, the competition server does not respond to a submission with the exact BCR score that it has obtained. Instead, it gives a binary feedback according to whether the corresponding problem is considered broken or not. A problem is considered broken if the BCR value is greater than or equal to 0.99. A cell is considered broken if all of its 5 problems are broken. A section dedicated to each participant has been implemented on the website to provide visual feedback about the performance of their algorithm(s). In this section, problems and cells of a personal problem grid turn to green when broken.
+$$Sensitivity=\frac{|TP|}{|TP \cup FN|}$$ 
 
-\section{Performance of RPNI and Blue-Fringe\label{subsection_stamina_baseline}}
+$$Specificity=\frac{|TN|}{|TN \cup FP|}$$
 
+$$BCR=\frac{2*Sensitivity*Specificity}{Sensitivity + Specificity}$$
 
+Note that conventionally, BCR is simply computed as the arithmetic mean of sensitivity and specificity, but the harmonic mean has been preferred because it favours balance between the two.
 
-\section{Main results\label{subsection_stamina_results}}
+As in Abbadingo, hill-climbing is made impossible by the competition server only responding to a submission with a binary answer according to whether the problem is broken or not. For recall, a problem is considered broken if the BCR score obtained is greater than or equal to 0.99. A cell is considered broken if all of its 5 problems are broken. A section dedicated to each participant has been implemented on the website to provide visual feedback about the performance of their algorithm(s). In this section, problems and cells of a personal problem grid turn to green when broken.
+
+%%%%%%
+
+\section{Competition results\label{section:stamina-results}}
 
 
 
