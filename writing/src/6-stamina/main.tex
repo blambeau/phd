@@ -10,7 +10,7 @@ Our use of the Abbadingo protocol was initially motivated by the necessity to co
 
 This overal questioning of the influence of the alphabet size on induction performance motivated the Stamina competition (Stamina stands for \emph{State Machine Inference Approaches}) that we ran between march and december 2010 in collaboration with the universities of Sheffield and Leicester, and officially sponsored by the Engineering and Physical Sciences Research Council\footnote{http://www.epsrc.ac.uk/}. Its aim was to identify the best technique to infer state machines presenting characteristics of behavior models while focussing on the complexity of the learning with respect to the alphabet size. For this, Stamina extends Abbadingo -- with which it shares certain features -- but relies on adapted protocols for generating target machines and samples, among other differences. As presented later in this chapter, the competition helped identifying a new technique -- formally known as DFASAT -- for learning automata defined on large alphabets. The technique mixes SAT solving and state merging and, as an interresting side effect, identifies a new scoring heuristic that proved useful to tackle the learning task in presence of alphabets of more than two letters. The Stamina website\footnote{hosted at http://stamina.chefbe.net/} is still available and has been slightly updated to serve as an online benchmark and evaluation platform for model synthesis, instead of a formal competition.
 
-This chapter presents this evaluation platform and the Stamina competition in more details. Section~\ref{section:stamina-background} provides background on the Abbadingo competition and discusses the weaknesses of its protocol when considering behavior models. The detailed setup of the Stamina competition is explained in section~\ref{section:stamina-setup}. The main results of the competition are then summarized in section~\ref{section:stamina-results}.
+This chapter presents this evaluation platform and the Stamina competition in more details. Section~\ref{section:stamina-background} provides background on the Abbadingo competition and discusses the weaknesses of its protocol when considering behavior models. The detailed setup of the Stamina competition is explained in section~\ref{section:stamina-setup}. The main results of the competition are then summarized in section~\ref{section:stamina-results}. Section~\ref{section:stamina-discussion} closes this chapter with a discussion about the competition and the online platform and summarizes future work.
 
 \section{From Abbadingo to Stamina\label{section:stamina-background}}
 
@@ -128,7 +128,7 @@ The random walk algorithm and perturbation procedure serve as building blocks fo
 
 Blue-fringe has been ran on all problems of the grid with the main objective of adjusting the grid to guarantee the feasibility of the competition. Similarly to Abbadingo, the idea is to adjust free parameters (actual sizes of the training and test sets, average length of the strings with respect to the automaton depth, and so on) in such a way that the state of the art algorithm breaks the easiest problems. This trial-and-error process converged with three problems broken in the easiest cell (therefore not itself broken) and reasonnable scores for the two remaining problems as well as  immediately adjacent cells. 
 
-The performance of the baseline are summarized in Table~\ref{stamina:table:baseline} and illustrated with convergence curves in Figure~\ref{stamina:image:bluefringe-performance}. As shown, the BCR score decreases along each of the difficulty dimensions, experimentally confirming the expected effect of an increasing alphabet size on the indution difficulty. Using these scores, the difficulty level of each cell has been calibrated using the rules defined in Table~\ref{stamina:table:calibration}.
+The performance of the baseline are summarized in Table~\ref{table:stamina-baseline} and illustrated with convergence curves in Figure~\ref{stamina:image:bluefringe-performance}. As shown, the BCR score decreases along each of the difficulty dimensions, experimentally confirming the expected effect of an increasing alphabet size on the indution difficulty. Using these scores, the difficulty level of each cell has been calibrated using the rules defined in Table~\ref{stamina:table:calibration}.
 
 \begin{table}
 \begin{center}
@@ -143,13 +143,13 @@ The performance of the baseline are summarized in Table~\ref{stamina:table:basel
 \textbf{50} & 0.81 (2) & 0.64 (3) & 0.57 (4) & 0.50 (4)\\
 \end{tabular}
 \end{center}
-\caption{Average BCR of Blue-fringe in each cell; the difficulty level is shown in parentheses.\label{stamina:table:baseline}}
+\caption{Average BCR of Blue-fringe in each cell; the difficulty level is shown in parentheses.\label{table:stamina-baseline}}
 \end{table}
 
 \begin{figure}
 \centering\scalebox{.4}{
   \includegraphics*{src/6-stamina/images/bluefringe-performance}}
-  \caption{Perfomance curves of Blue-fringe\label{stamina:image:bluefringe-performance}.}
+  \caption{Performance curves of Blue-fringe\label{stamina:image:bluefringe-performance}.}
 \end{figure}
 
 \begin{table}
@@ -163,7 +163,7 @@ Difficulty level & Score\\
 4&$0 \leq score < 0.6$\\
 \end{tabular}
 \end{center}
-\caption{\label{stamina:table:calibration}Calibrating cell difficulties, based on the scores given in Table~\ref{stamina:table:baseline}}
+\caption{\label{stamina:table:calibration}Calibrating cell difficulties, based on the scores given in Table~\ref{table:stamina-baseline}}
 \end{table}
 
 \subsection{Submission and Scoring}
@@ -186,5 +186,69 @@ As in Abbadingo, hill-climbing is made impossible by the competition server only
 
 \section{Competition results\label{section:stamina-results}}
 
+The competition started in March 2010, the 31th of December being announced as an official deadline for submitting results. During these two dates, 1856 submissions were made by 11 challengers. Among these submissions, 61 reached a BCR score of at least 99\%, breaking 42 different problems in 10 different cells.
 
+The competition hall of fame is shown in Fig.\ref{stamina:table:hall-of-fame}. The easiest cell (alphabet 2, sparsity 100\%) was quickly broken --~five days after the competition start~-- by Manuel V\'azquez de Parga Andrade with the Equipo algorithm (learning of automata teams, see~\cite{Garcia:2010}). This first result has been followed by an apparent lull in the competition. Some challengers were actually submitting at that time but without successfully breaking new problems and cells so that this activity was not directly visible on the competition website. A few weeks after, Marijn Heule and Sicco Verwer, with the DFASAT algorithm~\cite{Heule10}, started solving all cells of difficulty~1 in the left-most column. After a new small lull, they eventually broke the first cell of difficulty 2 (alphabet 50, sparsity 100\%) therefore taking the head of the competition. They eventually won the competition with an extra cell being broken (alphabet 50, sparsity 50\%), the only cell of difficulty~3 broken during the competition.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{c|c c c c}
+&\multicolumn{4}{|c}{\textbf{Sparsity}}\\ 
+\textbf{$|\Sigma|$} & \textbf{100\%} & \textbf{50\%} & \textbf{25\%} & \textbf{12.5\%}\\
+\hline
+\textbf{2}  & Equipo & 4 & 0 & 0 \\
+\textbf{5}  & DFASAT & 1 & 0 & 0 \\
+\textbf{10} & DFASAT & 3 & 0 & 0 \\
+\textbf{20} & DFASAT & 4 & 0 & 0 \\
+\textbf{50} & DFASAT & DFASAT & 0 & 0 \\
+\end{tabular}
+\end{center}
+\caption{Cell winners. A number inside an unsolved cell indicate how many of the five problems were broken the 31th of December.\label{stamina:table:hall-of-fame}}
+\end{table}
+
+One fact might appear weird at first glance, namely that this latter cell (alphabet 50, sparsity 50\%) is broken while cells of easier difficulty in the same column remain unbroken. This apparently strong result must first be slighlty weakened, then explained. First, one can verify thanks to the numbers given in Table~\ref{stamina:table:hall-of-fame} that 17 of the 25 problems of the column have been actually broken (all of them being solved by DFASAT in particular). Also, strategical choices from participants must be taken into account here: after having solved cells of difficulty 1 and 2, they probably focussed on solving cells of higher difficulty. Such precaution taken, the fact that DFASAT relies on a useful scoring heuristic for large alphabets and less effective on smaller ones is certainly important for explaining their success on that hardest cell (see Section~\ref{subsection:stamina-winning}).
+
+As the same table shows, no problem has been broken in the last two columns, that is with a sample sparsity of 25\% or less. Here again, this fact must be interpreted with caution. First, while fewer activity has been monitored on such cells, a few approaches actually performed quite well -- above the baseline in particular. Also, because of specific strategies used by the different participants, only partial results were available at the end of the competition. In other words, participants have not submitted results on all available problems, so that making comparisons and drawing conclusions is made difficult. Before discussing trends on those hardest cells however, let be fair and present key ingredients used by the winning algorithm.
+
+\subsection{The winning algorithm\label{subsection:stamina-winning}}
+
+The winning algorithm, DFASAT, reuses the baseline algorithm but relies on additional key ingredients: an adapted heuristics for scoring candidate merging operations, a random perturbation of such heuristics and intense search after an original reduction to a SAT problem. 
+
+\noindent \emph{Good start from Pierre, waiting to have read~\cite{Heule10} in details myself}
+
+\subsection{Trends on hardest cells}
+
+Table~\ref{stamina:table:hall-of-fame} only reveals competition activity according to its winning criteria, that is, to be the first to break the hardest cell, among those broken. Interresting hidden activity (so far) may be revealed and trends drawn if we turn to a different criteria for presenting the hall of fame. For this, consider the Table~\ref{stamina:table:hall-of-fame-2}. Here, instead of considering broken cells only, a given cell contains the name of the best participant together with her average cell score. To keep a fair comparison criteria, only participants that have submitted for all of the five cell problems are considered candidate. Also, only the best participant score for each problem is kept for computing the average score of the cell (another criteria could be the \emph{last} submission for each problem, see Section~\ref{section:stamina-discussion}). Last, only results above the baseline are considered. In other words, empty cells may be interpreted as being owned by the baseline itself. 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{c|c c c c}
+&\multicolumn{4}{|c}{\textbf{Sparsity}}\\ 
+\textbf{$|\Sigma|$} & \textbf{100\%} & \textbf{50\%} & \textbf{25\%} & \textbf{12.5\%}\\
+\hline
+\textbf{2}  & DFASAT (\emph{br.}) & DFASAT (0.987)      & DFASAT (0.788) &  \\
+\textbf{5}  & DFASAT (\emph{br.}) & DFASAT (0.968)      &                &  \\
+\textbf{10} & DFASAT (\emph{br.}) & DFASAT (0.979)      & pbc (0.680)    & pbc (0.688) \\
+\textbf{20} & DFASAT (\emph{br.}) & DFASAT (0.991)      & pbc (0.734)    & pbc (0.726) \\
+\textbf{50} & DFASAT (\emph{br.}) & DFASAT (\emph{br.}) & DFASAT (0.967) & pbc (0.750) \\
+\end{tabular}
+\end{center}
+\caption{Hall of fame based on average scoring by cell, provided that the participant has submitted for all problems in the cell (\emph{br.} stands for \emph{broken}).\label{stamina:table:hall-of-fame-2}}
+\end{table}
+
+Results in Table~\ref{stamina:table:hall-of-fame-2} have been compiled according to that criteria, from available data at competition termination. Two main observations may be made from such a table: 
+
+\begin{itemize}
+
+\item First, the pbc algorithm (\emph{pcb} stands for \emph{pattern based classification} is a modification of the technique presented in~\cite{Lo:2009}) performs quite well on hardest problems in comparison with the baseline which obtains around 0.52 in average for the same cells (see Table~\ref{table:stamina-baseline} for baseline scores). 
+
+\item Second, DFASAT is near of breaking a cell of difficulty 4 (alphabet 50, sparsity 25\%), with an average score of 0.967. Interrestingly, the variance is small (the best score being 0.985 and the worse 0.929) which supports our claim. The other score obtained on this column (0.788 on alphabet 2, sparsity 25\%) tend to confirm the usefulness of DFASAT's scoring heuristic discussed in previous section. 
+
+\end{itemize}
+
+The fact that only partial results are available do not allow fully drawing comparisons between scores obtained by the two approaches (in short, pbc did not submit on smallest alphabets while DFASAT did not submit on sparsest samples), trends are quite clear.
+
+%%%%%%
+
+\section{Discussion\label{section:stamina-discussion}}
 
