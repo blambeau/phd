@@ -4,13 +4,15 @@ As discussed in chapter~\ref{chapter:evaluation}, an induction algorithm is comm
 
 Abbadingo focussed on learning DFAs from positive and negative strings along two difficulty dimensions, the size of the automaton to learn and the sparsity of the training sample. All other parameters were fixed, notably the alphabet size which was equal to 2 for all problems (other candidate parameters include the ratio of final states over non-final ones, the density and depth of the automaton, the ratio of positive over negative strings in the training sample, the distribution of string lengths, and so on).
 
-Fixing parameters of benchmarks and contests helps keeping competition objectives sufficiently clear and understandable for users. If also makes sound analysis results easier to obtain, due to the presence of only a few degrees of freedom. On the other hand, fixing parameter values has an important impact because it limits the applicability of the conclusions drawn as well as their generalization. In that respect, the conclusions we drawn in the previous chapter all rely on an -- sometimes implicit -- assumption of an alphabet of 2 letters. While extrapolating results to larger alphabets appears natural, it must be done with care.
+Fixing parameters of benchmarks and contests helps keeping competition objectives sufficiently clear and understandable for users. If also makes sound analysis results easier to obtain, due to the presence of only a few degrees of freedom. On the other hand, fixing parameter values has an important impact because it limits the applicability of the conclusions drawn as well as their generalization. In that respect, the conclusions drawn in the previous chapter all rely on an -- sometimes implicit -- assumption of an alphabet of 2 letters. While extrapolating results to larger alphabets appears natural, it must be done with care.
 
-Our use of the Abbadingo protocol was initially motivated by the necessity to compare our results with previous ones of grammatical inference. Unfortunately, restricting our attention to binary alphabets is arguable from a software engineering point of view, for two reasons. First because behavior models are often defined on 30 events or more. Second, and probably more important, because using binary alphabets has a strong influence on the class of automata considered. Therefore, one can certainly question the representativeness of synthetic machines and samples used in the previous chapter for mimicing behavior models. 
+Our use of the Abbadingo protocol was initially motivated by the necessity to compare our results with previous ones of grammatical inference. Unfortunately, restricting our attention to binary alphabets is arguable from a software engineering point of view, for two reasons. First because behavior models are often defined on 30 events or more. Second, and probably more important, because using binary alphabets has a strong influence on the class of automata considered. Therefore, one can certainly question the representativeness of synthetic machines and samples used in the previous chapter for capturing certain characteristics of behavior models. 
 
-This overal questioning of the influence of the alphabet size on induction performance motivated the Stamina competition (Stamina stands for \emph{State Machine Inference Approaches}) that we ran between march and december 2010 in collaboration with the universities of Sheffield and Leicester, and officially sponsored by the Engineering and Physical Sciences Research Council\footnote{http://www.epsrc.ac.uk/}. Its aim was to identify the best technique to infer state machines presenting characteristics of behavior models while focussing on the complexity of the learning with respect to the alphabet size. For this, Stamina extends Abbadingo -- with which it shares certain features -- but relies on adapted protocols for generating target machines and samples, among other differences. As presented later in this chapter, the competition helped identifying a new technique -- formally known as DFASAT -- for learning automata defined on large alphabets. The technique mixes SAT solving and state merging and, as an interresting side effect, identifies a new scoring heuristic that proved useful to tackle the learning task in presence of alphabets of more than two letters. The Stamina website\footnote{hosted at http://stamina.chefbe.net/} is still available and has been slightly updated to serve as an online benchmark and evaluation platform for model synthesis, instead of a formal competition.
+This overal questioning of the influence of the alphabet size on the synthesis performance motivated the Stamina competition (Stamina stands for \emph{State Machine Inference Approaches}) that we ran between march and december 2010 in collaboration with the universities of Sheffield and Leicester, and officially sponsored by the Engineering and Physical Sciences Research Council\footnote{http://www.epsrc.ac.uk/}. Its aim was to identify the best technique to infer state machines presenting characteristics of behavior models while focussing on the complexity of the learning with respect to the alphabet size, an aspect that has not been tackled in previous competitions or benchmarks. For this, Stamina extends Abbadingo -- with which it shares certain features -- but relies on adapted protocols for generating target machines and samples, among other differences. 
 
-This chapter presents this evaluation platform and the Stamina competition in more details. Section~\ref{section:stamina-background} provides background on the Abbadingo competition and discusses the weaknesses of its protocol when considering behavior models. The detailed setup of the Stamina competition is explained in section~\ref{section:stamina-setup}. The main results of the competition are then summarized in section~\ref{section:stamina-results}. Section~\ref{section:stamina-discussion} closes this chapter with a discussion about the competition and the online platform and summarizes future work.
+The winning algorithm DFASAT -- as well as a few additional competitors -- significally outperformed the baseline (Blue-fringe) on a variety of problems. This technique mixes SAT solving and state merging and uses a new scoring heuristic that proved useful to tackle the learning task in presence of alphabets of more than two letters. In addition to pushing forward the state of the art of the induction problem, the competition triggered interest from at least three communities, namely Machine Learning, Software Engineering and Formal Methods. The Stamina website\footnote{http://stamina.chefbe.net/} is still available and has been slightly updated to serve as an online benchmark and evaluation platform for model synthesis, instead of a formal competition.
+
+This chapter is organized as follows. Section~\ref{section:stamina-background} provides background on the Abbadingo competition and discusses the weaknesses of its protocol when considering behavior models. The detailed setup of the Stamina competition is explained in section~\ref{section:stamina-setup}. The main results of the competition are then summarized in section~\ref{section:stamina-results}, including a short description of the winning technique. Section~\ref{section:stamina-platform} closes this chapter with a description of the changes made to convert the competition server to an evaluation platform and summarizes future work along this direction.
 
 \section{From Abbadingo to Stamina\label{section:stamina-background}}
 
@@ -186,7 +188,7 @@ As in Abbadingo, hill-climbing is made impossible by the competition server only
 
 \section{Competition results\label{section:stamina-results}}
 
-The competition started in March 2010, the 31th of December being announced as an official deadline for submitting results. During these two dates, 1856 submissions were made by 11 challengers. Among these submissions, 61 reached a BCR score of at least 99\%, breaking 42 different problems in 10 different cells.
+The competition has been started on March 2010, the 31th of December being announced as an official deadline for submitting results. Between these two dates, 1856 submissions were made by 11 challengers. Among these submissions, 61 reached a BCR score of at least 99\%, breaking 42 different problems in 10 different cells.
 
 The competition hall of fame is shown in Fig.\ref{stamina:table:hall-of-fame}. The easiest cell (alphabet 2, sparsity 100\%) was quickly broken --~five days after the competition start~-- by Manuel V\'azquez de Parga Andrade with the Equipo algorithm (learning of automata teams, see~\cite{Garcia:2010}). This first result has been followed by an apparent lull in the competition. Some challengers were actually submitting at that time but without successfully breaking new problems and cells so that this activity was not directly visible on the competition website. A few weeks after, Marijn Heule and Sicco Verwer, with the DFASAT algorithm~\cite{Heule10}, started solving all cells of difficulty~1 in the left-most column. After a new small lull, they eventually broke the first cell of difficulty 2 (alphabet 50, sparsity 100\%) therefore taking the head of the competition. They eventually won the competition with an extra cell being broken (alphabet 50, sparsity 50\%), the only cell of difficulty~3 broken during the competition.
 
@@ -216,9 +218,19 @@ The winning algorithm, DFASAT, reuses the baseline algorithm but relies on addit
 
 \noindent \emph{Good start from Pierre, waiting to have read~\cite{Heule10} in details myself}
 
-\subsection{Trends on hardest cells}
+\subsection{Trends on hardest cells\label{subsection:stamina-trends-on-hardest-cells}}
 
-Table~\ref{stamina:table:hall-of-fame} only reveals competition activity according to its winning criteria, that is, to be the first to break the hardest cell, among those broken. Interresting hidden activity (so far) may be revealed and trends drawn if we turn to a different criteria for presenting the hall of fame. For this, consider the Table~\ref{stamina:table:hall-of-fame-2}. Here, instead of considering broken cells only, a given cell contains the name of the best participant together with her average cell score. To keep a fair comparison criteria, only participants that have submitted for all of the five cell problems are considered candidate. Also, only the best participant score for each problem is kept for computing the average score of the cell (another criteria could be the \emph{last} submission for each problem, see Section~\ref{section:stamina-discussion}). Last, only results above the baseline are considered. In other words, empty cells may be interpreted as being owned by the baseline itself. 
+Table~\ref{stamina:table:hall-of-fame} only reveals competition activity according to its winning criteria, that is, to be the first to break the hardest cell, among those broken. Interresting hidden activity (so far) may be revealed and trends drawn if we turn to a different criteria for presenting the hall of fame. For this, consider the Table~\ref{stamina:table:hall-of-fame-2}. Here, instead of considering broken cells only, we show for each cell the name of the best challenger together with her average cell score. To keep a fair comparison criteria by cell, only participants that have submitted for the five problems it contains are taken into account. Also, only the best participant score for each problem is kept for computing the average score of the cell (another criteria could be to keep the \emph{last} submission, see Section~\ref{section:stamina-platform} later). Last, only results above the baseline are taken into account. In other words, empty cells may be interpreted as being owned by the baseline itself. 
+
+Results in Table~\ref{stamina:table:hall-of-fame-2} have been compiled according to that criteria, from available data at competition termination. Two observations are straightforward: 
+
+\begin{itemize}
+
+\item First, the pbc algorithm (\emph{pcb} stands for \emph{pattern based classification}, a modification of the technique presented in~\cite{Lo:2009}) performs quite well on hardest problems in comparison with the baseline which obtains around 0.52 in average for the same cells (see Table~\ref{table:stamina-baseline} for baseline scores). 
+
+\item Second, DFASAT is near of breaking a cell of difficulty 4 (alphabet 50, sparsity 25\%), with an average score of 0.967. Interrestingly, the variance is small (the best score being 0.985 and the worse 0.929) which supports our claim. The other score obtained on this column (0.788 on alphabet 2, sparsity 25\%) tend to confirm the usefulness of DFASAT's scoring heuristic discussed in the previous section, since better results are obtained on large alphabets than on small ones (here also, strategic choices made by DFASAT might also partly explain this difference).
+
+\end{itemize}
 
 \begin{table}[H]
 \begin{center}
@@ -236,19 +248,40 @@ Table~\ref{stamina:table:hall-of-fame} only reveals competition activity accordi
 \caption{Hall of fame based on average scoring by cell, provided that the participant has submitted for all problems in the cell (\emph{br.} stands for \emph{broken}).\label{stamina:table:hall-of-fame-2}}
 \end{table}
 
-Results in Table~\ref{stamina:table:hall-of-fame-2} have been compiled according to that criteria, from available data at competition termination. Two main observations may be made from such a table: 
+The fact that only partial results are available do not allow fully drawing comparisons between scores obtained by the different approaches. For example, pbc did not submit on smallest alphabets while DFASAT did not submit on sparsest samples, as illustrated in Fig.~\ref{image:stamina-winners-performance-comparison} where their respective performance curves are plotted. Also, a few other techniques significantly outperformed the baseline on a variety of problems, but have not submitted for all problems of a given cell and are therefore not taken into account here. Even when restricting our attention to pbc and DFASAT however, the table shows that, while pbc performs well, it is very likely that DFASAT would outperform it on sparsest samples. Two observations support this claim. First, cells where both algorithms have submitted are credited to DFASAT (sparsity of 50\% on largest alphabets, for instance). Also, with a sparsity of 25\%, DFASAT already outperforms pbc in average on the two cells with smallest and largest alphabets. 
 
-\begin{itemize}
+\begin{figure}[ht]
+\centering\scalebox{.26}{
+  \includegraphics[trim=20mm 0mm 25mm 0mm, clip]{src/6-stamina/images/DFASAT-performance}
+  \includegraphics[trim=20mm 0mm 25mm 0mm, clip]{src/6-stamina/images/pbc-performance}}
+  \caption{Performance curves of DFASAT\label{image:stamina-winners-performance-comparison}.}
+\end{figure}
 
-\item First, the pbc algorithm (\emph{pcb} stands for \emph{pattern based classification} is a modification of the technique presented in~\cite{Lo:2009}) performs quite well on hardest problems in comparison with the baseline which obtains around 0.52 in average for the same cells (see Table~\ref{table:stamina-baseline} for baseline scores). 
-
-\item Second, DFASAT is near of breaking a cell of difficulty 4 (alphabet 50, sparsity 25\%), with an average score of 0.967. Interrestingly, the variance is small (the best score being 0.985 and the worse 0.929) which supports our claim. The other score obtained on this column (0.788 on alphabet 2, sparsity 25\%) tend to confirm the usefulness of DFASAT's scoring heuristic discussed in previous section. 
-
-\end{itemize}
-
-The fact that only partial results are available do not allow fully drawing comparisons between scores obtained by the two approaches (in short, pbc did not submit on smallest alphabets while DFASAT did not submit on sparsest samples), trends are quite clear.
+In any case, a quick comparison of curves from Fig.~\ref{image:stamina-winners-performance-comparison} with baseline curves given earlier in Fig.~\ref{stamina:image:bluefringe-performance} perfectly illustrates the overall contribution of the competition and of these two approaches in particular: on the kind of problems considered in Stamina, the state of the art in grammar induction has been pushed significantly forward.
 
 %%%%%%
 
-\section{Discussion\label{section:stamina-discussion}}
+\section{From Stamina to an evaluation platform\label{section:stamina-platform}}
 
+In the spirit of Abbadingo, the competition website is still available online and aims at becoming an online benchmark for evaluating novel induction techniques. To achieve this goal a few changes have already been made on the competition server:
+
+\begin{itemize}
+\item The average score obtained by Blue-fringe on each cell has been published in the documentation section of the website.
+\item The public hall of fame has been updated in a direction similar to what has been discussed in Section~\ref{subsection:stamina-trends-on-hardest-cells}. Indeed, instead of displaying the winners of broken cells only, each cell is annotated with the three best challengers in descending order of their average score for that cell (which is also given). 
+\item The oracle has not been modified and still gives a binary feedback only, to continue preventing hill-climbing. However, the private participant section has been updated in a similar way to the hall of fame. Now, the private submission grid displays the average score obtained on each of the cell for which she has submitted.
+\item In both cases -- public hall of fame and private section -- having submitted for the five problems of a cell is a necessary condition for results to be taken into account. Imposing such a criteria guarantees sound comparisons between participants. It is also a strong incentive to run a technique on all problems of a given difficulty, overcoming the problem of having only partial results available for analyses.
+\end{itemize}
+
+These choices have been made with a double objective in mind. The first one is to provide a more transparent feedback in the form of an exact scoring mechanism helping participants to self-evaluate, without being tempted to hijack the oracle (changes in the private section). The second one is to keep a competitive aspect to the platform, which counts in the motivation for using it (implemented by the new hall of fame). 
+
+Future work along a certain number of directions is worth considering, some of them being even required to use the plateform to evaluate the techniques of the present thesis:
+
+\begin{itemize}
+
+\item First, interactive inductive techniques (e.g. QSM) could hardly compete so far, due to the absence of an online oracle answering membership queries. While implementing such an oracle does not present particular difficulties (except, maybe, to guarantee scalability in presence of numerous demanding challengers), it would require generating fresh new problems to avoid interfering with the current grid and challengers already competing on it. 
+
+\item White box benchmarks -- where target machines would be disclosed together with samples -- could also be envisaged in order to help evaluating, on a common basis, inductive techniques involving domain information 'ala' fluents or mandatory merge constraints. Alternatively, sharing binaries for generating new target machines and samples could help reusing the Stamina protocol. 
+
+\item Last, the protocol used to generate samples (random walks from the machine, noisy perturbation to obtain negative strings and the presence of duplicates in the training set) is an interresting aspect of Stamina, that does not seem to have been used by participants. While it allows tackling the induction problem with statistical approaches, it also triggers questions about the splitting between training and test samples and the impact it could have on the observed frequency of use, in the training set, of each transition of the target. At the time of writing, further study of competition data is still required to answer the question.
+
+\end{itemize}
