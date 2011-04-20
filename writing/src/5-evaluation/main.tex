@@ -1,6 +1,51 @@
 \chapter{Evaluation\label{chapter:evaluation}}
 
-\section{Experimental results on case studies\label{section:evaluation-re}}
+This chapter evaluates the induction techniques discussed in Chapter~\ref{chapter:inductive-synthesis}. Section~\ref{section:evaluation-approach} presents the evaluation scope and approach while Section~\ref{section:evaluation-action} conducts the evaluation itself. Results obtained are discussed in Section~\ref{section:evaluation-discussion}, which also paves the way to the next chapter.
 
-\section{Experimental results on synthetic data}
+Note: This chapter revisits evaluations previously published in~\cite{Damas:2006}, \cite{Dupont:2008} and \cite{Lambeau:2008}. The reader familiar with that material will find here a unified overview of those evaluations, including important ``bug fixes'' as well as clarifications.
 
+\section{Approach\label{section:evaluation-approach}}
+
+At the risk of sounding burlesque, we start our approach with the definition of ``evaluation'', namely 
+
+\begin{quotation}Evaluation (Cambridge dictionary) -- \emph{the action of judging or calculating the quality, importance, amount or value of something}\end{quotation}
+
+This definition calls for making \emph{something} fully precise, that is to define an evaluation \emph{object}, and for deciding a precise set of evaluation \emph{measures}. The latter are either qualitative measures -- that are then judged -- or quantitative ones -- which are more often calculated. For ease of presentation, we discuss these evaluation measures first, under the simplifying assumption that the evaluation \emph{object} is a specific induction algorithm, say QSM. We then make the evaluation object fully precise.
+
+The evaluation of a given synthesis technique should answer -- or at least, provide the basis to answer -- qualitative questions: \emph{how well does it work in practice?}, \emph{is it easy to use?}, or \emph{fast enough for practical cases?} or even \emph{will it be a good choice in this particular situation?} Such questions being difficult to answer in absolute terms, quantitative measures help out. The ones considered here have been chosen because they have a clear impact on the performance and usability of a particular technique while being easy to measure in dedicated experiments:
+
+\begin{description}
+
+\item[Accuracy of the model] Loosely speaking, \emph{accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model one actually searches. In evaluation experiments, accuracy is easy to measure because this target model is known. Therefore, either a binary accuracy answer~--~the learned model is \emph{the same} as the known target or not~--~or on a more quantitative scale is used~--~ the learned model is then scored between 0.0 and 1.0 according to whether it is considered far or very close to the target model. In contrast, and unlike the two other measures considered below, accuracy is more difficult to evaluate on real cases because the target model is precisely unknown. In such case, human inspection of learned models is typically required to assess accuracy.
+
+\item[Number of queries] The number of queries submitted to the oracle is a key measure as it drives the usability and the feasibility of an interactive approach. It is certainly true when the oracle is a human being, who cannot answer thousands of queries without eventually making an error. However, handling a huge number of generated queries might also be a problem with automated oracles~--~an online oracle is generally slow, an other could be expensive, and so on. As will appear later, it also makes sense to distinguish between the number of queries answered positively and those answered negatively.
+
+\item[Induction time] Lastly, the time taken to infer a model also deserves special attention. Indeed, if a reasonable induction time is welcome in every case, real-time interactions are required for usability in presence of a human oracle.
+
+\end{description}
+
+The chosen measures being presented, let turn back to the question of \emph{what} is evaluated exactly. Instead of evaluating specific algorithms -- like QSM in~\cite{Dupont:2008} or MSM in~\cite{Lambeau:2008} -- we consider the four induction features discussed in Section~\ref{section:inductive-discussion} -- \emph{evidence-driven heuristic}, \emph{injection of domain knowledge}, \emph{membership queries} and \emph{control information} -- as evaluation objects \emph{per se}. In addition to stressing their independence once again, making so provides a resolutely forward-looking evaluation approach, where advantages and drawbacks of so far unexisting compositions can still be estimated.
+
+\begin{table}[h]
+\renewcommand{\arraystretch}{1.3}
+\begin{center}
+\begin{tabular}{| l || c | c | c |}
+\hline
+~~~~~~~~~~~~~~~~~~~~~~Measure & Accuracy &   Nb. of queries  & Induction time\\
+Feature                       &          &                   &               \\
+\hline
+\hline
+Evidence-driven heuristics    &          &                   &               \\
+Domain knowledge              &          &                   &               \\
+Membership Queries            &          & \cellcolor[gray]{0.7}        &               \\
+Control information           &          &                   &               \\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\end{table}
+
+
+\section{Experiments\label{section:evaluation-action}}
+
+\section{Discussion\label{section:evaluation-discussion}}
