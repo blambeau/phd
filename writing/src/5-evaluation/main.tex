@@ -1,51 +1,90 @@
 \chapter{Evaluation\label{chapter:evaluation}}
 
-This chapter evaluates the induction techniques discussed in Chapter~\ref{chapter:inductive-synthesis}. Section~\ref{section:evaluation-approach} presents the evaluation scope and approach while Section~\ref{section:evaluation-action} conducts the evaluation itself. Results obtained are discussed in Section~\ref{section:evaluation-discussion}, which also paves the way to the next chapter.
+This chapter aims at evaluating the inductive behavior model synthesis technique presented in the previous chapter. Section~\ref{chapter:evaluation-object} makes the evaluation \emph{object} and \emph{objectives} fully precise, by answering \emph{what} is to be evaluated exactly and \emph{why} it is evaluated. The evaluation approach is then presented in Section~\ref{section:evaluation-approach}. The evaluation experiments are then described in Section~\ref{section:evaluation-experiments}. Results are discussed in Section~\ref{section:evaluation-discussion} which closes this chapter and paves the way to the next one.
 
 Note: This chapter revisits evaluations previously published in~\cite{Damas:2006}, \cite{Dupont:2008} and \cite{Lambeau:2008}. The reader familiar with that material will find here a unified overview of those evaluations, including important ``bug fixes'' as well as clarifications.
 
+\section{Object and Objectives\label{chapter:evaluation-object}}
+
+Let start discussing the objectives of this evaluation first. Our main aim is to answer --~or at least, to set the basis for answering~-- qualitative questions about the inductive behavior model synthesis technique presented in the previous chapter: \emph{how well does it work in practice?}, \emph{is it easy to use?}, or \emph{fast enough for practical cases?} or even \emph{would it be a good choice in this particular situation, or for solving this particular problem?}
+
+Stated as such, however, those questions are difficult to answer in absolute terms. The main reason is that there is no such one \emph{inductive behavior model synthesis technique} but, as discussed in Section~\ref{section:inductive-discussion}, rather a general inductive approach on top of which a set of specific features can be additionally plugged: a scoring heuristic for choosing state pairs to merge, an oracle answering membership queries, the injection of domain knowledge and/or control information, and so on. Also, each of these features has a specific impact on the induction in terms of accuracy, usability, time, cost, etc. The pertinence and need for satisfying such requirements vary from situation to situation. Therefore, because the questions mentioned earlier hide non-functional requirements of this kind, trying to answer them by considering inductive synthesis as a whole would certainly fail. In other words, even if one algorithm -- say \emph{X}SM -- existed that would allow using these features altogether, it would not necessarily fit one's need, so that it could hardly be evaluated here as being \emph{the best, ever}.
+
+For this reason, we take a different evaluation approach by considering a finer-grained analysis: considering induction features in isolation, we set our evaluation goal to the discovery -- more precisely an assessment illustrated by experiments -- of positive or negative contribution links between induction features and non-functional requirements. Table ~\ref{table:evaluation-contribution-links} -- already populated with known and/or expected contribution links -- illustrates this kind of correlation between our four induction features (from Section~\ref{section:inductive-discussion}) and the following non-functional requirements (following the taxonomy of \cite{VanLamsweerde:2009}):
+
+\begin{description}
+\item[Accuracy] How well does the feature help reaching ``good'' behavior models~--~in the \emph{expert judgment} sense introduced earlier. As one generally would like reaching \emph{high} accuracy, a positive contribution link captures the fact that, given the same initial set of scenarios, behavior models will be more accurate with the feature plugged than without it. 
+\item[Usability] Does the feature makes the induction approach easier (positive contribution link) or harder (negative contribution link) to use by users?
+\item[Cost] Cost here captures the effort -- in terms of user involvement, availability and/or difficulty of providing specific knowledge, and so on -- required to fulfill expectations (if not pre-condition) -- of the induction technique to work as well as expected. As \emph{low} cost being often desirable, a positive (resp. negative) contribution link captures the fact that the feature diminishes (resp. augments) the cost of the technique.
+\item[Time] With computer science, \emph{the faster the better} is generally a credo. A positive (resp. negative) contribution, therefore, indicates that an induction feature helps achieving a faster (resp.slower) technique.
+\end{description}
+
+Table~\ref{table:evaluation-contribution-links} is intended to be used by ``reading rows''. For example, the third line may be read as follows:
+
+\begin{quote}\emph{Using \underline{membership queries} helps reaching a better model \underline{accuracy} at the \underline{cost} of finding an oracle able to answer them; \underline{usability} is a bit hurt as the approach is sensitive to classification error, which might be a problem with human oracles.}\end{quote}
+
+\begin{table}[h]
+\renewcommand{\arraystretch}{1.3}
+\begin{center}
+\begin{tabular}{| l || c | c | c | c |}
+\hline
+~~~~~~~~~~N-F Requirement & Accuracy &   Usability    &    Cost    & Time   \\
+Feature                   &  (high)  &     (high)     &    (low)   & (fast) \\
+\hline
+\hline
+Evidence-driven merging   &    +     &                &            &   --   \\
+Domain knowledge          &    +     &                &     --     &   +    \\
+Membership Queries        &    +     &       --       &     --     &        \\
+Control information       &    +     &                &     --     &   +    \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Contribution links between induction features and non-functional requirements.\label{table:evaluation-contribution-links}}
+\end{table}
+
+In contrast, ``reading columns'' confirms expected effects: reaching very high accuracy means using all available features, and has a high cost. Such findings may appear clich\'e at first glance -- pruning techniques have been precisely introduced to gain better accuracy, at a cost. However, this approach can be refined in many ways. Columns can be completed (e.g. adding a \emph{Convenience} requirement) or refined (e.g. splitting \emph{Cost} in categories), and so are the rows (e.g. adding \emph{Equivalence queries}, or splitting \emph{Domain knowledge} in \emph{Fluent knowledge} and \emph{Goal knowledge}). Moreover, this qualitative evaluation approach via non-functional requirements may easily be assessed and/or complemented by a more quantitative approach. This naturally leads us to discussing our evaluation approach in terms of more concrete measures.
+
 \section{Approach\label{section:evaluation-approach}}
 
-At the risk of sounding burlesque, we start our approach with the definition of ``evaluation'', namely 
+\subsection*{Evaluation measures}
 
-\begin{quotation}Evaluation (Cambridge dictionary) -- \emph{the action of judging or calculating the quality, importance, amount or value of something}\end{quotation}
-
-This definition calls for making \emph{something} fully precise, that is to define an evaluation \emph{object}, and for deciding a precise set of evaluation \emph{measures}. The latter are either qualitative measures -- that are then judged -- or quantitative ones -- which are more often calculated. For ease of presentation, we discuss these evaluation measures first, under the simplifying assumption that the evaluation \emph{object} is a specific induction algorithm, say QSM. We then make the evaluation object fully precise.
-
-The evaluation of a given synthesis technique should answer -- or at least, provide the basis to answer -- qualitative questions: \emph{how well does it work in practice?}, \emph{is it easy to use?}, or \emph{fast enough for practical cases?} or even \emph{will it be a good choice in this particular situation?} Such questions being difficult to answer in absolute terms, quantitative measures help out. The ones considered here have been chosen because they have a clear impact on the performance and usability of a particular technique while being easy to measure in dedicated experiments:
+The experiments described later have all been conducted to collect three measures that have a clear impact on the non-functional requirements discussed earlier: a concrete measure of model accuracy, the number of scenario queries and the induction time. We discuss each of them in turn:
 
 \begin{description}
 
-\item[Accuracy of the model] Loosely speaking, \emph{accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model one actually searches. In evaluation experiments, accuracy is easy to measure because this target model is known. Therefore, either a binary accuracy answer~--~the learned model is \emph{the same} as the known target or not~--~or on a more quantitative scale is used~--~ the learned model is then scored between 0.0 and 1.0 according to whether it is considered far or very close to the target model. In contrast, and unlike the two other measures considered below, accuracy is more difficult to evaluate on real cases because the target model is precisely unknown. In such case, human inspection of learned models is typically required to assess accuracy.
+\item[Model accuracy] Loosely speaking, \emph{model accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model one actually searches. In other words, it is a translation, in terms of concrete model artifacts, of the accuracy requirement discussed earlier. Model accuracy is easy to measure in experiments because the target model is known. We will use sometimes a binary accuracy measure~--~the learned model is \emph{the same} as the known target, or not~--~ and sometimes a more precise measure. In this latter case, the learned model is scored between 0.0 and 1.0 according to whether it is considered far or very close to the target model. Accuracy is harder to evaluate on real cases, when the target model is unknown. In such case, human inspection of learned models is typically required to assess accuracy.
 
-\item[Number of queries] The number of queries submitted to the oracle is a key measure as it drives the usability and the feasibility of an interactive approach. It is certainly true when the oracle is a human being, who cannot answer thousands of queries without eventually making an error. However, handling a huge number of generated queries might also be a problem with automated oracles~--~an online oracle is generally slow, an other could be expensive, and so on. As will appear later, it also makes sense to distinguish between the number of queries answered positively and those answered negatively.
+\item[Number of queries] The number of queries submitted to the oracle is a key measure as it drives the usability -- even the feasibility -- of an interactive approach. It is certainly true when the oracle is a human being, who cannot answer thousands of queries without eventually making an error. However, handling a huge number of generated queries might also be a problem with automated oracles~--~an online oracle is generally slow, an other could be expensive, and so on. As will appear later, it also makes sense to distinguish between the number of queries answered positively and those answered negatively.
 
 \item[Induction time] Lastly, the time taken to infer a model also deserves special attention. Indeed, if a reasonable induction time is welcome in every case, real-time interactions are required for usability in presence of a human oracle.
 
 \end{description}
 
-The chosen measures being presented, let turn back to the question of \emph{what} is evaluated exactly. Instead of evaluating specific algorithms -- like QSM in~\cite{Dupont:2008} or MSM in~\cite{Lambeau:2008} -- we consider the four induction features discussed in Section~\ref{section:inductive-discussion} -- \emph{evidence-driven heuristic}, \emph{injection of domain knowledge}, \emph{membership queries} and \emph{control information} -- as evaluation objects \emph{per se}. In addition to stressing their independence once again, making so provides a resolutely forward-looking evaluation approach, where advantages and drawbacks of so far unexisting compositions can still be estimated.
+The links between these concrete measures and the satisfaction of non-functional requirements of the previous section are straightforward. Claims in Table~\ref{table:evaluation-contribution-links} are therefore easy to verify and/or criticize provided that experiments provide measurement that are precise enough. 
 
-\begin{table}[h]
-\renewcommand{\arraystretch}{1.3}
-\begin{center}
-\begin{tabular}{| l || c | c | c |}
-\hline
-~~~~~~~~~~~~~~~~~~~~~~Measure & Accuracy &   Nb. of queries  & Induction time\\
-Feature                       &          &                   &               \\
-\hline
-\hline
-Evidence-driven heuristics    &          &                   &               \\
-Domain knowledge              &          &                   &               \\
-Membership Queries            &          & \cellcolor[gray]{0.7}        &               \\
-Control information           &          &                   &               \\
-\hline
-\end{tabular}
-\end{center}
-\caption{}
-\end{table}
+\subsection*{System of reference}
 
 
-\section{Experiments\label{section:evaluation-action}}
+%\begin{table}[h]
+%\renewcommand{\arraystretch}{1.3}
+%\begin{center}
+%\begin{tabular}{| l || c | c | c |}
+%\hline
+%~~~~~~~~~~~~~~~~~~~~~~Measure & Accuracy &   Nb. of queries  & Induction time\\
+%Feature                       &          &                   &               \\
+%\hline
+%\hline
+%Evidence-driven heuristics    &          &                   &               \\
+%Domain knowledge              &          &                   &               \\
+%Membership Queries            &          & \cellcolor[gray]{0.7}        &               \\
+%Control information           &          &                   &               \\
+%\hline
+%\end{tabular}
+%\end{center}
+%\caption{}
+%\end{table}
+
+
+\section{Experiments\label{section:evaluation-experiments}}
 
 \section{Discussion\label{section:evaluation-discussion}}
