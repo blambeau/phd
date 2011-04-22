@@ -1,0 +1,11 @@
+task :default => :images
+
+task :images do
+  Dir[File.expand_path('../*.gnuplot', __FILE__)].each do |file|
+    basename = File.basename(file, '.gnuplot')
+    puts `gnuplot #{file}`
+  end
+  Dir[File.expand_path('../*.eps', __FILE__)].each do |file|
+    puts `ps2pdf #{file}`
+  end
+end
