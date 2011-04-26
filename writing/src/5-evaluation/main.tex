@@ -1,6 +1,6 @@
 \chapter{Evaluation\label{chapter:evaluation}}
 
-This chapter aims at evaluating the inductive behavior model synthesis technique presented in the previous chapter. Section~\ref{chapter:evaluation-object} makes the evaluation \emph{object} and \emph{objectives} fully precise, by answering \emph{what} is to be evaluated exactly and \emph{why} it is evaluated. The evaluation approach is then presented in Section~\ref{section:evaluation-approach}. Evaluation experiments are described in Section~\ref{section:evaluation-experiments} and results discussed in Section~\ref{section:evaluation-discussion}, which closes this chapter and paves the way to the next one.
+This chapter evaluates the inductive behavior model synthesis technique presented in the previous chapter. Section~\ref{chapter:evaluation-object} makes the evaluation \emph{object} and \emph{objectives} fully precise, by answering \emph{what} is to be evaluated exactly and \emph{why} it is evaluated. The evaluation approach is then presented in Section~\ref{section:evaluation-approach}. Evaluation experiments are described in Section~\ref{section:evaluation-experiments} and results discussed in Section~\ref{section:evaluation-discussion}, which closes this chapter and paves the way to the next one.
 
 Note: This chapter revisits evaluations previously published in~\cite{Damas:2006}, \cite{Dupont:2008} and \cite{Lambeau:2008}. The reader familiar with that material will find here a unified overview of those evaluations, including important ``bug fixes'' as well as clarifications.
 
@@ -10,13 +10,13 @@ Let us discussing the objectives of this evaluation first. Our main aim is to an
 
 Stated as such, however, those questions are difficult to answer in absolute terms. The main reason is that there is no such one \emph{inductive behavior model synthesis technique} but, as discussed in Section~\ref{section:inductive-discussion}, rather a general inductive approach on top of which a set of specific features can be additionally plugged: a scoring heuristic for choosing state pairs to merge, an oracle answering membership queries, the injection of domain knowledge and/or control information, and so on. Also, each of these features has a specific impact on the induction approach in terms of accuracy, usability, time, cost, etc. The questions aforementioned actually hide non-functional requirements of this kind, whose need of fulfillment varies from project to project. Therefore, considering inductive synthesis as a whole for answering these questions would certainly fail. In other words, even if one algorithm -- say \emph{X}SM -- existed that would bundle these features altogether, it would not necessarily fit one's need.
 
-For this reason, we take a different evaluation approach and consider a finer-grained analysis: considering induction features in isolation, we set our evaluation goal to the discovery -- more precisely an assessment illustrated by experiments -- of positive or negative contribution links between induction features and non-functional requirements. Table ~\ref{table:evaluation-contribution-links} -- already populated with known and/or expected contribution links -- illustrates this kind of correlation between our four induction features (from Section~\ref{section:inductive-discussion}) and the following non-functional requirements (following the taxonomy of \cite{VanLamsweerde:2009}):
+For this reason, we take a different approach to the one of evaluating specifical algorithms like QSM or MSM and consider a finer-grained analysis: considering induction features in isolation, we set our evaluation goal to the discovery -- more precisely an assessment illustrated by experiments -- of positive or negative contribution links between induction features and non-functional requirements. Table ~\ref{table:evaluation-contribution-links} -- already populated with known and/or expected contribution links -- illustrates this kind of correlation between our four induction features (from Section~\ref{section:inductive-discussion}) and the following non-functional requirements (following the taxonomy of \cite{VanLamsweerde:2009}):
 
 \begin{description}
 
 \item[Accuracy] How well does the feature help reaching ``good'' behavior models~--~in the \emph{expert judgment} meaning introduced earlier. As one generally would like reaching \emph{high} accuracy, a positive contribution link captures the fact that, given the same initial set of scenarios, behavior models will be more accurate with the feature plugged than without it. 
 
-\item[Usability] Does the feature makes the induction approach easier (positive contribution link) or harder (negative contribution link) to use by users?
+\item[Usability] Does the feature make the induction approach easier (positive contribution link) or harder (negative contribution link) to use?
 
 \item[Cost] Cost here captures the effort required to fulfill the expectations of the induction technique, in terms of user involvement, availability and/or difficulty of providing specific knowledge, and so on. As \emph{low} cost being often desirable, a positive (resp. negative) contribution link captures the fact that the feature diminishes (resp. increases) the cost of the technique.
 
@@ -73,51 +73,95 @@ The experiments described later have all been conducted to collect three measure
 
 \item[Number of queries] The number of queries submitted to the oracle is a key measure as it drives the usability -- even the feasibility -- of an interactive approach. It is certainly true when the oracle is a human being, who cannot answer thousands of queries without eventually falling asleep, getting mad, or making an error. However, handling a huge number of generated queries might also be a problem with automated oracles. Indeed, an online oracle is often slow, an other could be expensive, and so on.
 
-\item[Induction time] Last, the time taken to infer a model also deserves special attention. Indeed, while a reasonable induction time is welcome in every case, real-time interactions are required for usability in presence of a human oracle, very fast induction could be needed if used inside self-adapting systems, and so on.
+\item[Induction time] Last, the time taken to infer a model also deserves special attention. While a reasonable induction time is welcome in every case, real-time interactions are required for usability in presence of a human oracle.
 
 \end{description}
 
-The links between these concrete measures and the satisfaction of non-functional requirements of the previous section are straightforward. Claims in Table~\ref{table:evaluation-contribution-links} are therefore easy to verify criticize, and/or refine provided that experiments provide measurements that are precise enough. However, our table actually captures contribution trends of an induction feature, not in absolute terms, but in comparison to a situation ``without it''. To conduct comparisons of that kind, therefore, we need to set a system of reference of some form. This notion is explained in the next section. 
+The links between these concrete measures and the satisfaction of non-functional requirements of the previous section are straightforward. Claims in Table~\ref{table:evaluation-contribution-links} are therefore easy to verify criticize, and/or refine provided that experiments provide measurements that are precise enough. However, our table actually captures contribution trends of an induction feature, not in absolute terms, but in comparison to a situation ``without it''. To conduct comparisons of that kind, therefore, we need to set a ``system of reference''. This notion is explained in the next section. 
 
 \subsection{System of reference}
 
-A unified and systematic set of experiments could be set up for populating a co-relation table between induction features and the concrete measures introduced in the previous section. For practical reasons, however, we simply revisit previously published ones~--~in~\cite{Damas:2006}, \cite{Dupont:2008} and \cite{Lambeau:2008}~--~in the light of the chapter objectives described earlier. Two kinds of evaluations can be found in these publications: those conducted on case-studies and those conducted on synthetic data. The system of reference and how comparisons are made in each case is described below.
+A unified and systematic set of experiments could be set up for populating a co-relation table between induction features and the concrete measures introduced in the previous section. For practical reasons, however, we simply revisit previously published ones~--~in~\cite{Damas:2006}, \cite{Dupont:2008} and \cite{Lambeau:2008}~--~in the light of the chapter objectives described earlier. Two kinds of evaluations can be found in these publications: those conducted on case-studies and those conducted on synthetic data. The system of reference and how comparisons are made slightly differ in each case.
 
 \subsubsection*{Case studies}
 
 In the first kind of evaluations, inductive synthesis of behavior models is evaluated \emph{in situ}, that is, on case studies of the software engineering literature and with the help of the ISIS tool (\emph{Interactive State-Machine Induction from Scenarios}), dedicated to behavior model synthesis in a multi-view environment (see Chapter~\ref{chapter:tool-support}). In this evaluation setup, a (say) complete multi-model specification -- that is, scenarios, state machines, fluents and goals -- is first build iteratively using the tool, that helps completing an initial scenario collection, discovering goals and synthesizing agent state machines. This iterative process -- that provides key observations for evaluating multi-view model synthesis -- is described in more details in Chapter~\ref{chapter:tool-support}. 
 
-Sticking to inductive synthesis in particular here, the specification obtained provides a target behavior model to induce, namely the composition of agent LTS (system LTS).  Behavior induction can then be ran on different setups: with RPNI or Blue-fringe, with or without fluents, and so on. Comparing the results allows evaluating inductive features~--~in isolation or in interaction~--~in terms of model accuracy (a binary measure, according to whether learned and target LTS are trace equivalent), number of scenario questions and induction time.
+Sticking to inductive synthesis in particular here, the specification obtained provides a target behavior model to induce, namely the composition of agent LTS (system LTS).  Behavior induction can then be ran on different setups: with RPNI or Blue-fringe, with or without fluents, and so on. Comparing the results allows evaluating inductive features~--~in isolation or in interaction~--~in terms of model accuracy (a binary measure, according to whether learned and target LTS are trace equivalent or not), number of scenario questions and induction time.
 
 \subsubsection*{Synthetic data}
 
-By nature, quantitative evaluation on case-studies is limited. Finding numerous case-studies is difficult, having big ones implies a lot of preliminary work, and making typical parameters vary in a controlled way (the size of the target LTS, or number of scenarios for instance) to ensure evaluation coverage is almost impossible. For this reason, generating random cases complement the evaluation approach on case-studies. In that respect, experiments on synthetic data help stating general trends of inductive features with respect to those parameters, which can be easily made varying in a pre-defined way.
+By nature, quantitative evaluation on case-studies is limited. Indeed, finding numerous case-studies is difficult and having large ones implies a lot of preliminary work. Also, making typical parameters vary in a controlled way (the size of the target LTS, or number of scenarios for instance) while guaranteeing evaluation coverage is almost impossible. For all these reasons, generating random cases complement the evaluation approach on case-studies. In that respect, experiments on synthetic data help stating general trends of inductive features with respect to those parameters, which can be easily made varying in a pre-defined way.
 
 The rough idea of evaluating an induction technique with synthetic data proceeds as follows. First generate a random automaton of predefined size -- a first varying parameter -- that mimics the target system LTS. Scenario collections are mimic-ed by generating sets of strings over the same alphabet, which are classified as positive or negative by the automaton and called \emph{training sets}. The number of strings available for the induction captures the ``richness'' of such a collection (second parameter). A common way to obtain a varying scale along this parameter is to sample a very rich training set in different proportions. Different induction setups can then be compared by running them on the same training set and reporting measures. While the induction time and the number of queries are straightforward to measure, accuracy requires special attention. For measuring it in this kind of setup, we use a second set of strings, disjoint from the training one, and called the \emph{test set}. The accuracy is then defined as the proportion of test strings correctly labeled by the learned automaton, the labeling by the target automaton being used as reference, or ``correct answer''. 
 
-All experiments on synthetic data rely on such a protocol, and almost follow the specific one used during the Abbadingo contest~\cite{Lang:1998}. Abbadingo has been chosen because it provides a recognized benchmark for evaluating grammar induction techniques on synthetic data. Its detailed procedures for generating automata, training and test samples can be found in the next chapter (see Section~\ref{section:stamina-background}) which precisely revisits its choice in the context of behavior model synthesis. This is mainly because Abbadingo only focuses on alphabets of two letters -- and so are synthetic experiments described here -- a limitation which is worth overcoming in the future. For now, we stick to this first introduction. Required details and departures from the protocol are presented in introduction of the different experiments, when needed for the understanding.
+\emph{Aside} -- All experiments on synthetic data reported here rely on the protocol designed for the Abbadingo contest~\cite{Lang:1998}. Abbadingo has been chosen because it provides a recognized benchmark for evaluating grammar induction techniques, allowing us to compare our results with the state of the art in grammar induction. While not necessarily required to understand evaluations here, Abbadingo's procedures for generating automata, training and test samples are described in the next chapter (see Section~\ref{section:stamina-background}) where we revisit our choice of using it. We do it mainly done because Abbadingo focuses on alphabets of two letters only -- and so are synthetic experiments described here -- a limitation which is worth overcoming in the future. Details required for understanding as well as departures from the protocol are presented in introduction of the different experiments.~--~\emph{End of aside}
 
-Throughout this chapter (and the next one), we use an unified graphical way for comparing results of different induction setups and/or induction techniques. The idea to report a given measure in ordinate, say accuracy, for increasing sizes of the learning sample in abscissa. Plotting different curves for different setups allows an easy comparison of their results on similar inputs. Within the same experiment, results obtained for different automaton sizes -- the only varying parameter remaining -- will be reported on different plots.
-
-%\begin{table}[h]
-%\renewcommand{\arraystretch}{1.3}
-%\begin{center}
-%\begin{tabular}{| l || c | c | c |}
-%\hline
-%~~~~~~~~~~~~~~~~~~~~~~Measure & Accuracy &   Nb. of queries      & Induction time \\
-%Feature                       &          &                       &                \\
-%\hline
-%\hline
-%Evidence-driven heuristics    &          &                       &                \\
-%Domain knowledge              &          &                       &                \\
-%Membership Queries            &          & \cellcolor[gray]{0.7} &                \\
-%Control information           &          &                       &                \\
-%\hline
-%\end{tabular}
-%\end{center}
-%\caption{}
-%\end{table}
+Based on such an evaluation procedure, comparisons between different induction setups and/or techniques are somewhat straightforward. Throughout this chapter (and the next one), we use an unified graphical way for presenting them. The idea is to report a given measure in ordinate, say accuracy, for increasing sizes of the learning sample in abscissa. Plotting different curves for different setups allows an easy comparison of their results on similar inputs. Within the same experiment, results obtained for different automaton sizes -- the only varying parameter remaining -- will be reported on different plots (see Fig.\ref{image:evaluation-edsm-accuracy} and Fig.\ref{image:evaluation-edsm-time} for examples). This graphical convention and its advantages will be described on the first experiment.
 
 \section{Experiments\label{section:evaluation-experiments}}
+
+\begin{table}[h]
+\renewcommand{\arraystretch}{1.3}
+\begin{center}
+\begin{tabular}{| l || c | c | c |}
+\hline
+~~~~~~~~~~~~~~~~~~~~~~Measure & Accuracy &   \# Queries          &      Time      \\
+Feature                       &          &                       &                \\
+\hline
+\hline
+Evidence-driven heuristics    &          &                       &                \\
+Domain knowledge              &          &                       &                \\
+Membership Queries            &          & \cellcolor[gray]{0.7} &                \\
+Control information           &          &                       &                \\
+\hline
+\end{tabular}
+\end{center}
+\caption{}
+\end{table}
+
+\subsection{Evidence-driven merging}
+
+As an example -- and first experiment -- consider plots in Fig.~\ref{image:evaluation-edsm-accuracy}, where the accuracy obtained by RPNI and Blue-fringe is reported for increasing sizes of the learning sample. The experiment is ran on random automata of 50 (on left) and 100 states (on right). The perfomance curves illustrate a profile in three phases, which is typical of an induction algorithm: when ran on a sparse sample the accuracy is rather low (around 0.65 here) and starts increasing fairly straightforward when the input becomes richer. The curve then flattens on richer samples, typically reaching an accuracy measure between 0.9 and 1.0. 
+
+The position of the different curves allows comparing the respective performance of the induction algorithms. Here the experiment confirms an expected result, namely that Blue-fringe outperforms RPNI. Indeed, the Blue-fringe curve is on the left of RPNI, which can be read in two ways: \emph{for a same sample sparsity, say 50\%, Blue-fringe obtains a better accuracy than RPNI}; or, \emph{for reaching a given accuracy level, say 0.9, Blue-fringe needs a sparser sample than RPNI}.
+
+Performance curves of this kind are frequently used in the sequel for comparing the accuracy of different techniques (the left-most curve being often considered as the ``best'' technique). Similar plots are also made with a different measure in ordinate (number of questions or induction time). Such plots allow comparing different techniques on a different basis than accuracy, but in a similar way. Moreover, by transitivity, results on other measures can be interpreted in the light of the induction profile and the typical induction phases.
+
+\begin{figure}[H]
+\centering
+\scalebox{.20}{
+  \includegraphics[trim=5mm 20mm 55mm 0mm, clip]{src/5-evaluation/images/edsm-acc-20}
+  \includegraphics[trim=40mm 20mm 55mm 0mm, clip]{src/5-evaluation/images/edsm-acc-50}
+  \includegraphics[trim=40mm 20mm 55mm 0mm, clip]{src/5-evaluation/images/edsm-acc-100}
+}
+\scalebox{.20}{
+  \includegraphics[trim=5mm 20mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-time-20}
+  \includegraphics[trim=40mm 20mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-time-50}
+  \includegraphics[trim=40mm 20mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-time-100}
+}
+\scalebox{.20}{
+  \includegraphics[trim=5mm 20mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-pos-queries-20}
+  \includegraphics[trim=40mm 20mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-pos-queries-50}
+  \includegraphics[trim=40mm 20mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-pos-queries-100}
+}
+\scalebox{.20}{
+  \includegraphics[trim=5mm 0mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-neg-queries-20}
+  \includegraphics[trim=40mm 0mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-neg-queries-50}
+  \includegraphics[trim=40mm 0mm 55mm 20mm, clip]{src/5-evaluation/images/edsm-neg-queries-100}
+}
+  \caption{Comparing the accuracy of RPNI and Blue-fringe with performance curves\label{image:evaluation-edsm-accuracy}.}
+\end{figure}
+
+%\begin{figure}[H]
+%\centering
+%\scalebox{.24}{
+%  \includegraphics[trim=45mm 10mm 63mm 10mm, clip]{src/5-evaluation/images/rpni-bluefringe-time-20}
+%  \includegraphics[trim=65mm 10mm 63mm 10mm, clip]{src/5-evaluation/images/rpni-bluefringe-time-50}
+%  \includegraphics[trim=65mm 10mm 63mm 10mm, clip]{src/5-evaluation/images/rpni-bluefringe-time-100}
+%}
+%  \caption{Comparing the accuracy of RPNI and Blue-fringe with performance curves\label{image:evaluation-edsm-time}.}
+%\end{figure}
+
 
 \section{Discussion\label{section:evaluation-discussion}}
