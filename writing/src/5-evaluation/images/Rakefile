@@ -6,6 +6,6 @@ task :images do
     puts `gnuplot #{file}`
   end
   Dir[File.expand_path('../*.eps', __FILE__)].each do |file|
-    puts `ps2pdf #{file}`
+    puts `ps2pdf #{file} && rm #{file}`
   end
 end
