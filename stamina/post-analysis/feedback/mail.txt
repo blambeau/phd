@@ -1,0 +1,20 @@
+Subject: Feedback about the Stamina competition 
+Mail: +{mail}
+
+Dear Stamina Participant,
+
+As you certainly know the StaMinA competition (http://stamina.chefbe.net) is now over. We are currently in the process of analyzing and documenting competition data and results. A detailed review, together with a paper about the DFASAT winner algorithm, will be submitted to a special issue of the Journal of Empirical Software Engineering (http://www.springer.com/computer/swe/journal/10664).
+
+In attachement you'll find the best score you've reached on each problem with your *+{algorithm}* algorithm. Attached plots allow you to compare your score with the Blue-Fringe baseline. We encourage you to complete your online submission grid (the oracle is still available), especially if your algorithm performs significantly better than the baseline. See README.txt for details.
+
+In order to prepare the special issue, we also would like to collect feedback from participants. Can I kindly ask you to take a few minutes to help us in this task? We are especially interrested in collecting
+
+* Summaries about used approaches, and/or references to related publications, ...
+* Comments about your participation, the competition protocol, ...
+* Whishes/ideas about a competition outcome, second phase?, ...
+* Whishes/ideas about the oracle & online data: should we convert the oracle to an exact scoring one?, disclose the target machines and test samples?, give access to your complete submission data? ...
+* Any other comment or idea
+
+Thanks for your participation and feedback!
+The Stamina Organizers
+

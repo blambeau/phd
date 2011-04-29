@@ -1,0 +1,146 @@
+--- 
+logical: 
+  analysis_all_challengers:
+    SELECT challengers.algorithm,
+           challengers.creation_time,
+           people.id as people, 
+           people.mail, 
+           people.first_name, 
+           people.last_name,
+           (SELECT count(*) FROM submissions
+             WHERE people = people.id and algorithm = challengers.algorithm) as submission_count
+      FROM challengers
+      JOIN people on challengers.people = people.id
+     ORDER BY challengers.creation_time
+  analysis_challengers:
+    SELECT challengers.algorithm,
+           challengers.creation_time,
+           people.id as people, 
+           people.mail, 
+           people.first_name, 
+           people.last_name
+      FROM challengers
+      JOIN people on challengers.people = people.id
+     WHERE EXISTS (SELECT * 
+                     FROM submissions 
+                    WHERE people    = challengers.people 
+                      AND algorithm = challengers.algorithm)
+  analysis_submissions:
+    SELECT submissions.people as people,
+           submissions.algorithm,
+           submissions.problem, 
+           problems.alphabet_size,
+           case when problems.sample_sparsity = '100%' then cast(1.0 as float)
+                when problems.sample_sparsity = '50%'  then cast(0.5  as float)
+                when problems.sample_sparsity = '25%'  then cast(0.25 as float)
+                when problems.sample_sparsity = '12.5%'  then cast(0.125 as float)
+           end as sample_sparsity,
+           problems.sample_sparsity as sparsity_label,
+           submissions.submission_time,
+           date(submissions.submission_time) as submission_date,
+           submissions.score, 
+           submissions.true_positive,
+           submissions.false_positive,
+           submissions.true_negative,
+           submissions.false_negative,
+           submissions.precision,
+           submissions.recall,
+           submissions.sensitivity,
+           submissions.specificity,
+           submissions.accuracy,
+           submissions.error_rate,
+           submissions.balanced_classification_rate,
+           submissions.balanced_error_rate,
+           submissions.f_measure,
+           submissions.harmonic_bcr,
+           submissions.positive_likelihood,
+           submissions.negative_likelihood
+      FROM submissions 
+      JOIN problems on submissions.problem = problems.id
+  analysis_best_submissions:
+    SELECT *
+      FROM analysis_submissions AS s1
+     WHERE score >= 0.0
+       AND NOT EXISTS (
+       SELECT * FROM analysis_submissions AS s2
+        WHERE s2.people = s1.people
+          AND s2.algorithm = s1.algorithm
+          AND s2.problem = s1.problem
+          AND ((s2.score > s1.score) or (s2.score = s1.score and s2.submission_time > s1.submission_time)))
+  analysis_by_problem:
+    SELECT
+      problem,
+      algorithm, 
+      alphabet_size, 
+      sample_sparsity,
+      sensitivity,
+      specificity,
+      score,
+      (SELECT score
+         FROM submissions
+        WHERE problem = s.problem
+          AND algorithm = 'redblue') as baseline_score,
+      (SELECT count(*) 
+         FROM analysis_best_submissions
+        WHERE problem = s.problem
+          AND score   > s.score) as ranking,
+      case when score >= (SELECT score FROM submissions WHERE problem = s.problem AND algorithm = 'redblue') then 1
+           else 0
+       end as progress,
+      case when score >= 0.99 then 1 
+           else 0 
+       end as broken
+      FROM analysis_best_submissions AS s
+      ORDER BY problem, ranking
+  analysis_regroupby_cell:
+    SELECT algorithm,
+           alphabet_size,
+           sample_sparsity,
+           avg(score) as score_avg,
+           min(score) as score_min,
+           max(score) as score_max
+      FROM analysis_by_problem
+      GROUP BY algorithm, alphabet_size, sample_sparsity
+  analysis_by_cell:
+    SELECT alphabet_size,
+           sample_sparsity,
+           algorithm,
+           (SELECT count(*)
+              FROM analysis_by_problem
+             WHERE algorithm = s.algorithm
+               AND alphabet_size = s.alphabet_size
+               AND sample_sparsity = s.sample_sparsity) as problem_count,
+           (SELECT count(*)
+              FROM analysis_by_problem
+             WHERE algorithm = s.algorithm
+               AND alphabet_size = s.alphabet_size
+               AND sample_sparsity = s.sample_sparsity
+               AND broken = 1) as broken_count,
+           score_avg,
+           score_min,
+           score_max,
+           (SELECT score_avg
+              FROM analysis_regroupby_cell
+             WHERE alphabet_size = s.alphabet_size
+               AND sample_sparsity = s.sample_sparsity
+               AND algorithm = 'redblue') AS baseline_score_avg,
+           case when score_avg >= (SELECT score_avg
+                                     FROM analysis_regroupby_cell
+                                    WHERE alphabet_size = s.alphabet_size
+                                      AND sample_sparsity = s.sample_sparsity
+                                      AND algorithm = 'redblue') then 1
+                                        else 0
+           end as progress
+      FROM analysis_regroupby_cell AS s
+     ORDER BY alphabet_size, sample_sparsity, score_avg
+  hall_of_fame:
+    SELECT alphabet_size, 
+           sample_sparsity, 
+           algorithm, 
+           broken_count, 
+           score_avg, 
+           progress 
+      FROM analysis_by_cell 
+     WHERE problem_count = 5 
+     ORDER BY sample_sparsity DESC, alphabet_size ASC, score_avg DESC;
+

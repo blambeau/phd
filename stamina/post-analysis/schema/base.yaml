@@ -1,0 +1,119 @@
+--- 
+logical: 
+  cells: 
+    heading: 
+      alphabet_size:       {domain: Integer }
+      sample_sparsity:     {domain: String  }
+      token:               {domain: Integer }
+    constraints: 
+      pk_cells:            {type: primary_key,   attributes: [alphabet_size, sample_sparsity]}
+      ak_cells_1:          {type: candidate_key, attributes: [token]}
+  problems: 
+    heading: 
+      id:                  {domain: Integer }
+      alphabet_size:       {domain: Integer }
+      sample_sparsity:     {domain: String  }
+    constraints: 
+      pk_problems:         {type: primary_key, attributes: [id]}
+  competition_data: 
+    heading: 
+      problem:             {domain: Integer }
+      target_adl:          {domain: String  }
+      learning_sample:     {domain: String  }
+      test_sample:         {domain: String  }
+      binary_sequence:     {domain: String  }
+    constraints: 
+      pk_competition_data: {type: primary_key, attributes: [problem]}
+  target_metrics:
+    heading:
+      problem:             {domain: Integer }
+      state_count:         {domain: Integer }
+      edge_count:          {domain: Integer }
+      alphabet_size:       {domain: Integer }
+      avg_degree:          {domain: Float   }
+      accepting_ratio:     {domain: Float   }
+      depth:               {domain: Integer }
+    constraints: 
+      pk_target_metrics: {type: primary_key, attributes: [problem]}
+  people: 
+    heading:
+      id:                  {domain: Integer }
+      mail:                {domain: String  }
+      password:            {domain: String  }
+      first_name:          {domain: String, mandatory: false}
+      last_name:           {domain: String, mandatory: false}
+      nickname:            {domain: String, mandatory: false}
+      admin_level:         {domain: Integer }
+      authorize_submission_usage: {domain: SByC::TypeSystem::Ruby::Boolean, mandatory: false}
+      creation_time:       {domain: Time }
+      activation:          {domain: String, mandatory: false}
+      remember_me:         {domain: String, mandatory: false}
+    constraints: 
+      pk_people:           {type: primary_key,   attributes: [id]}
+      ak_people_1:         {type: candidate_key, attributes: [mail]}
+      ak_people_2:         {type: candidate_key, attributes: [nickname]}
+  challengers: 
+    heading: 
+      people:        {domain: Integer}
+      algorithm:     {domain: String }
+      creation_time: {domain: Time   }
+    constraints: 
+      pk:            {type: primary_key, attributes: [people, algorithm]}
+  submissions: 
+    heading: 
+      people:              {domain: Integer }
+      algorithm:           {domain: String  }
+      problem:             {domain: Integer }
+      score:               {domain: Float   }
+      binary_sequence:     {domain: String  }
+      submission_time:     {domain: Time    }
+      true_positive:       {domain: Integer, default: -1}
+      false_positive:      {domain: Integer, default: -1}
+      true_negative:       {domain: Integer, default: -1}
+      false_negative:      {domain: Integer, default: -1}
+      precision:           {domain: Float,   default: -1.0}
+      recall:              {domain: Float,   default: -1.0}
+      sensitivity:         {domain: Float,   default: -1.0}
+      specificity:         {domain: Float,   default: -1.0}
+      accuracy:            {domain: Float,   default: -1.0}
+      error_rate:          {domain: Float,   default: -1.0}
+      balanced_classification_rate: {domain: Float, default: -1.0}
+      balanced_error_rate: {domain: Float, default: -1.0}
+      f_measure:           {domain: Float, default: -1.0}
+      harmonic_bcr:        {domain: Float, default: -1.0}
+      positive_likelihood: {domain: Float, default: -1.0}
+      negative_likelihood: {domain: Float, default: -1.0}
+    constraints: 
+      pk_submissions:      {type: primary_key, 
+                            attributes: [people, submission_time, problem, algorithm]}
+  valid_submissions: 
+    heading: 
+      people:              {domain: Integer}
+      algorithm:           {domain: String }
+      problem:             {domain: Integer}
+      score:               {domain: Float  }
+      binary_sequence:     {domain: String }
+      submission_time:     {domain: Time   }
+      true_positive:       {domain: Integer, default: -1}
+      false_positive:      {domain: Integer, default: -1}
+      true_negative:       {domain: Integer, default: -1}
+      false_negative:      {domain: Integer, default: -1}
+      precision:           {domain: Float,   default: -1.0}
+      recall:              {domain: Float,   default: -1.0}
+      sensitivity:         {domain: Float,   default: -1.0}
+      specificity:         {domain: Float,   default: -1.0}
+      accuracy:            {domain: Float,   default: -1.0}
+      error_rate:          {domain: Float,   default: -1.0}
+      balanced_classification_rate: {domain: Float, default: -1.0}
+      balanced_error_rate: {domain: Float, default: -1.0}
+      f_measure:           {domain: Float, default: -1.0}
+      harmonic_bcr:        {domain: Float, default: -1.0}
+      positive_likelihood: {domain: Float, default: -1.0}
+      negative_likelihood: {domain: Float, default: -1.0}
+    constraints: 
+      pk_valid_submissions: {type: primary_key, 
+                             attributes: [people, problem, algorithm]}
+--- 
+physical: 
+  indexes: {}
+
