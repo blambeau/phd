@@ -1,0 +1,9 @@
+digraph G {
+  graph [rankdir="LR"];
+  zz [label="" color="black" fillcolor="black" shape="circle" style="filled" fixedsize=true width=0.0];
+  0 [color="black" fillcolor="white" shape="circle" style="filled"];
+  1 [color="black" fillcolor="white" shape="circle" style="filled"];
+  zz -> 0 [label=""];
+  0 -> 1 [label="start"];
+  1 -> 0 [label="stop"];
+}

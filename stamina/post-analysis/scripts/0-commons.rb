@@ -2,7 +2,7 @@ $LOAD_PATH.unshift File.expand_path('../../../toolkit/stamina.git.github/lib', _
 require 'rubygems'
 require 'stamina'
 require 'dbagile'
-raise unless Stamina::VERSION == "0.3.1"
+raise unless Stamina::VERSION >= "0.3.1"
 
 $dba = DbAgile::dba
 $dba.repository_path = File.expand_path '../..', __FILE__

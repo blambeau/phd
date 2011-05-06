@@ -1,12 +1,24 @@
 \chapter{A multi-view modeling framework\label{chapter:framework}}
-  \section{Event-based behavior models}
-    \subsection{Message Sequence Charts for instance behaviors}
-    \subsection{Labelled Transition Systems for class behaviors}
-  \section{State-based abstractions}
-    \subsection{Capturing state information with Fluents}
-    \subsection{Guards in behavior models}
-    \subsection{Decorations on behavior models}
-  \section{Intentional models as goal graphs on fluents}
-    \subsection{Goals and Fluent Linear Temporal Logic (FLTL)}
-    \subsection{Property and tester LTS of safety properties in FLTL}
+
+This chapter installs the background necessary for understanding subsequent chapters of this thesis. 
+
+\section{Agents, System and their Behavior}
+
+A system -- both the software-to-be and its environment -- is commonly admitted to be made of active components, that we call \emph{agents}. Agents behave and interact so as to fulfill system goals while restricting their behavior to ensure constraints they are assigned to~\cite{Feather:1987}. In the early design phase of a system, we are mostly concerned with interactions between agents -- the way they collaborate to form the system -- in contrast to their respective internal implementation. In other words, and from a single agent perspective, we mainly focus on the agent behaviors that are observable by its environment. In this thesis, we choose to model such behaviors and interactions in an event-based framework where agents communicate via messages that are sent and received instantaneously. Such kind of communication, called \emph{handshaking} communication, leads to a \emph{synchronous} event-based framework. The choice of a synchronous event-based framework is motivated by its simplicity, an important aspect for accessibility to stakeholders involved during the early-design phase of a system.
+
+In our framework, the behavior of an agent is modeled by a specific kind of finite state machine, called \emph{labeled transition system} (LTS). This formalism, initially introduced by Keller for reasoning about parallel programs in ~\cite{Keller:1976}, has since been intensively used for specifying and analyzing concurrent systems, e.g. in~\cite{Milner:1989, Clarke:1989, Magee:1997}. A LTS is made of a set of states and a set of transitions between them (see Fig.\ref{image:framework-start-stop}). Each transition is labeled by an \emph{event} name -- sometimes called an \emph{action} name; also, a specific state is the \emph{initial state}, designated graphically by an empty arrow in front of it (state 0 in the figure).
+
+The \emph{alphabet} of an agent denotes the set of event names that the agent recognizes. At first glance, therefore, the alphabet of an agent is composed of the different labels depicted on its LTS, \verb|{start, stop}| in the example at hand. The alphabet captures the notion of \emph{agent interface} and drives the way the agent interacts with its environment (see the notion of agent composition later).
+
+By definition, the \emph{behavior} of an agent is the (sometimes infinite) set of traces that its LTS accepts, also called its \emph{language}. A trace is a sequence of event names, and will be written between \verb|<| and \verb|>| brackets. Loosely speaking, a trace is accepted by a LTS if it denotes an existing path in the corresponding graph, starting in the initial state. For example, the LTS depicted in Fig.\ref{image:framework-start-stop} accepts the trace \verb|<start stop start>| but not \verb|<start start>|.
+
+%\begin{definition}[Labeled Transition System]
+%A labeled transition system is a 4-tuple $(Q,\Sigma,\delta,q_0)$ where $Q$ is a finite set of states, $\Sigma$ is a set of event names n alphabet, $\delta$ is a transition function mapping $Q\times\Sigma$ to $2^Q$ and $q_0$ is the initial state. The LTS is said to be \emph{deterministic} if for any $q$ in Q and any $e$ in $\Sigma$, $\delta(q,e)$ has at most one member. 
+%\end{definition}
+
+\begin{figure}
+\centering\scalebox{0.8}{
+  \includegraphics*{src/2-framework/images/start-stop}}
+  \caption{A Labeled Transition System\label{image:framework-start-stop}.}
+\end{figure}
 
