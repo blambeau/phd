@@ -1,0 +1,6 @@
++ start-signal start alarm-pressed alarm-signal stop-signal stop open-signal open
++ start-signal alarm-pressed alarm-signal start stop-signal stop open-signal open
++ start-signal alarm-pressed start alarm-signal stop-signal stop open-signal open
++ alarm-pressed alarm-signal start-signal start stop-signal stop open-signal open
++ alarm-pressed start-signal start alarm-signal stop-signal stop open-signal open
++ alarm-pressed start-signal alarm-signal start stop-signal stop open-signal open

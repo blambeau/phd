@@ -6,10 +6,10 @@ This chapter installs the background necessary for understanding subsequent chap
 
 \section{Running example: A toy train system}
 
-We use a simple train system fragment as running example for illustrating concepts and techniques throughout this thesis. The system is composed of an automated train controller, actuators for doors and the engine as well as the latter themselves, a sensor of the train speed and a passenger. Via the actuators, the controller typically controls operations like starting or stopping the train, opening or closing the doors, and so on. A safety goal requires train doors to remain closed while the train is moving. If the train is not moving and the passenger presses the alarm button, the controller must open the doors immediately. If the train is moving and the passenger presses the alarm button, then the controller must stop the train first and then open the doors. Typical agent interactions for the latter case are depicted in Fig.~\ref{image:train-scenario-all-agents}. The precise semantics of such a scenario is made clear in the following sections.
+We use a simple train system fragment as running example for illustrating concepts and techniques throughout this thesis. The system is composed of an automated train controller, actuators for doors and the engine as well as the latter themselves, sensors, and a passenger. Via the actuators, the controller typically controls operations like starting or stopping the train, opening or closing the doors, and so on. A safety goal requires train doors to remain closed while the train is moving. If the train is not moving and the passenger presses the alarm button, the controller must open the doors immediately. If the train is moving and the passenger presses the alarm button, then the controller must stop the train first and then open the doors. Typical agent interactions for the latter case are depicted in Fig.~\ref{image:train-scenario-all-agents}. The precise semantics of such a scenario is made clear in the following sections.
 
 \begin{figure}[H]\centering
-\scalebox{0.65}{
+\scalebox{0.75}{
   \includegraphics{src/2-framework/images/train-scenario-all-agents}
 }
 \caption{A scenario illustrating a train system stopping in emergency when an alarm is pressed.\label{image:train-scenario-all-agents}}
@@ -17,7 +17,7 @@ We use a simple train system fragment as running example for illustrating concep
 
 \section{Agents, System and their Behavior}
 
-A system is commonly admitted to be made of active components, called \emph{agents}, that behave and interact so as to fulfill system goals while restricting their behavior to ensure constraints they are assigned to~\cite{Feather:1987}. Some of them are human agents (the passenger), others are physical or electronic devices (e.g. the doors, the actuators), still others are software components (the automated controller). In addition to the notion of \emph{system}, that encompass all agents, the literature makes use of specific terms to distinguish between certain agents and/or agent aggregations. In~\cite{VanLamsweerde:2009} for example, the \emph{software-to-be} denotes software agent(s) that need to be developed (the automaton controller, for example), while other agents compose its \emph{environment}. Another boundary consists in distinguishing the software together with its input and output devices from other agents. This boundary, depicted with a dashed line in Fig.\ref{image:train-scenario-all-agents}, corresponds to the distinction made by Jackson between the \emph{world} and the \emph{machine}~\cite{Jackson:1995}. In this thesis, we focus on the behavior of a single agent as observed by the other agents with which it interacts (as opposed to its internal implementation). From the former agent perspective, then, the \emph{environment} is made of all these latter agents. 
+A system is commonly admitted to be made of active components, called \emph{agents}, that behave and interact so as to fulfill system goals while restricting their behavior to ensure constraints they are assigned to~\cite{Feather:1987}. Some of them are human agents (the passenger), others are physical or electronic devices (e.g. the doors, the actuators), still others are software components (the automated controller). In addition to the notion of \emph{system}, that encompass all agents, the literature makes use of specific terms to distinguish between certain agents and/or agent aggregations. In~\cite{VanLamsweerde:2009} for example, the \emph{software-to-be} denotes software agent(s) that need to be developed (the automated controller, for example), while other agents compose its \emph{environment}. Another boundary consists in distinguishing the software together with its input and output devices from other agents. This boundary, depicted with a dashed line in Fig.\ref{image:train-scenario-all-agents}, corresponds to the distinction made by Jackson between the \emph{world} and the \emph{machine}~\cite{Jackson:1995}. In this thesis, we focus on the behavior of a single agent as observed by the other agents with which it interacts (as opposed to its internal implementation). From the former agent perspective, then, the \emph{environment} is made of all these latter agents. 
 
 In the light of the previous paragraph, we clearly need tools to capture single agent behaviors while being able to play with agent boundaries in a flexible manner -- for instance, for ``computing'' the behavior of agent aggregations like the \emph{software environment}, the \emph{machine} or simply, the \emph{system}. For this, we choose to model behaviors and interactions in an event-based framework, where agents communicate via messages that are sent and received simultaneously. Such kind of communication, called \emph{synchronous communication} or simply, \emph{message passing}, is motivated by its simplicity, an important aspect for accessibility to stakeholders involved during the early-design phase of a system. The next section introduces  labeled transition systems (LTS), the kind of model we use to capture agent behaviors. The next one presents operators for composing (and decomposing) them under a \emph{synchronous communication} hypothesis, a manner of capturing the behaviors of multiple interacting agents.
 
@@ -25,9 +25,10 @@ In the light of the previous paragraph, we clearly need tools to capture single 
 
 In our framework, the behavior of an agent, say \artifact{Ag}, is modeled by a specific kind of finite state machine, called \emph{labeled transition system} (LTS). This formalism, initially introduced by Keller for reasoning about parallel programs~\cite{Keller:1976}, has since been intensively used for specifying and analyzing concurrent systems, e.g. in~\cite{Milner:1989, Clarke:1989, Magee:1997}. A LTS is made of a set of states and a set of transitions between them (see Fig.\ref{image:framework-start-stop}). Each transition is depicted with an \emph{event} label -- sometimes called an \emph{action} label; also, a specific state is the \emph{initial state}, designated graphically by an empty arrow in front of it (state 0 in the figure). 
 
+\vspace{0.5cm}
 \begin{figure}[H]
-\centering\scalebox{0.8}{
-  \includegraphics*[trim=10mm 12mm 10mm 5mm, clip]{src/2-framework/images/start-stop}}
+\centering\scalebox{0.60}{
+  \includegraphics*[clip]{src/2-framework/images/start-stop}}
   \caption{A Labeled Transition System for an \artifact{Engine} agent\label{image:framework-start-stop}.}
 \end{figure}
 
@@ -55,15 +56,15 @@ First, if we consider \emph{determinate} agents exclusively, it does not necessa
 
 Also, the notion of equivalence between two LTS can be revisited in terms of the states of a single LTS. For this, consider a LTS $P = (Q,\Sigma,\delta,q_{init})$ and an existing transition from its initial state $(q_{init},l,q_2) \in \delta$ with $l \in \Sigma_{\tau}$. It is often convenient to interpret this as the LTS $P$ that \emph{transits} with the label $l$ into the LTS $P' = (Q,\Sigma,\delta,q_{2})$. We denote this by $P \stackrel{l}{\longrightarrow} P'$ (which is also straightforward to generalize to accepted traces $P \stackrel{\textless s \textgreater}{\longrightarrow} P''$).  Observe that $P'$ is in fact the same transition system than $P$, except for the initial state. Now, it might be the case that $P$ and $P'$ are trace equivalent, and more generally, that a trace exists such that $P \equiv_{tr} P''$. If they are, it means that at least two states of the original LTS are trace equivalent, that is, that they ``generate'' the same language. From standard automaton theory, it is however possible to find a deterministic LTS accepting exactly the same set of traces but for which no such two states exist. Moreover, this LTS is minimal in terms of number of states and is unique up to state renumbering~\cite{Gold:1978}.
 
-To sum up, any LTS $P$ -- being deterministic or not -- has a canonical deterministic and minimal form, up to state renumbering, that preserves behaviors. We denote it by $P^{\Delta}$. Unless stated otherwise, we consider that agent behaviors are captured by such an LTS, and use standard algorithms in~\cite{Hopcroft:1979} -- when needed -- to remove $\tau$ transitions, determinize and minimize LTS. This also applies to LTS capturing behaviors of composed agents, that we introduce in next section. 
+To sum up, any LTS $P$ -- being deterministic or not -- has a canonical deterministic and minimal form, up to state renumbering, that preserves behaviors. We denote it by $P^{\Delta}$. Unless stated otherwise, we consider that agent behaviors are captured by such an LTS, and use standard automaton algorithms in~\cite{Hopcroft:1979} -- when needed -- to remove $\tau$ transitions, determinize and minimize LTS. This also applies to LTS capturing behaviors of composed agents, that we introduce in next section. 
 
 \subsection{System as Agent composition}
 
 If a system is composed of active agents and the behavior of each of these agents is explicitly modeled with an LTS, one can ask what is the behavior of the system itself. We define it through parallel composition~\cite{Hoare:1985}, a setting where agents execute asynchronously but synchronize on shared events. Given a system made of $n$ agents, and the composition operator denoted by~$\parallel$, the system is defined as:
 
-\begin{center}
-$System = Ag_1 \parallel \ldots \parallel Ag_n$ 
-\end{center}
+\begin{equation}
+System = Ag_1 \parallel \ldots \parallel Ag_n
+\end{equation}
 
 As we are mostly interrested in agent \emph{behaviors}, we use the binary composition operator $\parallel$ defined on LTS, see e.g.~\cite{Giannakopoulou:1999, Magee:1999}. The operator, which is both commutative and associative (allowing our writing above without ambiguity), computes the interleaving of the traces accepted by the two LTS, under the constraint that they synchronize on shared labels. Let $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ denote two LTS. Then, their composition $P \parallel Q$ is another LTS $(S_1 \times S_2,\Sigma_1\cup\Sigma_2,\delta,(q_1,q_2))$, where $\delta$ is the smallest relation satisfying the following rules:
 
@@ -76,19 +77,25 @@ $\frac{\displaystyle Q \stackrel{l}{\longrightarrow} Q'}{\displaystyle P \parall
 \end{tabular}
 \end{center}
 
-As one can see, $P \parallel Q$ is defined on the cartesian product of the states of $P$ and $Q$, and has its initial state simply defined as $(q_1,q_2)$ in this state space. Rules above define the possible transitions in such a state. The first two rules are symetric and encode the fact that, on non shared labels, one LTS transits while the other stay in its previous state. As stated, those rules allow individual LTS to move along $\tau$ transitions. The last rule forces the two LTS to transit together on all shared labels but $\tau$. A composed LTS can easily be computed constructively by exploring the state space from its initial state until no new state pair is discovered.
+As one can see, $P \parallel Q$ is defined on the cartesian product of the states of $P$ and $Q$, and has its initial state simply defined as $(q_1,q_2)$ in this state space. Rules above define the possible transitions in such a state. The first two rules are symetric and encode the fact that, on non shared labels, one LTS transits while the other stay in its previous state. As stated, those rules allow individual LTS to move along $\tau$ transitions. The last rule forces the two LTS to transit together on all shared labels but $\tau$. A composed LTS can easily be computed constructively by exploring the state space from its initial state until no new state pair is discovered. The trace semantics of a system composed of $n$ agents whose behavior is modeled with LTSs $Ag_1$ to $Ag_n$ is captured as:
 
-If the notion of agent composition gives a sound interpretation to the notion of \emph{system} and its behavior, it is, in fact, of slighlty more general use. Indeed, as explained in the introduction of this section, it makes sense to consider not only the composition of all agents but sometimes the composition of a subset of them that, together, define an interesting boundary in the system considered. Consider the agents depicted in the scenario of Fig.\ref{image:train-scenario-all-agents} for example, and assume that $AutomatedController$, $Actuators$, etc. actually denote their respective LTS. The ``machine vs. world'' boundary can simply be modeled as follows:
+\begin{equation}
+\mathcal{L}(System) = \mathcal{L}(Ag_1 \parallel \ldots \parallel Ag_n)
+\label{equation:system-composition}
+\end{equation}
+
+
+If the notion of agent composition gives a sound interpretation to the notion of \emph{system} and its behavior, it is, in fact, of slighlty more general use. Indeed, as explained in the introduction of this section, it makes sense to consider not only the composition of all agents but sometimes the composition of a subset of them that, together, define an interesting boundary in the system considered. Consider the agents depicted in the scenario of Fig.\ref{image:train-scenario-all-agents} for example, and assume that $Controller$, $Actuators$, etc. actually denote their respective LTS. The ``machine vs. world'' boundary can simply be modeled as follows:
 
 \vspace{-0.8cm}
 \begin{align*}
-Machine &= AutomatedController \parallel Actuators \parallel SpeedSensor \\
+Machine &= Controller \parallel Actuators \parallel Sensors \\
 World   &= Passenger \parallel Doors \parallel Engine \\
 System  &= Machine \parallel World
 \end{align*}
 \vspace{-0.8cm}
 
-However, as defined above, the $Machine$ agent has an interface -- in terms of the set of events in which it engages -- which is actually too large. A look at the boundary depicted by the dashed line in Fig.\ref{image:train-scenario-all-agents} clearly shows that some of its events model internal communications -- that is events between agents composing the Machine, like \artifact{start-signal} or \artifact{zero-speed}) -- while other events form the natural interface of the $Machine$ with its environment -- those ``crossing'' the depicted boundary, like \artifact{alarm-pressed} or \artifact{stop}. It is often convenient to enforce this separation between internal and external interfaces, for example to avoid environment agents to synchronize with internal events. In such a case, one would like to model the behavior of the $Machine$ as a black box, that is, in terms of external event labels only.
+However, as defined above, the $Machine$ agent has an interface -- in terms of the set of events in which it engages -- which is actually too large. A look at the boundary depicted by the dashed line in Fig.\ref{image:train-scenario-all-agents} clearly shows that some of its events model internal communications -- that is events between agents composing the Machine, like \artifact{start-signal} or \artifact{alarm-signal}) -- while other events form the natural interface of the $Machine$ with its environment -- those ``crossing'' the depicted boundary, like \artifact{alarm-pressed} or \artifact{stop}. It is often convenient to enforce this separation between internal and external interfaces, for example to avoid environment agents to synchronize with internal events. In such a case, one would like to model the behavior of the $Machine$ as a black box, that is, in terms of external event labels only.
 
 For this, LTS come with a simple operator called \emph{hiding}. Hiding of a set of labels $I$ in in a LTS $P = (Q,\Sigma,\delta,q_{init})$ is denoted $P \setminus I$ and defines the LTS $(Q,\Sigma \setminus I,\delta_{hidden},q_{init})$ where $\delta_{hidden}$ is the smallest relation satisfying the rules:
 
@@ -107,7 +114,7 @@ Machine' &= (Machine \setminus Internals)^\Delta
 \end{align*}
 \vspace{-0.8cm}
 
-\noindent where $Machine$ is the composition between the controller, actuators and sensor given previously and $Internals$ is the set of labels of internal machine events $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{non-zero-speed}, \artifact{zero-speed}, \ldots\}$. 
+\noindent where $Machine$ is the composition between the controller, actuators and sensors given previously and $Internals$ is the set of labels of internal machine events $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{open-signal}, \artifact{alarm-signal}, \ldots\}$. 
 
 The relation between the traces accepted by $Machine$ and those accepted by $Machine'$ or, in other words, the relation between their language is as defined below. Without surprise, traces accepted by the latter are projections, on the alphabet of the world, of those accepted by the former.
 
@@ -115,8 +122,43 @@ The relation between the traces accepted by $Machine$ and those accepted by $Mac
 $\mathcal{L}(Machine') = \{ t'~|~\exists t \in \mathcal{L}(Machine)~such~that~t' = t|_{\Sigma_{World}}\}$
 \end{center}
 
-%\begin{definition}[Labeled Transition System]
-%A labeled transition system is a 4-tuple $(Q,\Sigma,\delta,q_0)$ where $Q$ is a finite set of states, $\Sigma$ is a set of event names n alphabet, $\delta$ is a transition function mapping $Q\times\Sigma$ to $2^Q$ and $q_0$ is the initial state. The LTS is said to be \emph{deterministic} if for any $q$ in Q and any $e$ in $\Sigma$, $\delta(q,e)$ has at most one member. 
-%\end{definition}
+\section{Scenarios as Message Sequence Charts}
+
+Scenarios in this thesis, see Fig.\ref{image:train-scenario-all-agents} for example, are a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996}. To keep the models usable by end-users, however, we use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agent instances and horizontal arrows representing interactions among agents, also called \emph{events}. The timeline label specifies the type of the corresponding agent instance. Following the modeling of agents of the previous section, events are synchronously sent and received by interacting agents (we also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
+
+The semantics of MSCs in this thesis is defined in terms of labeled transition systems, following~\cite{Uchitel:2003}. More precisely, we consider a MSC in terms of the event traces it defines, the latter being captured with LTSs (see previous section). Two kinds of traces can be considered: those from a local agent perspective, and those from the perspective of the composed system. Let us discuss the former first. As time in a MSC is represented top-down, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines only one trace; precisely, one \emph{maximal} trace (with all events to which the agent participates) and all its possible prefixes. For example, the traces seen by the \artifact{Controller} agent in the MSC of Fig.\ref{image:train-scenario-all-agents} are precisely captured by the LTS of Fig.\ref{image:local-traces-lts}. Given a MSC $M$ and an agent $Ag$, we denote such an LTS by $M_{\downarrow Ag}$.
+
+\vspace{0.5cm}
+\begin{figure}[H]\centering
+\scalebox{0.45}{\includegraphics{src/2-framework/images/local-trace}}
+\caption{LTS capturing the traces of the MSC of Fig.\ref{image:train-scenario-all-agents} from the local point of view of the \artifact{Controller}.\label{image:local-traces-lts}}
+\end{figure}
+
+At first glance, a similar reasoning can be applied to the composed system. That is, the MSC defines a \emph{maximal} trace in the composed system, with all events in a top-down ordering of 
+Fig.\ref{image:train-scenario-all-agents}: \artifact{<start-signal, start, alarm-pressed, alarm-signal, stop-signal, stop, open-signal,\\ open>}. Making so amounts to consider that a MSC defines a total order among all events while it is commonly admitted that it defines only a partial order~\cite{ITU:1996, Uchitel:2003}. For example, the events \artifact{start-signal} and \artifact{alarm-pressed} in the begining of MSC in Fig.\ref{image:train-scenario-all-agents} model unrelated phenomena between different agents, and can therefore hardly be considered timely ordered (e.g. maybe does the passenger push the alarm button when the \artifact{start-signal} is already sent but before \artifact{start} has been propagated? or even before \artifact{start-signal}?, and so on.). 
+
+Following the semantics given in~\cite{Uchitel:2003}, we consider that a MSC defines a set of traces in the composed system, capturing all linearizations of the partial order among its events. We do not formalize the structure of Message Sequence Charts and their linearizations here, and refer the reader to~\cite{Uchitel:2003} for such a mathematical characterization. Semantically, we note however that the set of system traces of a single MSC $M$ with $n$ interacting agents is simply captured by the following LTS composition:
+
+\begin{equation}
+\label{equation:msc-composition}
+\mathcal{L}(M) = \mathcal{L}(M_{\downarrow Ag_1} \parallel \ldots \parallel M_{\downarrow Ag_n})
+\end{equation}
+
+\noindent where, for recall, $M_{\downarrow Ag_i}$ denotes a LTS like the one of Fig.\ref{image:local-traces-lts}, for each agent. From an implementation point of view, the previous LTS composition gives a simple way of computing all linearizations of a MSC as a tree-shaped LTS. Such a LTS is illustrated in Fig.~\ref{image:msc-linearizations} for the case at hand. Note that this LTS is \emph{not} minimal since, for example, states 13 to 18 are all trace equivalent. This is intended (such a tree-shaped LTS proves useful for inductive model synthesis presented in chapter~\ref{chapter:inductive-synthesis}) and actually follows from our definition of LTS and LTS composition in the previous section.
+
+\vspace{0.5cm}
+\begin{figure}[H]\centering
+\scalebox{0.31}{\includegraphics{src/2-framework/images/linearizations}}
+\caption{LTS capturing all event linearizations of the MSC of Fig.\ref{image:train-scenario-all-agents}. Here, \artifact{alarm-pressed} is abbreviated as \artifact{a.pressed} and \artifact{sig.} stands for \artifact{signal}. \label{image:msc-linearizations}}
+\end{figure}
+
+The semantics of a single MSC in terms of agent and system traces can now be explicitely related to the notion of the LTSs modeling the complete behavior of the agents and the system. That is, we can now explain the similitudes between definitions \ref{equation:system-composition} and \ref{equation:msc-composition} through the notion of \emph{valid} MSC. 
+
+Consider a system $S$ composed of $n$ agents whose behavior is modeled by the LTSs $Ag_1$ to $Ag_n$. Let $M$ denote a MSC illustrating interactions between a (not necessarily proper) subset of those agents. We say that $M$ is valid for $S$ if the following holds:
+
+\begin{center}
+$\mathcal{L}(M_{\downarrow Ag_i}) \subseteq \mathcal{L}(Ag_i)$ for each agent $Ag_i$ \\
+$\mathcal{L}(M) = \mathcal{L}(M_{\downarrow Ag_1} \parallel \ldots \parallel M_{\downarrow Ag_n}) \subseteq \mathcal{L}(Ag_1 \parallel \ldots \parallel Ag_n) = \mathcal{L}(System)$
+\end{center}
 
 
