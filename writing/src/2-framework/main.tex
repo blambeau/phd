@@ -219,9 +219,15 @@ Note that, by definition, a collection cannot be consistent with a system unless
 
 \subsection[Flowcharting scenarios in high-level MSCs]{Flowcharting scenarios in high-level Message Sequence Charts}
 
-High Level Message Sequence Charts are directed graphs where each node refers to a MSC (named \emph{basic} MSC here, bMSC for short) or a finer grained hMSC. Outgoing edges of a node capture its possible continuations, allowing the user to introduce sequences, alternatives and loops, to reuse small MSC fragments, and so on. An hMSC also has an initial starting point that indicate the initial system state. An example of hMSC is given in Fig.~\ref{X}.
+High Level Message Sequence Charts are directed graphs where each node refers to a MSC (named \emph{basic} MSC here, bMSC for short) or a finer grained hMSC. Outgoing edges of a node capture its possible continuations, allowing the user to introduce sequences, alternatives and loops, to reuse small MSC fragments, and so on. An hMSC also has an initial starting point that indicate the initial system state. An example of hMSC is given in Fig.~\ref{image:train-hmsc}.
 
-
+\vspace{0.4cm}
+\begin{figure}[H]\centering
+\scalebox{0.65}{
+  \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/2-framework/images/train-hmsc}
+}
+\caption{A high-level Message Sequence Chart for the train system.\label{image:train-hmsc}}
+\end{figure}
 
 \section{State-based invariants through Fluents}
 
