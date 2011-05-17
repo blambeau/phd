@@ -10,7 +10,7 @@ We use a simple train system fragment as running example for illustrating concep
 
 \begin{figure}[H]\centering
 \scalebox{0.75}{
-  \includegraphics{src/2-framework/images/train-scenario-all-agents}
+  \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/2-framework/images/train-scenario-all-agents}
 }
 \caption{A scenario illustrating a train system stopping in emergency when an alarm is pressed.\label{image:train-scenario-all-agents}}
 \end{figure}
@@ -166,7 +166,15 @@ The first condition is not formalized but simply requires the MSC and the system
 
 \subsection{Negative scenarios}
 
-Positive message sequence charts model \emph{positive} examples of behavior that the system is expected to exhibit. It is often convenient to be able to model the counterpart, that is examples of behavior that the system is expected -- even required -- \emph{not} to exhibit. Such proscribed behaviors are illustrated with negative MSCs~\cite{Uchitel:2004}. A negative MSC is simply a scenario whose last event is proscribed, as depicted by a crossed arrow below a dashed line. An example is given in Fig.~\ref{X}, that shows that the \artifact{Controller} may not open train doors immediately after having started it.
+Positive message sequence charts model \emph{positive} examples of behavior that the system is expected to exhibit. It is often convenient to be able to model the counterpart, that is examples of behavior that the system is expected -- even required -- \emph{not} to exhibit. Such proscribed behaviors are illustrated with negative MSCs~\cite{Uchitel:2004}. A negative MSC is simply a scenario whose last event is proscribed, as depicted by a crossed arrow below a dashed line. An example is given in Fig.~\ref{image:train-negative-scenario}, where the \artifact{Controller} may not open train doors immediately after having started it.
+
+\vspace{0.4cm}
+\begin{figure}[H]\centering
+\scalebox{0.75}{
+  \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/2-framework/images/train-negative-scenario}
+}
+\caption{A negative scenario illustrating that the controller may not open doors after having started.\label{image:train-negative-scenario}}
+\end{figure}
 
 More precisely, a negative MSC is a pair $(M,e)$ where $M$ is a positive MSC and $e$ is a single event (given our simplifying assumption, the latter event can simply be denoted by its label $l = label(e)$). The positive scenario $M$ is called the $precondition$ and $e$ the \emph{proscribed event}. The intuitive semantics is that, once the precondition has occurred from the system initial state, $e$ may not be the (very) \emph{next} event in the system. We make this semantics fully precise now. A negative MSC $N = (M,e)$ defines a set of traces as follows:
 
@@ -174,7 +182,7 @@ More precisely, a negative MSC is a pair $(M,e)$ where $M$ is a positive MSC and
 \mathcal{L}(N) = \{~w.l \mid w \in \mathcal{L}(M) \wedge l = label(e) \}
 \end{equation*}
 
-That is, traces of a negative MSC are traces of the precondition (given by definition~\ref{equation:msc-composition}) concatenated with the label of the proscribed event. Note that, such a definition implies that the precondition must occur completely for the proscribed event to be taken into account. In other words, partial orderings between the proscribed event and those in the precondition are not considered. This is the intended meaning of the dashed line separating them~\cite{Uchitel:2004}. 
+That is, traces of a negative MSC are traces of the precondition (given by definition~\ref{equation:msc-composition}) concatenated with the label of the proscribed event. Note that such a definition implies that the precondition must occur completely for the proscribed event to be taken into account. In other words, partial orderings between the proscribed event and those in the precondition are not considered. This is the intended meaning of the dashed line separating them~\cite{Uchitel:2004}. In contrast, note that all linearizations of the precondition are taken into account (even if the MSC of Fig.~\ref{image:train-negative-scenario} presents only one). 
 
 Similarly to positive MSCs, we state conditions for a negative MSC $N = (M,e)$ and a system $S = (Ag_1 \parallel \ldots \parallel Ag_n)$ to be consistent, as follows:
 
