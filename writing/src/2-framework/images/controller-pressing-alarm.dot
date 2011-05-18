@@ -1,0 +1,7 @@
+digraph G {
+  graph [rankdir="LR" ranksep=0];
+  node [fixedsize=true width=0.5];
+  0 [color="black" fillcolor="white" shape="circle" style="filled"];
+  1 [color="black" fillcolor="white" shape="circle" style="filled"];
+  0 -> 1 [label="alarm-signal"];
+}
