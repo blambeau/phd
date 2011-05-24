@@ -1,0 +1,15 @@
+digraph G {
+  graph [rankdir="LR" ranksep=0];
+  node [color="black" fillcolor="white" shape="circle" style="filled"  fixedsize=true width=1.0]
+  zz [label="" color="white" fillcolor="white" shape="circle" style="filled" fixedsize=true width=0.0];
+  0 [label="&not; Moving \n Closed"];
+  1 [label="Moving \n Closed"];
+  2 [label="Moving \n Closed"];
+  3 [label="&not; Moving \n Closed"];
+  4 [label="&not; Moving \n &not; Closed"];
+  zz -> 0 [label=""];
+  0 -> 1 [label="start"];
+  1 -> 2 [label="alarm"];
+  2 -> 3 [label="stop"];
+  3 -> 4 [label="open"];
+}
