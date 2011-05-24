@@ -1,4 +1,4 @@
-\section{Scenarios as Message Sequence Charts}
+\section{Scenarios as Message Sequence Charts\label{section:background-scenarios}}
 
 Unlike labeled transition systems, that intrinsically model the behavior of a single agent (even if a composed one), scenarios explicitly illustrate interactions among multiple agents. The scenarios we use in this thesis are a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996} (see Fig.~\ref{image:train-scenario-all-agents} for example). To keep the models usable by end-users, however, we use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agents and horizontal arrows representing interactions among agents, also called \emph{events}. Following the modeling of agents of the previous section, events are synchronously sent and received by interacting agents (we also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
 
@@ -182,10 +182,4 @@ These conditions are the counterpart of those given previously for MSCs and have
 
 \subsection{Explicit state annotation}
 
-A last construction allowed in MSCs is worth discussing that helps managing multiple scenarios. Indeed, many authors allow MSCs to be annotated with state-based information (see, e.g.,~\cite{Kruger:2000, Whittle:2000}).
-
-
-
-
-
-
+A last construction allowed in MSCs is worth discussing that helps managing multiple scenarios. Indeed, many authors allow MSCs to be annotated with state-based information (see, e.g.,~\cite{Kruger:2000, Whittle:2000}). 
