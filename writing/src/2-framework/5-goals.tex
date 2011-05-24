@@ -1,2 +1,13 @@
 \section{Declarative goals and domain properties\label{section:background-goals}}
 
+A \emph{goal} is a prescriptive statement of intent, whose satisfaction requires the collaboration of agents forming the system. Unlike goals, \emph{domain properties} are descriptive statement about the environment -- such as physical laws, organizational rules, etc. Goals are structured in AND/OR refinement graphs showing how they contribute to each other~\cite{VanLamsweerde:2000}.
+
+In this thesis, we formalize goals and domain properties in Fluent Linear Temporal Logic (FLTL)~\cite{Giannakopoulou:2003}. Indeed, thanks to fluents (see previous section), this formalism is convenient for specifying state-based temporal logic properties over the event-based operational model given by scenarios, state machines and trace semantics. The FLTL assertions for goals and domain properties use standard operators for temporal referencing such as: $\circ$ (at the next smallest time unit), $\diamond$ (some time in the future), $\square$ (always in the future), $\rightarrow$ (implies in the current state), $\Rightarrow$ (always implies), $\mathcal{U}$ (always in the future until), $\mathcal{W}$ (always in the future unless), see~\cite{Manna:1992}.
+
+In our train example, the safety goal ``\emph{\texttt{Doors shall remain closed while the train is moving}}'' can be formalized in terms of the $Moving$ and $DoorsClosed$ fluents defined in the previous section, as follows:
+
+\begin{center}
+$DoorsClosedWhileMoving = \square(Moving \rightarrow DoorsClosed)$
+\end{center}
+
+
