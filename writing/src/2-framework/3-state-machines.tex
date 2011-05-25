@@ -9,8 +9,6 @@ In our framework, the behavior of an agent is modeled by a specific kind of fini
   \caption{A Labeled Transition System for an \artifact{Engine} agent\label{image:framework-start-stop}.}
 \end{figure}
 
-Labeled transition systems come with different flavors in the literature that allows capturing more or less meaning, also resulting in few or numerous semantics subtleties. We stick here with a very simple framework, by restricting our attention to \emph{determinate} agents~\cite{Engelfriet:1985}, that is, agents whose behavior can be modeled using \emph{deterministic} transition systems (see below). While a somewhat restrictive choice in terms of expressiveness --~many approaches arising from process algebra do not restrict to such an hypothesis~-- we argue that it naturally keeps the framework simple and intuitive to use for stakeholders. We now turn to some mathematical definitions that, among others, define the aforementioned terms.
-
 Mathematically, a LTS is defined as a 4-tuple $(Q,\Sigma,\delta,q_{init})$ where $Q$ is a finite set of states, $\Sigma$ is a set of labels called its \emph{alphabet}, $\delta$ is a transition relation $Q \times \Sigma\cup\{\tau\} \times Q$ and $q_{init} \in Q$ is the initial state.
 
 A \emph{deterministic} LTS does not have $\tau$ transitions and has no state with two outgoing transitions having the same label (that is, $(q,l,q_1) \in \delta \wedge (q,l,q_2) \in \delta \implies q_1 = q_2$); otherwise it is \emph{non-deterministic}.
