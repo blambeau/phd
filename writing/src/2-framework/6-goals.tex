@@ -1,0 +1,14 @@
+\section{Declarative goals and domain properties\label{section:background-goals}}
+
+A \emph{goal} is a prescriptive statement of intent, whose satisfaction requires the collaboration of agents forming the system. Unlike goals, \emph{domain properties} are descriptive statement about the environment -- such as physical laws, organizational rules, etc. Goals are structured in AND/OR refinement graphs showing how they contribute to each other~\cite{VanLamsweerde:2000}.
+
+Goals and domain properties can be formalized in Linear Temporal Logic (LTL), that allows specifying admissible and/or proscribed system histories in a declarative and implicit way (that is, without requiring an explicit time parameter)~\cite{VanLamsweerde:2009}. In addition to the usual propositional constructs (we ignore first-order constructs here), LTL provides operators for temporal referencing: $\circ$ (at the next smallest time unit), $\diamond$ (some time in the future), $\square$ (always in the future), $\rightarrow$ (implies in the current state), $\Rightarrow$ (always implies), $\mathcal{U}$ (always in the future until), $\mathcal{W}$ (always in the future unless), see~\cite{Manna:1992}.
+
+However, a system history is commonly viewed in LTL as a temporal sequence of system states. Also, atomic propositions of LTL formula often refer to state variables (e.g. in the SPIN model-checker~\cite{Holzmann:1997}). In contrast, a system history is seen as a trace here, that is, a temporal sequence of events. Capitalizing on fluents for reconciling state-based and event-based paradigms (see previous section), we use a flavor of LTL known as Fluent Linear Temporal Logic (FLTL), a linear temporal logic in which atomic propositions are fluents~\cite{Giannakopoulou:2003}. FLTL proves a convenient way for specifying state-based temporal logic properties over the event-based operational model given by our scenarios and state machines. For example, the safety goal ``\emph{\texttt{Doors shall remain closed while the train is moving}}'' of our running example can be formalized in terms of the $Moving$ and $DoorsClosed$ fluents defined in the previous section, as follows:
+
+\begin{center}
+\artifact{Maintain[DoorsClosed While Moving]} = $\square(Moving \rightarrow DoorsClosed)$
+\end{center}
+
+\subsection{Tester automaton}
+
