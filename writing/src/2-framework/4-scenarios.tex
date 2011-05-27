@@ -41,7 +41,7 @@ The right part provides a simple way of computing all linearizations of a MSC as
 
 The trace semantics of a single MSC can now be explicitly related to the notions of agent and system behaviors, also captured with LTSs in Section~\ref{section:background-state-machines}. This amounts to define consistency rules between them, and explains the similitude between definitions \ref{equation:system-composition} and \ref{equation:msc-composition}.
 
-Consider a system composed of $n$ agents whose behavior is modeled as $S = (Ag_1 \parallel \ldots \parallel Ag_n)$. Let $M$ denote a MSC illustrating interactions between them. We say that $M$ is \emph{consistent} with $S$ -- or, more accurately, that $M$ and $S$ \emph{are} consistent -- if the following conditions hold:
+Consider a system composed of $n$ agents whose behavior is modeled as $\system$. Let $M$ denote a MSC illustrating interactions between them. We say that $M$ is \emph{consistent} with $S$ -- or, more accurately, that $M$ and $S$ \emph{are} consistent -- if the following conditions hold:
 
 \begin{itemize}
 \item $M$ and $S$ are \emph{architecturally} consistent,
@@ -82,7 +82,7 @@ Last, observe that the set of negative traces cannot be captured with the sole m
 
 \subsubsection*{Multi-view model consistency}
 
-Similarly to positive MSCs, we state conditions for a negative MSC $N = (P,e)$ and a system $S = (Ag_1 \parallel \ldots \parallel Ag_n)$ to be consistent, as follows:
+Similarly to positive MSCs, we state conditions for a negative MSC $N = (P,e)$ and a system $\system$ to be consistent, as follows:
 
 \begin{itemize}
 \item $N$ and $S$ are \emph{architecturally} consistent,
@@ -170,7 +170,7 @@ In practice, this flat hMSC must not be explicitly constructed when synthesizing
 
 \subsubsection*{Multi-view model consistency}
  
-Based on the trace semantics defined in the previous section, we can now define additional consistency rules in our framework. We say that a hMSC $H$ and a system $S = (Ag_1 \parallel \ldots \parallel Ag_n)$ are consistent if the following condition holds:
+Based on the trace semantics defined in the previous section, we can now define additional consistency rules in our framework. We say that a hMSC $H$ and a system $\system$ are consistent if the following condition holds:
 
 \begin{itemize}
 \item $H$ and $S$ are \emph{architecturally} consistent,
@@ -178,7 +178,7 @@ Based on the trace semantics defined in the previous section, we can now define 
 \item $\mathcal{L}_{arch}(H) = \mathcal{L}(H_{\downarrow Ag_1} \parallel \ldots \parallel H_{\downarrow Ag_n}) \subseteq \mathcal{L}(Ag_1 \parallel \ldots \parallel Ag_n) = \mathcal{L}(S)$
 \end{itemize}
 
-These conditions are the counterpart of those given previously for MSCs and have a similar interpretation, \emph{mutatis mutandis}. In addition, however, it is convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. A hMSC $H$ is \emph{complete} for a system $S = (Ag_1 \parallel \ldots \parallel Ag_n)$ if it is consistent with it and defines the same language, that is, if $\mathcal{L}_{arch}(H) = \mathcal{L}(S).$
+These conditions are the counterpart of those given previously for MSCs and have a similar interpretation, \emph{mutatis mutandis}. In addition, however, it is convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. A hMSC $H$ is \emph{complete} for a system $\system$ if it is consistent with it and defines the same language, that is, if $\mathcal{L}_{arch}(H) = \mathcal{L}(S).$
 
 \subsection{Explicit state annotation}
 
