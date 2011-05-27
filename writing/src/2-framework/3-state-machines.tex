@@ -75,9 +75,7 @@ System  &= Machine \parallel World
 \end{align*}
 \vspace{-0.8cm}
 
-However, as defined above, the $Machine$ agent has an interface -- in terms of the set of events in which it engages -- which is actually too large. A look at the boundary depicted by the dashed line in Fig.~\ref{image:train-scenario-all-agents} clearly shows that some of its events model internal communications -- that is events between agents composing the Machine, like \artifact{start-signal} or \artifact{alarm-signal} -- while the others form the natural interface of the $Machine$ with its environment~--~i.e.~those ``crossing'' the depicted boundary, like \artifact{alarm-pressed} or \artifact{stop}. It is often convenient to enforce this separation between internal and external interfaces, for example to avoid environment agents to synchronize with internal events. In such a case, one would like to model the behavior of the $Machine$ as a black box, that is, in terms of external event labels only.
-
-For this, LTSs come with a simple operator called \emph{hiding}. Hiding of a set of labels $I$ in in a LTS $P = (Q,\Sigma,\delta,q_{init})$ is denoted $P \setminus I$ and defines the LTS $(Q,\Sigma \setminus I,\delta_{hidden},q_{init})$ where $\delta_{hidden}$ is the smallest relation satisfying the rules:
+However, as defined above, the $Machine$ agent has an interface -- in terms of the set of events in which it engages -- which is actually too large. One would like to have a black-box version of the $Machine$ behavior, that is a LTS with events of the new interface only, those crossing the depicted boundary. For this, LTSs come with a simple operator called \emph{hiding}. Hiding of a set of labels $I$ in a LTS $P = (Q,\Sigma,\delta,q_{init})$ is denoted $P \setminus I$ and defines the LTS $(Q,\Sigma \setminus I,\delta_{hidden},q_{init})$ where $\delta_{hidden}$ is the smallest relation satisfying the rules:
 
 \begin{center}
 \begin{tabular}{cc}
@@ -86,7 +84,7 @@ $\frac{\displaystyle P \stackrel{l}{\longrightarrow} P'}{\displaystyle P \setmin
 \end{tabular}
 \end{center}
 
-As one can see, the operator simply makes a set of labels invisible from the environment by replacing them by $\tau$. The resulting LTS is non-deterministic, but results from the previous section ensure that a minimal and deterministic equivalent exists. That is, the LTS of the black-box machine we are actually looking for is the following:
+As one can see, the operator simply makes a set of labels invisible from the environment by replacing them by $\tau$. The resulting LTS is non-deterministic, but results from previous sections ensure that a minimal and deterministic equivalent exists. That is, the LTS of the black-box machine we are actually looking for is the following:
 
 \vspace{-0.8cm}
 \begin{align*}
@@ -94,11 +92,11 @@ Machine' &= (Machine \setminus Internals)^\Delta
 \end{align*}
 \vspace{-0.8cm}
 
-\noindent where $Machine$ is the composition between the controller, actuators and sensors given previously and $Internals$ is the set of labels of internal machine events $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{open-signal}, \artifact{alarm-signal}, \ldots\}$. 
+\noindent where $Machine$ is the composition between the controller, actuators and sensors given previously and $Internals$ is the set of events internal to the machine $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{open-signal}, \artifact{alarm-signal}, \ldots\}$. 
 
-The relation between the traces accepted by $Machine$ and those accepted by $Machine'$ or, in other words, the relation between their language is as defined below. Without surprise, traces accepted by the latter are projections, on the alphabet of the world, of those accepted by the former.
+Given a LTS $P = (Q,\Sigma,\delta,q_{init})$ and a set of labels $I$, the relation between the languages of $P$ and $P \setminus I$ is defined as follows:
 
 \begin{center}
-$\mathcal{L}(Machine') = \{ t'~|~\exists t \in \mathcal{L}(Machine)~such~that~t' = t|_{\Sigma_{World}}\}$
+$\mathcal{L}(P \setminus I) = \{ t'~|~\exists t \in \mathcal{L}(P)~such~that~t' = t|_{\Sigma \setminus I}\}$
 \end{center}
 
