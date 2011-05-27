@@ -39,7 +39,7 @@ The right part provides a simple way of computing all linearizations of a MSC as
 
 \subsubsection*{Multi-view model consistency}
 
-The trace semantics of a single MSC can now be explicitly related to the notions of agent and system behaviors, also captured with LTSs in Section~\ref{section:background-agents-system-behaviors}. This amounts to define consistency rules between them, and explains the similitude between definitions \ref{equation:system-composition} and \ref{equation:msc-composition}.
+The trace semantics of a single MSC can now be explicitly related to the notions of agent and system behaviors, also captured with LTSs in Section~\ref{section:background-state-machines}. This amounts to define consistency rules between them, and explains the similitude between definitions \ref{equation:system-composition} and \ref{equation:msc-composition}.
 
 Consider a system composed of $n$ agents whose behavior is modeled as $S = (Ag_1 \parallel \ldots \parallel Ag_n)$. Let $M$ denote a MSC illustrating interactions between them. We say that $M$ is \emph{consistent} with $S$ -- or, more accurately, that $M$ and $S$ \emph{are} consistent -- if the following conditions hold:
 
@@ -55,7 +55,7 @@ The first condition is not formalized but simply requires the MSC and the system
 
 While positive MSCs model examples of behavior that the system is expected to exhibit, it is often convenient to be able to model the counterpart, that is examples of behavior that the system is expected (even required) \emph{not} to exhibit. Such proscribed behaviors are illustrated with negative MSCs~\cite{Uchitel:2004}. A negative MSC is simply a scenario whose last event is proscribed, as depicted by a crossed arrow below a dashed line. An example is given in Fig.~\ref{image:train-negative-scenario}, where the \artifact{Controller} may not open doors immediately after having started the train.
 
-\begin{figure}[H]\centering
+\begin{figure}\centering
 \scalebox{0.75}{
   \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/2-framework/images/train-negative-scenario}
 }
@@ -78,7 +78,7 @@ More precisely, a negative MSC is a pair $(P,e)$ where $P$ is a positive MSC and
 
 That is, negative traces are maximal traces of the precondition concatenated with the label of the proscribed event. Note that such a definition implies that the precondition must occur completely for the proscribed event to be taken into account. In other words, partial orderings between the proscribed event and those in the precondition are never considered. This is the intended meaning of the dashed line separating them~\cite{Uchitel:2004}. 
 
-Traces defined by a negative MSC $N = (P,e)$ can be modeled by extending the LTS modeling $\mathcal{L}_{arch}(P)$ with a new transition, labeled with $label(e)$, from its (previously) terminating state to a new error state.
+Last, observe that the set of negative traces cannot be captured with the sole mean of a LTS. This is because $\mathcal{L}^{-}(N)$ is not prefix-closed (see Section~\ref{section:background-lts-and-regular-languages}). Negative scenarios are sometimes captured by a LTS extended with an error state~\cite{Uchitel:2004}. Another way consists in using a standard automaton, which makes a distinction between accepting and non-accepting states. 
 
 \subsubsection*{Multi-view model consistency}
 
@@ -90,7 +90,7 @@ Similarly to positive MSCs, we state conditions for a negative MSC $N = (P,e)$ a
 \item $\mathcal{L}^{-}(N) \not\subseteq \mathcal{L}(Ag_1 \parallel \ldots \parallel Ag_n) = \mathcal{L}(S)$
 \end{itemize}
 
-The first condition is similar to what has been said previously for positive MSCs. The second enforces the precondition to be a consistent (positive) MSC, implicitly requiring positive traces to be accepted. The last one states that the system may not exhibit any negative trace captured by the negative MSC. Here as well, inter-consistency rules are given for the general model with partial ordering and imply consistency in the stronger model with total ordering.
+The first condition is similar to what has been said previously for positive MSCs. The second enforces the precondition to be a consistent (positive) MSC, implicitly requiring positive traces to be accepted. The last one states that the system may not exhibit any negative trace captured by the negative MSC.
 
 \subsection{Scenario collections}
 
