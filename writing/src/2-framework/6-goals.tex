@@ -20,12 +20,12 @@ Consider a safety property $G$ and a system $\system$. Let denote by $\mathcal{L
 $\mathcal{L}(Ag_1 \parallel \ldots \parallel Ag_n) \cap \mathcal{L}^{-}(G) = \emptyset$
 \end{center}
 
-The equation above is the well known one from model checking; it simply requires the system not to exhibit traces that violate the safety property. 
+The equation above simply requires the system not to exhibit traces that violate the safety property. In fact, it is the well known one from model checking~\cite{Clarke:1989}, provided that $\mathcal{L}^{-}(G)$ actually is $\mathcal{L}(\neg G)$, that is the set of traces that satisfy the negation of the safety property.
 
 \subsection{Tester and property automata}
 
 It it straightforward to check that $\mathcal{L}^{-}(G)$ cannot be represented with a pure LTS, because it is not prefix-closed. For example, the trace \artifact{<start alarm open>} certainly violates the safety goal for the train and so, belongs to $\mathcal{L}^{-}(Maintain[DoorsClosed While Moving])$, but \artifact{<start alarm>} does not violate it (yet). However, as a safety property can only be violated after a finite trace and remains violated after that, $\mathcal{L}^{-}(G)$ is suffix-closed. Let contrast this with $\mathcal{L}^{+}(G)$ that denotes the set of all possible system traces that do \emph{not} violate the property. This language certainly includes all traces that, at one event near, do not violate the property; it also includes all their prefixes, but not all their suffixes. That is, $\mathcal{L}^{+}(G)$ is prefix-closed, and can be represented by a LTS. 
 
-In fact, $\mathcal{L}^{-}(G)$ and $\mathcal{L}^{+}(G)$ are \emph{complement} of each other. That is, $\mathcal{L}^{+}(G) = \Sigma^{*} \setminus \mathcal{L}^{-}(G)$. Interestingly, the complement of a regular language is a regular language~\cite{Hopcroft:1979}, which implies that both can be modeled with a standard automaton. In contrast, the complement of a prefix-closed language is not prefix-closed, as we have illustrated on the example.  
+In fact, $\mathcal{L}^{-}(G)$ and $\mathcal{L}^{+}(G)$ are \emph{complement} of each other. That is, $\mathcal{L}^{+}(G) = \Sigma^{*} \setminus \mathcal{L}^{-}(G)$. Interestingly, the complement of a regular language is also a regular language~\cite{Hopcroft:1979}, which implies that both can be modeled with standard automata. In contrast, the complement of a prefix-closed language is not prefix-closed, as we have illustrated on the example. Complementing a language is straightforward when represented 
 
 
