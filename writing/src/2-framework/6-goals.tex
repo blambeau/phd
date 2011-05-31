@@ -20,12 +20,25 @@ Consider a safety property $G$ and a system $\system$. Let denote by $\mathcal{L
 $\mathcal{L}(Ag_1 \parallel \ldots \parallel Ag_n) \cap \mathcal{L}^{-}(G) = \emptyset$
 \end{center}
 
-The equation above simply requires the system not to exhibit traces that violate the safety property. In fact, it is the well known one from model checking~\cite{Clarke:1989}, provided that $\mathcal{L}^{-}(G)$ actually is $\mathcal{L}(\neg G)$, that is the set of traces that satisfy the negation of the safety property.
+The equation above simply requires the system not to exhibit traces that violate the safety property. In fact, it is the well known one from model checking~\cite{Clarke:1989}, provided that $\mathcal{L}^{-}(G)$ actually is $\mathcal{L}(\neg G)$, that is the set of traces that satisfy the negation of the safety property. We prefer the former notation here because it is closer to the one used for scenarios, with which goals also have synergetic links. On one side, consistency rules similar to the ones given above exist between safety goals and positive scenarios (given as a collection or a hMSC). They simply express that behaviors illustrated in positive scenarios may not violate safety goals. On the other side, a negative scenario, say $N$, is commonly seen as illustrating the violation of a safety goal, say $G$, if the following condition holds:
+
+\begin{center}
+$\mathcal{L}^{-}(N) \subset \mathcal{L}^{-}(G)$
+\end{center}
+
+\noindent that is, if the negative traces that it defines are precisely among those prescrived by the safety goal. We know turn to the question of capturing $\mathcal{L}^{-}(G)$ with an automaton.
 
 \subsection{Tester and property automata}
 
 It it straightforward to check that $\mathcal{L}^{-}(G)$ cannot be represented with a pure LTS, because it is not prefix-closed. For example, the trace \artifact{<start alarm open>} certainly violates the safety goal for the train and so, belongs to $\mathcal{L}^{-}(Maintain[DoorsClosed While Moving])$, but \artifact{<start alarm>} does not violate it (yet). However, as a safety property can only be violated after a finite trace and remains violated after that, $\mathcal{L}^{-}(G)$ is suffix-closed. Let contrast this with $\mathcal{L}^{+}(G)$ that denotes the set of all possible system traces that do \emph{not} violate the property. This language certainly includes all traces that, at one event near, do not violate the property; it also includes all their prefixes, but not all their suffixes. That is, $\mathcal{L}^{+}(G)$ is prefix-closed, and can be represented by a LTS. 
 
-In fact, $\mathcal{L}^{-}(G)$ and $\mathcal{L}^{+}(G)$ are \emph{complement} of each other. That is, $\mathcal{L}^{+}(G) = \Sigma^{*} \setminus \mathcal{L}^{-}(G)$. Interestingly, the complement of a regular language is also a regular language~\cite{Hopcroft:1979}, which implies that both can be modeled with standard automata. In contrast, the complement of a prefix-closed language is not prefix-closed, as we have illustrated on the example. Complementing a language is straightforward when represented 
+In fact, $\mathcal{L}^{-}(G)$ and $\mathcal{L}^{+}(G)$ are \emph{complement} of each other. That is, $\mathcal{L}^{+}(G) = \Sigma^{*} \setminus \mathcal{L}^{-}(G)$. Interestingly, the complement of a regular language is also a regular language~\cite{Hopcroft:1979}, which implies that both can be modeled with standard automata. In contrast, the complement of a prefix-closed language is not prefix-closed, as we have illustrated on the example. Moreover, taking the complement of a language is straightforward as it suffices to flip accepting and non-accepting states of its automaton, provided that the latter has a complete transition function (see Fig.~\ref{image:tester-and-property-automata}). 
 
+\begin{figure}[H]\centering
+\scalebox{0.40}{\includegraphics{src/2-framework/images/tester-automaton}}
+\scalebox{0.40}{\includegraphics{src/2-framework/images/property-automaton}}
+\caption{Tester ($\mathcal{L}^{-}$ at left) and property ($\mathcal{L}^{+}$ at right) automata for \artifact{Maintain[DoorsClosed While Moving]}, as complement of each other.\label{image:tester-and-property-automata}}
+\end{figure}
+
+A procedure for computing an automaton capturing $\mathcal{L}^{-}(G)$, called a \emph{tester} automaton for the safety property $G$, is given in \cite{Giannakopoulou:2003}. In short, it consists in composing a b\"uchi automaton that captures the negation of the state-based FLTL property with fluent automata capturing the event-based semantics of fluents, plus a synchronizer between both. Given a pure safety property, the resulting automaton is deterministic, has a complete transition function, and has sink accepting states capturing all traces (i.e. including all suffixes) violating the property~\cite{Giannakopoulou:2003}. An example of such a tester automaton for the safety goal of the train system is given on the left of~\ref{image:tester-and-property-automata}. The complement of this tester, called here \emph{property} automaton following~\cite{Letier:2005, Letier:2008}, captures $\mathcal{L}^{+}(G)$ and can be obtained by flipping accepting and non-accepting states of the previous one (as shown on the right of the same figure).
 

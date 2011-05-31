@@ -1,0 +1,14 @@
+digraph G {
+    graph [rankdir="LR" ranksep=0];
+    node [color="black" fillcolor="white" shape="circle" style="filled"  fixedsize=true width=0.7]
+    zz [label="" color="white" fillcolor="white" shape="circle" style="filled" fixedsize=true width=0.0];
+    0 [label="false"]
+    1 [label="true"]
+    zz -> 0 [label=""];
+    0 -> 0 [label="stop"]
+    0 -> 0 [label="{&not; Moving}"]
+    0 -> 1 [label="start"]
+    1 -> 0 [label="stop"]
+    1 -> 1 [label="start"]
+    1 -> 1 [label="{Moving}"]
+}
