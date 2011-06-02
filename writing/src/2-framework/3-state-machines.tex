@@ -56,7 +56,7 @@ $\frac{\displaystyle Q \stackrel{l}{\longrightarrow} Q'}{\displaystyle P \parall
 
 In these rules, the notation $X \stackrel{l}{\longrightarrow} X'$ simply denotes the fact that the LTS $X = (S,\Sigma,\delta,q_0)$ may \emph{transit} into another LTS $X' = (S,\Sigma,\delta,q_1)$ with the event label $l$, provided that $(q_0,l,q_1) \in \delta$. 
 
-As one can see, $P \parallel Q$ is defined on the Cartesian product of the states of $P$ and $Q$, and has its initial state simply defined as $(q_1,q_2)$ in this state space. Rules above define possible transitions from such a state. The first two rules are symmetric and encode the fact that, on non shared labels, one LTS may transit while the other stays in its previous state. As stated, those rules allow individual LTS to move along $\tau$ transitions. The last rule forces the two LTS to transit together on all shared labels but $\tau$. A composed LTS can easily be computed constructively by exploring the state space from its initial state until no new state pair is discovered. 
+As one can see, $P \parallel Q$ is defined on the Cartesian product of the states of $P$ and $Q$, and has its initial state simply defined as $(q_1,q_2)$ in this state space. Rules above define possible transitions from such a state. The first two rules are symmetric and encode the fact that, on non shared labels, one LTS may transit while the other stays in its previous state. As stated, those rules allow individual LTS to move along $\tau$ transitions. The last rule forces the two LTS to transit together on all shared labels but $\tau$. A composed LTS can easily be computed constructively by exploring the state space from its initial state until no new state pair is discovered. Last, it is worth mentioning that, when its two LTS operands have same alphabets, the composition operator actually computes the intersection of accepted traces, i.e. $\mathcal{L}(P \parallel Q) = \mathcal{L}(P) \cap \mathcal{L}(Q)$. 
 
 The trace semantics of a system composed of $n$ agents whose behavior is modeled with LTSs $Ag_1$ to $Ag_n$ is captured as:
 
@@ -65,7 +65,6 @@ The trace semantics of a system composed of $n$ agents whose behavior is modeled
 \label{equation:system-composition}
 \end{equation}
 
-It is worth mentioning that, when the LTSs have same alphabets, the composition operator TODO...
 
 \subsection{Black-box behavior through \emph{hiding}}
 
