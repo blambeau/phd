@@ -1,6 +1,8 @@
 \section{State machines as labeled transition systems\label{section:background-state-machines}}
 
-In our framework, the behavior of an agent (and the system) is modeled by a specific kind of finite state machine, called \emph{labeled transition system} (LTS). This formalism, initially introduced by Keller for reasoning about parallel programs~\cite{Keller:1976}, has since been intensively used for specifying and analyzing concurrent systems, e.g. in~\cite{Milner:1989, Clarke:1989, Magee:1997}. A LTS is made of a set of states and a set of transitions between them (see Fig.~\ref{image:framework-start-stop}). Each transition is depicted with an \emph{event} label -- sometimes called a \emph{symbol} or an \emph{action} label; also, a specific state is the \emph{initial state}, designated graphically by an empty arrow in front of it (state 0 in the figure). 
+In our framework, the behavior of an agent will be modeled by a specific kind of finite state machine, called \emph{labeled transition system} (LTS). This formalism, initially introduced by Keller for reasoning about parallel programs~\cite{Keller:1976}, has been intensively used for specifying and analyzing concurrent systems, e.g. in~\cite{Milner:1989, Clarke:1989, Magee:1997}. 
+
+A LTS is made of a set of states and a set of transitions between them (see Fig.~\ref{image:framework-start-stop}). Each transition has an \emph{event} label -- sometimes called \emph{symbol} or \emph{action} label. A state is labeled with one number to distinguish if from other states. An \emph{initial state} is designated graphically by an incoming arrow with no source state (e.g. state 0 in the figure). 
 
 \vspace{0.5cm}
 \begin{figure}[H]
@@ -9,7 +11,16 @@ In our framework, the behavior of an agent (and the system) is modeled by a spec
   \caption{A Labeled Transition System for an \artifact{Engine} agent\label{image:framework-start-stop}.}
 \end{figure}
 
-Mathematically, a LTS is defined as a 4-tuple $(Q,\Sigma,\delta,q_{init})$ where $Q$ is a finite set of states, $\Sigma$ is a set of labels called its \emph{alphabet}, $\delta$ is a transition relation $Q \times \Sigma\cup\{\tau\} \times Q$ and $q_{init} \in Q$ is the initial state. The label $\tau$ is used to denote the so-called \emph{non-observable} transitions, which allow modeling an agent changing state without such change being monitored by its environment. 
+Mathematically, a LTS is defined as a 4-tuple $(Q,\Sigma,\delta,q_{init})$ where 
+
+\begin{itemize}
+\item $Q$ is a finite set of states,
+\item $\Sigma$ is a set of labels called its \emph{alphabet}, 
+\item $\delta$ is a transition relation $Q \times \Sigma\cup\{\tau\} \times Q$,
+\item $q_{init} \in Q$ is the initial state. 
+\end{itemize}
+
+The label $\tau$ is used to denote the so-called \emph{non-observable} transitions, which allow modeling an agent changing state without such change being monitored by its environment. 
 
 A \emph{deterministic} LTS does not have $\tau$ transitions and has no state with two outgoing transitions having the same label (that is, $(q,l,q_1) \in \delta \wedge (q,l,q_2) \in \delta \implies q_1 = q_2$); otherwise it is \emph{non-deterministic}.
 
