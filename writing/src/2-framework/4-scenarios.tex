@@ -1,4 +1,4 @@
-\section{Scenarios as Message Sequence Charts\label{section:background-scenarios}}
+\section{Scenarios as message sequence charts\label{section:background-scenarios}}
 
 Unlike labeled transition systems, that intrinsically model the behavior of a single agent (even if a composed one), scenarios explicitly illustrate interactions among multiple agents. The scenarios we use in this thesis are a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996} (see Fig.~\ref{image:train-scenario-all-agents} for example). To keep the models usable by end-users, however, we use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agents and horizontal arrows representing interactions among agents, also called \emph{events}. Following the modeling of agents of the previous section, events are synchronously sent and received by interacting agents (we also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
 
@@ -112,7 +112,7 @@ $Sc = (S^+,S^-)$ is consistent only if $\mathcal{L}^+(Sc) \cap \mathcal{L}^-(Sc)
 
 Note that, by definition, a collection cannot be consistent with a system unless all scenarios start in its initial state. Also, since scenarios and scenario collections are both finite, a collection is hardly complete in practice because most systems accept an infinite number of traces, through loops. Last, the fact that all scenarios must start in the same initial state may imply a lot of redundancy in descriptions of large systems. Among others, this can render consistency difficult to guarantee unless costly refactoring steps are conducted on scenarios. High-level Message Sequence Charts (hMSCs), introduced in the next section, provide a mean to tackle these problems.
 
-\subsection[Flowcharting scenarios in high-level MSCs]{Flowcharting scenarios in high-level Message Sequence Charts\label{section:background-hmsc}}
+\subsection{Flowcharting scenarios in high-level message sequence charts\label{section:background-hmsc}}
 
 A High Level Message Sequence Chart is a directed graph where each node refers to a MSC (named \emph{basic} MSC, bMSC for short) or a finer grained hMSC~\cite{ITU:1996}. We ignore this later possibility until further notice. Outgoing edges of a node capture its possible continuations, allowing the user to introduce sequences, alternatives and loops, to reuse small MSC fragments, and so on. An hMSC also has an initial starting point that indicates the initial system state. An example of hMSC is given in Fig.~\ref{image:train-hmsc}. 
 
@@ -180,7 +180,7 @@ Based on the trace semantics defined in the previous section, we can now define 
 
 These conditions are the counterpart of those given previously for MSCs and have a similar interpretation, \emph{mutatis mutandis}. In addition, however, it is convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. A hMSC $H$ is \emph{complete} for a system $\system$ if it is consistent with it and defines the same language, that is, if $\mathcal{L}_{arch}(H) = \mathcal{L}(S).$
 
-\subsection{Explicit state annotation}
+\subsection{Explicit state annotations}
 
 A last construction allowed in MSCs is worth discussing that helps managing multiple scenarios. Indeed, many authors allow MSCs to be annotated with state-based information (see, e.g.,~\cite{Kruger:2000, Whittle:2000}). 
 

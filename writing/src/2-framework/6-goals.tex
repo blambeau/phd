@@ -28,7 +28,7 @@ $\mathcal{L}^{-}(N) \subset \mathcal{L}^{-}(G)$
 
 \noindent that is, if the negative traces that it defines are precisely among those prescribed by the safety goal. We know turn to the question of capturing $\mathcal{L}^{-}(G)$ with an automaton.
 
-\subsection{Tester and property automata}
+\subsection{Testers and property automata}
 
 It it straightforward to check that $\mathcal{L}^{-}(G)$ cannot be represented with a pure LTS, because it is not prefix-closed. For example, the trace \artifact{<start open>} certainly violates the safety goal for the train and so, belongs to $\mathcal{L}^{-}(Maintain[DoorsClosed While Moving])$, but \artifact{<start>} does not violate it (yet). However, as a safety property can only be violated after a finite trace and remains violated after that, $\mathcal{L}^{-}(G)$ is suffix-closed. Let contrast this with $\mathcal{L}^{+}(G)$ that denotes the set of all possible system traces that do \emph{not} violate the property. This language certainly includes all traces that, at one event near, do not violate the property; it also includes all their prefixes, but not all their suffixes. That is, $\mathcal{L}^{+}(G)$ is prefix-closed, and can be represented by a LTS. 
 

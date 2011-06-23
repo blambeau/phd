@@ -1,4 +1,4 @@
-\section{State Machines as Labeled Transition Systems\label{section:background-state-machines}}
+\section{State machines as labeled transition systems\label{section:background-state-machines}}
 
 In our framework, the behavior of an agent (and the system) is modeled by a specific kind of finite state machine, called \emph{labeled transition system} (LTS). This formalism, initially introduced by Keller for reasoning about parallel programs~\cite{Keller:1976}, has since been intensively used for specifying and analyzing concurrent systems, e.g. in~\cite{Milner:1989, Clarke:1989, Magee:1997}. A LTS is made of a set of states and a set of transitions between them (see Fig.~\ref{image:framework-start-stop}). Each transition is depicted with an \emph{event} label -- sometimes called a \emph{symbol} or an \emph{action} label; also, a specific state is the \emph{initial state}, designated graphically by an empty arrow in front of it (state 0 in the figure). 
 
@@ -23,7 +23,7 @@ A \emph{trace} denotes an element of $\Sigma^*$, that is a finite sequence of ev
 
 An important notion when designing and analyzing concurrent systems is the one of \emph{behavior equivalence} that permits answering questions like ``\emph{are agents $Ag_1$ and $Ag_2$ the same in terms of behavior?}''. Many different notions of behavioral equivalence exist in the literature, like \emph{strong} and \emph{observational}  equivalences~\cite{Milner:1989}, bisimilarity~\cite{Park:1981}, or failure equivalence~\cite{Hoare:1985}. Their introduction (mostly in process algebra) is motivated by the need to distinguish between special process cases as well as being able to reason about their correctness (in terms of \emph{deadlock}, for instance), especially when dealing with non-determinism. For details, see e.g.~\cite[chap. 3]{Hoare:1985}, \cite[chap. 4 \& 5]{Milner:1989} or the overview given in~\cite{Fernandez:1991}. Our hypotheses, especially the one of \emph{determinate} agents, allows us to stick with the weakest, yet simplest, notion of LTS equivalence: \emph{trace equivalence}~\cite{Hoare:1985, Engelfriet:1985}. Under the latter, two LTS $P$ and $Q$ are equivalent, denoted by $P \equiv_{tr} Q$, if they accept the same set of traces, in other words, if they define the same \emph{language} $\mathcal{L}(P) = \mathcal{L}(Q)$. This naturally leads us to the next section, which discusses some important properties inherited by LTSs from their connection with regular languages. 
 
-\subsection{Labeled Transition Systems and Regular Languages\label{section:background-lts-and-regular-languages}}
+\subsection{Labeled transition systems and regular languages\label{section:background-lts-and-regular-languages}}
 
 Labeled transition systems are actually a subclass of standard automata \cite{Hopcroft:1979}. The only difference is that the latter make an additional distinction between \emph{accepting} and \emph{non-accepting} states. In other words, a LTS can be seen as a standard automaton in which all states are accepting states. Many results from standard automata theory apply to LTS while preserving trace equivalence, that is, observable behaviors.
 
@@ -35,7 +35,7 @@ As languages are sets of traces, it is sometimes natural to reason in terms of s
 
 In the next two sections, we define two additional operators, \emph{composition} and \emph{hiding}, that allow reasoning about behaviors in presence of multiple agents with different alphabets.
 
-\subsection{System as Agent composition}
+\subsection{Systems as agent compositions}
 
 If a system is composed of active agents and the behavior of each of these agents is explicitly modeled with an LTS, one can ask what is the behavior of the system itself. We define it through parallel composition~\cite{Hoare:1985}, a setting where agents execute asynchronously but synchronize on shared events. Given a system made of $n$ agents, and the composition operator denoted by~$\parallel$, the system is defined as:
 
@@ -66,7 +66,7 @@ The trace semantics of a system composed of $n$ agents whose behavior is modeled
 \end{equation}
 
 
-\subsection{Black-box behavior through \emph{hiding}}
+\subsection{Black-box behavior through event \emph{hiding}}
 
 If the notion of agent composition gives a sound interpretation to the notion of \emph{system} and its behavior, it is, in fact, of slightly more general use. Indeed, as explained in the introduction of this section, it makes sense to consider not only the composition of all agents but sometimes the composition of a subset of them that, together, define an interesting boundary in the system considered. Consider the agents depicted in the scenario of Fig.~\ref{image:train-scenario-all-agents} for example. The ``machine vs. world'' boundary can simply be modeled as follows:
 
