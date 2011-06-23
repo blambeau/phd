@@ -1,29 +1,40 @@
 \section{Scenarios as message sequence charts\label{section:background-scenarios}}
 
-Unlike labeled transition systems, that intrinsically model the behavior of a single agent (even if a composed one), scenarios explicitly illustrate interactions among multiple agents. The scenarios we use in this thesis are a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996} (see Fig.~\ref{image:train-scenario-all-agents} for example). To keep the models usable by end-users, however, we use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agents and horizontal arrows representing interactions among agents, also called \emph{events}. Following the modeling of agents of the previous section, events are synchronously sent and received by interacting agents (we also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
+Labeled transition systems may capture the behaviors of a single agent class. Scenarios illustrate admissible interactions among multiple agent instances. The scenarios we use in this thesis are specified in a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996}, see Fig.~\ref{image:train-scenario-all-agents} for example. To keep scenario specifications the models usable by end-users, we will use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agent instances and horizontal arrows representing interactions events among them. According to the previous section, events are synchronously sent and received by interacting agents (we will also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
 
-We consider \emph{positive} scenarios, as examples of behaviors that the system should exhibit, in the next section and \emph{negative} scenarios, behaviors that the system must avoid, in the following one. Subsequent sections will then discuss ways of managing multiple positive and negative scenarios. 
+We consider \emph{positive} scenarios, that are examples of behaviors that the system should exhibit (see Section~\ref{subsection:background-positive-scenarios}), and \emph{negative} scenarios that behaviors that the system must avoid (see Section~\ref{subsection:background-negative-scenarios}). Sections~\ref{subsection:background-scenario-collections}, \ref{subsection:background-hmsc} and \ref{subsection:background-scenario-annotations} will then discuss ways of managing multiple positive and negative scenarios. 
 
 \subsection{Positive scenarios\label{subsection:background-positive-scenarios}}
 
-MSCs in this thesis are given a trace semantics, following~\cite{Uchitel:2004}. That is, we consider that MSCs define sets of traces, and capture the later with LTSs, as for agents in the previous section. Given a MSC, two kinds of traces can actually be considered: those from the local perspective of a single timeline, and those from the global perspective of the complete MSC. We discuss each of these views in turn.
+As in~\cite{Uchitel:2004}, MSCs are given a trace semantics. We will consider that a MSC defines a set of traces; the latter are expressed through a LTS. Given a MSC, two kinds of traces can be considered: those from the local perspective of a single timeline and those from the global perspective of the complete MSC. We discuss each of these views in turn.
 
-As time in a MSC is represented top-down, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines only one trace; precisely, one \emph{maximal} trace, that is with all events to which the agent participates. That trace, and all its suffixes then, can be captured by a LTS. For example, the traces defined by the timeline of the \artifact{Controller} in the MSC of Fig.~\ref{image:train-scenario-all-agents} are precisely captured by the LTS of Fig.~\ref{image:local-traces-lts}. Given a MSC $M$ and an agent $Ag$, we denote such an LTS by $M_{\downarrow Ag}$.
+As time in a MSC evolves from top to bottom, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines one simple trace; such trace is \emph{maximal} trace in that it includes all events in which the agent participates. This trace and all its suffixes can be captured by a LTS. For example, the traces defined by the timeline of the \artifact{Controller} in the MSC of Fig.~\ref{image:train-scenario-all-agents} are precisely captured by the LTS in Fig.~\ref{image:local-traces-lts}. Given a MSC $M$ and an agent $Ag$, we will denote such LTS by $M_{\downarrow Ag}$.
 
 \vspace{0.5cm}
 \begin{figure}[H]\centering
 \scalebox{0.45}{\includegraphics{src/2-framework/images/local-trace}}
-\caption{LTS capturing the traces of the MSC of Fig.~\ref{image:train-scenario-all-agents} from the local point of view of the \artifact{Controller}.\label{image:local-traces-lts}}
+\caption{LTS capturing the traces of the MSC in Fig.~\ref{image:train-scenario-all-agents} from the local point of view of the \artifact{Controller}.\label{image:local-traces-lts}}
 \end{figure}
 
-When considering traces from the perspective of the whole MSC, two interpretations co-exist. In the former, a reasoning similar to the previous one is applied. Indeed, one can consider that a MSC defines a \emph{maximal} trace, with all events in a (graphical) top-down ordering. In the example at hand, such a trace would be \artifact{<start-signal, start, alarm-pressed, \ldots, open>}. Making so amounts to consider that a MSC defines a total order among all events; this leads to a simple and straightforward, yet limited, trace semantics of MSCs.
+When looking at traces from the perspective of the whole MSC, two possibilities might be envisaged.
 
-However, when considering concurrent systems, a partial ordering among events seems more adequate~\cite{ITU:1996, Uchitel:2003}. Consider for example the events \artifact{start-signal} and \artifact{alarm-pressed} at beginning of the same MSC shown in Fig.~\ref{image:train-scenario-all-agents}. These two events model unrelated message passing between different agents, and can therefore hardly be considered timely ordered (e.g. maybe does the passenger push the alarm button when the \artifact{start-signal} is already sent but before \artifact{start} has been propagated? or even before \artifact{start-signal}?, and so on.). To take such cases into account, one has to consider that the traces defined by a MSC are \emph{linearizations} of the partial order among events. In other words, linearizations capture all possible sequences of events that respect the total ordering defined by timelines. We do not formalize the structure of Message Sequence Charts and their linearizations here, and refer the reader to~\cite{Uchitel:2003} for such a mathematical characterization. However, we state the relations that hold between the set of traces obtained with the local and global perspectives discussed so far:
+\noindent \textbf{Total event ordering} -- one might consider that a MSC defines a simple \emph{maximal} trace where all events appear according to the graphical top-down ordering. In our example, such trace would be
+
+\begin{center}\artifact{<start-signal, start, alarm-pressed, \ldots, open>}\end{center} 
+
+A MSC would then define a total order among all events. This leads to a simple and straightforward, yet limited, trace semantics for MSCs.
+
+\noindent \textbf{Partial event ordering} -- when considering concurrent systems, a partial ordering among events seems more adequate~\cite{ITU:1996, Uchitel:2003}. Consider for example the events \artifact{start-signal} and \artifact{alarm-pressed} at the beginning of the MSC shown in Fig.~\ref{image:train-scenario-all-agents}. These two events capture unrelated message passing between different agents; they can therefore hardly be considered ordered over time -- e.g. the passenger might push the alarm button when the \artifact{start-signal} is already sent but before \artifact{start} has been propagated; or maybe even before \artifact{start-signal}; and so on. 
+
+To account for such situations, one has to consider that the traces defined by a MSC are \emph{linearizations} of the partial order among MSC events. In other words, linearizations capture all possible sequences of events that respect the total ordering defined by the timelines. We do not formalize the structure of Message Sequence Charts and their linearizations here, and refer the reader to~\cite{Uchitel:2003} for such a mathematical characterization. 
+
+The set of traces obtained from the local and global perspectives discussed are related ass follows:
 
 \vspace{-0.4cm}
 \begin{equation}
 \label{equation:msc-composition}
-\mathcal{L}_{total}(M) \subseteq \mathcal{L}_{partial}(M) = \mathcal{L}(M_{\downarrow Ag_1} \parallel \ldots \parallel M_{\downarrow Ag_n})
+\mathcal{L}_{total}(M) \subseteq \mathcal{L}_{partial}(M) \\
+\mathcal{L}_{partial}(M) = \mathcal{L}(M_{\downarrow Ag_1} \parallel \ldots \parallel M_{\downarrow Ag_n})
 \end{equation}
 
 The left part simply states that traces under a partial ordering certainly include those under a total ordering, which is expected. Indeed, the model with partial ordering is more general than the one with total ordering. Among others, it means that everything that is true for the former is certainly true for the latter as well. From now on, and unless stated otherwise, we therefore assume the general model with partial ordering. In particular, we do not make the $partial$ and $total$ subscripts explicit when stating other language relations in the following sections. A consistent use of one of them renders all formula valid.
@@ -51,7 +62,7 @@ Consider a system composed of $n$ agents whose behavior is modeled as $\system$.
 
 The first condition is not formalized but simply requires the MSC and the system to agree on the set of agents (a MSC may actually illustrate interactions among a proper subset of system agents) and their respective interfaces (labels along a timeline are a subset of the alphabet of the corresponding agent). The second condition states that the traces defined by a timeline in the MSC must be traces accepted in the LTS modeling the behavior of the corresponding agent. The third condition states that all linearizations of the MSC must be accepted traces of the LTS modeling the behavior of the composed system. Note that, under architectural consistency, the second condition implies the third one~\cite{Uchitel:2003}. Last, but not least, stated conditions restrict consistent MSCs to those starting in the system initial state.
 
-\subsection{Negative scenarios}
+\subsection{Negative scenarios\label{subsection:background-negative-scenarios}}
 
 While positive MSCs model examples of behavior that the system is expected to exhibit, it is often convenient to be able to model the counterpart, that is examples of behavior that the system is expected (even required) \emph{not} to exhibit. Such proscribed behaviors are illustrated with negative MSCs~\cite{Uchitel:2004}. A negative MSC is simply a scenario whose last event is proscribed, as depicted by a crossed arrow below a dashed line. An example is given in Fig.~\ref{image:train-negative-scenario}, where the \artifact{Controller} may not open doors immediately after having started the train.
 
@@ -92,7 +103,7 @@ Similarly to positive MSCs, we state conditions for a negative MSC $N = (P,e)$ a
 
 The first condition is similar to what has been said previously for positive MSCs. The second enforces the precondition to be a consistent (positive) MSC, implicitly requiring positive traces to be accepted. The last one states that the system may not exhibit any negative trace captured by the negative MSC.
 
-\subsection{Scenario collections}
+\subsection{Scenario collections\label{subsection:background-scenario-collections}}
 
 Systems are generally illustrated with multiple positive and negative scenarios. The most straightforward way of doing so is through a scenario collection $Sc = (S^+,S^-)$ where $S^+$ and $S^-$ are finite (but possibly empty) sets of positive MSCs and negative MSCs, respectively. It is straightforward, yet useful, to extend the notions of language and consistency of scenarios to collections of them. 
 
@@ -180,7 +191,7 @@ Based on the trace semantics defined in the previous section, we can now define 
 
 These conditions are the counterpart of those given previously for MSCs and have a similar interpretation, \emph{mutatis mutandis}. In addition, however, it is convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. A hMSC $H$ is \emph{complete} for a system $\system$ if it is consistent with it and defines the same language, that is, if $\mathcal{L}_{arch}(H) = \mathcal{L}(S).$
 
-\subsection{Explicit state annotations}
+\subsection{Explicit state annotations\label{subsection:background-scenario-annotations}}
 
 A last construction allowed in MSCs is worth discussing that helps managing multiple scenarios. Indeed, many authors allow MSCs to be annotated with state-based information (see, e.g.,~\cite{Kruger:2000, Whittle:2000}). 
 
