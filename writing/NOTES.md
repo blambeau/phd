@@ -24,11 +24,6 @@
 
     * Remove or replace the paragraph about a fluent being TOP in LTS states.
 
-  * 2.6.3 Tester and property automata
-
-    * The graphical distinction between accepting and non-accepting states has 
-      not be introduced (double-circle)
-
   * Everywhere
   
     * How to change captions' font??
