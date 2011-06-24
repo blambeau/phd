@@ -4,11 +4,6 @@
 
     * Add a running example for process models (Meeting scheduler)?
 
-  * 2.2.1 Framework overview
-
-    * Add a section about "The operational view" (cfr. Axel's comment
-      on page 7)
-
   * 2.2.2 On double use of LTS models
 
     * The discussion should probably be extended a bit now? Consistency

@@ -18,7 +18,7 @@ A set of agents can be aggregated into a new one of coarser granularity. Therefo
 
 \noindent \textbf{The behavioral view} -- Behaviors capture the dynamic interactions among the agents forming the system; they will be modeled as sequences of events. In an interaction, an event is \emph{synchronously} sent by a source agent and received by a target agent. The same event can in fact be received by several agents at once; a form of \emph{broadcasting} is thus supported. 
 
-Typical examples and counterexamples of system behaviors are specified through positive and negative scenarios involving agent instances, like the one in Fig.~\ref{image:train-scenario-all-agents}. The Message Sequence Charts notation will be used to capture scenarios~\cite{ITU:1996}. Higher-level scenarios will be supported by introducing sequences and loops in such descriptions.
+Typical examples and counterexamples of system behaviors are specified through positive and negative scenarios involving agent instances, like the one in Fig.~\ref{image:train-scenario-all-agents}. The Message Sequence Charts (MSC) notation will be used to capture scenarios~\cite{ITU:1996}. Higher-level scenarios will be supported by introducing sequences and loops in such descriptions.
 
 In addition to the partial behavior description linking agent instances, the complete behavior of each agent will be modeled at class level through a form of state machine known as labeled transition systems (LTS)~\cite{Keller:1976, Milner:1989}. The behavior of the entire system is obtained by parallel composition~\cite{Hoare:1985} of the agent LTSs. Behavior  projection on specific agents is also supported, in order to get the zoom-in/zoom-out facilities as suggested before.
 
@@ -39,7 +39,11 @@ For the modeller, goals are best captured through state-based abstractions (e.g.
 
 %%% The operational view
 
-\noindent \textbf{The operational view} -- TODO~\ldots
+\noindent \textbf{The operational view} -- This view aims at capturing processes which agents are involved in. Processes are made of tasks and decisions. A task is a unit of work to be performed by the collaboration of the agents. A decision is a condition on the process state which drives  which tasks are to be performed next.
+
+The guarded high-level Message Sequence Charts (g-hMSC) notation will be used to capture processes~\cite{Damas:2009, Damas:2011}. Tasks in a g-hMSC are either MSC scenarios or finer-grained g-hMSCs. Decision nodes capture conditions on the process state in terms of fluents. The semantics of g-hMSC will be defined in Chapter~\ref{chapter:deductive}.
+
+%%% Double, double, double
 
 \subsection{On the double use of labeled transition systems}
 
