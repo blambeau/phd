@@ -6,7 +6,6 @@
 
   * 2.2.1 Framework overview
 
-    * Define _behavioral_ goal
     * Add a section about "The operational view" (cfr. Axel's comment
       on page 7)
 
