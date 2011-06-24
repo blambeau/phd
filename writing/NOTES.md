@@ -38,10 +38,6 @@
 
     * Remove or replace the paragraph about a fluent being TOP in LTS states.
 
-  * 2.6 Declarative goals and domain properties
-
-    * Introduce 2.6.1 -> 2.6.3 with a paragraph at the end of the 2.6 intro 
-
   * 2.6.1 Properties as FLTL assertions
 
     * Justify restricting to safety properties with Axel's argument (see bottom
