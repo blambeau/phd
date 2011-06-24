@@ -60,9 +60,9 @@ The set of traces accepted by a LTS $P$ is called its \emph{language}; it is den
 
 \emph{Behavioral equivalence} is an important notion when designing and analyzing concurrent systems. It allows answering questions such as ``\emph{are agents $Ag_1$ and $Ag_2$ the same in terms of behavior?}''. Many different notions of behavioral equivalence exist in the literature, like \emph{strong} and \emph{observational}  equivalences~\cite{Milner:1989}, bisimilarity~\cite{Park:1981}, or failure equivalence~\cite{Hoare:1985}. Assuming \emph{determinate} agents, as explained in Section~\ref{subsection:background-multiple-views}, allows us to stick to the weakest, yet simplest, notion of LTS equivalence: trace equivalence~\cite{Hoare:1985, Engelfriet:1985}. Two LTS $P$ and $Q$ are \emph{trace-equivalent} if they accept the same set of traces:
 
-\begin{center}
-$P \equiv_{tr} Q$ if and only if $\mathcal{L}(P) = \mathcal{L}(Q)$
-\end{center}
+\begin{equation}
+P \equiv_{tr} Q$~if~and~only~if~$\mathcal{L}(P) = \mathcal{L}(Q)
+\end{equation}
 
 The next section discusses some important properties inherited by LTSs from their connection with regular languages. 
 
@@ -95,9 +95,9 @@ As we are mostly interested in agent \emph{behaviors}, for parallel composition 
 
 Let $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ denote two LTS. Their \emph{composition} is another LTS 
 
-\begin{center}
-$P \parallel Q = (S_1 \times S_2,\Sigma_1\cup\Sigma_2,\delta,(q_1,q_2))$
-\end{center}
+\begin{equation}
+P \parallel Q = (S_1 \times S_2,\Sigma_1\cup\Sigma_2,\delta,(q_1,q_2))
+\end{equation}
 
 \noindent where $\delta$ is the smallest relation satisfying the following rules~\cite{Giannakopoulou:1999}:
 
@@ -123,9 +123,9 @@ A composed LTS can easily be computed constructively by exploring the state spac
 
 When the two LTS operands share the same alphabet, the composition operator computes the intersection of accepted traces:
 
-\begin{center}
+\begin{equation}
 $\mathcal{L}(P \parallel Q) = \mathcal{L}(P) \cap \mathcal{L}(Q)$~~if~~$\Sigma_{1}=\Sigma_{2}$
-\end{center}
+\end{equation}
 
 The trace semantics of a system composed of $n$ agents whose behavior is modeled with LTSs $Ag_1 \ldots Ag_n$ is captured by:
 
@@ -142,20 +142,20 @@ It is sometimes useful to consider the composition of a subset of agents that to
 Consider the agents depicted in the scenario of Fig.~\ref{image:train-scenario-all-agents}, for example. The machine boundary can simply be modeled as follows:
 
 \vspace{-0.8cm}
-\begin{align*}
+\begin{align}
 Machine &= Controller \parallel Actuators \parallel Sensors \\
 World   &= Passenger \parallel Doors \parallel Engine \\
 System  &= Machine \parallel World
-\end{align*}
+\end{align}
 \vspace{-0.8cm}
 
 As seen before, the $Machine$ agent has an interface in terms of the set of events in which it engages. This interface might be too large. A black-box version of the $Machine$ behavior might be suitable; it is a LTS whose interface is restricted to those events crossing the depicted boundary. 
 
 To support this, we introduce a simple operator called hiding. The \emph{hiding} of a set of labels $I$ in a LTS $P = (Q,\Sigma,\delta,q_{init})$ defines the LTS
 
-\begin{center}
-$P \setminus I = (Q,\Sigma \setminus I,\delta_{hidden},q_{init})$ 
-\end{center}
+\begin{equation}
+P \setminus I = (Q,\Sigma \setminus I,\delta_{hidden},q_{init})
+\end{equation}
 
 \noindent where $\delta_{hidden}$ is the smallest relation satisfying the following rules~\cite{Giannakopoulou:1999}:
 
@@ -169,16 +169,16 @@ $\frac{\displaystyle P \stackrel{l}{\longrightarrow} P'}{\displaystyle P \setmin
 The hiding operator thus simply makes a set of labels invisible to the environment by replacing them by $\tau$ transitions. The resulting LTS is non-deterministic; however, a minimal and deterministic equivalent exists (as discussed in the previous section). In our example, the LTS of the black-box machine we are actually looking for is:
 
 \vspace{-0.8cm}
-\begin{align*}
+\begin{align}
 Machine' &= (Machine \setminus Internals)^\Delta
-\end{align*}
+\end{align}
 \vspace{-0.8cm}
 
 \noindent where $Machine$ is the composition between the controller, actuators and sensors given previously and $Internals$ is the set of events internal to the machine, here: $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{open-signal}, \artifact{alarm-signal}, \ldots\}$ (see Fig.~\ref{image:train-scenario-all-agents}).
 
 Given a LTS $P = (Q,\Sigma,\delta,q_{init})$ and a set of labels $I$, the relation between the languages of $P$ and $P \setminus I$ is defined as follows:
 
-\begin{center}
-$\mathcal{L}(P \setminus I) = \{ t'~|~\exists t \in \mathcal{L}(P)~such~that~t' = t|_{\Sigma \setminus I}\}$
-\end{center}
+\begin{equation}
+\mathcal{L}(P \setminus I) = \{ t'~|~\exists t \in \mathcal{L}(P)~such~that~t' = t|_{\Sigma \setminus I}\}
+\end{equation}
 

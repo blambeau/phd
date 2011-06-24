@@ -51,8 +51,6 @@
   
     * How to change captions' font??
 
-    * Replace equation -> relation. All equations should probably have a number.
-
 * 2011.06.24 - To discuss with Axel
 
   * The integration of all models in a coherent framework can be seen 
