@@ -2,7 +2,7 @@
 
 Labeled transition systems may capture the behaviors of a single agent class. Scenarios illustrate admissible interactions among multiple agent instances. The scenarios we use in this thesis are specified in a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996}, see Fig.~\ref{image:train-scenario-all-agents} for example. To keep scenario specifications the models usable by end-users, we will use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agent instances and horizontal arrows representing interactions events among them. According to the previous section, events are synchronously sent and received by interacting agents (we will also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
 
-We consider \emph{positive} scenarios, that are examples of behaviors that the system should exhibit (see Section~\ref{subsection:background-positive-scenarios}), and \emph{negative} scenarios that behaviors that the system must avoid (see Section~\ref{subsection:background-negative-scenarios}). Sections~\ref{subsection:background-scenario-collections}, \ref{subsection:background-hmsc} and \ref{subsection:background-scenario-annotations} will then discuss ways of managing multiple positive and negative scenarios. 
+We consider \emph{positive} scenarios, that are examples of behaviors that the system should exhibit (see Section~\ref{subsection:background-positive-scenarios}), and \emph{negative} scenarios that behaviors that the system must avoid (see Section~\ref{subsection:background-negative-scenarios}). Sections~\ref{subsection:background-scenario-collections}, \ref{subsection:background-hmsc} and \ref{subsection:background-scenario-annotations} will then discuss ways of managing multiple positive and negative scenarios. The consistency of the scenarios and state machines views is discussed in section~\ref{subsection:background-scenario-consistency}.
 
 \subsection{Positive scenarios\label{subsection:background-positive-scenarios}}
 
@@ -107,7 +107,7 @@ A High Level Message Sequence Chart is a directed graph where each node refers t
 
 The following section provides the trace semantics for hMSCs containing bMSCs only. The semantics is further extended to take finer-grained hMSCs into account in the next one. 
 
-\subsection*{hMSCs composed from bMSCs only}
+\subsubsection*{hMSCs composed from bMSCs only}
 
 A trace semantics for hMSCs amounts to answering the question: \emph{what traces are captured by a hMSC?} This apparently simple question has, however, a fairly complex answer. The reasons are manifold; we summarize here, and slightly extend, the characterization in~\cite{Uchitel:2004}.
 
@@ -151,7 +151,7 @@ An algorithm for synthesizing the LTS modeling $\mathcal{L}_{arch}(H)$ may be fo
 
 An important difference should be noted between the relations between MSC languages in (\ref{equation:msc-composition}) and those on hMSC languages in (\ref{equation:hsmc-traces-by-agent-composition}). The former denotes an equality between $\mathcal{L}_{partial}(M)$ and $\mathcal{L}(M_{\downarrow Ag_1}\parallel\ldots\parallel M_{\downarrow Ag_n})$ whereas the latter defines a set inclusion between $\mathcal{L}_{weak}(H)$ and $\mathcal{L}(H_{\downarrow Ag_1}\parallel\ldots\parallel H_{\downarrow Ag_n})$. In fact, traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ capture the set of \emph{implied} scenarios of a hMSC specification~\cite{Alur:2000, Uchitel:2004}. Implied scenarios occur when a system is designed globally while implemented component-wise. In other words, implied scenarios capture traces that follow different paths in the hMSC when projected on individual agent timelines. Implied scenarios are further discussed in Section~\ref{section:background-discussion}.
 
-\subsection*{hMSCs composed from finer-grained hMSCs}
+\subsubsection*{hMSCs composed from finer-grained hMSCs}
 
 As stated previously, a hMSC node may refer to a finer-grained hMSC instead of a bMSC. To take the latter into account in the trace semantics given previously, we must decide how a sub-hMSC is to be ``connected'' with its father. To keep a consistent framework in terms of synchronization hypotheses, we require such sub-hMSC to have, in addition to its initial state, a terminating state to which at least one node is connected. For simplicity, we also forbid nodes with no outgoing transition. 
 
