@@ -11,10 +11,6 @@
 
     * Refactor image 2.2 and add process models to it
 
-  * 2.3 State machines
-
-    * \Sigma star is not introduced
-
   * 2.4.2 Negative scenarios
 
     * Find an older reference for _negative scenario_.

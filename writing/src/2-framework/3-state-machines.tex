@@ -20,19 +20,21 @@ Mathematically, a LTS is defined as a 4-tuple $(Q,\Sigma,\delta,q_{init})$ where
 \item $q_{init} \in Q$ is the initial state. 
 \end{itemize}
 
+The \emph{alphabet} $\Sigma$ captures the notion of \emph{agent interface}, as a set of event labels that an agent recognizes. In other words, the events in which the agent \emph{engages} in synchronous communications with its environment. For example, the LTS of Fig.~\ref{image:framework-start-stop} has an alphabet \artifact{$\Sigma=\{start, stop\}$}. 
+
+Note that labeled transition systems do not distinguish between \emph{sent} and \emph{received} events. Such distinction may be required when connecting LTS and scenarios; in such cases, we assume this structural information to be available elsewhere, typically, from a context or architecture diagram~\cite{Ward:1985, Magee:1995}. We will assume that an event label uniquely determines the interacting agents; an event may however be received by more than one agent. 
+
+In the thesis $\Sigma^{*}$ denotes the set of finite sequences over an alphabet $\Sigma$. A \emph{trace} is an element of $\Sigma^{*}$, that is, a finite sequence of event labels \artifact{$w = \textless l_0,\ldots,l_{n} \textgreater$} with $l_i \in \Sigma$. We will sometimes use the notation $w.l$ to denote the concatenation of a trace $w$ with a label or another trace $l$.
+
 The label $\tau$ is used to denote so-called \emph{non-observable} transitions. Such transitions allow us to model agent state changes that cannot be monitored by its environment. We will denote $\Sigma\cup\{\tau\}$ by $\Sigma_{\tau}$ (an alphabet augmented with the $\tau$ label).
 
-A \emph{deterministic} LTS is such that a sequence of observable events uniquely determines the reached state. Otherwise it is \emph{non-deterministic}. Therefore a deterministic LTS does not have $\tau$ transition. It also has no state with two outgoing transitions having the same label, that is, 
+A LTS is \emph{deterministic} if any trace uniquely determines the reached state; otherwise it is \emph{non-deterministic}. Therefore, a deterministic LTS may not have $\tau$ transitions; neither does it have a state with two outgoing transitions sharing the same label, that is, 
 
 \begin{center}$(q,l,q_1) \in \delta \wedge (q,l,q_2) \in \delta \implies q_1 = q_2$\end{center}
 
 A state is \emph{terminating} if it has no outgoing transition; otherwise it is \emph{non-terminating}. A \emph{terminating} LTS has at least one terminating state; otherwise it is \emph{non-terminating}. 
 
 Note that, the above definition does not allow distinguishing between terminating states that model successful termination (an agent stops running intentionally) and non-successful termination (e.g. an agent composed from finer-grained agents \emph{deadlocks} unintentionally). 
-
-The \emph{alphabet} $\Sigma$ captures the notion of \emph{agent interface}, as a set of event labels that an agent recognizes. In other words, the events in which the agent \emph{engages} in synchronous communications with its environment. For example, the LTS of Fig.~\ref{image:framework-start-stop} has an alphabet \artifact{$\Sigma=\{start, stop\}$}. 
-
-Note that labeled transition systems do not distinguish between \emph{sent} and \emph{received} events. Such distinction may be required when connecting LTS and scenarios; in such cases, we assume this structural information to be available elsewhere, typically, from a context or architecture diagram~\cite{Ward:1985, Magee:1995}. We will assume that an event label uniquely determines the interacting agents; an event may however be received by more than one agent. 
 
 A finite LTS \emph{execution} is a finite sequence of states separated by labels: 
 
@@ -48,13 +50,9 @@ An execution is \emph{valid} for a LTS if it denotes a path from the initial sta
 $q_0 = q_{init}$ and $(q_i,l_i,q_{i+1}) \in \delta$ for $0 \leq i < n$. 
 \end{center}
 
-The \emph{projection} of an execution $w$ over an alphabet $\Sigma$, denoted by $w|_{\Sigma}$, is the result of keeping, from $w$ only those event labels that belong to $\Sigma$ (in other words, eliminating $q_i$ states and $\tau$ labels).
+The \emph{projection} of an execution $w$ over an alphabet $\Sigma$, denoted by $w|_{\Sigma}$, is the result of keeping, from $w$ only those event labels that belong to $\Sigma$ (in other words, eliminating $q_i$ states and $\tau$ labels). In other words, the projection of an execution defines a trace. 
 
-A \emph{trace} is a finite sequence of event labels \artifact{$t= \textless l_0,\ldots,l_{n} \textgreater$} with $l_i \in \Sigma$. Unlike executions, a trace never contains $\tau$ labels. 
-
-From these two definitions, the projection of an execution defines a trace. We will sometimes use the notation $w.l$ to denote the concatenation of a trace $w$ with a label or another trace $l$.
-
-A trace $t$ is \emph{accepted} by a LTS if there exists a valid execution $w$ such that $w|_{\Sigma} = t$. In other words, a trace is accepted by a LTS if it denotes an existing path in the corresponding graph from the initial state, possibly with silent moves offered by $\tau$ transitions in the non-deterministic case. In the latter case, a trace may actually denote more that one existing path. As a consequence of this definition, a prefix of an accepted trace is an accepted trace as well; the empty trace $\lambda$ is therefore always accepted. For example, the LTS of Fig.~\ref{image:framework-start-stop} accepts the trace \artifact{<start stop start>}, the trace \artifact{<start stop>} as well, but not \artifact{<start start>}. 
+A trace $t$ is \emph{accepted} by a LTS if there exists a valid execution $w$ such that $w|_{\Sigma} = t$. In other words, a trace is accepted by a LTS if it denotes an existing path in the corresponding graph from the initial state, possibly with silent moves offered by $\tau$ transitions in the non-deterministic case (in this case a trace may actually denote more that one existing path). As a consequence of this definition, a prefix of an accepted trace is an accepted trace as well; the empty trace $\lambda$ is therefore always accepted. For example, the LTS of Fig.~\ref{image:framework-start-stop} accepts the trace \artifact{<start stop start>}, the trace \artifact{<start stop>} as well, but not \artifact{<start start>}. 
 
 The set of traces accepted by a LTS $P$ is called its \emph{language}; it is denoted by $\mathcal{L}(P)$. For example, the  \emph{language} of the LTS shown in Fig.~\ref{image:framework-start-stop} is $\mathcal{L}(\artifact{Engine})=\{\lambda$, \artifact{<start>}, \artifact{<start stop>}, \artifact{<start stop start>}, \ldots $\}$. 
 
