@@ -11,10 +11,6 @@
 
     * Refactor image 2.2 and add process models to it
 
-  * 2.4.2 Negative scenarios
-
-    * Find an older reference for _negative scenario_.
-
   * 2.4.5 Flowcharting scenarios ...
 
     * Say briefly why not all hMSCs define regular languages.
@@ -57,6 +53,11 @@
 
   * Should I really use definition numbers ?? There's **a lot** of them.
 
+  * Section 2.4.2: What older reference about negative **MSC**? I've put
+    Uchitel:2002 now. Uchitel:2003 even says "our inclusion of negative
+    scenarios in MSC specifications is, to the best of our knowledge, 
+    novel". In admit that the notion of negative **scenario** is older.
+    
   * Section 2.4.5: is the current sequence about bizarre hMSC semantics 
     clearer now? 
 
