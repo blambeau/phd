@@ -26,7 +26,12 @@ For example, the safety goal ``\emph{Doors shall remain closed while the train i
 \artifact{Maintain[DoorsClosed While Moving]} = $\square(Moving \rightarrow DoorsClosed)$
 \end{center}
 
-Properties formalized in temporal logic are commonly classified as \emph{liveness} or \emph{safety} properties~\cite{Alpern:1986}. Liveness refers to ``\emph{something good will eventually happen}'' whereas safety refers to  ``\emph{something bad never happens}''. The thesis will focus on safety properties. Reasoning about liveness requires considering the acceptance of infinite execution traces which it outside the expressiveness of LTSs and regular languages. If ``something bad'' happens it must do so after a finite sequence of events, and is irremediable~\cite{Alpern:1986, Giannakopoulou:1999}.
+Properties formalized in temporal logic are commonly classified as \emph{liveness} or \emph{safety} properties~\cite{Alpern:1986}. Liveness refers to ``\emph{something good will eventually happen}'' whereas safety refers to  ``\emph{something bad never happens}''. The thesis will focus on safety properties:
+
+\begin{itemize}
+\item reasoning about liveness requires considering the acceptance of infinite execution traces which it outside the expressiveness of LTSs and regular languages. If ``something bad'' happens it must do so after a finite sequence of events, and is irremediable~\cite{Alpern:1986, Giannakopoulou:1999}.
+\item this thesis focusses on requirements engineering models. To be realizable by agents, considered properties are therefore bounded~\cite{Letier:2002} as _maintain_ or _bounded achieve_ formal specifications; that is they correspond to safety properties.  
+\end{itemize}
 
 \subsection{Consistency between the behavioral and intentional views\label{subsection:background-goals-consistency}}
 

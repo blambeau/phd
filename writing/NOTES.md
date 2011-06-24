@@ -38,11 +38,6 @@
 
     * Remove or replace the paragraph about a fluent being TOP in LTS states.
 
-  * 2.6.1 Properties as FLTL assertions
-
-    * Justify restricting to safety properties with Axel's argument (see bottom
-      of page 30) 
-
   * 2.6.3 Tester and property automata
 
     * Accepting states vs. non-accepting states has not be introduced 
