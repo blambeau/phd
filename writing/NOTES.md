@@ -33,10 +33,6 @@
     * The graphical distinction between accepting and non-accepting states has 
       not be introduced (double-circle)
 
-  * 2.7 Model Synthesis Revisited
-
-    * Move all but intra-phd references in related work.
-
   * Everywhere
   
     * How to change captions' font??
