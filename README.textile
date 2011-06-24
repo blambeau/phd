@@ -1,7 +1,4 @@
-h1. Supporting Multi-View Models of Software Systems, Synthesis Techniques
+h1. Synthesizing Multi-View Models of Software Systems
 
-This project is the source of my PhD thesis (writing). To compile it, type
-
-  rake clean && rake thesis.pdf
-
+This project is the source of my PhD thesis.
 
