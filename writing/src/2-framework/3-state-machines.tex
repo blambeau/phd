@@ -59,7 +59,7 @@ The set of traces accepted by a LTS $P$ is called its \emph{language}; it is den
 \emph{Behavioral equivalence} is an important notion when designing and analyzing concurrent systems. It allows answering questions such as ``\emph{are agents $Ag_1$ and $Ag_2$ the same in terms of behavior?}''. Many different notions of behavioral equivalence exist in the literature, like \emph{strong} and \emph{observational}  equivalences~\cite{Milner:1989}, bisimilarity~\cite{Park:1981}, or failure equivalence~\cite{Hoare:1985}. Assuming \emph{determinate} agents, as explained in Section~\ref{subsection:background-multiple-views}, allows us to stick to the weakest, yet simplest, notion of LTS equivalence: trace equivalence~\cite{Hoare:1985, Engelfriet:1985}. Two LTS $P$ and $Q$ are \emph{trace-equivalent} if they accept the same set of traces:
 
 \begin{equation}
-P \equiv_{tr} Q$~if~and~only~if~$\mathcal{L}(P) = \mathcal{L}(Q)
+P \equiv_{tr} Q~if~and~only~if~\mathcal{L}(P) = \mathcal{L}(Q)
 \end{equation}
 
 The next section discusses some important properties inherited by LTSs from their connection with regular languages. 
@@ -122,7 +122,7 @@ A composed LTS can easily be computed constructively by exploring the state spac
 When the two LTS operands share the same alphabet, the composition operator computes the intersection of accepted traces:
 
 \begin{equation}
-$\mathcal{L}(P \parallel Q) = \mathcal{L}(P) \cap \mathcal{L}(Q)$~~if~~$\Sigma_{1}=\Sigma_{2}$
+\mathcal{L}(P \parallel Q) = \mathcal{L}(P) \cap \mathcal{L}(Q)~~if~~\Sigma_{1}=\Sigma_{2}
 \end{equation}
 
 The trace semantics of a system composed of $n$ agents whose behavior is modeled with LTSs $Ag_1 \ldots Ag_n$ is captured by:
