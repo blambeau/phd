@@ -1,2 +1,34 @@
 \section{Problem Statement\label{section:inductive-problem-statement}}
 
+This chapter describes techniques to synthesize state machines from scenarios. Labeled Transition Systems will be used for representing state machines whereas Message Sequence Charts will be used for capturing scenarios (see Chapter \ref{chapter:framework}). In its simplest form therefore, the LTS synthesis problem can be stated as follows:
+
+\begin{quotation}
+\noindent \underline{Given}~~a consistent scenario collection showing typical examples and counterexamples of system behaviors
+
+\vspace{-0.7cm}
+\begin{align*}
+Sc = (S^+,S^-)
+\end{align*}
+
+\vspace{-0.2cm}
+\noindent \underline{Synthesize}~~the system as a composition of agent LTSs
+
+\vspace{-0.7cm}
+\begin{align*}
+System = (Ag_1 \parallel \ldots \parallel Ag_n)
+\end{align*}
+
+\vspace{-0.2cm}
+\noindent \underline{Such that}~~$Sc$ and $System$ are consistent.
+\end{quotation}
+
+\noindent For recall, the consistency condition means that (see Section~\ref{subsection:background-scenario-consistency}):
+
+\begin{itemize}
+\item the system and the scenario collection are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective event interface,
+\item the timelines of any positive scenario $P \in S^+$ specify existing paths in the corresponding agent state machines. The same applies for the precondition of any negative scenario $N \in S^-$,
+\item the system correctly accepts positive scenarios and preconditions of negatives ones. It also correctly rejects negative scenarios.
+\end{itemize}
+
+
+
