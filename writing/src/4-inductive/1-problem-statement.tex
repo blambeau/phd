@@ -25,10 +25,33 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \noindent For recall, the consistency condition means that (see Section~\ref{subsection:background-scenario-consistency}):
 
 \begin{itemize}
-\item the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective event interface,
+\item the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their interface,
 \item the timelines of any positive scenario $P \in S^+$ specify existing paths in the corresponding agent state machines. The same applies for the precondition of any negative scenario $N \in S^-$,
 \item the system correctly accepts positive scenarios and preconditions of negatives ones. It also correctly rejects negative scenarios.
 \end{itemize}
 
+Stated above is a \emph{minimal requirement} on any LTS synthesis approach from MSCs. Other strong requirements are useful in addition. Their inclusion in the characterization above depends on assumptions on input scenario models, the presence and/or absence of other models, the availability of an end-user, and so on.
 
+\begin{description}
+
+\item{\textbf{Behavior generalization}} -- the synthesis approach must at least cover the behaviors described in the positive scenarios. In most cases, scenarios provide \emph{examples} of system behaviors and are inherently incomplete. Synthesized state machines should therefore cover more behaviors than those already described. An upper bound on behavior generalization is given by the consistency condition, that requires negative scenarios to be correctly rejected. This upper bound may be refined in presence of additional models (see below).
+
+Unlike other approaches, notably \cite{Uchitel:2003}, we will assume in this chapter that input scenarios are partial descriptions. Behavior generalization will be achieved by extending grammar induction techniques developed in \cite{Oncina:1992, Dupont:1996b}.
+
+\item{\textbf{Flexible scenario richness}} -- the richness of the input scenario language is an important issue for end-user involvement and usability of a synthesis approach:
+
+\begin{itemize}
+\item End-user are most likely to be unable to provide rich scenario descriptions in the early phases of system design. This includes state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore work when only a few positive and/or negative scenarios are available.
+\item Given the iterative nature of tool-aided system analysis, a richer input is very likely to be eventually available, however. Higher-level scenario models should therefore be supported as input of the synthesis technique. 
+\end{itemize}
+
+Section \ref{section:lts-induction-from-mscs} describes a technique to synthesize LTSs from scenario collections only. An interactive feature supports the elicitation of additional, ``interesting'' positive/negative scenarios that are not originally provided by the end-user. Coupled with other multi-model features (see below), this feature helps iteratively enriching the available scenario models. Section~\ref{section:inductive-from-hMSC} explains how richer high-level MSCs can be used as input of the synthesis process.
+
+\item{\textbf{Multi-model consistency}} -- a similar argument applies about the availability of other models. Fluents, goals and domain properties, etc. should not be \emph{required} as input, but are better \emph{supported} when available. 
+
+Moreover, under the assumption that input models are consistent with each other, synthesized LTSs should be consistent with all of them as well. Notably, the synthesized system should not violate known safety goals.
+
+Sections \ref{subsection:induction-pruning-with-state-info} and \ref{subsection:induction-pruning-with-goals} explains how fluents, legacy components and goals can be taken into account during inductive synthesis. In addition to guaranteeing multi-model consistency, they also help pruning the induction search space.
+
+\end{description}
 

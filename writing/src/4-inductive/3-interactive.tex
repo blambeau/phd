@@ -117,7 +117,7 @@ To select a state pair for merging, the Blue-Fringe strategy evaluates all (red,
 
 On the simple train example of this paper, the QSM algorithm with the original RPNI state-merging order learns the global LTS correctly by submitting 20 scenarios to the end-user (17 should be rejected and only 3 should be accepted). With the Blue-Fringe strategy, the same LTS is synthesized with only 3 scenarios being submitted (one to be rejected and two to be accepted). Further comparative results are detailed in section~\ref{results}.
 
-\subsection{Pruning the induction space with state information}
+\subsection{Pruning the induction space with state information\label{subsection:induction-pruning-with-state-info}}
 
 The interactive QSM algorithm described in section~\ref{algo} always provides a DFA consistent with the available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. This strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the positive and negative accepting states respectively\footnote{All states in a LTS are (positively) accepting. Hence, all states of $PTA(S_+)$ are positive accepting states. Since a negative scenario is the concatenation of a positive prefix with a single additional symbol, the augmented $PTA(S_+, S_-)$ only contains states labeled either as positive accepting or negative accepting.}. All states belonging to the same class are not necessarily merged in the final solution but the \texttt{Compatible} function guarantees that only states belonging to the same class can be merged.
 
@@ -174,7 +174,7 @@ The PTA states can also be decorated with state labels from this external LTS by
 \caption{Unfolding the Alarm sensor model\label{Fig:AlarmSensor:Unfolding}.}
 \end{figure}
 
-\subsection{Pruning the induction space with goals and domain properties}
+\subsection{Pruning the induction space with goals and domain properties\label{subsection:induction-pruning-with-goals}}
 
 Descriptive statements about the domain, called \textsl{domain properties}, or prescriptive statements of intent about the target system, called \textsl{goals}, can be expressed declaratively with fluents in \textsl{Linear Temporal Logic} (LTL)~\cite{Giannakopoulou03}. LTL assertions use standard operators for temporal referencing such as:
 
