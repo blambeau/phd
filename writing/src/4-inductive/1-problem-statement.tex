@@ -94,11 +94,11 @@ Starting from the PTA, this algorithm incrementally refines the current automato
 \mathcal{L}(A) \cap \mathcal{L}^-(Sc) &= \emptyset
 \end{align*}
 
-This inductive approach is enhanced in two ways so as to fulfill additional requirements:
+This inductive approach is enhanced in two additional ways so as to fullfil our requirements:
 
 \begin{itemize}
 
-\item An interactive feature supports the elicitation of additional, ``interesting'' scenarios that are not originally provided by the end-user. The latter is expected to classify generated scenarios as positive or negative system behaviors. This feature helps iteratively enriching the available scenario models.
+\item An interactive feature supports the elicitation of additional, ``interesting'' scenarios that are not originally provided by the end-user. Indeed, the latter is expected to classify generated scenarios as positive or negative system behaviors.  This feature leads to the Query-Driven State Merging algorithm (QSM) presented in Section~\ref{section:lts-induction-from-mscs}.
 
 \item Fluents, legacy components and goals can be injected in the generalization process when available. In addition to guaranteeing multi-model consistency, taking such models into account helps pruning the induction search space.
 
