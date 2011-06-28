@@ -1,11 +1,5 @@
 \section{Grammar induction for LTS synthesis\label{section:inductive-background}}
 
-This section details how LTS synthesis can be reduced to a grammar induction problem. Section \ref{subsection:gi-background-overview} provides an overview of inductive LTS synthesis. Section \ref{subsection:gi-background-search-space} provides background on grammar induction problems and their search space. Section \ref{subsection:gi-background-rpni} presents known convergence results of the Regular Positive and Negative Inference (RPNI) algorithm.
-
-\subsection{Approach overview\label{subsection:gi-background-overview}}
-
-Figure~\ref{figure:inductive-overview} shows how grammar induction is 
-
 \subsection{Quotient automata and DFA induction search space\label{subsection:gi-background-search-space}}
 
 Learning a language $L$ aims at generalizing a positive sample $S_+$, possibly under the control of a negative sample $S_-$, with $S_+ \subseteq L$ and $S_- \subseteq \Sigma^*\setminus L$. When the induction technique produces a DFA, the learned language is regular. Any regular language $L$ can be represented by its canonical automaton $A(L)$, that is the DFA having the smallest number of states and accepting $L$. $A(L)$ is unique up to a renumbering of its states~\cite{Hopcroft:1979}.
