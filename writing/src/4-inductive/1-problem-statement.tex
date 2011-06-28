@@ -71,36 +71,38 @@ In presence of multiple models, strengthening the characterization above is requ
 
 \subsection{A grammar induction approach\label{subsection:inductive-synthesis-approach}}
 
-Figure~\ref{image:inductive-synthesis-overview} shows the three main steps of our synthesis approach. We will assume here that a scenario collection $Sc = (S^+, S^-)$ is taken as input of the synthesis process. Adaptations of the first two steps below are required to take high-level MSCs as input; they will be covered in Section~\ref{section:inductive-from-hMSC}.
+Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our synthesis approach. We will assume here that a scenario collection $Sc = (S^+, S^-)$ is taken as input of the synthesis process. The first step requires a few adaptations to take high-level MSCs as input; they will be covered in Section~\ref{section:inductive-from-hMSC}.
 
 \begin{figure}\centering
-  \scalebox{0.60}{\includegraphics[trim=2mm 2mm 3mm 2mm, clip]{src/4-inductive/images/overview}}
+  \scalebox{0.55}{\includegraphics[trim=3mm 3mm 10mm 3mm, clip]{src/4-inductive/images/overview}}
   \caption{Overview of inductive LTS synthesis from MSCs.\label{image:inductive-synthesis-overview}}
 \end{figure}
 
-\noindent \textbf{Extraction} -- this step consists in extracting scenarios traces as a first automaton. The extraction relies on the trace semantics of scenarios given in Chapter~\ref{chapter:framework}. 
+\noindent \textbf{Generalization} -- this step extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a system LTS covering all positive scenarios and excluding all negative ones. The generalization strategy is borrowed from the Regular Positive and Negative Inference (RPNI) algorithm and proceeds as follows~\cite{Oncina:1992}.
 
-Traces are captured by a \emph{prefix tree acceptor} (PTA), the largest deterministic automaton that accepts exactly the positive behaviors. At this step, the \emph{consistent system view} condition already holds, but no generalization occurs yet:
+Given the scenario semantics defined in Chapter~\ref{chapter:framework}, a first automaton $A_0$ is built that exactly accepts all positive traces. In other words, the \emph{consistent system view} condition already holds for $A_0$, but no generalization occurs yet:
 \begin{align*}
-\mathcal{L}(PTA) &= \mathcal{L}^+(Sc)\\
-\mathcal{L}(PTA) \cap \mathcal{L}^-(Sc) &= \emptyset
+\mathcal{L}(A_0) &= \mathcal{L}^+(Sc)\\
+\mathcal{L}(A_0) \cap \mathcal{L}^-(Sc) &= \emptyset
 \end{align*}
 
-\noindent \textbf{Generalization} -- grammar induction is used at this step so as to fullfil the behavior generalization requirement. The Regular Positive and Negative Inference (RPNI) algorithm is used as a building block \cite{Oncina:1992} for synthesizing a system LTS from the PTA.
-
-Starting from the PTA, this algorithm incrementally refines the current automaton by merging well chosen state pairs. The generalization is performed under the control of negative scenarios. The \emph{consistent system view} remains an invariant for any current solution $A$:
+This automaton is incrementally refined by merging well chosen state pairs. Doing so generalizes accepted behaviors; this generalization is performed under the control of the negative scenarios. For every current solution $A_i$, the \emph{consistent system view} condition remains an invariant:
 \begin{align*}
-\mathcal{L}(A) &\subseteq \mathcal{L}^+(Sc)\\
-\mathcal{L}(A) \cap \mathcal{L}^-(Sc) &= \emptyset
+\mathcal{L}(A_i) &\subseteq \mathcal{L}^+(Sc)\\
+\mathcal{L}(A_i) \cap \mathcal{L}^-(Sc) &= \emptyset
 \end{align*}
 
-This inductive approach is enhanced in two additional ways so as to fullfil our requirements:
+The resulting inductive learning procedure works with positive and negative scenarios only. It requires no additional state or flowchart information. However, numerous negative scenarios are needed in practice to avoid poor generalizations.
+
+To overcome this and fullfil additional requirements from above, our Query-driven State Merging (QSM) algorithm enhances the basic approach in three ways:
 
 \begin{itemize}
 
-\item An interactive feature supports the elicitation of additional, ``interesting'' scenarios that are not originally provided by the end-user. Indeed, the latter is expected to classify generated scenarios as positive or negative system behaviors.  This feature leads to the Query-Driven State Merging algorithm (QSM) presented in Section~\ref{section:lts-induction-from-mscs}.
+\item QSM uses a state merging strategy known as \emph{blue-fringe} for selecting state pairs to merge. With \emph{blue-fringe}, states for which the most evidence exists that they correspond to equivalent system states are merged in priority.
 
-\item Fluents, legacy components and goals can be injected in the generalization process when available. In addition to guaranteeing multi-model consistency, taking such models into account helps pruning the induction search space.
+\item An interactive feature supports the elicitation of additional, ``interesting'' scenarios that are not originally provided by the end-user. In this setting, the original collection of scenarios is completed by asking the user scenario queries that are generated during synthesis. A \emph{scenario query} consists of showing the user a specific scenario and asking her to classify it as positive or negative. This naturally guides the generalization process towards more accurate state machines.
+
+\item Additional information may be injected, when available, in order to constrain induction and prune the inductive search space. Additional information may include global definitions of fluents that link interaction events and atomic assertions; declarative properties of the domain; behavior models of external components; and goals that the software system is expected to satisfy. Doing so guarantees consistency of the synthesized LTSs with the other models. 
 
 \end{itemize}
 
@@ -110,6 +112,6 @@ This inductive approach is enhanced in two additional ways so as to fullfil our 
 \end{align}
 \noindent where $\Sigma_{Ag}^c$ denotes the set of all system events but those of $Ag$'s interface.
 
-The decomposition step guarantees that the \emph{structural consistency} and \emph{consistent agent view} conditions hold. The third consistency condition, \emph{consistent system view}, already holds for the system LTS. However, the approach is correct only if it also holds for the system re-composition $\system$. This might not be the case if negative implied scenarios exist. This issue is further examined in Section~\ref{section:inductive-discussion}.
+This decomposition step guarantees that the \emph{structural consistency} and \emph{consistent agent view} conditions hold. It is a straightforward application of the material given in Chapter~\ref{chapter:framework}. 
 
-The extraction and decomposition steps are straightforward applications of the material given in Chapter~\ref{chapter:framework}. The rest of this chapter therefore focusses on the generalization step achieved through grammar induction. The next section provides background on grammar induction and the RPNI algorithm.
+From the generalization invariant, the \emph{consistent system view} condition always holds for the induced system LTS. However, the approach is correct only if the condition holds for the system re-composition $\system$. This might not be the case if negative implied scenarios exist. This issue is further examined in Section~\ref{section:inductive-discussion}.
