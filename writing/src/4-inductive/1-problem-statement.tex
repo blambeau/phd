@@ -1,4 +1,4 @@
-\section{Problem Statement\label{section:inductive-problem-statement}}
+\section{Synthesis requirements\label{section:inductive-problem-statement}}
 
 This chapter describes techniques to synthesize state machines from scenarios. Labeled Transition Systems will be used for representing state machines whereas Message Sequence Charts will be used for capturing scenarios (see Chapter \ref{chapter:framework}). In its simplest form therefore, the LTS synthesis problem can be stated as follows:
 
@@ -30,28 +30,42 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \item the system correctly accepts positive scenarios and preconditions of negatives ones. It also correctly rejects negative scenarios.
 \end{itemize}
 
-Stated above is a \emph{minimal requirement} on any LTS synthesis approach from MSCs. Other strong requirements are useful in addition. Their inclusion in the characterization above depends on assumptions on input scenario models, the presence and/or absence of other models, the availability of an end-user, and so on.
+The characterization above provides a \emph{minimal requirement} on the synthesis approach. Additional requirements are important to consider as well. Their inclusion depends on assumptions on input scenario models, the presence and/or absence of other models, the availability of an end-user, and so on.
 
 \begin{description}
 
-\item{\textbf{Behavior generalization}} -- the synthesis approach must at least cover the behaviors described in the positive scenarios. In most cases, scenarios provide \emph{examples} of system behaviors and are inherently incomplete. Synthesized state machines should therefore cover more behaviors than those already described. An upper bound on behavior generalization is given by the consistency condition, that requires negative scenarios to be correctly rejected. This upper bound may be refined in presence of additional models (see below).
-
-Unlike other approaches, notably \cite{Uchitel:2003}, we will assume in this chapter that input scenarios are partial descriptions. Behavior generalization will be achieved by extending grammar induction techniques developed in \cite{Oncina:1992, Dupont:1996b}.
-
-\item{\textbf{Flexible scenario richness}} -- the richness of the input scenario language is an important issue for end-user involvement and usability of a synthesis approach:
+\item{\textbf{Richness of the scenario language}} -- the richness of the input scenario language is an important issue for end-user involvement and usability of a synthesis approach:
 
 \begin{itemize}
-\item End-user are most likely to be unable to provide rich scenario descriptions in the early phases of system design. This includes state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore work when only a few positive and/or negative scenarios are available.
-\item Given the iterative nature of tool-aided system analysis, a richer input is very likely to be eventually available, however. Higher-level scenario models should therefore be supported as input of the synthesis technique. 
+
+\item End-user are most likely to be unable to provide rich scenario descriptions in the early phases of system design. This includes state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore work when only a few scenarios are available. 
+
+\item Both positive and negative scenarios should be taken into account. Negative scenarios are not uncommon among the examples provided by stakeholders. One reason is that they naturally illustrate violations of safety goals while being easier to specify than the latter.
+
+\item Given the incremental nature of tool-supported system analysis, richer input scenarios are however very likely to be \emph{eventually} available. Higher-level scenario models should therefore be supported as input of the synthesis technique for advanced analysis phases.
+
 \end{itemize}
 
-Section \ref{section:lts-induction-from-mscs} describes a technique to synthesize LTSs from scenario collections only. An interactive feature supports the elicitation of additional, ``interesting'' positive/negative scenarios that are not originally provided by the end-user. Coupled with other multi-model features (see below), this feature helps iteratively enriching the available scenario models. Section~\ref{section:inductive-from-hMSC} explains how richer high-level MSCs can be used as input of the synthesis process.
+\item{\textbf{Behavior generalization}} -- the synthesis approach must at least cover the behaviors described in the positive scenarios. In most cases, scenarios provide \emph{examples} of system behaviors and are inherently incomplete. Synthesized state machines should therefore cover more behaviors than those already described. 
 
-\item{\textbf{Multi-model consistency}} -- a similar argument applies about the availability of other models. Fluents, goals and domain properties, etc. should not be \emph{required} as input, but are better \emph{supported} when available. 
+An upper bound on behavior generalization is entailed by the consistency condition, that requires negative scenarios to be correctly rejected. This upper bound has to be refined when other models are available (see below).
 
-Moreover, under the assumption that input models are consistent with each other, synthesized LTSs should be consistent with all of them as well. Notably, the synthesized system should not violate known safety goals.
+\item{\textbf{Multi-model consistency}} -- A argument similar to the one for high-level scenario models applies for other models. Fluents, goals and domain properties, etc. should not be \emph{required} as input, but are better \emph{supported} when available. 
 
-Sections \ref{subsection:induction-pruning-with-state-info} and \ref{subsection:induction-pruning-with-goals} explains how fluents, legacy components and goals can be taken into account during inductive synthesis. In addition to guaranteeing multi-model consistency, they also help pruning the induction search space.
+In presence of multiple models, strengthening the characterization above is required. All available models shall be required to be consistent in input. In that case, the synthesis technique shall be such that synthesized LTSs are consistent with all input models. Notably, the synthesized system should not violate known safety goals.
 
 \end{description}
 
+The next sections details the synthesis approach of the thesis along these requirements. 
+
+\begin{itemize}
+
+\item Unlike other approaches, notably \cite{Uchitel:2003}, we will assume in this chapter that input scenarios are always partial descriptions. Behavior generalization will be achieved by extending grammar induction techniques developed in \cite{Oncina:1992, Dupont:1996b}. Background on grammar induction is given in Section \ref{section:inductive-background}.
+
+\item Section \ref{section:lts-induction-from-mscs} describes a technique to synthesize LTSs from scenario collections only. An optional interactive feature supports the elicitation of additional, ``interesting'' positive/negative scenarios that are not originally provided by the end-user. This feature helps iteratively enriching the available scenario models towards richer models. Notably, it helps identifying negative scenarios, which in turn helps identifying safety goals.
+
+\item Sections \ref{subsection:induction-pruning-with-state-info} and \ref{subsection:induction-pruning-with-goals} explain how fluents, legacy components and goals can be taken into account when available. In addition to guaranteeing multi-model consistency, taken such models into account helps pruning the induction search space. 
+
+\item Section~\ref{section:inductive-from-hMSC} explains how high-level MSCs can be used as input of the synthesis process. High-level MSCs provide a richer input language than scenario collections as they allow loops, sequences of scenario episodes, and so on (see Section~\ref{subsection:background-hmsc}). 
+
+\end{itemize}
