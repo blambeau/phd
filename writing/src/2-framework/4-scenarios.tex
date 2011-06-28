@@ -165,37 +165,47 @@ MSCs are often annotated with state-based information (see, e.g.,~\cite{VanLamsw
 
 TODO: complete this description, discussing the difference between identification and state assertions (aka fluent-based decorations). The former info uniquely identifies an agent state, so that they can be merged with mandatory merge constraints presented in section~\ref{section:inductive-from-hMSC}, while the later does not, but helps pruning search space as usual with fluents.
 
-\subsection{Consistency between the scenario and agent behaviors views\label{subsection:background-scenario-consistency}}
+\subsection{Consistency between the scenario and state machine views\label{subsection:background-scenario-consistency}}
 
 The trace semantics of scenarios can be explicitly related to agent and system behaviors as the latter are captured with LTS (see Section~\ref{section:background-state-machines}). This section defines consistency rules between those two views, and explains the similarity between relations (\ref{equation:system-composition}), (\ref{equation:msc-composition}) and (\ref{equation:hsmc-traces-by-agent-composition})
 
-\subsubsection*{Positive and negative MSCs}
+\subsubsection*{Positive MSCs}
 
-Consider a system composed of $n$ agents whose behavior is modeled by $\system$. Let $M$ denote a MSC illustrating interactions among them. $M$ and $S$ are said to be \emph{consistent} if the following conditions hold:
+Consider a system composed of $n$ agents whose behavior is modeled by $\system$. Let $M$ denote a positive MSC illustrating interactions among them. $M$ and $S$ are said to be \emph{consistent} if the following conditions hold:
 
-\begin{itemize}
-\item $M$ and $S$ are \emph{strucurally} consistent,
-\item $\mathcal{L}(M_{\downarrow Ag_i}) \subseteq \mathcal{L}(Ag_i)$ for each agent $Ag_i$
-\item $\mathcal{L}(M) \subseteq \mathcal{L}(S)$
-\end{itemize}
+\noindent \textbf{Structural consistency} -- requires $M$ and $S$ to agree on the set of agents and their respective interfaces. The MSC may actually illustrate interactions among a proper subset of system agents. However, labels along a timeline must be a subset of the alphabet of the corresponding agent.
+
+\noindent \textbf{Consistent agent view} -- this condition states that the traces defined by a timeline in the MSC must be traces accepted in the LTS modeling the behavior of the corresponding agent. That is, for each agent $Ag_i$,
+\begin{align}\mathcal{L}(M_{\downarrow Ag_i}) & \subseteq \mathcal{L}(Ag_i)\label{condition:consistent-agent-view}\end{align}
+
+\noindent \textbf{Consistent system view} -- this third condition states that all linearizations of the MSC must be accepted traces in the LTS modeling the behavior of the composed system:
+\begin{align}\mathcal{L}(M) & \subseteq \mathcal{L}(S)\label{condition:consistent-system-view}\end{align}
 
 \noindent where, for recall, $\mathcal{L}(M) = \mathcal{L}(M_{\downarrow Ag_1} \parallel \ldots \parallel M_{\downarrow Ag_n})$
 
-The first condition requires the MSC and the system to agree on the set of agents and their respective interfaces. A MSC may actually illustrate interactions among a proper subset of system agents. However, labels along a timeline must be a subset of the alphabet of the corresponding agent. The second condition states that the traces defined by a timeline in the MSC must be traces accepted in the LTS modeling the behavior of the corresponding agent.  The third condition states that all linearizations of the MSC must be accepted traces in the LTS modeling the behavior of the composed system. Note that, under structural consistency, the second condition implies the third one~\cite{Uchitel:2003}.
+\subsubsection*{Negative MSCs}
 
-Similarly to positive MSCs, a negative MSC $N = (P,e)$ and a system $\system$ are said to be consistent if the following condition hold:
+A negative MSC $N = (P,e)$ and a system $\system$ are said to be consistent if the following conditions hold:
 
 \begin{itemize}
-\item $N$ and $S$ are \emph{strucurally} consistent,
-\item $P$ and $S$ are consistent, and
-\item $\mathcal{L}^{-}(N) \not\subseteq \mathcal{L}(S)$
-\end{itemize}
+\item $N$ and $S$ are \emph{strucurally} consistent, in a similar sense to what has been said for positive MSCs,
 
-The first condition is similar to what has been said previously for positive MSCs. The second enforces the precondition to be a consistent positive MSC; it implicitly requires positive traces to be accepted. The last condition states that the system may not exhibit any negative trace captured by the negative MSC.
+\item the precondition $P$ and $S$ are consistent; this requires conditions (\ref{condition:consistent-agent-view}) and (\ref{condition:consistent-system-view}) to hold for $P$,
+
+\item the system may not exhibit any negative trace captured by the negative MSC, that is,
+\begin{align}\mathcal{L}^{-}(N) \cap \mathcal{L}(S) &= \emptyset\label{condition:consistent-system-view-neg}\end{align}
+\noindent which provides the negative counterpart of (\ref{condition:consistent-system-view}).
+\end{itemize}
 
 \subsubsection*{Scenario collections}
 
-A scenario collection $Sc = (S^+,S^-)$ and a system are said to be consistent if and only if each positive and each negative MSC of the collection is itself consistent with the system. 
+A scenario collection $Sc = (S^+,S^-)$ and a system $S$ are said to be consistent if and only if each positive and each negative MSC of the collection is itself consistent with $S$. 
+
+Conditions (\ref{condition:consistent-system-view}) and (\ref{condition:consistent-system-view-neg}) can be formulated in terms of the collection's positive and negative languages as follows:
+\begin{align}
+\mathcal{L}^+(Sc) & \subseteq \mathcal{L}(S) \\
+\mathcal{L}^-(Sc) \cap \mathcal{L}(S) &= \emptyset
+\end{align}
 
 Moreover, a set $S^+$ of positive scenarios and a set $S^-$ of negative scenarios are consistent with each other if there exists a system which is consistent with them taken as a collection $Sc = (S^+,S^-)$. 
 
@@ -206,8 +216,6 @@ A necessary condition for a scenario collection $Sc = (S^+,S^-)$ to be consisten
 \end{equation}
 
 This condition is not sufficient however because structural consistency is not taken into account.
-
-By definition, a collection cannot be consistent with a system unless all scenarios start in its initial state. This may imply a lot of redundancy in the description of large systems. Consistency might be difficult to guarantee without costly refactoring on scenarios. Also, since scenarios and scenario collections are both finite, a collection is rarely complete in practice; most systems accept an infinite number of traces, through loops.  High-level Message Sequence Charts (hMSCs), introduced in the next section, provide a means for tackling these problems.
 
 \subsubsection*{High-level MSCs}
 
@@ -226,8 +234,7 @@ These conditions are the counterpart of those given previously for MSCs. They ha
 Moreover it is convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. 
 
 A hMSC $H$ is \emph{complete} for a system $\system$ if it is consistent with it and defines the same language, that is, if the following condition holds
-
-\begin{equation}
-\mathcal{L}_{arch}(H) = \mathcal{L}(S)
-\end{equation}
+\begin{align}
+\mathcal{L}_{arch}(H) &= \mathcal{L}(S)
+\end{align}
 
