@@ -1,6 +1,6 @@
 \section{Synthesis objectives and chosen approach\label{section:inductive-overview}}
 
-This section gives an overview of the synthesis approach. Section~\ref{subsection:inductive-synthesis-statement} states the problem statement in terms of the formal models of Chapter~\ref{chapter:framework}. Section~\ref{subsection:inductive-synthesis-requirements} completes this by stating additional requirements on the synthesis approach. Section~\ref{subsection:inductive-synthesis-approach} presents the grammar induction oriented approach taken in the thesis.
+This section gives an overview of the synthesis approach. Section~\ref{subsection:inductive-synthesis-statement} states the problem statement in terms of the formal models of Chapter~\ref{chapter:framework}. Section~\ref{subsection:inductive-synthesis-requirements} completes this by stating additional requirements on the synthesis approach. Section~\ref{subsection:inductive-synthesis-approach} presents our grammar induction oriented approach.
 
 %%%
 
@@ -80,7 +80,7 @@ Figure~\ref{image:inductive-synthesis-overview} shows the three main steps of ou
 
 \noindent \textbf{Extraction} -- this step consists in extracting scenarios traces as a first automaton. The extraction relies on the trace semantics of scenarios given in Chapter~\ref{chapter:framework}. 
 
-Traces are captured by a \emph{prefix tree acceptor} (PTA), the largest deterministic automaton that exactly accepts the positive behaviors. At this step, the \artifact{consistent system view} condition already holds, but no generalization occurs yet:
+Traces are captured by a \emph{prefix tree acceptor} (PTA), the largest deterministic automaton that accepts exactly the positive behaviors. At this step, the \emph{consistent system view} condition already holds, but no generalization occurs yet:
 \begin{align*}
 \mathcal{L}(PTA) &= \mathcal{L}^+(Sc)\\
 \mathcal{L}(PTA) \cap \mathcal{L}^-(Sc) &= \emptyset
@@ -88,7 +88,7 @@ Traces are captured by a \emph{prefix tree acceptor} (PTA), the largest determin
 
 \noindent \textbf{Generalization} -- grammar induction is used at this step so as to fullfil the behavior generalization requirement. The Regular Positive and Negative Inference (RPNI) algorithm is used as a building block \cite{Oncina:1992} for synthesizing a system LTS from the PTA.
 
-Roughly, this algorithm incrementally refines a current automaton solution by merging well selected state pairs; the generalization is performed under the control of negative scenarios. The \artifact{consistent system view} remains an invariant for any current solution $A$:
+Starting from the PTA, this algorithm incrementally refines the current automaton by merging well chosen state pairs. The generalization is performed under the control of negative scenarios. The \emph{consistent system view} remains an invariant for any current solution $A$:
 \begin{align*}
 \mathcal{L}(A) &\subseteq \mathcal{L}^+(Sc)\\
 \mathcal{L}(A) \cap \mathcal{L}^-(Sc) &= \emptyset
@@ -110,6 +110,6 @@ This inductive approach is enhanced in two ways so as to fulfill additional requ
 \end{align}
 \noindent where $\Sigma_{Ag}^c$ denotes the set of all system events but those of $Ag$'s interface.
 
-This step guarantees that the \emph{structural consistency} and \emph{consistent agent view} conditions hold.
+The decomposition step guarantees that the \emph{structural consistency} and \emph{consistent agent view} conditions hold. The third consistency condition, \emph{consistent system view}, already holds for the system LTS. However, the approach is correct only if it also holds for the system re-composition $\system$. This might not be the case if negative implied scenarios exist. This issue is further examined in Section~\ref{section:inductive-discussion}.
 
 The extraction and decomposition steps are straightforward applications of the material given in Chapter~\ref{chapter:framework}. The rest of this chapter therefore focusses on the generalization step achieved through grammar induction. The next section provides background on grammar induction and the RPNI algorithm.
