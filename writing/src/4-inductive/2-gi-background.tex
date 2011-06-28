@@ -1,6 +1,12 @@
 \section{Grammar induction for LTS synthesis\label{section:inductive-background}}
 
-\subsection{Quotient automata and DFA induction search space}
+This section details how LTS synthesis can be reduced to a grammar induction problem. Section \ref{subsection:gi-background-overview} provides an overview of inductive LTS synthesis. Section \ref{subsection:gi-background-search-space} provides background on grammar induction problems and their search space. Section \ref{subsection:gi-background-rpni} presents known convergence results of the Regular Positive and Negative Inference (RPNI) algorithm. The latter algorithm is a building block on which incremental improvements are made in subsequent sections. 
+
+\subsection{Approach overview\label{subsection:gi-background-overview}}
+
+Figure~\ref{figure:inductive-overview} shows how grammar induction is 
+
+\subsection{Quotient automata and DFA induction search space\label{subsection:gi-background-search-space}}
 
 Learning a language $L$ aims at generalizing a positive sample $S_+$, possibly under the control of a negative sample $S_-$, with $S_+ \subseteq L$ and $S_- \subseteq \Sigma^*\setminus L$. When the induction technique produces a DFA, the learned language is regular. Any regular language $L$ can be represented by its canonical automaton $A(L)$, that is the DFA having the smallest number of states and accepting $L$. $A(L)$ is unique up to a renumbering of its states~\cite{Hopcroft:1979}.
 
@@ -48,7 +54,7 @@ To summarize, learning a regular language $L$ can be performed by identifying th
 
 The size\footnote{Let $n$ be the number of states of $PTA(S_+)$. By construction, $n \in \mathcal{O}(||S_+||)$. The search space size is the number of ways a set of $n$ elements can be partitioned into nonempty subsets. This is called a Bell number $B(n)$. It can be defined by the Dobinski's formula: $B(n) = \frac{1}{e} \sum_{k=0}^{\infty} \frac{k^n}{n!}$. This function grows much faster than $2^n$.} of this search space makes any trivial enumeration algorithm irrelevant for any practical purposes. Moreover, finding a minimal consistent DFA, is a NP-complete problem~\cite{Gold:1978,Angluin:1978}. Interestingly, only a fraction of this space is efficiently searched through by the RPNI algorithm or the \textsc{QSM} algorithm described in section~\ref{algo}.
 
-\subsection{Characteristic samples for the RPNI algorithm\label{Characteristic}}
+\subsection{Characteristic samples for the RPNI algorithm\label{subsection:gi-background-rpni}}
 
 We do not fully detail the RPNI algorithm in the present section but the original version forms a particular case
 of our interactive algorithm \textsc{QSM}, as discussed in section~\ref{algo}. The convergence of RPNI to the correct automaton $A(L)$ is guaranteed when the algorithm receives a sample as input that includes a \textsl{characteristic sample} of the target language~\cite{Oncina:1992}. A proof of convergence is presented in~\cite{Oncina:1993} in the more general case of transducer learning. We review here the notion of a characteristic sample as the definition of relevant membership queries is related with this notion. Some additional definitions are required here.
