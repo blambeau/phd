@@ -74,46 +74,49 @@ In such case, the formal statement must be strengthened. In input, all available
 
 %%%
 
-\subsection{Approach overview\label{subsection:inductive-synthesis-approach}}
+\subsection{An induction-driven approach\label{subsection:inductive-synthesis-approach}}
 
-Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our synthesis approach for the simple case where only a scenario collection is taken as input. 
+Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our approach for the simple case where a scenario collection is taken as input. 
 
 \begin{figure}[H]\centering
   \scalebox{0.55}{\includegraphics[trim=3mm 3mm 10mm 3mm, clip]{src/4-inductive/images/overview}}
   \caption{Overview of inductive LTS synthesis from MSCs.\label{image:inductive-synthesis-overview}}
 \end{figure}
 
-The \underline{generalization} step extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a System LTS covering all positive scenarios and excluding all negative ones. The generalization strategy is borrowed from the Regular Positive and Negative Inference (RPNI) algorithm~\cite{Oncina:1992} and proceeds as follows.
+\noindent \textbf{The generalization step} extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a System LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the Regular Positive and Negative Inference (RPNI) algorithm and proceeds as follows \cite{Oncina:1992}.
 
-An initial automaton $A_0$ accepting exactly the positive traces is incrementally refined by merging well chosen state pairs.
-Doing so generalizes accepted behaviors; this process is performed under the control of the negative scenarios to avoid over-generalization. Every intermediate solution $A_i$ respects the \emph{consistent system view}; the latter therefore provides a useful algorithm invariant:
+An initial LTS $A_0$ accepting exactly the positive traces is incrementally refined as automata $A_1,\ldots,A_n$ by merging well chosen state pairs. Doing so generalizes accepted behaviors, so that the following relation holds
 \begin{align*}
-\mathcal{L}(A_i) &\subseteq \mathcal{L}^+(Sc)\\
-\mathcal{L}(A_i) \cap \mathcal{L}^-(Sc) &= \emptyset
+\mathcal{L}(A_n) \subset \ldots \subset \mathcal{L}(A_1) \subset \mathcal{L}(A_0) = \mathcal{L}^+(Sc)
+\end{align*}
+To avoid over-generalization, this process is performed under the control of the negative traces from $\mathcal{L}^-(Sc)$. Every intermediate solution $A_i$ respects the \emph{consistent system view} condition; the latter therefore provides a useful algorithm invariant:
+\begin{align*}
+\mathcal{L}^+(Sc) & \subseteq \mathcal{L}(A_i) \\
+\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) &= \emptyset
 \end{align*}
 
-The \underline{decomposition} step computes a LTS for each agent by projecting the System LTS on their respective alphabet. It makes use of standard hiding, determinization and minimization operators on automata \cite{Hopcroft:1979}. 
-
-For an agent $Ag$ the projection of the System LTS $S$ is given by:
+\noindent \textbf{The decomposition step} computes a LTS for each agent by projecting the System LTS onto their respective alphabet. For an agent $Ag$ the projection of the System LTS $S$ is given by:
 \begin{align}
 (S \setminus \Sigma_{Ag}^c)^\Delta
 \end{align}
 \noindent where $\Sigma_{Ag}^c$ denotes the set of all system events but those of $Ag$'s interface.
 
+The above formula makes use of the hiding, determinization and minimization operators on LTS discussed in Section~\ref{section:background-state-machines}.
+
 \subsubsection*{A word about correctness}
 
-The decomposition step ensures that the \emph{structural consistency} and \emph{consistent agent view} conditions hold. It is a straightforward application of the material given in Chapter~\ref{chapter:framework}. 
+The decomposition step guarantees that the \emph{structural consistency} and \emph{consistent agent view} conditions hold. It is a straightforward application of the material given in Chapter~\ref{chapter:framework}. 
 
-The generalization invariant guarantees that the \emph{consistent system view} condition holds for the System LTS. The approach is correct only if the same condition holds for the system re-composition $\system$. This might not be the case in presence of negative implied scenarios. This issue is further examined in Section~\ref{section:inductive-discussion}.
+The generalization invariant guarantees that the \emph{consistent system view} condition holds for the System LTS. Strictly speaking, the approach is correct only if this condition holds for the system re-composition $\system$. This might not be the case in presence of negative implied scenarios. This issue is further examined in Section~\ref{section:inductive-discussion}.
 
 \subsubsection*{Integration of additional requirements}
 
-The RPNI-driven generalization step provides a first milestone towards an inductive LTS synthesis approach that meets our requirements. It generalizes scenario collections without requiring additional state or flowchart information. However, such approach does not provide much flexibility; multi-model consistency is not guaranteed either. Section \ref{section:inductive-background} covers this first milestone through background on grammar induction and RPNI.
+The generalization step is driven by RPNI; this provides a first milestone towards an inductive LTS synthesis approach that meets our requirements. Indeed, it generalizes scenario behaviors without requiring additional state or flowchart information. However, such approach does not provide much support for incremental system analysis; multi-model consistency is not guaranteed either. Section \ref{section:inductive-background} covers this first milestone through background on grammar induction and RPNI.
 
-Section~\ref{section:lts-induction-from-mscs} introduces our Query-driven State Merging (QSM) algorithm that extends RPNI with an interactive feature. The latter supports the elicitation of additional, ``interesting'' scenarios that are not originally provided by the end-user. The original collection of scenarios is completed by asking the user scenario queries that are generated during synthesis. A \emph{scenario query} consists of showing the user a specific scenario and asking her to classify it as positive or negative. This guides the generalization process towards more accurate state machines while enriching input scenario models.
+Section~\ref{section:lts-induction-from-mscs} introduces the Query-driven State Merging (QSM) algorithm that extends RPNI with an interactive feature. The latter supports the elicitation of additional, ``interesting'' scenarios that are not originally provided by the end-user. The original collection of scenarios is completed by asking the user scenario queries that are generated during synthesis. A \emph{scenario query} consists of showing the user a specific scenario and asking her to classify it as positive or negative. This guides the generalization process towards more accurate state machines while incrementally enriching an initial scenario collection.
 
-The multi-view consistency requirement is tackled in Section~\ref{section:inductive-mutliview-consistency}. QSM is extended so as to allow the injection of additional information that constrain the induction and prune the inductive search space. Additional information may include global definitions of fluents; declarative properties of the domain; behavior models of external components; and goals that the software system is expected to satisfy. Doing so guarantees the consistency of synthesized state machines with all other models.
+The multi-view synthesis requirement is tackled in Section~\ref{section:inductive-mutliview-consistency}. QSM is extended so as to allow the injection of additional information that constrain the induction and prune the inductive search space. Additional information may include global definitions of fluents; declarative properties of the domain; behavior models of external components; and goals that the system is expected to satisfy. Doing so guarantees the consistency of synthesized state machines with all other models.
 
-Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios that allows reuse. Section~\ref{section:inductive-from-hMSC} shows how hMSCs can replace scenario collections as input of the generalization process. In this setting, negative scenarios and other models can still be used to constraint the inductive search space and guarantee consistency. At the time of writing, however, the interactive feature of QSM is a work in progress.
+Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios that allows reuse. Section~\ref{section:inductive-from-hMSC} shows how hMSCs can replace scenario collections as input of the generalization process. In this setting, negative scenarios and other models can still be used to constraint induction so as to achieve multi-view consistency. At the time of writing, however, the interactive feature of QSM is still a work in progress.
 
-Taking hMSCs as input implies both a theoretical and practical shift of perspective. It leads us considering the generalization of state machines under the control of safety goals as a natural extension of the generalization of positive scenarios under the control of negative ones. Among others, this question is further discussed in Section~\ref{section:inductive-discussion}.
+Taking hMSCs as input implies both a theoretical and practical shift of perspective. It leads us considering the generalization of state machines under the control of safety goals as a synthesis technique that naturally succeeds the generalization of positive scenario behaviors under the control of negative ones. Among others, this perspective is further discussed in Section~\ref{section:inductive-discussion}.
