@@ -6,7 +6,7 @@ This section gives an overview of the synthesis approach. Section~\ref{subsectio
 
 \subsection{Problem statement\label{subsection:inductive-synthesis-statement}}
 
-In its simplest form, the LTS synthesis problem can be stated as follows:
+In its simplest form, the problem of synthesizing LTS state machines from MSC scenarios can be stated as follows:
 
 \begin{quotation}
 \noindent \underline{Given}~~a consistent scenario collection showing typical examples and counterexamples of system behaviors
@@ -28,7 +28,7 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \noindent \underline{Such that}~~$Sc$ and $System$ are consistent.
 \end{quotation}
 
-\noindent For recall, the consistency condition means that (see Section~\ref{subsection:background-scenario-consistency}):
+\noindent For recall, the consistency condition covers three criteria (see Section~\ref{subsection:background-scenario-consistency}):
 
 \begin{itemize}
 \item \textbf{structural consistency} -- the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective interface,
@@ -45,7 +45,7 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 
 \subsection{Synthesis requirements\label{subsection:inductive-synthesis-requirements}}
 
-The characterization above only provides a basis for synthesis. Additional requirements are important to consider as well. 
+The characterization above provides a precise statement in terms of the formal models of Chapter~\ref{chapter:framework}. This statement is completed with a few usability requirements.
 
 \noindent \textbf{Flexibility} -- keeping a flexible approach with respect to the input scenario language looks important for end-user involvement and usability:
 \begin{itemize}
@@ -62,9 +62,9 @@ The characterization above only provides a basis for synthesis. Additional requi
 
 An upper bound on behavior generalization is given by the consistency condition, that requires negative scenarios to be correctly rejected. This upper bound has to be refined when other models are available (see below).
 
-\noindent \textbf{Multi-model consistency} -- the possibility of having richer models suggests the availability of other models, such as goals or state machines of legacy components. These models should not be \emph{required} as input, but are better \emph{supported} when available. 
+\noindent \textbf{Multi-model consistency} -- the possibility of having richer input models suggests taking other models into account, such as fluents or goals, in addition to scenarios. These models should not be \emph{required} as input, but are better \emph{supported} when available. 
 
-In such case, our characterization must even be strengthened. In input, all available models shall be required to be consistent with each other. In output, the synthesized system shall be consistent with all models. Notably, the synthesized system should not violate known safety goals.
+In such case, our characterization must be strengthened. In input, all available models shall be required to be consistent with each other. In output, the synthesized system shall be consistent with all models. Notably, the synthesized system should not violate known safety goals.
 
 %%%
 
@@ -88,7 +88,7 @@ Doing so generalizes accepted behaviors; this process is performed under the con
 
 The \underline{decomposition} step computes a LTS for each agent by projecting the System LTS on their respective alphabet. It makes use of standard hiding, determinization and minimization operators on automata \cite{Hopcroft:1979}. 
 
-For an agent $Ag$ the projection of the System LTS $S$ obtained at the previous step is given by:
+For an agent $Ag$ the projection of the System LTS $S$ is given by:
 \begin{align}
 (S \setminus \Sigma_{Ag}^c)^\Delta
 \end{align}
@@ -108,5 +108,6 @@ Section~\ref{section:lts-induction-from-mscs} introduces our Query-driven State 
 
 The multi-view consistency requirement is tackled in Section~\ref{section:inductive-mutliview-consistency}. QSM is extended so as to allow the injection of additional information that constrain the induction and prune the inductive search space. Additional information may include global definitions of fluents; declarative properties of the domain; behavior models of external components; and goals that the software system is expected to satisfy. Doing so guarantees the consistency of synthesized state machines with all other models.
 
-Section~\ref{section:inductive-from-hMSC} discusses how hMSCs can replace scenario collections as input of the generalization process. Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios that allows reuse. This  shift in input leads us considering the generalization of state machines under the control of safety goals as a natural extension of the generalization of positive scenarios under the control of negative ones. Among others, this question is further discussed in Section~\ref{section:inductive-discussion}.
+Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios that allows reuse. Section~\ref{section:inductive-from-hMSC} shows how hMSCs can replace scenario collections as input of the generalization process. In this setting, negative scenarios and other models can still be used to constraint the inductive search space and guarantee consistency. At the time of writing, however, the interactive feature of QSM is a work in progress.
 
+Taking hMSCs as input implies both a theoretical and practical shift of perspective. It leads us considering the generalization of state machines under the control of safety goals as a natural extension of the generalization of positive scenarios under the control of negative ones. Among others, this question is further discussed in Section~\ref{section:inductive-discussion}.
