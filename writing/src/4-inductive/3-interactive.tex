@@ -1,4 +1,4 @@
-\section{Interactive induction of LTS models from MSCs\label{section:lts-induction-from-mscs}}
+\section{Interactive LTS synthesis from MSC collections\label{section:lts-induction-from-mscs}}
 
 Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm, a Query driven State-Merging DFA induction technique. \textsc{QSM} takes a scenario collection as input and produces a consistent DFA as output. The completion of the initial scenario collection with classified scenarios that are generated during learning is another output of the algorithm. The input collection must contain at least one positive scenario. The generated DFA covers all positive scenarios in the final collection and excludes all negative ones. 
 
@@ -97,7 +97,7 @@ The global complexity of QSM depends on the number of recursive calls, that is, 
 
 When QSM received a characteristic sample in the initial scenario collection (or any scenario collection considered when calling it recursively), it is guaranteed that no additional scenario can be classified as negative. It follows that QSM will not be called recursively anymore and stops by returning the target model. Note that the size of such a characteristic sample is not necessarily reduced by the fact that any prefix of a positive scenario is also a positive scenario since the number of negative examples it must contain is not affected by this property. An experimental study of the actual sample size required to observe the convergence of \textsc{QSM} and the number of queries submitted to the end-user is detailed in section~\ref{artificial:data}.
 
-\subsection{Pruning the induction space with Blue-Fringe\label{BlueFringe}}
+\subsection{Reducing the number of queries with blue-fringe\label{BlueFringe}}
 
 The order in which states are considered for merging by the \texttt{ChooseStatePairs} function described in section~\ref{QSM:merging} follows from the implicit assumption that the current sample is characteristic. Consequently, two states are considered compatible for merging if there is no suffix to distinguish among them. This can lead to a significant number of scenarios being generated to the end-user, to avoid poor generalizations, when the initial sample is sparse and actually not characteristic for the target global LTS. To overcome this problem, our tool implements an optimized strategy known as Blue-Fringe~\cite{Lang:1998}. The difference lies in the way state pairs are considered for merging. The general idea is to early detect incompatible state pairs and, subsequently, first consider state pairs for which compatibility has the highest chance to be confirmed by the user through positive classification. The resulting "please confirm" interaction may also appear more appealing to the user.
 
@@ -116,90 +116,3 @@ The original \texttt{ChooseStatePairs} function described in section~\ref{QSM:me
 To select a state pair for merging, the Blue-Fringe strategy evaluates all (red, blue) state pairs first. The \texttt{ChooseStatePairs} function now calls the \texttt{Merge} and \texttt{Compatible} functions before selecting the next state pair. If a blue state is found to be incompatible with all current red states, it is immediately promoted to red; the blue fringe is updated accordingly and the process of evaluating all (red, blue) pairs is iterated. When no blue state is found to be incompatible with red states, the most compatible (red, blue) pair is selected for merging. Note that the \texttt{Initialize} function now returns an augmented prefix tree acceptor $PTA(S_+, S_-)$. It stores the prefixes of all positive and negative strings, with accepting states being labeled either as positive or negative. The \texttt{Compatible} function now returns a compatibility score instead of a boolean value. The score is defined as $-\infty$ when, in the merging process for determinization, merging the current (red, blue) pair requires some positive accepting state to be merged with some negative accepting state; this score indicates an incompatible merging. Otherwise, the compatibility score measures how many accepting states in this process share the same label (either + or -). The (red, blue) pair with the highest compatibility score is considered first.  The above strategy can be further refined with a compatibility threshold $\alpha$ as additional input parameter. Two states are considered to be compatible if their compatibility score is above that threshold. This additional parameter controls the level of generalization since increasing $\alpha$ decreases the number of state pairs that are considered compatible for merging; it thus decreases the number of generated queries.
 
 On the simple train example of this paper, the QSM algorithm with the original RPNI state-merging order learns the global LTS correctly by submitting 20 scenarios to the end-user (17 should be rejected and only 3 should be accepted). With the Blue-Fringe strategy, the same LTS is synthesized with only 3 scenarios being submitted (one to be rejected and two to be accepted). Further comparative results are detailed in section~\ref{results}.
-
-\subsection{Pruning the induction space with state information\label{subsection:induction-pruning-with-state-info}}
-
-The interactive QSM algorithm described in section~\ref{algo} always provides a DFA consistent with the available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. This strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the positive and negative accepting states respectively\footnote{All states in a LTS are (positively) accepting. Hence, all states of $PTA(S_+)$ are positive accepting states. Since a negative scenario is the concatenation of a positive prefix with a single additional symbol, the augmented $PTA(S_+, S_-)$ only contains states labeled either as positive accepting or negative accepting.}. All states belonging to the same class are not necessarily merged in the final solution but the \texttt{Compatible} function guarantees that only states belonging to the same class can be merged.
-
-This approach can be extended to incorporate various sources of domain knowledge. This knowledge refines the equivalence partition and further constrains the compatible merging operations. From an algorithmic point of view, inclusion of domain knowledge is thus straightforward but the resulting approach both speeds up the search and guarantees that the proposed solution is consistent with the domain knowledge.
-
-Let us stress that domain knowledge is \textsl{optional} here as the QSM algorithm can work without it. However, if available, domain knowledge helps to further reduce the number of queries submitted to the end-user. The next sections describe how to include \textsl{fluents}, \textsl{models of external system components}, \textsl{descriptive statements} and \textsl{goals} in the induction process.
-
-\subsubsection{Propagating fluents}
-
-The notion of fluent has been introduced in~\cite{Giannakopoulou:2003}.
-
-\begin{definition}[Fluent]
-A \emph{fluent} 
-is a proposition defined by a set $Init_{Fl}$ of initiating events, a set $Term_{Fl}$ of 
-terminating events, with $Init_{Fl}\cap Term_{Fl} = \emptyset$, and an initial boolean value.
-\end{definition}
-
-\noindent
-For example, the fluent \emph{DoorsClosed} describes states of the train doors as being either \\
-\centerline{\texttt{closed} ($DoorsClosed = true$) or \texttt{open} ($DoorsClosed = false$),} \\
-and describes which event is responsible for which state change:
-
-\hspace*{-.5cm}
-\begin{small}
-\begin{tabular}{lr}
-\emph{DoorsClosed} $=\langle\{$\texttt{close doors}$\},$ &$\{$\texttt{open doors, emergency open}$\}\rangle$\\
-&initially $true$.\\
-\end{tabular}
-\end{small}
-
-The value of every fluent can be computed on each PTA state by symbolic execution, starting from the initial state associated with the initial value for each fluent. The PTA states are then decorated with the conjunction of such values. Two states in $PTA(S_+, S_-)$ belong to the same equivalence class if they have the same value for every fluent. The decoration of the merged states is simply inherited from the states being merged. Figure~\ref{Fig:fluents} shows the result of propagating the values of the fluent \emph{DoorsClosed} along the augmented PTA built from the scenarios described in Figure~\ref{Fig:init:scen}.
-
-\begin{figure}[H]
-\centering
-\scalebox{.6}{\includegraphics*{src/4-inductive/images/FluentPropagation}}
-\caption{Propagating fluents\label{Fig:fluents}. {\small dc is a shorthand for \emph{DoorsClosed}; \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open} stand for \texttt{alarm pressed, alarm propagated, emergency open} respectively}.}
-\end{figure}
-
-\subsubsection{Unfolding models of external components}
-
-Quite often the components being modeled need to interact with other components in their environment - \textit{e.g.}, legacy components in a bigger existing system, foreign components in an open system, etc. In such cases the behavior of external components is generally known - typically, through some behavioral model \cite{Hall:2004}. Here we assume that external components are known by their LTS model. For example, Figure~\ref{Fig:AlarmSensor} shows the LTS for a legacy alarm sensor in our train system. When the alarm button is pressed by a passenger, this component propagates a corresponding signal to the train controller. 
-
-The PTA states can also be decorated with state labels from this external LTS by unfolding the latter on the PTA. Such decoration is performed by jointly visiting the PTA and the external LTS. The latter synchronizes on shared events and stays in its current state on other events. Figure~\ref{Fig:AlarmSensor:Unfolding} shows the result of unfolding the alarm sensor LTS from Fig.~\ref{Fig:AlarmSensor} on the augmented PTA built from the scenarios described in Fig.~\ref{Fig:init:scen}. Each state in Fig.~\ref{Fig:AlarmSensor:Unfolding} is labeled with the number of the corresponding state in the alarm sensor LTS. Two states belong to the same equivalence class if they have the same external LTS state label.
-
-\begin{figure}[H]
-\centering
-\scalebox{.5}{\includegraphics*{src/4-inductive/images/AlarmSensor}}
-\caption{Alarm sensor LTS\label{Fig:AlarmSensor}.}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\scalebox{.6}{\includegraphics*{src/4-inductive/images/AlarmSensorUnfold}}
-\caption{Unfolding the Alarm sensor model\label{Fig:AlarmSensor:Unfolding}.}
-\end{figure}
-
-\subsection{Pruning the induction space with goals and domain properties\label{subsection:induction-pruning-with-goals}}
-
-Descriptive statements about the domain, called \textsl{domain properties}, or prescriptive statements of intent about the target system, called \textsl{goals}, can be expressed declaratively with fluents in \textsl{Linear Temporal Logic} (LTL)~\cite{Giannakopoulou:2003}. LTL assertions use standard operators for temporal referencing such as:
-
-\begin{center}
-$\square$ (always in the future), $\diamond$ (some time in the future),\\
-$\rightarrow$ (implies in the current state), $\Rightarrow$ (always implies).\\
-\end{center}
-
-For example, in an extended version of our running example, the statement
-
-\begin{center}
-	$\square (HighSpeed \rightarrow Moving)$
-\end{center}
-
-expresses a physical law stating that all scenarios for which a train is running at high speed while not moving should be considered as negative. 
-
-A goal requiring train doors to remain closed while the train is moving is formalized as 
-\begin{center}
-$ DoorsClosedWhileMoving = \square (Moving \rightarrow DoorsClosed)$
-\end{center}
-
-We restrict here our attention to statements that can be formalized as LTL safety properties. For such properties, a tester can be automatically generated \cite{Giannakopoulou:2003}. A tester for a property is a LTS extended with a negative accepting state such that every path leading to this state violates the property. The tester LTS for the goal $DoorsClosedWhileMoving$ is represented in Figure~\ref{Fig:Goals:Injection} (the black state is the negative accepting state). Any event sequence leading to the black state from the initial state corresponds to an undesired system behavior. In particular, the event sequence \texttt{start, open} corresponds to the initial negative scenario in our running example (see Fig.\ref{Fig:init:scen}). The tester of Figure~\ref{Fig:Goals:Injection} provides many more negative scenarios, actually an infinite number of negative scenarios due to the cyclic nature of such LTS. The property tester is used to constrain the induction process in the same way as an external component LTS. The PTA and the tester are traversed jointly in order to decorate each PTA state with the corresponding tester state. Two states belong in the same equivalence class if they have the same property tester state. This technique has the additional benefit of ensuring that the synthesized global LTS satisfies the considered goal or domain property. 
-
-\begin{figure}[H]
-\centering
-\scalebox{.5}{\includegraphics*{src/4-inductive/images/GoalsInjection}}
-\caption{Tester LTS for the goal $DoorsClosedWhileMoving$\label{Fig:Goals:Injection}. {\small \texttt{e.stop}, \texttt{e.open} stand for \texttt{emergency stop, emergency open} respectively}.}
-\end{figure}

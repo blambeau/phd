@@ -3,7 +3,7 @@
 \emph{Inductive learning} aims at finding a theory that generalizes a set of observed examples. In \emph{grammar induction}, the theory to be learned is a formal language and the set of positive examples is made of strings defined on a specific alphabet. A negative sample corresponds to a set of strings not belonging to the target language. When the target language
 is regular and the learned language is represented by a deterministic finite state automaton (DFA), the problem is known as DFA induction.
 
-\subsection{DFA indentification in the Limit}
+\subsection{DFA identification in the Limit\label{subsection:dfa-identification-in-the-limit}}
 
 \emph{Identification in the limit} is a learning framework in which an increasing sequence of strings is presented to the learning algorithm \cite{Gold:1967}. The strings are randomly drawn and correctly labeled as positive or negative. Learning is successful if the algorithm infers the target language in finite time after having seen finite samples. This framework justifies why successful DFA learning needs both positive and negative strings. Gold showed that the class of regular languages cannot be identified in the limit from positive strings only \cite{Gold:1967}. In practice, convergence in finite time toward an exact solution is often bargained with reasonably fast convergence toward a good approximate solution \cite{Lang:1992}.
 
@@ -97,5 +97,3 @@ There may exist several distinct characteristic samples for a given language $L$
 One can verify that $S = (S_+, S_-)$, with $S_+ = \{\lambda, a, bb, bba, baab, baaaba\}$ and $S_- = \{b, ab, aba\}$, forms a characteristic sample for the language accepted by the canonical automaton in Fig.~\ref{fig:pta:quotient}.
 
 Note that the definition of a characteristic sample given above may be considered quite strong. It is however the standard definition of such a sample for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. It is based on a worst case analysis which does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the letters of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to observe very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
-
-\subsection{LTS synthesis seen as a grammar induction problem}

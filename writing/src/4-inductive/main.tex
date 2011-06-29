@@ -1,10 +1,11 @@
 \chapter{Inductive Synthesis of State Machines from Scenarios\label{chapter:inductive-synthesis}}
 
-This chapter presents inductive techniques for synthesizing state machines from scenarios. Section~\ref{section:inductive-overview} states the problem statement, discusses a few requirements and provides an overview of our approach. Section~\ref{section:inductive-background} provides background on grammar induction \cite{Gold:1978}, the inductive framework on which techniques of the chapter rely. Section~\ref{section:lts-induction-from-mscs} then describes an interactive inductive technique for learning Labeled Transition Systems (LTS) from collections of Message Sequence Charts (MSC). This technique is guided by an end-user, which is expected to classify additional MSC scenarios as positive and negative system behaviors. In Section~\ref{section:inductive-mutliview-consistency}, fluent, goals and domain properties are injected in the process to enforce inter-model consistency and prune the inductive search space. Section \ref{section:inductive-from-hMSC} discusses how hMSCs can replace scenario collections as input of the inductive process. Section \ref{section:inductive-discussion} concludes this chapter with a discussion about possible enhancements. 
+This chapter presents inductive techniques for synthesizing state machines from scenarios. Section~\ref{section:inductive-objectives-and-approach} states the problem statement, discusses a few requirements and provides an overview of our approach. Section~\ref{section:inductive-background} provides background on grammar induction \cite{Gold:1978}, the inductive framework on which techniques of the chapter rely. Section~\ref{section:lts-induction-from-mscs} then describes an interactive inductive technique for learning Labeled Transition Systems (LTS) from collections of Message Sequence Charts (MSC). This technique is guided by an end-user, which is expected to classify additional MSC scenarios as positive and negative system behaviors. In Section~\ref{section:inductive-mutliview-consistency}, fluent, goals and domain properties are injected in the process to enforce inter-model consistency and prune the inductive search space. Section \ref{section:inductive-from-hMSC} discusses how hMSCs can replace scenario collections as input of the inductive process. Section \ref{section:inductive-discussion} concludes this chapter with a discussion about possible enhancements. 
 
-\input{src/4-inductive/1-problem-statement}
-\input{src/4-inductive/2-gi-background}
+\input{src/4-inductive/1-objectives-and-approach}
+\input{src/4-inductive/2-grammar-induction-for-lts-synthesis}
 \input{src/4-inductive/3-interactive}
-\input{src/4-inductive/4-induction-from-hmsc}
-\input{src/4-inductive/5-discussion}
+\input{src/4-inductive/4-injecting-constraints}
+\input{src/4-inductive/5-induction-from-hmsc}
+\input{src/4-inductive/6-discussion}
 
