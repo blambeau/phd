@@ -1,7 +1,6 @@
 \section{Grammar induction for LTS synthesis\label{section:inductive-background}}
 
-\emph{Inductive learning} aims at finding a theory that generalizes a set of observed examples. In \emph{grammar induction}, the theory to be learned is a formal language and the set of positive examples is made of strings defined on a specific alphabet. A negative sample corresponds to a set of strings not belonging to the target language. When the target language
-is regular and the learned language is represented by a deterministic finite state automaton (DFA), the problem is known as DFA induction.
+\emph{Inductive learning} aims at finding a theory that generalizes a set of observed examples. In \emph{grammar induction}, the theory to be learned is a formal language and the set of positive examples is made of strings defined on a specific alphabet. A negative sample corresponds to a set of strings not belonging to the target language. When the target language is regular and the learned language is represented by a deterministic finite state automaton (DFA), the problem is known as DFA induction. For a regular language $L$, $A(L)$ will denote its canonical automaton, that is the DFA having the smallest number of states and accepting $L$. For recall, $A(L)$ is unique up to a renumbering of its states \cite{Hopcroft:1979}.
 
 \subsection{DFA identification in the Limit\label{subsection:dfa-identification-in-the-limit}}
 
