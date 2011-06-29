@@ -1,6 +1,6 @@
 \section{Synthesis objectives and chosen approach\label{section:inductive-objectives-and-approach}}
 
-This section gives an overview of the synthesis approach. Section~\ref{subsection:inductive-synthesis-statement} states the problem statement in terms of the formal models of Chapter~\ref{chapter:framework}. Section~\ref{subsection:inductive-synthesis-requirements} completes this by stating additional requirements on the synthesis approach. Section~\ref{subsection:inductive-synthesis-approach} presents an overview of our inductive-oriented approach, in the light of those requirements.
+This section gives a characterization of the synthesis problem and an overview of our solution. Section~\ref{subsection:inductive-synthesis-statement} makes the problem statement precise in terms of the models from Chapter~\ref{chapter:framework}. Section~\ref{subsection:inductive-synthesis-requirements} states additional requirements on the synthesis approach; the problem statement can be strengthened to take each of them into account. Section~\ref{subsection:inductive-synthesis-approach} presents an overview of our inductive-oriented approach in the light of these incremental enhancements.
 
 %%%
 
@@ -9,7 +9,7 @@ This section gives an overview of the synthesis approach. Section~\ref{subsectio
 In its simplest form, the problem of synthesizing LTS state machines from MSC scenarios can be stated as follows:
 
 \begin{quotation}
-\noindent \underline{Given}~~a consistent scenario collection showing typical examples and counterexamples of system behaviors
+\noindent \underline{Given}~~a consistent MSC collection showing typical examples and counterexamples of system behaviors
 
 \vspace{-0.7cm}
 \begin{align*}
@@ -30,41 +30,47 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 
 \noindent For recall, the consistency condition covers three criteria (see Section~\ref{subsection:background-scenario-consistency}):
 
-\begin{itemize}
-\item \textbf{structural consistency} -- the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective interface,
-\item \textbf{consistent agent view} -- the timelines of any positive scenario $P \in S^+$ specify existing paths in the corresponding agent state machines. The same applies for the precondition of any negative scenario $N \in S^-$.
-\item \textbf{consistent system view} -- the system correctly accepts positive scenarios and preconditions of negatives ones. It also correctly rejects negative scenarios. We recall below the precise conditions from Section~\ref{subsection:background-scenario-consistency}:
-\begin{align*}
-\mathcal{L}(System) &= \mathcal{L}^+(Sc)\\
-\mathcal{L}(System) \cap \mathcal{L}^-(Sc) &= \emptyset
-\end{align*}
+\begin{description}
+\item[structural consistency] the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective interface,
 
-\end{itemize}
+\item[consistent agent view] each timeline of positive scenarios in $S^+$ specifies an existing path in the corresponding agent state machine. The same condition holds for preconditions of negative scenarios in $S^-$.
+
+\item[consistent system view] the system correctly covers all positive scenarios and the preconditions of the negatives ones. It also correctly rejects negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
+\begin{align*}
+\mathcal{L}^+(Sc) & \subseteq \mathcal{L}(System) \\
+\mathcal{L}^-(Sc) \cap \mathcal{L}(System) &= \emptyset
+\end{align*}
+\noindent where $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ encode the scenario collection in terms of positive and negative event traces, respectively.
+
+\end{description}
 
 %%%
 
 \subsection{Synthesis requirements\label{subsection:inductive-synthesis-requirements}}
 
-The characterization above provides a precise statement in terms of the formal models of Chapter~\ref{chapter:framework}. This statement is completed with a few usability requirements.
+The characterization above provides a precise, yet minimal statement in terms of the formal models of Chapter~\ref{chapter:framework}. This statement is completed with a few usability requirements.
 
-\noindent \textbf{Flexibility} -- keeping a flexible approach with respect to the input scenario language looks important for end-user involvement and usability:
+\begin{description}
+\item[Behavior generalization] -- In most cases, scenarios provide only \emph{examples} of system behaviors and are thus incomplete. Synthesized state machines should cover more behaviors than those described. 
+
+Covering more behaviors is allowed by our formal statement but not enforced. Note that the \emph{consistent system view} condition states an upper bound on behavior generalization, by requiring negative scenarios to be correctly rejected. This upper bound has to be refined if other models are taken into account (see below).
+
+\item[Incremental synthesis] -- The synthesis approach should help incrementally refining a first scenario specification towards richer models.
 \begin{itemize}
 
-\item End-users are most likely to be unable to provide rich scenario descriptions in the early phases of system design. This includes state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should be usable when only a few scenarios are available.
+\item End-users are most likely to be unable to provide rich scenario descriptions in the early phases of system design. This includes state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore be usable even if only a few scenarios are available.
 
-\item Both positive and negative scenarios should be taken into account. Negative scenarios are not uncommon among the examples provided by stakeholders. One reason is that they naturally illustrate violations of safety goals while being easier to specify than the latter. 
+\item Both positive and negative scenarios should be taken into account. Negative scenarios are not uncommon among the examples provided by stakeholders. One reason is that they naturally illustrate violations of safety goals but are easier to specify than the latter.
 
-\item System analysis is incremental by nature. Richer input scenarios are therefore very likely to be \emph{eventually} available. The synthesis approach should help incrementally refining a first scenario specification towards richer models. It should also gracefully adapt to work on such richer input in advanced analysis phases.
+\item In an incremental approach to system analysis, richer input scenarios are likely to be \emph{eventually} available. The synthesis should gracefully adapt to work on such richer input in advanced analysis phases. For example, the formal statement might be adapted to take a hMSC as input. 
 
 \end{itemize}
 
-\noindent \textbf{Behavior generalization} -- the synthesis approach must at least cover the behaviors described in the positive scenarios. In most cases, scenarios provide \emph{examples} of system behaviors and are inherently incomplete. Synthesized state machines should therefore cover more behaviors than those already described. 
+\item[Multi-model synthesis] -- The possibility of having richer input models suggests taking other models into account in the synthesis process, such as fluents or goals. These models should not be \emph{required} as input, but are better \emph{supported} when available. 
 
-An upper bound on behavior generalization is given by the consistency condition, that requires negative scenarios to be correctly rejected. This upper bound has to be refined when other models are available (see below).
+In such case, the formal statement must be strengthened. In input, all available models shall be required to be consistent with each other. In output, the synthesized system itself shall be required consistent with all models. Notably, the synthesized system shall not violate known safety goals.
 
-\noindent \textbf{Multi-model consistency} -- the possibility of having richer input models suggests taking other models into account, such as fluents or goals, in addition to scenarios. These models should not be \emph{required} as input, but are better \emph{supported} when available. 
-
-In such case, our characterization must be strengthened. In input, all available models shall be required to be consistent with each other. In output, the synthesized system shall be consistent with all models. Notably, the synthesized system should not violate known safety goals.
+\end{description}
 
 %%%
 
