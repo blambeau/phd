@@ -18,15 +18,25 @@ Having a synthesis technique to merge and generalize behaviors described in hMSC
 
 \subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
 
+Merging multiple hMSCs with respect to trace behaviors simply amounts to compute the union of their respective languages. Under all hMSC semantics considered in Section \ref{subsection:background-hmsc}, this is equivalent to building a new composite hMSC that reaches the finer-grained hMSCs from its initial state. Additional positive scenarios, typically coming from scenario queries, could be integrated in a similar way.  
+
+However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalization. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to contraint induction in a similar way. The algorithmic adaptations needed to generalize hMSC behaviors keep compatible the constraint mechanism based on equivalence relations on system states. 
+
+Without loss of generality therefore, we will assume that behaviors are in fact specified through one hMSC only, complemented with a scenario collection. Under these assumptions, the LTS synthesis statement is restated as follows: 
+
 \begin{quote}
-\underline{Given}~~a consistent hMSC $H$ and a set of negative scenarios $S^-$ 
-\underline{Synthesize}~~the system as a composition of agent LTSs
+\underline{Given}~a hMSC $H$ and a scenario collection $Sc = (S^+,S^-)$, consistent with each other
+\begin{align*}
+[\mathcal{L}^+(Sc) \cup \mathcal{L}(H)] \cap \mathcal{L}^-(Sc) &= \emptyset
+\end{align*}
+\underline{Synthesize}~the system as a composition of agent LTSs
 \begin{align*}
 System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \end{align*}
-\underline{Such that}~~$H$, $S^-$ and $System$ are consistent.
+\underline{Such that}~$H$, $Sc$ and $System$ are consistent.
 \end{quote}
 
+The hMSC trace semantics is left open in the formulation above. In other words, one has to decide which set of behaviors does $\mathcal{L}(H)$ denote. 
 
 \subsection{Algorithmic adaptations\label{subsection:hmsc-induction-algo-adaptation}}
 
