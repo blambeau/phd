@@ -1,1 +1,24 @@
 \section{LTS synthesis from hMSCs\label{section:inductive-from-hMSC}}
+
+The previous sections have shown how system behaviors specified in collections of MSC scenarios can be generalized as a set of agent state machines. The technique supports the incremental enrichment of an initial scenario collection through the interactive feature. It takes other models such as goals into account so as to preserve multi-view consistency. Behavior generalization, incremental synthesis and mutli-view consistency were the three main requirements stated in Section \ref{subsection:inductive-synthesis-requirements}. 
+
+Coupled with other synthesis techniques such as goal mining from scenarios\footnote{whose simplest form consists in asking ``why'' when facing with a negative scenario} \cite{Damas:2006}, interactive LTS induction is really effective; starting from a small initial scenario collection, richer system models can be synthesized in a few iterations. Chapters~\ref{chapter:evaluation} and \ref{chapter:tool-support} illustrate these claims with evaluations and tool support overview.
+
+For any non-toy system, a large scenario collection might become unmanageable. Among others, consistency of the collection might be difficult to guarantee without costly refactoring on scenarios. One reason is that all scenarios of a collection are required to start in the same system state; this implies a lot of redundancy in system descriptions.
+
+One way to tackle this problem is to use high-level message sequence charts (hMSCs) for structuring scenario descriptions. As detailed in Section \ref{subsection:background-hmsc}, hMSCs are directed graphs where each node refers to a MSC or a finer grained hMSC (see Fig. \ref{image:train-hmsc}). Scenarios can then be structured by introducing alternatives, sequences and loops.
+
+Having a structured form of scenario \emph{helps} specifying a large system with scenarios; it does not \emph{solves} the problem of achieving a complete and consistent view of agent behaviors:
+\begin{itemize}
+\item capturing all possible interleavings of a distributed system renders difficult with scenarios; a hMSC is therefore hardly complete in practice,
+\item complementary features of a system deserve being specified in complementary models; in addition to using multiple system views, having system behaviors specified in more than one hMSC makes sense.
+\end{itemize}
+
+Having a synthesis technique to merge and generalize behaviors described in hMSCs seems a convenient extension to the synthesis technique described so far. The LTS synthesis statement is first revisited in Section~\ref{subsection:hmsc-induction-problem-revisited}. The inductive algorithm is then adapted in Section \ref{subsection:hmsc-induction-algo-adaptation} to take hMSCs as input.
+
+\subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
+
+
+
+\subsection{Algorithmic adaptations\label{subsection:hmsc-induction-algo-adaptation}}
+
