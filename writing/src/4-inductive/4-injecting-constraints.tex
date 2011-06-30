@@ -1,12 +1,19 @@
-\section{Injecting constraints for multi-model consistency\label{section:inductive-mutliview-consistency}}
+\section{Achieving multi-view consistency\label{section:inductive-mutliview-consistency}}
 
-\subsection{Pruning the induction space with state information\label{subsection:induction-pruning-with-state-info}}
+The interactive QSM algorithm described in section~\ref{section:lts-induction-from-mscs} always provides a System LTS consistent with the available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. The latter strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the accepting states and the error states, respectively. All states belonging to the same class are not necessarily merged in the final solution; however, the \texttt{Compatible} function guarantees that only states belonging to the same class \emph{can} be merged.
 
-The interactive QSM algorithm described in section~\ref{algo} always provides a DFA consistent with the available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. This strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the positive and negative accepting states respectively\footnote{All states in a LTS are (positively) accepting. Hence, all states of $PTA(S_+)$ are positive accepting states. Since a negative scenario is the concatenation of a positive prefix with a single additional symbol, the augmented $PTA(S_+, S_-)$ only contains states labeled either as positive accepting or negative accepting.}. All states belonging to the same class are not necessarily merged in the final solution but the \texttt{Compatible} function guarantees that only states belonging to the same class can be merged.
+This approach can be extended to achieve multi-view consistency, by incorporating various sources of information. This information refines the equivalence partition and further constrains the compatible merging operations. The resulting approach has many advantages; it speeds up the search; it provides strong consistency of the System LTS with other views; it reduces the number of scenario queries in the interactive setting.
 
-This approach can be extended to incorporate various sources of domain knowledge. This knowledge refines the equivalence partition and further constrains the compatible merging operations. From an algorithmic point of view, inclusion of domain knowledge is thus straightforward but the resulting approach both speeds up the search and guarantees that the proposed solution is consistent with the domain knowledge.
+Section \ref{subsection:induction-pruning-with-domain-knowledge} shows how to incorporate descriptive knowledge from fluent definitions, lts models of legacy components and domain properties. Section \ref{subsection:induction-pruning-with-goals} shows how to inject prescriptive knowledge from \textsl{goals}.
 
-Let us stress that domain knowledge is \textsl{optional} here as the QSM algorithm can work without it. However, if available, domain knowledge helps to further reduce the number of queries submitted to the end-user. The next sections describe how to include \textsl{fluents}, \textsl{models of external system components}, \textsl{descriptive statements} and \textsl{goals} in the induction process.
+The optimization techniques detailed hereafter are based on various equivalence relations on system states. We use the term equivalence relation here in its usual mathematical sense, that is, a symmetric, reflexive, and transitive binary relation over states. The general principle underlying our techniques is the following:
+\begin{quote}
+\emph{Two states will be considered for merging if they agree according to all considered equivalence relations.}
+\end{quote}
+The equivalence relations considered in the following sections are all invariant under state merging; a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA. The results of such pre-processing are kept as annotations on PTA states. The above principle for state merging is very general. It could therefore be further instantiated to other equivalence relations not considered here.
+
+
+\subsection{Injecting domain knowledge in the synthesis process\label{subsection:induction-pruning-with-domain-knowledge}}
 
 \subsubsection*{Propagating fluents}
 
@@ -57,7 +64,7 @@ The PTA states can also be decorated with state labels from this external LTS by
 \caption{Unfolding the Alarm sensor model\label{Fig:AlarmSensor:Unfolding}.}
 \end{figure}
 
-\subsection{Pruning the induction space with goals and domain properties\label{subsection:induction-pruning-with-goals}}
+\subsection{Injecting goals in the synthesis process\label{subsection:induction-pruning-with-goals}}
 
 Descriptive statements about the domain, called \textsl{domain properties}, or prescriptive statements of intent about the target system, called \textsl{goals}, can be expressed declaratively with fluents in \textsl{Linear Temporal Logic} (LTL)~\cite{Giannakopoulou:2003}. LTL assertions use standard operators for temporal referencing such as:
 
