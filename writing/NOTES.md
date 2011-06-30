@@ -1,4 +1,11 @@
-* 2011.06.24 - Sections to refactor
+* 2011.06.30 - Sections to refactor in chapter 4
+
+  * Add a sentence about "membership queries" before using the term.
+
+  * Check that "uv" (vs. "u.v") string concatenation is compatible with
+    Background.
+
+* 2011.06.24 - Sections to refactor in chapter 2
 
   * 2.1 Running examples
 
@@ -8,8 +15,6 @@
 
     * The discussion should probably be extended a bit now? Consistency
       rules are not introduced anymore.
-
-    * Refactor image 2.2 and add process models to it
 
   * 2.4.5 Flowcharting scenarios ...
 
