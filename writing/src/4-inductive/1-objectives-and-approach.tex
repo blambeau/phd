@@ -36,10 +36,11 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \item[consistent agent view] each timeline of positive scenarios in $S^+$ specifies an existing path in the corresponding agent state machine. The same condition holds for preconditions of negative scenarios in $S^-$.
 
 \item[consistent system view] the system correctly covers all positive scenarios and the preconditions of the negatives ones. It also correctly rejects negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
-\begin{align*}
+\begin{align}
 \mathcal{L}^+(Sc) & \subseteq \mathcal{L}(System) \\
 \mathcal{L}^-(Sc) \cap \mathcal{L}(System) &= \emptyset
-\end{align*}
+\label{relation:inductive-statement-negative}
+\end{align}
 \noindent where $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ encode the scenario collection in terms of positive and negative event traces, respectively.
 
 \end{description}

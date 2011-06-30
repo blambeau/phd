@@ -1,0 +1,46 @@
+digraph G {
+  graph [rankdir="LR" ranksep=1.5];
+  node [color="black" fillcolor="white" shape="circle" style="filled"]
+  zz [label="" color="white" fillcolor="white" shape="circle" style="filled" 
+      width=0.05 height=0.05 fixedsize=true ];
+  0 [];
+  1 [];
+  2 [];
+  3 [shape="doublecircle"];
+  zz -> 0 [label=""];
+
+  0 -> 0 [label="stop"];
+  0 -> 0 [label="e.stop"];
+  0 -> 0 [label="close"];
+  0 -> 0 [label="{...}" fontname="italic" fontsize=10];
+
+  0 -> 1 [label="start"];
+  1 -> 0 [label="stop"];
+  1 -> 0 [label="e.stop"];
+
+  1 -> 1 [label="start"];
+  1 -> 1 [label="close"];
+  1 -> 1 [label="{...}" fontname="italic" fontsize=10];
+
+  2 -> 2 [label="open"];
+  2 -> 2 [label="e.open"];
+  2 -> 2 [label="stop"];
+  2 -> 2 [label="e.stop"];
+  2 -> 2 [label="{...}" fontname="italic" fontsize=10];
+
+  0 -> 2 [label="open"];
+  0 -> 2 [label="e.open"];
+  2 -> 0 [label="close"];
+
+  3 -> 3 [label="start"];
+  3 -> 3 [label="stop"];
+  3 -> 3 [label="e.stop"];
+  3 -> 3 [label="open"];
+  3 -> 3 [label="e.open"];
+  3 -> 3 [label="close"];
+  3 -> 3 [label="{...}" fontname="italic" fontsize=10];
+
+  1 -> 3 [label="open"];
+  1 -> 3 [label="e.open"];
+  2 -> 3 [label="start"];
+}

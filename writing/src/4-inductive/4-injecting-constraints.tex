@@ -2,9 +2,7 @@
 
 The interactive QSM algorithm described in section~\ref{section:lts-induction-from-mscs} always provides a System LTS consistent with the available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. The latter strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the accepting states and the error states, respectively. All states belonging to the same class are not necessarily merged in the final solution; however, the \texttt{Compatible} function guarantees that only states belonging to the same class \emph{can} be merged.
 
-This approach can be extended to achieve multi-view consistency, by incorporating various sources of information. This information refines the equivalence partition and further constrains the compatible merging operations. The resulting approach has many advantages; it speeds up the search; it provides strong consistency of the System LTS with other views; it reduces the number of scenario queries in the interactive setting.
-
-Section \ref{subsection:induction-pruning-with-domain-knowledge} shows how to incorporate descriptive knowledge from fluent definitions, lts models of legacy components and domain properties. Section \ref{subsection:induction-pruning-with-goals} shows how to inject prescriptive knowledge from \textsl{goals}.
+This approach can be extended to achieve multi-view consistency, by incorporating various sources of information. This information refines the equivalence partition and further constrains the compatible merging operations. Section \ref{subsection:induction-pruning-with-domain-knowledge} shows how to incorporate descriptive domain knowledge. Section \ref{subsection:induction-pruning-with-goals} shows how to inject prescriptive knowledge from goals. The resulting approach has many advantages; it speeds up the search; it provides strong consistency of the System LTS with other views; it reduces the number of scenario queries in the interactive setting.
 
 The optimization techniques detailed hereafter are based on various equivalence relations on system states. We use the term equivalence relation here in its usual mathematical sense, that is, a symmetric, reflexive, and transitive binary relation over states. The general principle underlying our techniques is the following:
 \begin{quote}
@@ -12,83 +10,116 @@ The optimization techniques detailed hereafter are based on various equivalence 
 \end{quote}
 The equivalence relations considered in the following sections are all invariant under state merging; a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA. The results of such pre-processing are kept as annotations on PTA states. The above principle for state merging is very general. It could therefore be further instantiated to other equivalence relations not considered here.
 
+%%%%%
+
 \subsection{Injecting domain knowledge in the synthesis process\label{subsection:induction-pruning-with-domain-knowledge}}
+
+The domain knowledge used to constrain state merging comes from multiple sources: fluent definitions, knowledge about components in the environment of the software-to-be, and specifications of domain properties. We discuss these successively.
+
+%%
 
 \subsubsection*{Propagating fluents}
 
-The notion of fluent has been introduced in~\cite{Giannakopoulou:2003}.
+Fluent definitions provide simple and natural domain descriptions to constrain induction. For example, the definition
 
-\begin{definition}[Fluent]
-A \emph{fluent} 
-is a proposition defined by a set $Init_{Fl}$ of initiating events, a set $Term_{Fl}$ of 
-terminating events, with $Init_{Fl}\cap Term_{Fl} = \emptyset$, and an initial boolean value.
-\end{definition}
+\begin{center}
+fluent $DoorsClosed = \textless \{$close doors$\}, \newline
+ \{$open doors, emergency open$\} \textgreater $ initially $true$ \\
+\end{center}
 
-\noindent
-For example, the fluent \emph{DoorsClosed} describes states of the train doors as being either \\
-\centerline{\texttt{closed} ($DoorsClosed = true$) or \texttt{open} ($DoorsClosed = false$),} \\
-and describes which event is responsible for which state change:
+describes train door states as being either closed ($DoorsClosed = true$) or open ($DoorsClosed = false$), and describes which event is responsible for which state change. Such descriptions can be effectively used to constrain the induction process so that the synthesized system LTS conforms to them. The idea is to compute the value of every fluent at each PTA state by symbolic execution; the PTA states are then decorated with fluent value assignments (see Section~\ref{section:background-fluents}). 
 
-\hspace*{-.5cm}
-\begin{small}
-\begin{tabular}{lr}
-\emph{DoorsClosed} $=\langle\{$\texttt{close doors}$\},$ &$\{$\texttt{open doors, emergency open}$\}\rangle$\\
-&initially $true$.\\
-\end{tabular}
-\end{small}
+The pruning rule for constraining the induction process is here to \emph{avoid merging inconsistent states} according to these decorations. The specific equivalence relation here is thus the set of state pairs where both states have the same fluent value assignment. The decoration of the merged state is simply inherited from the states being merged.
+\begin{quote}
+\emph{Two states will be considered for merging if they have the same value for every fluent}
+\end{quote}
 
-The value of every fluent can be computed on each PTA state by symbolic execution, starting from the initial state associated with the initial value for each fluent. The PTA states are then decorated with the conjunction of such values. Two states in $PTA(S_+, S_-)$ belong to the same equivalence class if they have the same value for every fluent. The decoration of the merged states is simply inherited from the states being merged. Figure~\ref{Fig:fluents} shows the result of propagating the values of the fluent \emph{DoorsClosed} along the augmented PTA built from the scenarios described in Figure~\ref{Fig:init:scen}.
+Figure~\ref{Fig:fluents} shows the result of propagating the values of the fluent \emph{DoorsClosed} along the augmented PTA built from the scenarios described in Figure~\ref{Fig:init:scen}.
 
 \begin{figure}[H]
 \centering
-\scalebox{.6}{\includegraphics*{src/4-inductive/images/FluentPropagation}}
-\caption{Propagating fluents\label{Fig:fluents}. {\small dc is a shorthand for \emph{DoorsClosed}; \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open} stand for \texttt{alarm pressed, alarm propagated, emergency open} respectively}.}
+\scalebox{.30}{\includegraphics*{src/4-inductive/images/dc-augmented-pta}}
+\caption{Propagating fluents\label{Fig:fluents}; DC stands for \emph{DoorsClosed}.}
 \end{figure}
+
+%%
 
 \subsubsection*{Unfolding models of external components}
 
-Quite often the components being modeled need to interact with other components in their environment - \textit{e.g.}, legacy components in a bigger existing system, foreign components in an open system, etc. In such cases the behavior of external components is generally known - typically, through some behavioral model \cite{Hall:2004}. Here we assume that external components are known by their LTS model. For example, Figure~\ref{Fig:AlarmSensor} shows the LTS for a legacy alarm sensor in our train system. When the alarm button is pressed by a passenger, this component propagates a corresponding signal to the train controller. 
+Quite often the components being modeled need to interact with other components in their environment - \textit{e.g.}, legacy components in a bigger existing system, foreign components in an open system, etc. In such cases the behavior of external components is generally known - typically, through some behavioral model \cite{Hall:2004}. Here we assume that external components are known by their LTS model. 
 
-The PTA states can also be decorated with state labels from this external LTS by unfolding the latter on the PTA. Such decoration is performed by jointly visiting the PTA and the external LTS. The latter synchronizes on shared events and stays in its current state on other events. Figure~\ref{Fig:AlarmSensor:Unfolding} shows the result of unfolding the alarm sensor LTS from Fig.~\ref{Fig:AlarmSensor} on the augmented PTA built from the scenarios described in Fig.~\ref{Fig:init:scen}. Each state in Fig.~\ref{Fig:AlarmSensor:Unfolding} is labeled with the number of the corresponding state in the alarm sensor LTS. Two states belong to the same equivalence class if they have the same external LTS state label.
+For example, Figure~\ref{figure:alarm-sensor} shows the LTS for a legacy alarm sensor in our train system. When the alarm button is pressed by a passenger, this component propagates a corresponding signal to the train controller. 
 
-\begin{figure}[H]
+\begin{figure}
 \centering
-\scalebox{.5}{\includegraphics*{src/4-inductive/images/AlarmSensor}}
-\caption{Alarm sensor LTS\label{Fig:AlarmSensor}.}
+\scalebox{.5}{\includegraphics*{src/4-inductive/images/alarm-sensor}}
+\caption{LTS model for an alarm sensor\label{figure:alarm-sensor}.}
 \end{figure}
 
-\begin{figure}[H]
+A LTS model of an external component can constrain the induction process so that the synthesized system LTS conforms to it. The idea is to decorate the PTA with states of the external LTS by unfolding the latter on the PTA. Such decoration is performed by jointly visiting the PTA and the external LTS; the latter synchronizes on shared events and stays in its current state on other events.
+
+Figure~\ref{figure:alarm-unfolded-pta} shows the result of unfolding the alarm sensor LTS from Fig.~\ref{figure:alarm-sensor} on the augmented PTA built from the scenarios described in Fig.~\ref{Fig:init:scen}. Each state in Fig.~\ref{figure:alarm-unfolded-pta} is labeled with the number of the corresponding state in the alarm sensor LTS. 
+
+\begin{figure}
 \centering
-\scalebox{.6}{\includegraphics*{src/4-inductive/images/AlarmSensorUnfold}}
-\caption{Unfolding the Alarm sensor model\label{Fig:AlarmSensor:Unfolding}.}
+\scalebox{.3}{\includegraphics*{src/4-inductive/images/alarm-unfolded-pta}}
+\caption{Unfolding the alarm sensor LTS on the augmented PTA\label{figure:alarm-unfolded-pta}.}
 \end{figure}
+
+The pruning rule for constraining the induction process is now to \emph{avoid merging states decorated with distinct states of the external component}. The specific equivalence relation used here is the set of states where both states have the same external LTS state. 
+
+\begin{quote}
+\emph{Two states will be considered for merging if they have the same external LTS state.}
+\end{quote}
+
+%%
+
+\subsubsection*{Using declarative domain properties}
+
+Descriptive statements and assumptions about the domain can be expressed declaratively in FLTL (see Section~\ref{section:background-goals}). For example, the physical law
+\begin{align*}
+\square(HighSpeed \rightarrow Moving)
+\end{align*}
+\noindent excludes all negative traces where the train is running at high speed while not moving. 
+
+The technique for constraining induction through descriptive or prescriptive statements is the same; we discuss it hereafter.
+
+%%%%%
 
 \subsection{Injecting goals in the synthesis process\label{subsection:induction-pruning-with-goals}}
 
-Descriptive statements about the domain, called \textsl{domain properties}, or prescriptive statements of intent about the target system, called \textsl{goals}, can be expressed declaratively with fluents in \textsl{Linear Temporal Logic} (LTL)~\cite{Giannakopoulou:2003}. LTL assertions use standard operators for temporal referencing such as:
+For reasons explained in Section \ref{section:background-goals}, we restrict our attention here to goals and domain properties that can be formalized as pure FLTL safety properties. For recall, these properties refers to  ``\emph{something bad never happens}''.
 
+Consider the goal requiring train doors to remain closed while the train is moving:
 \begin{center}
-$\square$ (always in the future), $\diamond$ (some time in the future),\\
-$\rightarrow$ (implies in the current state), $\Rightarrow$ (always implies).\\
+\artifact{Maintain[DoorsClosed While Moving]} = $\square(Moving \rightarrow DoorsClosed)$
 \end{center}
 
-For example, in an extended version of our running example, the statement
+Fig.~\ref{figure:tester-automaton-inductive} shows the tester automaton for this property. Such tester captures traces that violate the safety property, that is, any trace leading to the accepting state from the initial state corresponds to an undesired system behavior. In particular, the trace \artifact{<start, open>} corresponds to the initial negative scenario in Fig.~\ref{Fig:init:scen}. As seen in Fig.~\ref{figure:tester-automaton-inductive}, the tester provides many more negative traces. Property testers can in fact provide potentially infinite classes of negative scenarios.
 
-\begin{center}
-	$\square (HighSpeed \rightarrow Moving)$
-\end{center}
-
-expresses a physical law stating that all scenarios for which a train is running at high speed while not moving should be considered as negative. 
-
-A goal requiring train doors to remain closed while the train is moving is formalized as 
-\begin{center}
-$ DoorsClosedWhileMoving = \square (Moving \rightarrow DoorsClosed)$
-\end{center}
-
-We restrict here our attention to statements that can be formalized as LTL safety properties. For such properties, a tester can be automatically generated \cite{Giannakopoulou:2003}. A tester for a property is a LTS extended with a negative accepting state such that every path leading to this state violates the property. The tester LTS for the goal $DoorsClosedWhileMoving$ is represented in Figure~\ref{Fig:Goals:Injection} (the black state is the negative accepting state). Any event sequence leading to the black state from the initial state corresponds to an undesired system behavior. In particular, the event sequence \texttt{start, open} corresponds to the initial negative scenario in our running example (see Fig.\ref{Fig:init:scen}). The tester of Figure~\ref{Fig:Goals:Injection} provides many more negative scenarios, actually an infinite number of negative scenarios due to the cyclic nature of such LTS. The property tester is used to constrain the induction process in the same way as an external component LTS. The PTA and the tester are traversed jointly in order to decorate each PTA state with the corresponding tester state. Two states belong in the same equivalence class if they have the same property tester state. This technique has the additional benefit of ensuring that the synthesized global LTS satisfies the considered goal or domain property. 
-
-\begin{figure}[H]
+\begin{figure}
 \centering
-\scalebox{.5}{\includegraphics*{src/4-inductive/images/GoalsInjection}}
-\caption{Tester LTS for the goal $DoorsClosedWhileMoving$\label{Fig:Goals:Injection}. {\small \texttt{e.stop}, \texttt{e.open} stand for \texttt{emergency stop, emergency open} respectively}.}
+\scalebox{.35}{\includegraphics*{src/4-inductive/images/tester-automaton}}
+\caption{Tester LTS for the goal \artifact{Maintain[DoorsClosed While Moving]}.\label{figure:tester-automaton-inductive}}
 \end{figure}
+
+The property tester is used to constrain the induction process in a way similar to an external component LTS. The PTA and the tester are traversed jointly in order to decorate each PTA state with the corresponding tester state. Fig.~\ref{figure:goal-unfolded-pta} shows the PTA decorated using the tester of Fig.~\ref{figure:tester-automaton-inductive}.
+
+\begin{figure}
+\centering
+\scalebox{.3}{\includegraphics*{src/4-inductive/images/goal-unfolded-pta}}
+\caption{Augmented PTA decorated using the tester automaton from Fig.~\ref{figure:tester-automaton-inductive}\label{figure:goal-unfolded-pta}.}
+\end{figure}
+
+The pruning rule for constraining the induction process is now to \emph{avoid merging states decorated with distinct states of the property tester}. The specific equivalence relation used here is the set of states where both states correspond to the same property tester state. 
+\begin{quote}
+\emph{Two states will be considered for merging if they have the same property tester state.}
+\end{quote}
+
+This pruning technique ensures that the synthesized System LTS is consistent with the considered goal or domain property. In other words, for every goal or domain property $G$ injected in the synthesis process, the following consistency condition holds (see Section \ref{subsection:background-goals-consistency}):
+\begin{align*}
+\mathcal{L}^-(G) \cap \mathcal{L}(System) &= \emptyset
+\end{align*}
+\noindent where $System$ here denotes the synthesized System LTS and $\mathcal{L}^-(G)$ captures all traces violating $G$.
+
+The condition above is similar to the \emph{consistent system view} condition (\ref{relation:inductive-statement-negative}) that requires the negative scenarios to be correctly excluded by the synthesized system (see Section \ref{subsection:inductive-synthesis-statement}). A notable difference is that the \emph{consistent system view} condition there applies to the system recomposition $\system$, while the condition above applies to the System LTS. As with implied negative scenarios, a goal could be satisfied by the synthesized System LTS while being violated by the real distributed system. Implied scenarios are further examined in Section \ref{section:inductive-discussion}.
