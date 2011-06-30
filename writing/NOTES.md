@@ -1,5 +1,8 @@
 * 2011.06.30 - Sections to refactor in chapter 4
 
+  * Restate the requirement that all scenarios start in the same system state
+    somewhere. This is left implicit because of scenario collections so far. 
+
   * Add a sentence about "membership queries" before using the term.
 
   * Check that "uv" (vs. "u.v") string concatenation is compatible with
