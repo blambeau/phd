@@ -18,7 +18,7 @@ Having a synthesis technique to merge and generalize behaviors described in hMSC
 
 \subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
 
-Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. Under both hMSC semantics considered in Section \ref{subsection:background-hmsc}\footnote{for recall, only weak (resp. strong) sequential composition of bMSCs with partial (resp. total) event ordering are considered.}, this is equivalent to building a new hMSC reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios, typically coming from scenario queries, could be integrated in a similar way.
+Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. Under all hMSC semantics considered in Section \ref{subsection:background-hmsc} (we recall them below), this is equivalent to building a new hMSC reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios, typically coming from scenario queries, could be integrated in a similar way.
 
 TODO: an illustration is probably worth considering here?
 
@@ -38,7 +38,14 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \underline{Such that}~$H$, $Sc$ and $System$ are consistent.
 \end{quote}
 
-The hMSC trace semantics is left open in the formulation above. In other words, one has to decide which set of behaviors does $\mathcal{L}(H)$ denote. 
+The hMSC trace semantics is left open in the formulation above. In other words, one has to decide which set of behaviors does $\mathcal{L}(H)$ denote. We recall below the relations between the three hMSC languages covered in Section \ref{subsection:background-hmsc}: 
+\begin{align}
+\mathcal{L}_{strong}(H) \subseteq \mathcal{L}_{weak}(H) &\subseteq \mathcal{L}_{arch}(H)
+\end{align}
+
+For recall $\mathcal{L}_{strong}(H)$ denotes the set of system behaviors with strong sequential composition of hMSC nodes and total event ordering inside MSCs. It is the simplest and most intuitive model for stakeholders involved in early phases of system design. However, it supposes an implicit synchronization scheme used by the agents that is usually not available in real distributed systems. $\mathcal{L}_{arch}(H)$ is the most realistic for such systems, as it captures all possible interleavings of agent behaviors. $\mathcal{L}_{weak}(H)$ is only used for explaining and detecting implied scenarios in hMSC specifications; it is also the hardest to compute.
+
+Making a choice of semantics is required for generalizing behaviors because inductive synthesis takes a set of traces as input. The chosen semantics must of course fit domain assumptions. From an algorithmic point of view however, the three hMSC languages above require the same adaptations of the inductive process, as explained in the next section.
 
 \subsection{Algorithmic adaptations\label{subsection:hmsc-induction-algo-adaptation}}
 
