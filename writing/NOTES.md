@@ -12,9 +12,16 @@
 
       \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop} respectively}.
 
+  * Is a proof (argument) needed in Section 4.4.2 (injecting goals ensures
+    system consistency)?
+
+  * Add an illustration to union of hMSC languages in 4.5.1
+
 * 2011.06.24 - Sections to refactor in chapter 2
 
   * 2.1 Running examples
+
+    * Revisit the train example to match what is used in Chapter 4
 
     * Add a running example for process models (Meeting scheduler)?
 
