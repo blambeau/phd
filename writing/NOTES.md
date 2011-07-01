@@ -56,29 +56,53 @@
     different from Uchitel:2003. Consistency rules are all mine. Not 
     really important, though, as the sentence has been removed.
 
+    -> ususal with a background section. 
+    -> address the difference of semantics in related work chapter
+    -> avoid wrong phrasing "the definition XXX, from [YYY]" if not the
+       same semantics
+
   * Add another running example in the background or immediately in 
     chapter 3?
+
+    -> add it to chapter 3 + add motivation for multiple case studies
   
   * Section 2.2.2: 	Consistency rules are not introduced anymore.
+
+    -> not discussed so far
   
   * What is the reference about _agent interfaces_ (Jackson?) ?
+
+    -> Zave & Jackson:1996 "Where are operations coming from?"
+    -> Maybe Jackson:1995 "The world and the machine"
 
   * Determinate agents are agents whose behavior _can_ be modeled with
     deterministic state machines only. It has been introduced previously
     but is not really known, I confess.
 
+    -> ok. Might be clearer with explicit reference to a definition number
+
   * Should I really use definition numbers ?? There's **a lot** of them.
+
+    -> Just do it ;-)
 
   * Section 2.4.2: What older reference about negative **MSC**? I've put
     Uchitel:2002 now. Uchitel:2003 even says "our inclusion of negative
     scenarios in MSC specifications is, to the best of our knowledge, 
     novel". In admit that the notion of negative **scenario** is older.
     
+    -> AVL & Willement 1998
+
   * Section 2.4.5: is the current sequence about bizarre hMSC semantics 
     clearer now? 
+
+    -> not discussed so far
 
   * Section 2.5.3: a fluent might be TOP in a LTS state. I consider this
     as problematic (Christophe does not). The way fluents are used to prune 
     the induction process implicitly argue in favor of my position IMHO. If 
     a monitorable/controllable fluent is TOP in a LTS state, the machine 
     necessarily models classes of states, not agent states _per se_.
+
+    -> Explicit consistency rule between agent state machines and agent states
+       variables. 
+    -> Why not numbering consistency rules??
