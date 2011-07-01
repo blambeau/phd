@@ -66,7 +66,7 @@ In practice, it means that the positive sample can no longer be captured through
 
 \item[Initialize] This function can be simply adapted to return an augmented DFA instead of a PTA. On one side, the positive traces from the hMSC may be captured through a LTS as discussed in Section \ref{subsection:background-hmsc}. On the other side, the scenario collection can be captured through an augmented PTA. These two automata can be merged through standard algorithms for capturing the union of regular languages \cite{Hopcroft:1979}. A straightforward adaptation is however required to handle error states. 
 
-\item[ChooseStatePair] In order to preserve the merging order used by RPNI, this function must be slighlty adapted. The idea is to pre-compute the natural order among the states of the initial DFA solution. A breadth first search is used and each of them is numbered when encountered. 
+\item[ChooseStatePair] In order to preserve the merging order used by RPNI, this function must be slightly adapted. The idea is to pre-compute the natural order among the states of the initial DFA solution. A breadth first search is used and each of them is numbered when encountered. 
 
 Not that the Blue-Fringe strategy does not require special support. The distinction between red and blue states does not depend on any tree-related assumption; in particular, the fact that a fringe state is the root of a tree is incidental (see \texttt{Merge} below).
 

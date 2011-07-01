@@ -132,7 +132,7 @@ Note that the guarantee given by the condition above is weaker than the \emph{co
 
 \subsection{Injecting control information\label{subsection:induction-pruning-with-control-information}}
 
-The equivalence relations considered in the previous sections encode knowledge about \emph{incompatibilities} between states of the PTA. The state merging algorithm is constrained to avoid merging states that are known to be incompatible. This technique is refered to as the introduction of \emph{incompatible state merging} \cite{Coste:1998}, \emph{domain bias} \cite{Coste:2004}, or \emph{incompatibility} constraints \cite{Lambeau:2008} in grammar induction.
+The equivalence relations considered in the previous sections encode knowledge about \emph{incompatibilities} between states of the PTA. The state merging algorithm is constrained to avoid merging states that are known to be incompatible. This technique is referred to as the introduction of \emph{incompatible state merging} \cite{Coste:1998}, \emph{domain bias} \cite{Coste:2004}, or \emph{incompatibility} constraints \cite{Lambeau:2008} in grammar induction.
 
 Incompatibility constraints encode knowledge about states that \emph{may not} merge. We will call \emph{mandatory merge constraints} their logical counterpart; mandatory merge constraints encode knowledge about states that \emph{must} merge. Such knowledge results from the state identification along MSC timelines (see Section \ref{subsection:background-scenario-annotations}) or from control information provided by hMSCs.
 
