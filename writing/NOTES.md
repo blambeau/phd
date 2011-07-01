@@ -1,3 +1,5 @@
+* 2011.07.01 -- Definitely grep on TODO ;-)
+
 * 2011.06.30 - Sections to refactor in chapter 4
 
   * Restate the requirement that all scenarios start in the same system state
