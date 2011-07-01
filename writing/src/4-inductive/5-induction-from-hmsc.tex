@@ -1,4 +1,4 @@
-\section{Injecting control information\label{section:inductive-from-hMSC}}
+\section{LTS synthesis from high-level MSCs\label{section:inductive-from-hMSC}}
 
 The previous sections have shown how system behaviors specified in collections of MSC scenarios can be first generalized as a System LTS, then decomposed as a set of agent LTSs. The technique supports the incremental enrichment of an initial scenario collection through scenario queries. It also takes other models into account, such as goals, so as to preserve multi-view consistency. Behavior generalization, incremental synthesis and multi-view consistency are the three main requirements identified in Section \ref{subsection:inductive-synthesis-requirements}. 
 
@@ -60,6 +60,29 @@ LTS synthesis from a scenario collection $Sc$ reduces to grammar induction becau
 
 When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces; this is true whatever hMSC semantics is chosen. Therefore, the current problem statement no longer fits exactly in the identification in the limit framework presented in Section \ref{section:inductive-background}.
 
-In practice, it means that the positive sample can no longer be captured through a PTA; it can still be captured through a DFA, however. Required algorithmic adaptations are identified by tracking in which ways induction algorithm rely on a tree-shaped initial solution.
+In practice, it means that the positive sample can no longer be captured through a PTA; it can still be captured through a DFA, however. Required algorithmic adaptations are identified by tracking to what extent QSM relies on a tree-shaped initial solution:
 
+\begin{description}
+
+\item[Initialize] This function can be simply adapted to return an augmented DFA instead of a PTA. On one side, the positive traces from the hMSC may be captured through a LTS as discussed in Section \ref{subsection:background-hmsc}. On the other side, the scenario collection can be captured through an augmented PTA. These two automata can be merged through standard algorithms for capturing the union of regular languages \cite{Hopcroft:1979}. A straightforward adaptation is however required to handle error states. 
+
+\item[ChooseStatePair] In order to preserve the merging order used by RPNI, this function must be slighlty adapted. The idea is to pre-compute the natural order among the states of the initial DFA solution. A breadth first search is used and each of them is numbered when encountered. 
+
+Not that the Blue-Fringe strategy does not require special support. The distinction between red and blue states does not depend on any tree-related assumption; in particular, the fact that a fringe state is the root of a tree is incidental (see \texttt{Merge} below).
+
+\item[Merge] The merging for determinization process is often implemented assuming a tree invariant property. This property states that, when considering two states to be merged, at least one of them is the root of a tree. Such a property holds for RPNI and QSM, even when the Blue-Fringe optimization is used. It is a sufficient condition for the determinization process to be finite. 
+
+Even though it is convenient, the tree invariant property is not required, as explained in \cite{Lambeau:2008}. The main merging loop and the \texttt{Merge} function can be implemented without the tree invariant property because the recursive determinization process stops naturally on the first DFA encountered. This observation allows one to start from an arbitrary DFA and, as soon as non-determinism occurs, to reduce it. Fig.~\ref{figure:merging-for-determ-on-dfa} gives an example of such a recursive operation.
+
+\item[GenerateQuery] The generation of scenario queries relies on the tree invariant property mentioned above. When merging a state pair $(q,q')$, a scenario query is built with the shortest trace leading to $q$ concatenated with the suffixes of $q'$. When $q'$ is the root of a tree, generating a finite scenario is straightforward.
+
+If the tree invariant property no longer holds, the \texttt{GenerateQuery} function must be extended with a procedure for extracting finite suffixes from $q'$. This does not introduce any technical issues; for example, pre-computing a spanning tree on the initial DFA would associate finite suffixes to each of its state. However, what forms a ``good'' suffix for convergence and scenario classification by end-users is an open question. As the adapted algorithm no longer fits in the identification in the limit framework, the notion of a characteristic sample would need to be adapted. 
+
+\end{description}
+
+\begin{figure}\centering
+\scalebox{.34}{
+\includegraphics*{src/4-inductive/images/merging-for-determ-on-dfa}}
+\caption{Recursive determinization process. States \{3\} and \{0\} of an arbitrary DFA are merged, which causes a non-determinism on letter $b$ from state \{0,3\}. The destination states \{2\} and \{4\} are subsequently merged to reduce the non-determinism.\label{figure:merging-for-determ-on-dfa}} 
+\end{figure}
   

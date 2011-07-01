@@ -63,7 +63,7 @@ The various functions which control how merging is performed from an initial aut
 
 We call \textsl{merging for determinization} this recursive operation of removing non-determinism. This operation guarantees that the current solution at any step is deterministic. It produces an automaton which may accept a more general language than the one it starts from. Therefore, it is not equivalent to the standard algorithm to transform a non deterministic automaton into a deterministic one accepting the same language~\cite{Hopcroft:1979}. The time complexity of merging for determinization is a linear function of the number of states of the automaton it starts from. 
 
-\begin{figure}[H]
+\begin{figure}
 \hspace*{-1cm}
 \begin{center}
 \scalebox{.63}{\includegraphics*{src/4-inductive/images/AlgoSteps}}

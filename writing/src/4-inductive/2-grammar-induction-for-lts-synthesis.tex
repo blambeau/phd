@@ -2,7 +2,7 @@
 
 \emph{Inductive learning} aims at finding a theory that generalizes a set of observed examples. In \emph{grammar induction}, the theory to be learned is a formal language and the set of positive examples is made of strings defined on a specific alphabet. A negative sample corresponds to a set of strings not belonging to the target language. When the target language is regular and the learned language is represented by a deterministic finite state automaton (DFA), the problem is known as DFA induction. For a regular language $L$, $A(L)$ will denote its canonical automaton, that is the DFA having the smallest number of states and accepting $L$. For recall, $A(L)$ is unique up to a renumbering of its states \cite{Hopcroft:1979}.
 
-\subsection{DFA identification in the Limit\label{subsection:dfa-identification-in-the-limit}}
+\subsection{DFA identification in the limit\label{subsection:dfa-identification-in-the-limit}}
 
 \emph{Identification in the limit} is a learning framework in which an increasing sequence of strings is presented to the learning algorithm \cite{Gold:1967}. The strings are randomly drawn and correctly labeled as positive or negative. Learning is successful if the algorithm infers the target language in finite time after having seen finite samples. This framework justifies why successful DFA learning needs both positive and negative strings. Gold showed that the class of regular languages cannot be identified in the limit from positive strings only \cite{Gold:1967}. In practice, convergence in finite time toward an exact solution is often bargained with reasonably fast convergence toward a good approximate solution \cite{Lang:1992}.
 
