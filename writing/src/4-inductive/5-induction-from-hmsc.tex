@@ -1,6 +1,6 @@
 \section{LTS synthesis from hMSCs\label{section:inductive-from-hMSC}}
 
-The previous sections have shown how system behaviors specified in collections of MSC scenarios can be first generalized as a System LTS, then decomposed as a set of agent LTSs. The technique supports the incremental enrichment of an initial scenario collection through scenario queries. It also takes other models into account, such as goals, so as to preserve multi-view consistency. Behavior generalization, incremental synthesis and mutli-view consistency are the three main requirements identified in Section \ref{subsection:inductive-synthesis-requirements}. 
+The previous sections have shown how system behaviors specified in collections of MSC scenarios can be first generalized as a System LTS, then decomposed as a set of agent LTSs. The technique supports the incremental enrichment of an initial scenario collection through scenario queries. It also takes other models into account, such as goals, so as to preserve multi-view consistency. Behavior generalization, incremental synthesis and multi-view consistency are the three main requirements identified in Section \ref{subsection:inductive-synthesis-requirements}. 
 
 Coupled with other synthesis techniques such as goal mining from scenarios\footnote{whose simplest form consists in asking ``why'' when facing with a negative scenario.} \cite{Damas:2006}, interactive LTS induction is really effective; starting from a small initial scenario collection, richer system models can be synthesized in only a few iterations. Chapters~\ref{chapter:evaluation} and \ref{chapter:tool-support} illustrate this claim with evaluations and overview of the tool support.
 
@@ -22,7 +22,7 @@ Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply a
 
 TODO: an illustration is probably worth considering here?
 
-However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalization. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to contraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
+However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalization. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
 
 Without much loss of generality therefore, we will assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows: 
 
@@ -49,3 +49,17 @@ Making a choice of semantics is required for generalizing behaviors because indu
 
 \subsection{Algorithmic adaptations\label{subsection:hmsc-induction-algo-adaptation}}
 
+The modifications required to RPNI or QSM to adapt to this new problem statement are limited; it might look surprising at first glance.
+
+Recall that learning a regular language $L$ aims at generalizing a positive sample $S_+$ under the control of a negative sample $S_-$ such that the following relation of language inclusions holds:
+\begin{align}
+S_+~~\subseteq~~L~~\subseteq~~\Sigma^*\setminus S_-
+\end{align}
+
+LTS synthesis from a scenario collection $Sc$ reduces to grammar induction because the sets $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ are valid positive and negative samples, respectively (see Section \ref{subsection:inductive-lts-synthesis-reduction}). In particular, they denote finite sets of traces.
+
+When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces; this is true whatever hMSC semantics is chosen. Therefore, the current problem statement no longer fits exactly in the identification in the limit framework presented in Section \ref{section:inductive-background}.
+
+In practice, it means that the positive sample can no longer be captured through a PTA; it can still be captured through a DFA, however. Required algorithmic adaptations are identified by tracking in which ways induction algorithm rely on a tree-shaped initial solution.
+
+  
