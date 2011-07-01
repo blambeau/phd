@@ -10,9 +10,11 @@ The optimization techniques detailed hereafter are based on various equivalence 
 \end{quote}
 The equivalence relations considered in the following sections are all invariant under state merging; a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA. The results of such pre-processing are kept as annotations on PTA states. The above principle for state merging is very general. It could therefore be further instantiated to other equivalence relations not considered here.
 
+Section \ref{subsection:induction-pruning-with-control-information} discusses how \emph{mandatory merging} can be integrated as a logical counterpart of merging constraints. Mandatory merging encodes the fact that two states of the PTA \emph{must} merge. Such knowledge can be derived from explicit state annotations along MSC timelines, loops in hMSCs, and so on. 
+ 
 %%%%%
 
-\subsection{Injecting domain knowledge in the synthesis process\label{subsection:induction-pruning-with-domain-knowledge}}
+\subsection{Injecting domain knowledge\label{subsection:induction-pruning-with-domain-knowledge}}
 
 The domain knowledge used to constrain state merging comes from multiple sources: fluent definitions, knowledge about components in the environment of the software-to-be, and specifications of domain properties. We discuss these successively.
 
@@ -86,7 +88,7 @@ The technique for constraining induction through descriptive or prescriptive sta
 
 %%%%%
 
-\subsection{Injecting goals in the synthesis process\label{subsection:induction-pruning-with-goals}}
+\subsection{Injecting goals\label{subsection:induction-pruning-with-goals}}
 
 For reasons explained in Section \ref{section:background-goals}, we restrict our attention here to goals and domain properties that can be formalized as pure FLTL safety properties. For recall, these properties refers to  ``\emph{something bad never happens}''.
 
@@ -125,3 +127,40 @@ This pruning technique guarantees the consistency between the synthesized System
 TODO: proof argument here? The initial argument in FSE06 is not wrong, but not really convincing. A proof by contradiction is worth considering if needed. 
 
 Note that the guarantee given by the condition above is weaker than the \emph{consistent system view} condition (\ref{relation:inductive-statement-negative}) of the problem statement (see Section \ref{subsection:inductive-synthesis-statement}). The latter requires the consistency of the synthesized system $\system$ while the condition above only applies to the System LTS. As with implied negative scenarios, a goal could be satisfied by the synthesized System LTS while being violated by the real distributed system. This issue is further examined in Section \ref{section:inductive-discussion}.
+
+%%%%%
+
+\subsection{Injecting control information\label{subsection:induction-pruning-with-control-information}}
+
+The equivalence relations considered in the previous sections encode knowledge about \emph{incompatibilities} between states of the PTA. The state merging algorithm is constrained to avoid merging states that are known to be incompatible. This technique is refered to as the introduction of \emph{incompatible state merging} \cite{Coste:1998}, \emph{domain bias} \cite{Coste:2004}, or \emph{incompatibility} constraints \cite{Lambeau:2008} in grammar induction.
+
+Incompatibility constraints encode knowledge about states that \emph{may not} merge. We will call \emph{mandatory merge constraints} their logical counterpart; mandatory merge constraints encode knowledge about states that \emph{must} merge. Such knowledge results from the state identification along MSC timelines (see Section \ref{subsection:background-scenario-annotations}) or from control information provided by hMSCs.
+
+The integration of mandatory merge constraints in the induction process is straightforward. The states involved in mandatory merge constraints are merged first; then the usual state-merging loop is entered. The resulting algorithm is sketched in pseudo-code \ref{MSM} for a simple case without membership queries; it is known as the Mandatory State Merging algorithm (MSM) in \cite{Lambeau:2008}.
+
+\begin{algorithm}
+{
+\vspace{0.2cm}
+\KwIn{A (non-empty) consistent scenario collection $Sc = (S_+, S_-)$}
+\KwIn{Information about mandatory merge constraints}
+\KwOut{A System LTS, consistent with the initial collection}
+\vspace{0.15cm}
+$//$ build an initial PTA \\
+$A \leftarrow $ {\tt Initialize($Sc$)}\\
+\vspace{0.15cm}
+$//$ perform mandatory merging first\\
+\While{$(q,q') \leftarrow $ {\tt MandatoryMergePair($A$)}}{
+  $A \leftarrow $ {\tt Merge$(A,q,q')$}\\
+}
+\vspace{0.15cm}
+$//$ refinement with the usual loop\\
+\While{$(q,q') \leftarrow $ {\tt ChooseStatePair($A$)}}{
+  $\dots$
+}
+\vspace{0.15cm}
+\Return{$A$}}
+\vspace{0.2cm}
+\caption{\textsc{MSM}, a synthesis algorithm that satisfies mandatory merge constrains\label{MSM}}
+\end{algorithm}
+
+When entering the second loop, the automaton $A$ is no longer guaranteed to be a tree. This loop can thus be seen as generalizing the behaviors of any LTS under the control of the negative scenarios taken as input. This observation has a lot in common with the next section, which investigates the possibility of generalizing behaviors described in hMSC. Additional questions about MSM, such as how it can be extended with the interactive feature of QSM are discussed there as well. 
