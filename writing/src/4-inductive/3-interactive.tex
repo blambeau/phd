@@ -6,7 +6,6 @@ Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm, a Query
 
 The induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs of the initial LTS. The induction process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. In the sequel, two states are said compatible for merging (resp. incompatible) if the quotient LTS which results from their merging is consistent (resp. inconsistent) with the current scenario collection.
 
-\vspace{0.3cm}
 \begin{algorithm}
 {
 \vspace{0.2cm}
@@ -32,7 +31,6 @@ $A_{new} \leftarrow$ {\tt Merge$(A,q,q')$}\\
 \vspace{0.2cm}
 \caption{\textsc{QSM}, an interactive state-merging algorithm with membership queries\label{QSM}}
 \end{algorithm}
-\vspace{0.3cm}
 
 The \texttt{Initialize} function of \textsc{QSM} returns an initial candidate LTS built from the scenario collection. This function computes $\mathcal{L}^+(Sc)$, the set of positive scenario traces, according to the trace semantics defined in Chapter~\ref{chapter:framework}. Those traces are captured through a PTA; because the positive sample is prefix-closed here, this PTA has all accepting states.
 
@@ -119,7 +117,7 @@ When QSM receives a characteristic sample in the initial scenario collection it 
 
 An experimental study of the actual sample size required to observe the convergence of \textsc{QSM} and the number of queries submitted to the end-user is detailed in Chapter~\ref{chapter:evaluation}.
 
-\subsection{Reducing the number of queries with blue-fringe\label{BlueFringe}}
+\subsection{Reducing the number of queries; the blue-fringe optimization\label{BlueFringe}}
 
 The order in which states are considered for merging by the \texttt{ChooseStatePair} function described in section~\ref{QSM:merging} follows from the implicit assumption that the current sample is characteristic. Consequently, two states are considered compatible for merging if there is no suffix to distinguish among them. This can lead to a significant number of scenarios being generated to the end-user when the initial sample is sparse and actually not characteristic for the target System LTS. 
 

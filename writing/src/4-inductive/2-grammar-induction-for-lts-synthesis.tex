@@ -105,6 +105,6 @@ Consider a scenario collection $Sc = (S^+, S^-)$. From Chapter~\ref{chapter:fram
 
 $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ form valid samples for grammar induction. They can be respectively used as positive and negative input samples of the RPNI algorithm. RPNI can only generalize the language of the positive sample; because the latter is prefix-closed here, the regular language learned by RPNI will be prefix-closed as well. Therefore the resulting DFA is a LTS; in other words, it contains only accepting states. 
 
-This \emph{System} LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and rejects all negative ones from $\mathcal{L}^-(Sc)$. Said otherwise, it correctly covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the System LTS and the scenario collection $Sc$ are consistent.
+This \emph{System} LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and rejects all negative ones from $\mathcal{L}^-(Sc)$. Said otherwise, it covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the System LTS and the scenario collection $Sc$ are consistent.
 
 The next section details this approach on QSM, our interactive variant of the RPNI algorithm. 

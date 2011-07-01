@@ -17,6 +17,12 @@
   * Is a proof (argument) needed in Section 4.4.2 (injecting goals ensures
     system consistency)?
 
+  * Section 4.5 - Injecting control information
+
+    * Is this an accurate title given the way this topic is introduced?
+
+    * State that the initial state assumption is no longer required here.
+
   * Add an illustration to union of hMSC languages in 4.5.1
 
 * 2011.06.24 - Sections to refactor in chapter 2

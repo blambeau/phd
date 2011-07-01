@@ -1,4 +1,4 @@
-\section{Synthesis objectives and chosen approach\label{section:inductive-objectives-and-approach}}
+\section{Objectives and selected approach\label{section:inductive-objectives-and-approach}}
 
 This section gives a characterization of the synthesis problem and an overview of our solution. Section~\ref{subsection:inductive-synthesis-statement} makes the problem statement precise in terms of the models from Chapter~\ref{chapter:framework}. Section~\ref{subsection:inductive-synthesis-requirements} states additional requirements on the synthesis approach; the problem statement can be strengthened to take each of them into account. Section~\ref{subsection:inductive-synthesis-approach} presents an overview of our inductive-oriented approach in the light of these incremental enhancements.
 
@@ -20,17 +20,16 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \underline{Such that}~$Sc$ and $System$ are consistent.
 \end{quote}
 
-\noindent For recall, the consistency condition covers three criteria (see Section~\ref{subsection:background-scenario-consistency}):
-
+\noindent The consistency condition covers three criteria discussed in Section~\ref{subsection:background-scenario-consistency}:
 \begin{description}
 \item[structural consistency] the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective interface,
 
-\item[consistent agent view] each timeline of positive scenarios in $S^+$ specifies an existing path in the corresponding agent state machine. The same condition holds for preconditions of negative scenarios in $S^-$.
+\item[consistent agent view] each timeline of the positive scenarios in $S^+$ specifies an existing path in the corresponding agent state machine. The same condition holds for the preconditions of negative scenarios in $S^-$.
 
-\item[consistent system view] the system correctly covers all positive scenarios and the preconditions of the negatives ones. It also correctly rejects negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
+\item[consistent system view] the system covers all positive scenarios and the preconditions of the negatives ones. It also rejects negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
 \begin{align}
-\mathcal{L}^+(Sc) & \subseteq \mathcal{L}(System) \\
-\mathcal{L}^-(Sc) \cap \mathcal{L}(System) &= \emptyset
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System) \\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(System) = \emptyset
 \label{relation:inductive-statement-negative}
 \end{align}
 \noindent where $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ encode the scenario collection in terms of positive and negative event traces, respectively.
@@ -39,14 +38,14 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 
 %%%
 
-\subsection{Synthesis requirements\label{subsection:inductive-synthesis-requirements}}
+\subsection{Requirements on the synthesis approach\label{subsection:inductive-synthesis-requirements}}
 
 The characterization above provides a precise, yet minimal statement in terms of the formal models of Chapter~\ref{chapter:framework}. This statement is completed with a few usability requirements.
 
 \begin{description}
 \item[Behavior generalization] -- In most cases, scenarios provide only \emph{examples} of system behaviors and are thus incomplete. Synthesized state machines should cover more behaviors than those described. 
 
-Covering more behaviors is allowed by our formal statement but not enforced. Note that the \emph{consistent system view} condition states an upper bound on behavior generalization, by requiring negative scenarios to be correctly rejected. This upper bound has to be refined if other models are taken into account (see below).
+Covering more behaviors is allowed by our formal statement but not enforced. Note that the \emph{consistent system view} condition states an upper bound on behavior generalization, by requiring negative scenarios to be rejected. This upper bound has to be refined if other models are taken into account (see below).
 
 \item[Incremental synthesis] -- The synthesis approach should help incrementally refining a first scenario specification toward richer models.
 \begin{itemize}
@@ -59,15 +58,21 @@ Covering more behaviors is allowed by our formal statement but not enforced. Not
 
 \end{itemize}
 
-\item[Multi-model synthesis] -- The possibility of having richer input models suggests taking other models into account in the synthesis process, such as fluents or goals. These models should not be \emph{required} as input, but are better \emph{supported} when available. 
+\item[Multi-view synthesis] -- The possibility of richer input models calls for other models to be taken into account in the synthesis process, such as fluents or goals. These models should not be \emph{required} as input, but are better \emph{supported} when available. 
 
-In such case, the formal statement must be strengthened. In input, all available models shall be required to be consistent with each other. In output, the synthesized system itself shall be required consistent with all models. Notably, the synthesized system shall not violate known safety goals.
+\noindent In such case, our problem statement must be strengthened: 
+\begin{itemize}
+\item In input, all available models shall be required to be consistent with each other. 
+\item In output, the synthesized system itself shall be required to be consistent with all models. Notably, the synthesized system shall not violate known safety goals.
+\end{itemize}
 
 \end{description}
 
+The incremental integration of these requirements in the approach drives the structure of this chapter. The next section provides a overview of this process.
+
 %%%
 
-\subsection{An induction-driven approach\label{subsection:inductive-synthesis-approach}}
+\subsection{An inductive approach to synthesis\label{subsection:inductive-synthesis-approach}}
 
 Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our approach for the simple case where a scenario collection is taken as input. 
 
@@ -83,10 +88,11 @@ An initial LTS $A_0$ accepting exactly the positive traces is incrementally refi
 \mathcal{L}(A_n) \subset \ldots \subset \mathcal{L}(A_1) \subset \mathcal{L}(A_0) = \mathcal{L}^+(Sc)
 \end{align*}
 To avoid over-generalization, this process is performed under the control of the negative traces from $\mathcal{L}^-(Sc)$. Every intermediate solution $A_i$ respects the \emph{consistent system view} condition; the latter therefore provides a useful algorithm invariant:
-\begin{align*}
-\mathcal{L}^+(Sc) & \subseteq \mathcal{L}(A_i) \\
-\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) &= \emptyset
-\end{align*}
+\begin{align}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(A_i) \\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset
+\label{relation:inductive-invariant}
+\end{align}
 
 \noindent \textbf{The decomposition step} computes a LTS for each agent by projecting the System LTS onto their respective alphabet. For an agent $Ag$ the projection of the System LTS $S$ is given by:
 \begin{align}
@@ -102,7 +108,7 @@ The decomposition step guarantees that the \emph{structural consistency} and \em
 
 The generalization invariant guarantees that the \emph{consistent system view} condition holds for the System LTS. Strictly speaking, the approach is correct only if this condition holds for the system re-composition $\system$. This might not be the case in presence of negative implied scenarios. This issue is further examined in Section~\ref{section:inductive-discussion}.
 
-\subsubsection*{Integration of additional requirements}
+\subsubsection*{Integrating additional requirements}
 
 The generalization step is driven by RPNI; this provides a first milestone toward an inductive LTS synthesis approach that meets our requirements. Indeed, it generalizes scenario behaviors without requiring additional state or flowchart information. However, such approach does not provide much support for incremental system analysis; multi-model consistency is not guaranteed either. Section \ref{section:inductive-background} covers this first milestone through background on grammar induction and RPNI.
 

@@ -50,9 +50,9 @@ Consistency rules also exist between safety goals and scenarios:
 \item behaviors illustrated in positive scenarios may not violate safety goals. The formalization depends on the concrete form of scenario specification (scenario collection or hMSC) as well as hypotheses about event ordering and weak or strong bMSC synchronization. It is similar to the relation (\ref{equation:state-machines-and-goals-consistency}), \emph{mutatis mutandis}.
 \item a negative scenario $N$ \emph{illustrates} the violation of a safety goal, say $G$, if the following condition holds:
 \begin{equation}
-\mathcal{L}^{-}(N) \subset \mathcal{L}^{-}(G)
+\mathcal{L}^{-}(N) \subseteq \mathcal{L}^{-}(G)
 \end{equation}
-\noindent that is, if the negative traces it defines are precisely among those prescribed by the safety goals.
+\noindent that is, if the negative traces it defines are among those prescribed by the safety goal.
 \end{itemize}
 
 \subsection{Property and tester automata\label{subsection:background-property-and-tester-automata}}
