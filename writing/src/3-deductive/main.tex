@@ -1,2 +1,67 @@
 \chapter{Derivation of State Machine Models from Process Models\label{chapter:deductive}}
 
+This chapter shows how state machines can be synthesised from process models. They capture the trace semantics of process models, making them amenable to formal analysis such as model-checking.
+
+\section{Motivation}
+
+\section{Introducing guarded transition systems}
+
+This section introduces guarded LTS (g-LTS) as an intermediate formalism between guarded hMSCs and LTS. Roughly, a g-LTS is a transition system with guards or events on transitions. It provides a convenient milestone on the way from a guarded hMSC to the corresponding LTS, in particular, for determining the set of traces accepted by the guarded hMSC. As a structured form of LTS, a g-LTS representation avoids state explosion. It is easier to understand and facilitates code generation. Moreover, interresting analyses may be performed at g-LTS level, see \cite{Damas:2011}.
+
+\begin{definition}[Guarded LTS]
+\noindent A guarded LTS is defined as a structure $(Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ where 
+\begin{itemize}
+\item $Q$ is a finite set of states,
+\item $\Sigma$ is a set of event labels, 
+\item $\Phi$ is a set of fluents defined on $\Sigma$,
+\item $\delta$ is a transition relation $Q \times \Sigma_{\tau}\cup\mathcal{P}(2^\Phi) \times Q$,
+\item $q_{0} \in Q$ is the initial state,
+\item $C_{0} \in \mathcal{P}(2^\Phi)$ is an initial condition. 
+\end{itemize}
+\end{definition}
+
+In a guarded LTS, transitions are labeled either by a guard or by an event. $\tau$ transitions are also allowed and are used in a similar way than in simple LTS. 
+
+A guard is a propositional formula over fluents in $\Phi$. The set of such formula is denoted by $\mathcal{P}(2^\Phi)$, as in Section \ref{section:background-fluents}. Intuitively, the guard must be evaluated to true for its transition to be activated.
+
+The condition $C_0$ plays the same role as in guarded hMSC. It is a boolean formula on fluents that constraints their initial values.
+
+\subsection{Trace semantics of guarded LTSs} 
+
+The semantics of g-LTS is defined in terms of event traces involving no guards at all. 
+
+\begin{definition}[g-LTS execution]
+An \emph{execution} of a g-LTS $G = (Q,\Sigma,\Phi,\\\delta,q_{0},C_{0})$ from $q_0$ is a pair $(Init, \textless l_0, \ldots \textgreater)$, where 
+\begin{itemize}
+\item $Init$ is an initial fluent value assignment, mapping every fluent in $\Phi$ to true or false,
+\item $\textless l_0, \ldots \textgreater$ is an finite sequence of labels $l_i \in \Sigma_{\tau}\cup\mathcal{P}(2^\Phi)$, some of them being events (including $\tau$) and others being guards.
+\end{itemize}
+\end{definition}
+
+Only certain executions are considered valid from the initial state of the g-LTS. This is captured by the following definition:
+
+\begin{definition}[Valid g-LTS execution]
+An execution $S = (Init,\textless l_0,\ldots \textgreater)$ of a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ is \emph{valid} from its initial state $q_0$ iif the following \emph{acceptance conditions} are met for every $i$:\\
+\indent trace inclusion: $\exists q_{i+1} \in Q$ such that $(q_i,l_i,q_{i+1}) \in \delta$\\
+\indent admissible start: $Init \models C_0$ \\
+\indent guard satisfaction: $S_i \models l_i$ if $l_i \in \mathcal{P}(2^\Phi)$\\
+where $S_i$ is the fluent value assignment after the i-th event in the trace, with $S_0 = Init$
+\end{definition}
+
+The first condition states that the label sequence is accepted by the automaton. The second condition states that the initial fluent value assignment must meet the initial condition $C_0$. The third condition ensures that all guards are met along the sequence.
+
+The trace semantics of a g-LTS is defined as a set of event traces. Roughly, it consists of all valid executions where $\tau$ labels as well as guards have been removed. This is precisely captured by the the following definition.
+
+\begin{definition}[g-LTS trace semantics]
+The set of traces accepted by a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ is defined as:
+\begin{align*}
+\mathcal{L}(G) &= \{~w|_{\Sigma} \mid w~is~a~valid~execution~for~G~\}
+\end{align*}
+
+\end{definition}
+\subsection{Hiding and composition of guarded LTSs}
+
+\section{From guarded hMSC to pure LTS}
+
+\subsection{From guarded hMSC to guarded LTS}
+\subsection{From guarded LTS to pure LTS}
