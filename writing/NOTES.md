@@ -17,9 +17,7 @@
   * Is a proof (argument) needed in Section 4.4.2 (injecting goals ensures
     system consistency)?
 
-  * Section 4.5 - Injecting control information
-
-    * Is this an accurate title given the way this topic is introduced?
+  * Section 4.5 - LTS synthesis from high-level MSCs
 
     * State that the initial state assumption is no longer required here.
 
