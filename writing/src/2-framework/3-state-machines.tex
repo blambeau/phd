@@ -80,7 +80,7 @@ As languages are sets of traces, it is sometimes natural to reason in terms of s
 
 The next two sections define two additional operators, \emph{composition} and \emph{hiding}, that support reasoning about behaviors in presence of multiple agents with different alphabets.
 
-\subsection{Systems as agent compositions}
+\subsection{Systems as agent compositions\label{subsection:lts-composition}}
 
 A system is composed of active agents whose behavior is explicitly modeled by a LTS. The behavior of the system itself is defined through parallel composition~\cite{Hoare:1985}. In this setting agents execute asynchronously but synchronize on shared events. A system made of $n$ agents is defined as:
 
@@ -92,11 +92,9 @@ System = Ag_1 \parallel \ldots \parallel Ag_n
 As we are mostly interested in agent \emph{behaviors}, for parallel composition we will use the binary composition operator $\parallel$ defined on LTS \cite{Giannakopoulou:1999, Magee:1999}. This operator computes the interleaving of all traces accepted by the two LTS under the constraint that they synchronize on shared labels. It is both commutative and associative, allowing us to write~(\ref{equation:parallel-composition}) without ambiguity. 
 
 Let $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ denote two LTS. Their \emph{composition} is another LTS 
-
 \begin{equation}
 P \parallel Q = (S_1 \times S_2,\Sigma_1\cup\Sigma_2,\delta,(q_1,q_2))
 \end{equation}
-
 \noindent where $\delta$ is the smallest relation satisfying the following rules~\cite{Giannakopoulou:1999}:
 
 \begin{center}
@@ -133,7 +131,7 @@ The trace semantics of a system composed of $n$ agents whose behavior is modeled
 \end{equation}
 
 
-\subsection{Black-box behavior through event \emph{hiding}}
+\subsection{Black-box behavior through event \emph{hiding}\label{subsection:lts-hiding}}
 
 It is sometimes useful to consider the composition of a subset of agents that together define an interesting boundary in the system considered. 
 
