@@ -1,3 +1,13 @@
 \section{Motivation\label{section:deductive-motivation}}
 
+Building adequate, complete and consistent process models is not necessarily an easy task. Flawed models can have dreadful consequences in safety-critical areas. The recent usage of process modeling technologies to improve medical safety provides a good example \cite{Clarke:2008, Grando:2009, Damas:2011}. In such areas, models should be as free of errors as possible; techniques should therefore be available for helping building such models, in particular for systematically detecting and fixing severe flaws.
+
+An analysis technique that immediately comes in mind is of course \emph{model checking} \cite{Clarke:1989}. This allows checking that a given safety property is satisfied in all process instances, for example. Other kinds of analysis on guarded hMSCs are discussed in \cite{Damas:2011}; this includes checking the satisfiability of guards; verifying that temporal constraints are met; detecting inaccurate process decisions; and so on.
+
+Verification techniques require providing a formal semantics to the process models. As guarded hMSC are an extension of simple hMSCs, providing them a trace semantics appears natural. Moreover, explitely capturing the set of traces of a g-hMSC through a LTS enables reusing associated tools and techniques \cite{Magee:1999, Giannakopoulou:2003}. These two objectives are achieved in the following sections.
+
+Instead of directly rewriting guarded hMSC as LTS, however, we will use an intermediate level through guarded labeled transition systems (g-LTS). Roughly, a g-LTS is a transition system with guards or events on transitions. It is mainly introduced for providing a structured form of LTS that avoids state explosion. It is therefore easier to understand and facilitates code generation. Moreover, most of the aforementioned analyses may be performed at g-LTS level, see \cite{Damas:2011}.
+
+Section \ref{section:deductive-glts} formally introduce g-LTS and defines their trace semantics. An operational semantics is then given to guarded hMSC in Section \ref{section:deductive-glts-to-lts}, through two rewriting algorithms. The overal approach is illustrated on Fig.~\ref{X}.
+
 
