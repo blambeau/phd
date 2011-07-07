@@ -7,20 +7,19 @@ This section details algorithms to explicitely capture the traces of a guarded h
 A guarded hMSC can be rewritten as a g-LTS. The latter abstracts from the agents and captures the set of global behaviors covered by the g-hMSC. The rewriting algorithm extends the technique presented in Section \ref{subsection:background-hmsc} that synthesizes a LTS capturing the traces of hMSC \cite{Uchitel:2004}. The algorithm may
 be outlined as detailed below. It is illustrated in Fig.~\ref{image:scheduler-ghmsc-glts} for the guarded hMSC in Fig.~\ref{image:scheduler-ghmsc}.
 
-\begin{description}
-\item[Handling nodes] Every hMSC node yields a behaviorally equivalent sub-LTS.
+\noindent \textbf{Handling nodes} -- Every hMSC node yields a behaviorally equivalent sub-LTS.
 \begin{itemize}
 \item A MSC node is rewritten as a sub-LTS collecting the linear event sequences from the scenario. For a MSC $M$, the LTS captures the set of traces $\mathcal{L}_{total}(M)$ defined in Section \ref{subsection:background-positive-scenarios}.
 \item For a node expanded into a finer-grained hMSC, the procedure is applied recursively to obtain the corresponding sub-LTS.
 \item A decision node is rewritten as a sub-LTS having only one state and no event; the same applies to the start and end nodes of the hMSC.
 \end{itemize}
 In the first two cases, the $Task_{start}$ and $Task_{end}$ special events are added to the corresponding sub-LTS.
-\item[Handling edges] The edges in a guarded hMSC yield transitions between the terminal and initial states of the sub-LTS corresponding to their source and target nodes, respectively.
+
+\noindent \textbf{Handling edges} -- The edges in a guarded hMSC yield transitions between the terminal and initial states of the sub-LTS corresponding to their source and target nodes, respectively.
 \begin{itemize}
 \item An outgoing edge of a decision node is labeled by a guard and yields a guarded transition in the g-LTS.
 \item Any other edge is simply converted as a $\tau$ transition.
 \end{itemize}
-\end{description}
 
 \begin{figure}[H]\centering
 \scalebox{0.57}{
