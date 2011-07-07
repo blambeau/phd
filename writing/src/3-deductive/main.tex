@@ -136,7 +136,7 @@ In the first two cases, the $Task_{start}$ and $Task_{end}$ special events are a
 \end{description}
 
 \begin{figure}[H]\centering
-\scalebox{0.60}{
+\scalebox{0.57}{
   \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/3-deductive/images/ghmsc-glts-scheduler}
 }
 \caption{Rewriting a g-hMSC as a g-LTS, on the meeting scheduler process in Fig.~\ref{image:scheduler-ghmsc}.\label{image:scheduler-ghmsc-glts}}
@@ -171,10 +171,23 @@ C_0    &= true
 This resulting g-LTS is illustrated in Fig.~\ref{image:fluent-glts} for a generic fluent definition. A transition labeled with a set name between $\{$ and $\}$ brackets is a shortcut denoting one transition for each element of the set.
 
 \begin{figure}[H]\centering
-\scalebox{0.85}{
+\scalebox{0.75}{
   \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/3-deductive/images/fluent-glts}
 }
 \caption{A generic fluent g-LTS\label{image:fluent-glts}}
+\end{figure}
+
+For example, consider the following fluent below for the meeting scheduler examplar. The corresponding fluent automaton is shown in Fig.~\ref{image:second-cycle-fluent-glts}.
+\begin{center}
+fluent $second\_cycle = \textless \{ ExtendDateRange_{end}, \newline WeakenConstraints_{end} \},
+ \{ InitiateMeeting_{end} \} \textgreater $\\
+\end{center}
+
+\begin{figure}[H]\centering
+\scalebox{0.75}{
+  \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/3-deductive/images/second-cycle-fluent-glts}
+}
+\caption{A generic fluent g-LTS\label{image:second-cycle-fluent-glts}}
 \end{figure}
 
 \noindent \textbf{Synthesized LTS} -- Putting pieces together, the trace-equivalent LTS of a g-LTS is obtained through the following computation:
