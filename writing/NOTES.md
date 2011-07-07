@@ -29,8 +29,6 @@
 
     * Revisit the train example to match what is used in Chapter 4
 
-    * Add a running example for process models (Meeting scheduler)?
-
   * 2.2.2 On double use of LTS models
 
     * The discussion should probably be extended a bit now? Consistency
@@ -65,11 +63,6 @@
     -> avoid wrong phrasing "the definition XXX, from [YYY]" if not the
        same semantics
 
-  * Add another running example in the background or immediately in 
-    chapter 3?
-
-    -> add it to chapter 3 + add motivation for multiple case studies
-  
   * Section 2.2.2: 	Consistency rules are not introduced anymore.
 
     -> not discussed so far
