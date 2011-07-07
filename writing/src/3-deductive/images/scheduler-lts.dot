@@ -1,0 +1,21 @@
+digraph G {
+  graph [rankdir="LR" ranksep=0];
+  node [fontsize=24 penwidth=6 shape="circle" style="filled" height="1.0" width="1.0" fixedsize="true" fillcolor="white"];
+  edge [fontsize=40 penwidth=6]
+  zz [height="0" width="0" fixedsize="true" label="" fillcolor="black"];
+  0 [color="black" fillcolor="white" shape="circle" style="filled"];
+  1 [color="black" fillcolor="white" shape="circle" style="filled"];
+  zz -> 0 [label=""];
+
+  0 -> 1 [label="Collect_{start}"];
+  1 -> 2 [label="..."];
+  2 -> 3 [label="Collect_{end}"];
+
+  3 -> 4 [label="Arbitrate_{start}"];
+  4 -> 5 [label="..."];
+  5 -> 0 [label="Arbitrate_{end}"];
+
+  3 -> 6 [label="Schedule_{start}"];
+  6 -> 7 [label="..."];
+  7 -> 8 [label="Schedule_{end}"];
+}
