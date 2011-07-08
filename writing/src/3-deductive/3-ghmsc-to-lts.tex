@@ -75,7 +75,7 @@ fluent $second\_cycle = \textless \{ ExtendDateRange_{end}, \newline WeakenConst
 \scalebox{0.75}{
   \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/3-deductive/images/second-cycle-fluent-glts}
 }
-\caption{A generic fluent g-LTS\label{image:second-cycle-fluent-glts}}
+\caption{Fluent g-LTS for $second\_cycle$\label{image:second-cycle-fluent-glts}}
 \end{figure}
 
 \noindent \textbf{Synthesized LTS} -- Putting pieces together, the trace-equivalent LTS of a g-LTS is obtained through the following computation:
@@ -86,4 +86,13 @@ fluent $second\_cycle = \textless \{ ExtendDateRange_{end}, \newline WeakenConst
 
 That is, a g-LTS is first obtained through the composition of the Super LTS with fluent automata; all guards are then hidden, resulting in a pure LTS which can be further minimized.
 
-Note that the composition above considers $2^{\mid\Phi\mid}$ transitions on the initial state. In practice, certain fluents have a specific initial value; in this case, the corresponding fluent automaton can be optimized by removing a transition from its initial state. This amounts to prune the computation of unsatisfiable conjunctions on the global initial state. The approach might even be updated so as to consider only fluent initializations satisfying $C_0$. If such optimization might speeds up the computation in practice, the exponential blow of the resulting trace LTS is unavoidable. It naturally results from the ability of models with guards to cover numerous behaviors in an implicit, compact way. 
+Figure \ref{image:scheduler-lts} shows the equivalent LTS obtained on the meeting scheduler process of Fig.~\ref{image:scheduler-ghmsc}. For readability, task refinements have not been taken into account here; they are suggested by transitions labeled with `$\ldots$'. Unlike the original g-hMSC and its g-LTS rewriting, this LTS does not contain any loop. This happens because the $second\_cycle$ fluent prevents looping in meeting arbitrations indefinitely, as required by soft goals. In other words, in this case, the technique unfolds the process models as three possible scenarios. In the right most one, no date conflict arises and the meeting is scheduled immediately after having acquired the constraints. In the middle one, a conflict occurs and is resolved by weakening the participant constraints. In the third one, the resolution consists in extending the date range and collecting constraints one again.
+
+\begin{figure}\centering
+\scalebox{0.30}{
+  \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/3-deductive/images/scheduler-lts}
+}
+\caption{Trace-equivalent LTS for the scheduler process in Fig.~\ref{image:scheduler-ghmsc}.\label{image:scheduler-lts}}
+\end{figure}
+
+Note that the composition technique described always considers $2^{\mid\Phi\mid}$ initial fluent assignments, pruning those that do not satisfy $C_0$. In practice, certain fluents have a specific initial value; in this case, the corresponding fluent automaton can be optimized by removing a transition from its initial state. This allows to avoid the computation of some of the unsatisfiable conjunctions on the global initial state. The approach might even be updated so as to consider only fluent initializations satisfying $C_0$. If such optimization speeds up the computation in practice, the exponential blow of the resulting trace LTS is unavoidable. It naturally results from the ability of models with guards to cover numerous behaviors in an implicit, compact way. 

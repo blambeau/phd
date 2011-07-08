@@ -1,0 +1,10 @@
+task :default => :images
+
+task :images do
+  Dir[File.expand_path('../*.dot', __FILE__)].each do |file|
+    basename = File.basename(file, '.dot')
+    cmd = "dot -Tpng #{basename}.dot > #{basename}.png"
+    puts cmd
+    puts `#{cmd}`
+  end
+end
