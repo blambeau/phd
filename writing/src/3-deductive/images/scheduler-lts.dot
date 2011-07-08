@@ -1,7 +1,8 @@
 digraph G {
   graph [pack=true rankdir=TD ranksep=0 margin=0];
-  node [shape=circle color=black penwidth=4 width=0.7 height=0.7 fixedsize=true]
-  edge [arrowsize=1.5 penwidth=4 fontsize=30]
+  node [shape=circle color=black penwidth=4 width=0.7 height=0.7 fixedsize=true
+        fontcolor=white]
+  edge [arrowsize=1.5 penwidth=4 fontsize=36]
 
   zz [label="" color="white" fillcolor="white" shape="circle" style="filled" 
       width=0.05 height=0.05 fixedsize=true ];
@@ -13,27 +14,48 @@ digraph G {
 
   3 -> 4 [label=" AcquireConstraints_start"];
   4 -> 5 [label=" ..."];
+
+  5 -> 90 [label=" no_remaining_solution"];
+  90 -> 91 [label=" ..."];
+  91 -> 92 [label=" AcquireConstraints_end"];
+  
   5 -> 6 [label=" AcquireConstraints_end"];
 
-  6 -> 7 [label=" Arbitrate_start"];
+  92 -> 7 [label=" Arbitrate_start"];
   7 -> 8 [label=" ..."];
-  8 -> 9 [label=" Arbitrate_end"];
 
-  9 -> 10 [label=" ExtendDateRange_start"];
+  8 -> 80 [label=" click_extend"]
+  8 -> 85 [label=" click_weaken"]
+
+  80 -> 81 [label=" ..."];
+  81 -> 82 [label=" Arbitrate_end"];
+
+  85 -> 86 [label=" ..."];
+  86 -> 9 [label=" Arbitrate_end"];
+
+  82 -> 10 [label=" ExtendDateRange_start"];
   10 -> 11 [label=" ..."];
   11 -> 12 [label=" ExtendDateRange_end"];
 
   12 -> 13 [label=" AcquireConstraints_start"];
-  13 -> 14 [label=" ..."];
+  13 -> 14 [label="..."];
   14 -> 15 [label=" AcquireConstraints_end"];
+
+  13 -> 70 [label=" ..."]
+  70 -> 71 [label=" no_remaining_solution"];
+  71 -> 14 [label=" ..."]
 
   15 -> 16 [label=" Schedule_start"];
   16 -> 17 [label=" ..."];
   17 -> 18 [label=" Schedule_end"];
 
   9 -> 19 [label=" WeakenConstraints_start"];
-  19 -> 20 [label=" ..."];
+  19 -> 20 [label="..."];
   20 -> 15 [label=" WeakenConstraints_end"];
+
+  19 -> 60 [label=" ..."]
+  60 -> 61 [label=" no_remaining_solution"];
+  61 -> 20 [label=" ..."]
 
   6 -> 16 [label=" Schedule_start"];
 }
