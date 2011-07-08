@@ -91,7 +91,7 @@ Figure \ref{image:scheduler-lts} shows the equivalent LTS obtained on the meetin
 Unlike the original g-hMSC and its g-LTS rewriting, this LTS does not contain any loop. This happens because the $second\_cycle$ fluent prevents looping in meeting arbitrations indefinitely, as required by soft goals. In other words, in the example at hand the technique unfolds the process models as three possible scenarios. In the right most one, no date conflict arises and the meeting is scheduled immediately after having acquired the constraints. In the middle one, a conflict occurs and is resolved by weakening the participant constraints. In the third one, the resolution consists in extending the date range and collecting constraints one again. In both cases, even if the absence of an optimal solution triggers a new date conflict, the meeting is scheduled. 
 
 \begin{figure}\centering
-\scalebox{0.16}{
+\scalebox{0.15}{
   \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/3-deductive/images/scheduler-lts}
 }
 \caption{Trace-equivalent LTS for the scheduler process in Fig.~\ref{image:scheduler-ghmsc}.\label{image:scheduler-lts}}
