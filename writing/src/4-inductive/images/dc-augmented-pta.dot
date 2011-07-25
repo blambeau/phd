@@ -41,5 +41,4 @@ digraph "0"{
   "11" -> "14" [ label="e.open"]
   "12" -> "15" [ label="e.open"]
   "15" -> "16" [ label="close"]
-  "5" [ fontcolor=white fillcolor="black" style="filled" color=black]
 }

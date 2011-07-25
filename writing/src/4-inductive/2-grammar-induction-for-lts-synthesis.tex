@@ -8,7 +8,15 @@
 
 \subsection{The search space of DFA induction\label{subsection:gi-background-search-space}}
 
-Generalizing a positive sample $S_+$ can be performed by merging states from an initial automaton that only accepts it.  This initial automaton is called a prefix tree acceptor; it is denoted by denoted by $PTA(S_+)$. It is the largest trimmed DFA accepting exactly $S_+$ (see Fig.~\ref{fig:pta:quotient}). The generalization operation is formally defined through the concept of \emph{quotient automaton}.
+We will use the common notations from formal language theory. Let $\Sigma$ denote a finite alphabet. $a$, $b$, $c$ denote elements of $\Sigma$, sometimes called \emph{words}. $u$, $v$, $w$ denote \emph{strings} over $\Sigma$ and $\lambda$ denotes the empty string. A string $u$ is a prefix of $v$ if there exists a string $w$ such that $uw = v$. A language $L$ is any subset of the set $\Sigma^*$ of strings over $\Sigma$. 
+
+In essence, words here correspond to event labels in our background material from Chapter~\ref{chapter:framework} whereas strings correspond to traces. We also recall the definition of finite automaton below; for recall, a LTS is a special case of finite automaton with all accepting states. Section~\ref{subsection:inductive-lts-synthesis-reduction} describes the reduction of LTS synthesis to DFA induction in more details. 
+
+\begin{definition}[Finite automaton]
+A finite automaton is a 5-tuple $(Q,\Sigma,\\\delta,q_0,F)$ where $Q$ is a finite set of states, $\Sigma$ is an alphabet, $\delta$ is a transition function mapping $Q\times\Sigma$ to $2^Q$, $q_0$ is the initial state, and $F$ is a subset of $Q$ identifying the accepting states. The automaton is called a DFA if for any $q$ in Q and any $e$ in $\Sigma$, $\delta(q,e)$ has at most one member. 
+\end{definition}
+
+Generalizing a positive sample $S_+$ can be performed by merging states from an initial automaton that only accepts it. This initial automaton is called a prefix tree acceptor; it is denoted by $PTA(S_+)$. It is the largest DFA\footnote{precisely the largest \emph{trimmed} DFA, that is, a DFA in which all states are reachable from the initial state} accepting exactly $S_+$ (see Fig.~\ref{fig:pta:quotient}). The generalization operation is formally defined through the concept of \emph{quotient automaton}.
 
 \begin{definition}[Quotient automaton]
 Given an automaton $A$ and a partition $\pi$ defined on its state set, the quotient automaton $A/\pi$ is obtained by merging all states $q$ belonging to the same partition subset $B(q,\pi)$. A state $B(q,\pi)$ in $A/\pi$ thus corresponds to a subset of the states in $A$. 
@@ -95,7 +103,7 @@ There may exist several distinct characteristic samples for a given language $L$
 
 One can verify that $S = (S_+, S_-)$, with $S_+ = \{\lambda, a, bb, bba, baab, baaaba\}$ and $S_- = \{b, ab, aba\}$, forms a characteristic sample for the language accepted by the canonical automaton in Fig.~\ref{fig:pta:quotient}.
 
-Note that the definition of a characteristic sample given above may be considered quite strong. It is however the standard definition of such a sample for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. It is based on a worst case analysis which does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the letters of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to observe very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
+Note that the definition of a characteristic sample given above may be considered quite strong. It is however the standard definition of such a sample for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. It is based on a worst case analysis which does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the letters of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to produce approximate state machines with a very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
 
 \subsection{Reducing LTS synthesis to RPNI induction\label{subsection:inductive-lts-synthesis-reduction}}
 
@@ -103,8 +111,8 @@ The synthesis of a System LTS from MSC collections can be reduced to a grammar i
 
 Consider a scenario collection $Sc = (S^+, S^-)$. From Chapter~\ref{chapter:framework}, $\mathcal{L}^+(Sc)$ denotes the set of positive traces extracted from positive scenarios and from the preconditions of the negative ones; $\mathcal{L}^-(Sc)$ denotes the set of negative traces extracted from the negative scenarios. Both of them denote finite sets of finite sequences over an alphabet $\Sigma$; this is valid under both partial and total ordering of MSC events. Last, recall that $\mathcal{L}^+(Sc)$ is prefix-closed, that is, the prefixes of positive traces are positive traces as well.
 
-$\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ form valid samples for grammar induction. They can be respectively used as positive and negative input samples of the RPNI algorithm. RPNI can only generalize the language of the positive sample; because the latter is prefix-closed here, the regular language learned by RPNI will be prefix-closed as well. Therefore the resulting DFA is a LTS; in other words, it contains only accepting states. 
+$\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ form valid samples for grammar induction. They can be respectively used as positive and negative input samples of the RPNI algorithm. As $\mathcal{L}^+(Sc)$ is prefix-closed the regular language learned by RPNI will be prefix-closed as well. Therefore the resulting DFA is a LTS; in other words, it contains only accepting states. 
 
-This \emph{System} LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and rejects all negative ones from $\mathcal{L}^-(Sc)$. Said otherwise, it covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the System LTS and the scenario collection $Sc$ are consistent.
+This \emph{System} LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and rejects all negative ones from $\mathcal{L}^-(Sc)$. In other words, it covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the System LTS and the scenario collection $Sc$ are consistent.
 
 The next section details this approach on QSM, our interactive variant of the RPNI algorithm. 

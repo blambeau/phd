@@ -10,11 +10,11 @@ One way to tackle this problem is to use high-level message sequence charts (hMS
 
 Having a structured form of scenario \emph{helps} specifying a large system with scenarios; it does not \emph{solves} the problem of achieving a complete and consistent view of agent behaviors:
 \begin{itemize}
-\item capturing all possible interleavings of a distributed system renders difficult with scenarios; a hMSC is therefore hardly complete in practice,
+\item capturing all possible interleavings of a distributed system proves difficult with scenarios; a hMSC is therefore hardly complete in practice,
 \item complementary features of a system deserve being specified in complementary models; in addition to using multiple system views, having system behaviors specified in more than one hMSC makes sense.
 \end{itemize}
 
-Having a synthesis technique to merge and generalize behaviors described in hMSCs seems a convenient extension to the synthesis technique described so far. For this, the LTS synthesis statement is first revisited in Section~\ref{subsection:hmsc-induction-problem-revisited}. The inductive algorithm is then adapted in Section \ref{subsection:hmsc-induction-algo-adaptation}.
+Having a synthesis technique to merge and to generalize behaviors described in hMSCs seems a convenient extension to the synthesis technique described so far. For this, the LTS synthesis statement is first revisited in Section~\ref{subsection:hmsc-induction-problem-revisited}. The inductive algorithm is then adapted in Section \ref{subsection:hmsc-induction-algo-adaptation}.
 
 \subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
 
@@ -58,7 +58,7 @@ S_+~~\subseteq~~L~~\subseteq~~\Sigma^*\setminus S_-
 
 LTS synthesis from a scenario collection $Sc$ reduces to grammar induction because the sets $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ are valid positive and negative samples, respectively (see Section \ref{subsection:inductive-lts-synthesis-reduction}). In particular, they denote finite sets of traces.
 
-When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces; this is true whatever hMSC semantics is chosen. Therefore, the current problem statement no longer fits exactly in the identification in the limit framework presented in Section \ref{section:inductive-background}.
+When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces. Therefore, the current problem statement no longer fits exactly in the identification in the limit framework presented in Section \ref{section:inductive-background}.
 
 In practice, it means that the positive sample can no longer be captured through a PTA; it can still be captured through a DFA, however. Required algorithmic adaptations are identified by tracking to what extent QSM relies on a tree-shaped initial solution:
 
