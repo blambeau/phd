@@ -18,11 +18,11 @@ Having a synthesis technique to merge and to generalize behaviors described in h
 
 \subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
 
-Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. Under all hMSC semantics considered in Section \ref{subsection:background-hmsc} (we recall them below), this is equivalent to building a new hMSC reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios, typically coming from scenario queries, could be integrated in a similar way.
+Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. This is equivalent to building a new hMSC reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios, typically coming from scenario queries, could be integrated in a similar way.
 
 TODO: an illustration is probably worth considering here?
 
-However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalization. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
+However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalizations. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
 
 Without much loss of generality therefore, we will assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows: 
 
