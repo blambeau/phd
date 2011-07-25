@@ -1,0 +1,39 @@
+digraph "0"{
+  graph [pack=true rankdir=LR ranksep=0 margin=0];
+  node [shape=doublecircle color=black width=0.5 height=0.5 fixedsize=true]
+  edge [arrowsize=0.7]
+
+  zz [label="" color="white" fillcolor="white" shape="circle" style="filled" 
+      width=0.05 height=0.05 fixedsize=true ];
+  zz -> 0 [label=""];
+
+  "0" []
+  "1" []
+  "2" []
+  "4" []
+  "5" []
+  "7" []
+  "8" []
+  "9" []
+  "10" []
+  "11" []
+  "12" []
+  "13" []
+  "14" []
+  "15" []
+
+  "0" -> "1" [ label="open"]
+  "0" -> "2" [ label="start"]
+  "1" -> "0" [ label="close"]
+  "2" -> "4" [ label="a.pres"]
+  "2" -> "5" [ label="stop"]
+  "4" -> "7" [ label="a.prop"]
+  "5" -> "8" [ label="a.pres"]
+  "2" -> "9" [ label="stop"]
+  "7" -> "10" [ label="e.stop"]
+  "8" -> "11" [ label="a.prop"]
+  "9" -> "12" [ label="start"]
+  "10" -> "13" [ label="e.open"]
+  "11" -> "14" [ label="e.open"]
+  "14" -> "15" [ label="close"]
+}
