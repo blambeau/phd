@@ -76,9 +76,10 @@ The incremental integration of these requirements in the approach drives the str
 
 Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our approach for the simple case where a scenario collection is taken as input. 
 
-\begin{figure}\centering
-  \scalebox{0.55}{\includegraphics[trim=3mm 3mm 10mm 3mm, clip]{src/4-inductive/images/overview}}
-  \caption{Overview of inductive LTS synthesis from MSCs.\label{image:inductive-synthesis-overview}}
+\begin{figure}[h]
+\centering
+\scalebox{0.60}{\includegraphics[trim=3mm 3mm 10mm 3mm, clip]{src/4-inductive/images/overview}}
+\caption{Overview of inductive LTS synthesis from MSCs.\label{image:inductive-synthesis-overview}}
 \end{figure}
 
 \noindent \textbf{The generalization step} extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a System LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the Regular Positive and Negative Inference (RPNI) algorithm and proceeds as follows \cite{Oncina:1992}.

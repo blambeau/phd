@@ -48,26 +48,30 @@ The various functions which control how merging is performed from an initial aut
 
 \item[Initialize] The \texttt{Initialize} function returns the prefix tree acceptor built for $\mathcal{L}^+(S)$. For recall, this set includes traces from both the positive scenarios and the preconditions of the negative ones. The PTA built from the initial scenario collection in Figure~\ref{Fig:init:scen} is shown on top of Figure~\ref{Fig:algo:steps}. For simplicity, these scenarios define a total order among their events; in other words, they admit only only linearization (see Section~\ref{section:background-scenarios}). 
 
+%\begin{figure}
+%\centering
+%\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenA}}
+%\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenB}}
+%\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenC}}
+%\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenD}}
+%\caption{Initial positive and negative scenarios for a train system\label{Fig:init:scen}.}
+%\end{figure}
 \begin{figure}
 \centering
-\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenA}}
-\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenB}}
-\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenC}}
-\scalebox{.45}{\includegraphics*{src/4-inductive/images/InitScenD}}
+\scalebox{.56}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/four-initial-scenarios}}
 \caption{Initial positive and negative scenarios for a train system\label{Fig:init:scen}.}
 \end{figure}
 
-\item[ChooseStatePair] The candidate solution is refined by merging well-selected state pairs. The \texttt{ChooseStatePair} function determines which pairs to consider. It relies on the standard order $<$ on strings. Each state of the PTA can be labeled by its unique prefix from the initial state. Since prefixes can be sorted according to that order, the states can be ranked accordingly. For example, the PTA states in Fig.~\ref{Fig:algo:steps} are labeled by their rank according to this order. The algorithm considers states $q$ of the PTA in increasing order. The state pairs considered for merging only involve such state $q$ and any state $q'$ of lower rank. The $q'$ states are considered in increasing order as well. This particular ordering is specific to the original RPNI algorithm.
+
+\item[ChooseStatePair] The candidate solution is refined by merging well- selected state pairs. The \texttt{ChooseStatePair} function determines which pairs to consider. It relies on the standard order $<$ on strings. Each state of the PTA can be labeled by its unique prefix from the initial state. Since prefixes can be sorted according to that order, the states can be ranked accordingly. For example, the PTA states in Fig.~\ref{Fig:algo:steps} are labeled by their rank according to this order. The algorithm considers states $q$ of the PTA in increasing order. The state pairs considered for merging only involve such state $q$ and any state $q'$ of lower rank. The $q'$ states are considered in increasing order as well. This particular ordering is specific to the original RPNI algorithm.
 
 \item[Merge] The \texttt{Merge} function merges the two states $(q, q')$ selected in order to compute a quotient automaton, that is, to generalize the current set of positive behaviors. In the example of Fig.~\ref{Fig:algo:steps}, we assume that states 0, 1, and 2 were previously determined not to be compatible for merging (through negative scenarios initially submitted or generated scenarios that were rejected by the user). Merging a candidate state pair may produce a non-deterministic LTS. For example, after having merged $q = 3$ and $q' = 0$ in the upper part of Fig.~\ref{Fig:algo:steps}, two transitions labeled \texttt{start} from state 0 lead to states 2 and 6, respectively. In such a case, the \texttt{Merge} function merges states 2 and 6 and, recursively, any further pair of states that introduces non-determinism. 
 
 We call \textsl{merging for determinization} this recursive operation of removing non-determinism. This operation guarantees that the current solution at any step is deterministic. It produces an automaton which may accept a more general language than the one it starts from. Therefore, it is not equivalent to the standard algorithm to transform a non deterministic automaton into a deterministic one accepting the same language~\cite{Hopcroft:1979}. Notably, the time complexity of merging for determinization is a linear function of the number of states of the automaton it starts from whereas the standard determinization algorithm is exponential in the worst case. Also, the resulting automaton is still part of the same inductive search space (see Section~\ref{subsection:gi-background-search-space}). 
 
 \begin{figure}
-\hspace*{-1cm}
-\begin{center}
-\scalebox{.63}{\includegraphics*{src/4-inductive/images/AlgoSteps}}
-\end{center}
+\centering
+\scalebox{.67}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/algo-steps}}
 \caption{A typical induction step of the \textsc{QSM} algorithm\label{Fig:algo:steps}.}
 \end{figure}
 
@@ -91,7 +95,7 @@ Consider the current solution of our induction algorithm when a pair of states $
 
 \begin{figure}
 \centering
-\scalebox{.5}{\includegraphics*{src/4-inductive/images/GenerateQuestion_bw}}
+\scalebox{.75}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/scenario-question}}
 \caption{A new scenario to be classified by the end-user\label{Fig:generated:question}.}
 \end{figure}
 
@@ -118,9 +122,8 @@ The order in which states are considered for merging by the \texttt{ChooseStateP
 To overcome this problem, one can use an optimized strategy known as Blue-Fringe~\cite{Lang:1998}. The difference lies in the way state pairs are considered for merging. The general idea is to early detect incompatible state pairs and, subsequently, first consider state pairs for which compatibility has the highest chance to be confirmed by the user through positive classification. The resulting ``please confirm'' interaction may also appear more appealing to the user.
 
 \begin{figure}
-\hspace*{-1cm}
-\scalebox{.65}{\includegraphics*{src/4-inductive/images/BlueFringe_bw}}
-\vspace*{-.5cm}
+\centering
+\scalebox{.55}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/blue-fringe}}
 \caption{Consolidated states (red) and states on the fringe (blue) in a temporary solution\label{Fig:BlueFringe}.}
 \end{figure}
 
