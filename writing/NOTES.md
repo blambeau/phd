@@ -1,28 +1,5 @@
 * 2011.07.01 -- Definitely grep on TODO ;-)
 
-* 2011.06.30 - Sections to refactor in chapter 4
-
-  * Restate the requirement that all scenarios start in the same system state
-    somewhere. This is left implicit because of scenario collections so far. 
-
-  * Add a sentence about "membership queries" before using the term.
-
-  * Check that "uv" (vs. "u.v") string concatenation is compatible with
-    Background.
-
-  * Normalize images and verify that abbreviates are correctly introduced.
-
-      \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop} respectively}.
-
-  * Is a proof (argument) needed in Section 4.4.2 (injecting goals ensures
-    system consistency)?
-
-  * Section 4.5 - LTS synthesis from high-level MSCs
-
-    * State that the initial state assumption is no longer required here.
-
-  * Add an illustration to union of hMSC languages in 4.5.1
-
 * 2011.06.24 - Sections to refactor in chapter 2
 
   * 2.1 Running examples
@@ -34,18 +11,23 @@
     * The discussion should probably be extended a bit now? Consistency
       rules are not introduced anymore.
 
+  * 2.3.2 Systems as agent compositions
+
+    * Add an image for composition
+    
+    * Better introduce the notation X -l> X' before its use here
+
+  * 2.4.2 Negative scenarios
+
+    * Add an image for capturing neg sc with LTS and automaton
+
+    * What about Pierre's comment about expressiveness of SC- ?
+
   * 2.4.5 Flowcharting scenarios ...
 
     * Say briefly why not all hMSCs define regular languages.
 
-    * Find a name for the "Composing bMSCs" hypothesis (coherence between
-      weak/strong sequencing and partial/total ordering)
-
     * Find another definition for implied scenarios...
-
-  * Section 2.5.3: Integrating fluents in multi-view models
-
-    * Remove or replace the paragraph about a fluent being TOP in LTS states.
 
   * Everywhere
   
@@ -103,3 +85,27 @@
     -> Explicit consistency rule between agent state machines and agent states
        variables. 
     -> Why not numbering consistency rules??
+
+* 2011.06.30 - Sections to refactor in chapter 4
+
+  * Restate the requirement that all scenarios start in the same system state
+    somewhere. This is left implicit because of scenario collections so far. 
+
+  * Add a sentence about "membership queries" before using the term.
+
+  * Check that "uv" (vs. "u.v") string concatenation is compatible with
+    Background.
+
+  * Normalize images and verify that abbreviates are correctly introduced.
+
+      \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop} respectively}.
+
+  * Is a proof (argument) needed in Section 4.4.2 (injecting goals ensures
+    system consistency)?
+
+  * Section 4.5 - LTS synthesis from high-level MSCs
+
+    * State that the initial state assumption is no longer required here.
+
+  * Add an illustration to union of hMSC languages in 4.5.1
+

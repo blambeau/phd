@@ -1,14 +1,14 @@
 \section{Scenarios as message sequence charts\label{section:background-scenarios}}
 
-Labeled transition systems may capture the behaviors of a single agent class. Scenarios illustrate admissible interactions among multiple agent instances. The scenarios we use in this thesis are specified in a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996}, see Fig.~\ref{image:train-scenario-all-agents} for example. To keep scenario specifications the models usable by end-users, we will use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agent instances and horizontal arrows representing interactions events among them. According to the previous section, events are synchronously sent and received by interacting agents (we will also use the terms \emph{controlled} and \emph{monitored} events, respectively). As already stated in previous section, we assume that an event label uniquely determines the latter agents. 
+Labeled transition systems may capture the behaviors of a single agent class. Scenarios illustrate admissible interactions among multiple agent instances. The scenarios we use in this thesis are specified in a syntactic subset of Message Sequence Charts (MSC)~\cite{ITU:1996}, see Fig.~\ref{image:train-scenario-all-agents} for example. To keep scenario specifications the models usable by end-users, we will use only a small subset of their features. In its simplest form, a MSC is composed of vertical lines representing timelines associated with agent instances and horizontal arrows representing interactions events among them. According to the previous section, events are synchronously sent and received by interacting agents (we will also use the terms \emph{controlled} and \emph{monitored} events, respectively). We assume that an event label uniquely determines the latter agents. 
 
 We consider \emph{positive} scenarios, that are examples of behaviors that the system should exhibit (see Section~\ref{subsection:background-positive-scenarios}), and \emph{negative} scenarios that behaviors that the system must avoid (see Section~\ref{subsection:background-negative-scenarios}). Sections~\ref{subsection:background-scenario-collections}, \ref{subsection:background-hmsc} and \ref{subsection:background-scenario-annotations} will then discuss ways of managing multiple positive and negative scenarios. The consistency of the scenarios and state machines views is discussed in section~\ref{subsection:background-scenario-consistency}.
 
 \subsection{Positive scenarios\label{subsection:background-positive-scenarios}}
 
-As in~\cite{Uchitel:2004}, MSCs are given a trace semantics. We will consider that a MSC defines a set of traces; the latter are expressed through a LTS. Given a MSC, two kinds of traces can be considered: those from the local perspective of a single timeline and those from the global perspective of the complete MSC. We discuss each of these views in turn.
+As in~\cite{Uchitel:2004}, MSCs are given a trace semantics. We will consider that a MSC defines a set of traces; the latter are expressed through a LTS. Two kinds of traces are considered: those from the local perspective of a single timeline and those from the global perspective of the complete MSC. We discuss each of these views in turn.
 
-As time in a MSC evolves from top to bottom, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines one simple trace; such trace is \emph{maximal} trace in that it includes all events in which the agent participates. This trace and all its suffixes can be captured by a LTS. For example, the traces defined by the timeline of the \artifact{Controller} in the MSC of Fig.~\ref{image:train-scenario-all-agents} are precisely captured by the LTS in Fig.~\ref{image:local-traces-lts}. Given a MSC $M$ and an agent $Ag$, we will denote such LTS by $M_{\downarrow Ag}$.
+As time in a MSC evolves from top to bottom, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines one simple trace; such trace is a \emph{maximal} trace in that it includes all events in which the agent participates. This trace and all its suffixes can be captured by a LTS. For example, the traces defined by the timeline of the \artifact{Controller} in the MSC of Fig.~\ref{image:train-scenario-all-agents} are precisely captured by the LTS in Fig.~\ref{image:local-traces-lts}. Given a MSC $M$ and an agent $Ag$, we will denote such LTS by $M_{\downarrow Ag}$.
 
 \vspace{0.5cm}
 \begin{figure}[H]\centering
@@ -39,7 +39,7 @@ The first relation above states that the set of traces under a partial ordering 
 
 The second relation above provides a simple way of computing all linearizations of a MSC as an acyclic transition system through LTS composition. Such a LTS is illustrated in Fig.~\ref{image:msc-linearizations} for the MSC in Fig.\ref{image:train-scenario-all-agents}. As shown there, the latter accepts six different linearizations due to the possible interleavings of its first four events. By construction, such a LTS has only one initial state (the leftmost one) and only one terminating state (the rightmost one). This allows us to loosely refer to \emph{the} terminating state of a MSC with a precise underlying meaning; it refers to the LTS capturing its traces.
 
-\aside{The reader wondering whether certain linearizations are \emph{implied} scenarios~\cite{Uchitel:2004} or whether our initial scenario should not be regarded flawed is referred to Section~\ref{section:background-discussion}; those issues are further examined there.}
+Note that the number of linearizations of a MSC is exponential in the number of events in the worst case. This is representative of distributed systems where agents mostly behave asynchronously. Linearizations capture all possible interleavings of events in exactly the same way as with LTS composition in Section~\ref{subsection:lts-composition}. In the worst case, where agents do not synchronize at all, the number of interleavings is exponential. By focussing specifically on agent collaborations, MSCs often have only a few linearizations.
 
 \begin{figure}\centering
 \scalebox{0.31}{\includegraphics{src/2-framework/images/linearizations}}
@@ -107,16 +107,16 @@ A trace semantics for hMSCs amounts to answering the question: \emph{what traces
 
 \noindent \textbf{Composing bMSCs} -- In addition to the partial or total ordering of events in bMSCs, two possibilities arise as to how a system evolves from a bMSC to another inside a hMSC. The first one, called \emph{strong sequential composition}, assumes that all agents wait until all events of a bMSC have occurred before moving to the next one. This means that there is an implicit synchronization scheme used by the agents to know when a scenario has been completed. The other one, called \emph{weak sequential composition}, allows an agent to move from a bMSC to another one without having to synchronize with the other agents. 
 
-In view of the independence between assumptions of partial/total event ordering and weak/strong sequential composition, four combinations actually exist. To keep things simple enough and avoid bizarre concurrency models\footnote{in particular, such models are very sensitive to the decomposition of a hMSC into bMSCs. For example splitting a bMSC node in two smaller bMSCs might change the set of accepted traces of the hMSC.}, we do not consider partial (resp. total) ordering with strong (resp. weak) sequential composition. In the sequel, therefore, strong (resp. weak) sequential composition will entail total (resp. partial) ordering of MSC events.
+In view of the independence between assumptions of partial/total event ordering and weak/strong sequential composition, four combinations actually exist. To keep things simple enough and avoid bizarre concurrency models\footnote{in particular, such models are very sensitive to the decomposition of a hMSC into bMSCs. For example splitting a bMSC node into smaller bMSCs might change the set of accepted traces of the hMSC.}, we do not consider partial (resp. total) ordering with strong (resp. weak) sequential composition. In the sequel, therefore, strong (resp. weak) sequential composition will entail total (resp. partial) ordering of MSC events. We refer to this as the \emph{stable composition} hypothesis in the sequel. 
 
-\noindent \textbf{Trace semantics} -- Under the assumptions of bounded hMSC and TODO, the trace analysis for hMSCs is very similar to MSCs. It leads to language relations similar to the ones given for the latter in Section~\ref{subsection:background-positive-scenarios} (see the relation (\ref{equation:msc-composition}) in particular):
+\noindent \textbf{Trace semantics} -- Under the assumption of bounded hMSC with stable composition, the trace analysis for hMSCs is very similar to MSCs. It leads to language relations similar to the ones given for the latter in Section~\ref{subsection:background-positive-scenarios} (see the relation (\ref{equation:msc-composition}) in particular):
 \begin{align}
 \mathcal{L}_{strong}(H) & \subseteq \mathcal{L}_{weak}(H) \\
 \mathcal{L}_{weak}(H) & \subseteq \mathcal{L}(H_{\downarrow Ag_1} \parallel \ldots \parallel H_{\downarrow Ag_n})
 \label{equation:hsmc-traces-by-agent-composition}
 \end{align}
 
-The sets of traces $\mathcal{L}_{strong}(H)$ and $\mathcal{L}_{weak}(H)$ results from the scenarios ``produced'' by the hMSC. Consider a finite path in the hMSC. Concatenating the bMSCs along this path yields a single MSC. For example, concatenating \artifact{Starting train}, \artifact{Pressing alarm} and \artifact{Stopping \& Opening the doors} in the hMSC of Fig.~\ref{image:train-hmsc} leads to the MSC of Fig.~\ref{image:train-scenario-all-agents}. As introduced in Section~\ref{subsection:background-positive-scenarios}, such MSC $M$ defines the set of traces $\mathcal{L}_{total}(M)$ and $\mathcal{L}_{partial}(M)$. To define the traces produced by a hMSC $H$, we need to consider all such possible MSCs: 
+The sets of traces $\mathcal{L}_{strong}(H)$ and $\mathcal{L}_{weak}(H)$ result from the scenarios ``produced'' by the hMSC. Consider a finite path in the hMSC. Concatenating the bMSCs along this path yields a single MSC. For example, concatenating \artifact{Starting train}, \artifact{Pressing alarm} and \artifact{Stopping \& Opening the doors} in the hMSC of Fig.~\ref{image:train-hmsc} leads to the MSC of Fig.~\ref{image:train-scenario-all-agents}. As introduced in Section~\ref{subsection:background-positive-scenarios}, such MSC $M$ defines the set of traces $\mathcal{L}_{total}(M)$ and $\mathcal{L}_{partial}(M)$. To define the traces produced by a hMSC $H$, we need to consider all such possible MSCs: 
 \begin{align}
 \mathcal{L}_{strong}(H) &= \bigcup_{M \in H} \mathcal{L}_{total}(M) \\
 \mathcal{L}_{weak}(H) &= \bigcup_{M \in H} \mathcal{L}_{partial}(M)
@@ -128,7 +128,7 @@ One can consider another way of computing the set of traces defined by a hMSC. I
 \mathcal{L}_{arch}(H) &= \mathcal{L}(H_{\downarrow Ag_1} \parallel \ldots \parallel H_{\downarrow Ag_n})
 \end{align}
 
-An algorithm for synthesizing the LTS modeling $\mathcal{L}_{arch}(H)$ may be found in~\cite{Uchitel:2004}. For a given agent $Ag_{i}$, the LTS $H_{\downarrow Ag_i}$ is synthesized by connecting the LTSs $M_{\downarrow Ag_i}$ corresponding to each bMSC $M$ with $\tau$ transitions, according to their possible continuations given by hMSC edges. This construction is illustrated in Fig.~\ref{image:train-controller-synthesis} for the hMSC of Fig.~\ref{image:train-hmsc} and the \artifact{Controller} agent. The resulting LTS can be further simplified by removing $\tau$ transitions and minimizing the LTS.  Thanks to the simplicity of the model with strong sequential composition, $\mathcal{L}_{strong}(H)$ can be computed in a very similar way. In contrast, $\mathcal{L}_{weak}(H)$ is much harder to model as a LTS; a synthesis algorithm can be found in~\cite{Uchitel:2004}.
+An algorithm for synthesizing the LTS modeling $\mathcal{L}_{arch}(H)$ may be found in~\cite{Uchitel:2004}. For a given agent $Ag_{i}$, the LTS $H_{\downarrow Ag_i}$ is synthesized by connecting the LTSs $M_{\downarrow Ag_i}$ corresponding to each bMSC $M$ with $\tau$ transitions, according to their possible continuations given by hMSC edges. This construction is illustrated in Fig.~\ref{image:train-controller-synthesis} for the hMSC of Fig.~\ref{image:train-hmsc} and the \artifact{Controller} agent. The resulting LTS can be further simplified by removing $\tau$ transitions and minimizing the LTS.  Thanks to the simplicity of the model with strong sequential composition, $\mathcal{L}_{strong}(H)$ can be computed in a very similar way. $\mathcal{L}_{weak}(H)$ is much harder to model as a LTS, because one has to constraint the sequencing and synchronization of bMSCs to fit the semantics. A synthesis algorithm can however be found in~\cite{Uchitel:2004}.
 
 \vspace{0.4cm}
 \begin{figure}[H]\centering
@@ -138,7 +138,7 @@ An algorithm for synthesizing the LTS modeling $\mathcal{L}_{arch}(H)$ may be fo
 \caption{Synthesis of the \emph{Controller} LTS from the hMSC of Fig.~\ref{image:train-hmsc}.\label{image:train-controller-synthesis}}
 \end{figure}
 
-An important difference should be noted between the relations between MSC languages and those on hMSC languages. For similitude with hMSCs, let $\mathcal{L}_{arch}(M)$ denote an architecture model for MSCs as follows:
+An important difference should be noted among the relations between MSC languages and those on hMSC languages. For similitude with hMSCs, let $\mathcal{L}_{arch}(M)$ denote an architecture model for MSCs as follows:
 \begin{align}
 \mathcal{L}_{arch}(M) = \mathcal{L}(M_{\downarrow Ag_1}\parallel\ldots\parallel M_{\downarrow Ag_n})
 \end{align}
@@ -155,21 +155,15 @@ In fact, the traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ c
 
 \subsubsection*{hMSCs composed from finer-grained hMSCs}
 
-As stated previously, a hMSC node may refer to a finer-grained hMSC instead of a bMSC. To take the latter into account in the trace semantics given previously, we must decide how a sub-hMSC is to be ``connected'' with its father. To keep a consistent framework in terms of synchronization hypotheses, we require such sub-hMSC to have, in addition to its initial state, a terminating state to which at least one node is connected. For simplicity, we also forbid nodes with no outgoing transition. 
+A hMSC node may refer to a finer-grained hMSC instead of a bMSC. To take the latter into account in the trace semantics given previously, we must decide how a sub-hMSC is to be ``connected'' with its father. To keep a consistent framework in terms of synchronization hypotheses, we require such sub-hMSC to have, in addition to its initial state, a terminating state to which at least one node is connected. For simplicity, we also forbid nodes with no outgoing transition. 
 
 Under those assumptions, it is relatively easy to unfold a compound hMSC into another one where all refined nodes are basic MSCs. The trace semantics remains unchanged and is defined in terms of the latter ``flat'' hMSC. 
 
 In practice, this flat hMSC must not be explicitly constructed when the LTS for $\mathcal{L}_{arch}$ is synthesized. The LTSs $H_{\downarrow Ag_i}$ for finer-grained hMSCs meeting our constraints have only one initial state and only one terminating state; this allows them to be connected with $\tau$ transitions in the same way as the LTSs $M_{\downarrow Ag_i}$. A similar argument applies for $\mathcal{L}_{strong}$.
 
-\subsection{Explicit state annotations\label{subsection:background-scenario-annotations}}
-
-MSCs are often annotated with state-based information (see, e.g.,~\cite{VanLamsweerde:1998, Kruger:2000, Whittle:2000}). 
-
-TODO: complete this description, discussing the difference between identification and state assertions (aka fluent-based decorations). The former info uniquely identifies an agent state, so that they can be merged with mandatory merge constraints presented in section~\ref{section:inductive-from-hMSC}, while the later does not, but helps pruning search space as usual with fluents.
-
 \subsection{Consistency between the scenario and state machine views\label{subsection:background-scenario-consistency}}
 
-The trace semantics of scenarios can be explicitly related to agent and system behaviors as the latter are captured with LTS (see Section~\ref{section:background-state-machines}). This section defines consistency rules between those two views, and explains the similarity between relations (\ref{equation:system-composition}), (\ref{equation:msc-composition}) and (\ref{equation:hsmc-traces-by-agent-composition})
+The trace semantics of scenarios can be explicitly related to agent and system behaviors as the latter are captured with LTS (see Section~\ref{section:background-state-machines}). This section defines consistency rules between those two views, and explains the similarity between relations (\ref{equation:system-composition}), (\ref{equation:msc-composition}) and (\ref{equation:hsmc-traces-by-agent-composition}).
 
 \subsubsection*{Positive MSCs}
 
@@ -203,7 +197,7 @@ A negative MSC $N = (P,e)$ and a system $\system$ are said to be consistent if t
 
 A scenario collection $Sc = (S^+,S^-)$ and a system $S$ are said to be consistent if and only if each positive and each negative MSC of the collection is itself consistent with $S$. 
 
-Conditions (\ref{condition:consistent-system-view}) and (\ref{condition:consistent-system-view-neg}) can be formulated in terms of the collection's positive and negative languages as follows:
+Conditions (\ref{condition:consistent-system-view}) and (\ref{condition:consistent-system-view-neg}) can be formulated in terms of the positive and negative languages of the collection as follows:
 \begin{align}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(S) \\
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(S) = \emptyset

@@ -24,7 +24,7 @@ The \emph{alphabet} $\Sigma$ captures the notion of \emph{agent interface}, as a
 
 Note that labeled transition systems do not distinguish between \emph{sent} and \emph{received} events. Such distinction may be required when connecting LTS and scenarios; in such cases, we assume this structural information to be available elsewhere, typically, from a context or architecture diagram~\cite{Ward:1985, Magee:1995}. We will assume that an event label uniquely determines the interacting agents; an event may however be received by more than one agent. 
 
-In the thesis $\Sigma^{*}$ denotes the set of finite sequences over an alphabet $\Sigma$. A \emph{trace} is an element of $\Sigma^{*}$, that is, a finite sequence of event labels \artifact{$w = \textless l_0,\ldots,l_{n} \textgreater$} with $l_i \in \Sigma$. We will sometimes use the notation $w.l$ to denote the concatenation of a trace $w$ with a label or another trace $l$.
+In the thesis $\Sigma^{*}$ denotes the set of finite sequences over an alphabet $\Sigma$. A \emph{trace} is an element of $\Sigma^{*}$, that is, a finite sequence of event labels \artifact{$w = \textless l_0,\ldots,l_{n} \textgreater$} with $l_i \in \Sigma$. We will sometimes use the notation $vw$ to denote the concatenation of a trace $v$ with another trace $w$.
 
 The label $\tau$ is used to denote so-called \emph{non-observable} transitions. Such transitions allow us to model agent state changes that cannot be monitored by its environment. We will denote $\Sigma\cup\{\tau\}$ by $\Sigma_{\tau}$ (an alphabet augmented with the $\tau$ label).
 
@@ -34,7 +34,7 @@ A LTS is \emph{deterministic} if any trace uniquely determines the reached state
 
 A state is \emph{terminating} if it has no outgoing transition; otherwise it is \emph{non-terminating}. A \emph{terminating} LTS has at least one terminating state; otherwise it is \emph{non-terminating}. 
 
-Note that, the above definition does not allow distinguishing between terminating states that model successful termination (an agent stops running intentionally) and non-successful termination (e.g. an agent composed from finer-grained agents \emph{deadlocks} unintentionally). 
+Note that, the above definition does not allow distinguishing between terminating states that model successful termination (an agent stops running intentionally) and non-successful termination (e.g. an agent composed from finer-grained agents \emph{deadlocks} unintentionally). While relevant for system analysis, this thesis do not consider deadlocks.
 
 A finite LTS \emph{execution} is a finite sequence of states separated by labels: 
 
@@ -59,7 +59,7 @@ The set of traces accepted by a LTS $P$ is called its \emph{language}; it is den
 \emph{Behavioral equivalence} is an important notion when designing and analyzing concurrent systems. It allows answering questions such as ``\emph{are agents $Ag_1$ and $Ag_2$ the same in terms of behavior?}''. Many different notions of behavioral equivalence exist in the literature, like \emph{strong} and \emph{observational}  equivalences~\cite{Milner:1989}, bisimilarity~\cite{Park:1981}, or failure equivalence~\cite{Hoare:1985}. Assuming \emph{determinate} agents, as explained in Section~\ref{subsection:background-multiple-views}, allows us to stick to the weakest, yet simplest, notion of LTS equivalence: trace equivalence~\cite{Hoare:1985, Engelfriet:1985}. Two LTS $P$ and $Q$ are \emph{trace-equivalent} if they accept the same set of traces:
 
 \begin{equation}
-P \equiv_{tr} Q~if~and~only~if~\mathcal{L}(P) = \mathcal{L}(Q)
+P \equiv_{tr} Q \mbox{~if and only if~} \mathcal{L}(P) = \mathcal{L}(Q)
 \end{equation}
 
 The next section discusses some important properties inherited by LTSs from their connection with regular languages. 
@@ -70,9 +70,9 @@ Labeled transition systems are actually a subclass of standard automata \cite{Ho
 
 A LTS is a standard automaton in which all states are accepting: $F = Q$. Many results from standard automata theory therefore apply to LTS while preserving trace equivalence.
 
-Standard automata, both deterministic and non-deterministic ones, capture the well-studied class of \emph{regular} languages~\cite{Hopcroft:1979}. As they only have accepting states, LTS capture the class of \emph{prefix-closed} regular languages. The term ``prefix-closed'' means that all prefixes of accepted traces are also accepted traces. Mathematically $prefixes(\mathcal{L}(P)) = \mathcal{L(P)}$.
+Standard automata, both deterministic and non-deterministic ones, capture the well-studied class of \emph{regular} languages~\cite{Hopcroft:1979}. As they only have accepting states, LTS capture the class of \emph{prefix-closed} regular languages. The term ``prefix-closed'' means that all (non necessarily proper) prefixes of accepted traces are also accepted traces. Mathematically, $prefixes(\mathcal{L}(P)) = \mathcal{L(P)}$.
 
-For any regular language $\mathcal{L}$, there exists a canonical automaton $A(\mathcal{L})$. This automaton is the minimal deterministic automaton accepting $\mathcal{L}$; it is known to be unique up to state renumbering~\cite{Gold:1978}. 
+For any regular language $\mathcal{L}$, there exists a canonical automaton $A(\mathcal{L})$. This automaton is the minimal deterministic automaton accepting $\mathcal{L}$; it is known to be unique up to state renumbering~\cite{Hopcroft:1979}. 
 
 Without loss of generality, we may therefore assume that the behavior of any agent is modeled by a canonical LTS. Moreover, we may use non-deterministic constructions ($\tau$ transitions in particular) without contradicting the assumption of \emph{determinate} agents. Given a LTS $P$, deterministic or not, we will denote by $P^{\Delta}$ its canonical equivalent, where $P$ can actually be a LTS \emph{expression}, that is, a LTS ``computed'' by applying LTS operators introduced in the next sections. Standard automaton algorithms from~\cite{Hopcroft:1979} can be used to compute $P^\Delta$. This typically involves removing $\tau$ transitions, determinizing and minimizing the LTS under trace equivalence.
 
@@ -120,7 +120,7 @@ A composed LTS can easily be computed constructively by exploring the state spac
 When the two LTS operands share the same alphabet, the composition operator computes the intersection of accepted traces:
 
 \begin{equation}
-\mathcal{L}(P \parallel Q) = \mathcal{L}(P) \cap \mathcal{L}(Q)~~if~~\Sigma_{1}=\Sigma_{2}
+\mathcal{L}(P \parallel Q) = \mathcal{L}(P) \cap \mathcal{L}(Q) \mbox{~~if~~} \Sigma_{1}=\Sigma_{2}
 \end{equation}
 
 The trace semantics of a system composed of $n$ agents whose behavior is modeled with LTSs $Ag_1 \ldots Ag_n$ is captured by:
