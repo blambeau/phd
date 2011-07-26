@@ -62,16 +62,15 @@ The various functions which control how merging is performed from an initial aut
 \caption{Initial positive and negative scenarios for a train system\label{Fig:init:scen}.}
 \end{figure}
 
-
 \item[ChooseStatePair] The candidate solution is refined by merging well- selected state pairs. The \texttt{ChooseStatePair} function determines which pairs to consider. It relies on the standard order $<$ on strings. Each state of the PTA can be labeled by its unique prefix from the initial state. Since prefixes can be sorted according to that order, the states can be ranked accordingly. For example, the PTA states in Fig.~\ref{Fig:algo:steps} are labeled by their rank according to this order. The algorithm considers states $q$ of the PTA in increasing order. The state pairs considered for merging only involve such state $q$ and any state $q'$ of lower rank. The $q'$ states are considered in increasing order as well. This particular ordering is specific to the original RPNI algorithm.
 
 \item[Merge] The \texttt{Merge} function merges the two states $(q, q')$ selected in order to compute a quotient automaton, that is, to generalize the current set of positive behaviors. In the example of Fig.~\ref{Fig:algo:steps}, we assume that states 0, 1, and 2 were previously determined not to be compatible for merging (through negative scenarios initially submitted or generated scenarios that were rejected by the user). Merging a candidate state pair may produce a non-deterministic LTS. For example, after having merged $q = 3$ and $q' = 0$ in the upper part of Fig.~\ref{Fig:algo:steps}, two transitions labeled \texttt{start} from state 0 lead to states 2 and 6, respectively. In such a case, the \texttt{Merge} function merges states 2 and 6 and, recursively, any further pair of states that introduces non-determinism. 
 
 We call \textsl{merging for determinization} this recursive operation of removing non-determinism. This operation guarantees that the current solution at any step is deterministic. It produces an automaton which may accept a more general language than the one it starts from. Therefore, it is not equivalent to the standard algorithm to transform a non deterministic automaton into a deterministic one accepting the same language~\cite{Hopcroft:1979}. Notably, the time complexity of merging for determinization is a linear function of the number of states of the automaton it starts from whereas the standard determinization algorithm is exponential in the worst case. Also, the resulting automaton is still part of the same inductive search space (see Section~\ref{subsection:gi-background-search-space}). 
 
-\begin{figure}
+\begin{figure}[H]
 \centering
-\scalebox{.67}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/algo-steps}}
+\scalebox{.75}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/algo-steps}}
 \caption{A typical induction step of the \textsc{QSM} algorithm\label{Fig:algo:steps}.}
 \end{figure}
 

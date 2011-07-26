@@ -18,13 +18,17 @@ Having a synthesis technique to merge and to generalize behaviors described in h
 
 \subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
 
-Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. This is equivalent to building a new hMSC reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios, typically coming from scenario queries, could be integrated in a similar way.
+Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. This is equivalent to building a new hMSC $H$ reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios $S^+_1,\ldots,S^+_n$, typically coming from scenario queries, could be integrated in a similar way. This is illustrated in Fig.~\ref{figure:multiple-hmscs}.
 
-TODO: an illustration is probably worth considering here?
+\begin{figure}\centering
+\scalebox{.70}{
+\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/multiple-hmscs}}
+\caption{Merging multiple hMSCs amounts to builds a new one that reaches finer-grained hMSCs from its initial state.\label{figure:multiple-hmscs}} 
+\end{figure}
 
 However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalizations. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
 
-Without much loss of generality therefore, we will assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows: 
+Without loss of generality therefore, we will assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows: 
 
 \begin{quote}
 \underline{Given}~a hMSC $H$ and a scenario collection $Sc = (S^+,S^-)$ consistent with each other
@@ -96,7 +100,8 @@ Not that the Blue-Fringe strategy does not require special support. The distinct
 
 \item[Merge] The merging for determinization process is often implemented assuming a tree invariant property. This property states that, when considering two states to be merged, at least one of them is the root of a tree. Such a property holds for RPNI and QSM, even when the Blue-Fringe optimization is used. It is a sufficient condition for the determinization process to be finite. 
 
-Even though it is convenient, the tree invariant property is not required, as explained in \cite{Lambeau:2008}. The main merging loop and the \texttt{Merge} function can be implemented without the tree invariant property because the recursive determinization process stops naturally on the first DFA encountered. This observation allows one to start from an arbitrary DFA and, as soon as non-determinism occurs, to reduce it. Fig.~\ref{figure:merging-for-determ-on-dfa} gives an example of such a recursive operation.
+Even though it is convenient, the tree invariant property is not required, as explained in \cite{Lambeau:2008}. The main merging loop and the \texttt{Merge} function can be implemented without the tree invariant property because the recursive determinization process stops naturally on the first DFA encountered. This observation allows one to start from an arbitrary DFA and, as soon as non-determinism occurs, to reduce it. 
+%Fig.~\ref{figure:merging-for-determ-on-dfa} gives an example of such a recursive operation.
 
 \end{description}
 
@@ -110,11 +115,11 @@ If the tree invariant property no longer holds, the \texttt{GenerateQuery} funct
 
 \end{description}
 
-\begin{figure}\centering
-\scalebox{.34}{
-\includegraphics*{src/4-inductive/images/merging-for-determ-on-dfa}}
-\caption{Recursive determinization process. States \{3\} and \{0\} of an arbitrary DFA are merged, which causes a non-determinism on letter $b$ from state \{0,3\}. The destination states \{2\} and \{4\} are subsequently merged to reduce the non-determinism.\label{figure:merging-for-determ-on-dfa}} 
-\end{figure}
+%\begin{figure}\centering
+%\scalebox{.34}{
+%\includegraphics*{src/4-inductive/images/merging-for-determ-on-dfa}}
+%\caption{Recursive determinization process. States \{3\} and \{0\} of an arbitrary DFA are merged, which causes a non-determinism on letter $b$ from state \{0,3\}. The destination states \{2\} and \{4\} are subsequently merged to reduce the non-determinism.\label{figure:merging-for-determ-on-dfa}} 
+%\end{figure}
 
 From a grammar induction point of view, the ASM algorithm can be seen as generalizing any positive regular language $\mathcal{L}^+$ under the control of a negative sample $S_-$. As such, RPNI is thus a special case where the positive language forms a sample $S_+$, that is a finite set of strings.
 
