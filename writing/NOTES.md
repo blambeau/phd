@@ -103,3 +103,6 @@
 
   * Add an illustration to union of hMSC languages in 4.5.1
 
+* Chapter 8
+
+  * Discuss L*
