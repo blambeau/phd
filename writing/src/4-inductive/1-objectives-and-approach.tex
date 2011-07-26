@@ -82,18 +82,18 @@ Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our 
 \caption{Overview of inductive LTS synthesis from MSCs.\label{image:inductive-synthesis-overview}}
 \end{figure}
 
-\noindent \textbf{The generalization step} extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a System LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the Regular Positive and Negative Inference (RPNI) algorithm and proceeds as follows \cite{Oncina:1992}.
+\noindent \textbf{The generalization step} extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a System LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the Regular Positive and Negative Inference (RPNI) algorithm \cite{Oncina:1992}; it proceeds as follows:
 
 An initial LTS $A_0$ accepting exactly the positive traces is incrementally refined as automata $A_1,\ldots,A_n$ by merging well chosen state pairs. Doing so generalizes accepted behaviors, so that the following relations hold
-\begin{align*}
+\begin{align}
 &\mathcal{L}^+(Sc) = \mathcal{L}(A_0) \\
 &\mathcal{L}(A_0) \subseteq \mathcal{L}(A_1) \subseteq \ldots \subseteq \mathcal{L}(A_n)
-\end{align*}
+\label{relation:inductive-language-refinements}
+\end{align}
 To avoid over-generalization, this process is performed under the control of the negative traces from $\mathcal{L}^-(Sc)$. Every intermediate solution $A_i$ respects the \emph{consistent system view} condition; the latter therefore provides a useful algorithm invariant:
 \begin{align}
-&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(A_i) \\
-&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset
-\label{relation:inductive-invariant}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(A_i)        \label{relation:inductive-invariant}\\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset \label{relation:inductive-invariant-II}
 \end{align}
 
 \noindent \textbf{The decomposition step} computes a LTS for each agent by projecting the System LTS onto their respective alphabet. For an agent $Ag$ the projection of the System LTS $S$ is given by:
@@ -104,9 +104,13 @@ To avoid over-generalization, this process is performed under the control of the
 
 The above formula makes use of the hiding, determinization and minimization operators on LTS discussed in Section~\ref{section:background-state-machines}.
 
-\subsubsection*{About the generalization step}
+\subsubsection*{Rationale behind the generalization step}
 
-TODO: identification in the limit
+Our synthesis requirements include ``behavior generalization'', hence our grammar induction approach. Looking at relation (\ref{relation:inductive-language-refinements}), one can question what drives the generalization process and until what end. By construction, the first automaton $A_0$ already meets the consistent system view conditions (\ref{relation:inductive-invariant}) and (\ref{relation:inductive-invariant-II}). Therefore, $A_0$ is a valid solution, yet trivial. Why not simply using it?
+
+The answer has to be found in an application of the Occam's principle, that states that ``among all models explaining the world equally well, the simplest should be preferred''. When using grammar induction this amounts to search for the \emph{smallest} automaton consistent with the positive and negative scenarios, also called the \emph{input sample}. The initial automaton $A_0$ is rarely the simplest model according to this criteria. 
+
+Looking for the smallest automaton consistent with an input sample is known to be NP-hard \cite{Gold:1978, Angluin:1978}. The RPNI algorithm offers a consistent approximated solution in polynomial time; this solution is the smallest consistent DFA when the input sample is rich enough and in particular forms a so-called \emph{characteristic sample} (see later) \cite{Oncina:1992}.
 
 \subsubsection*{A word about correctness}
 
