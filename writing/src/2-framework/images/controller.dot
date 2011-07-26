@@ -1,8 +1,9 @@
 digraph G {
     graph [pack="true" rankdir="LR" margin="0"];
-    node [fontsize=24 penwidth=6 shape="circle" style="filled" height="1.0" width="1.0" fixedsize="true" fillcolor="white"];
-    edge [fontsize=40 penwidth=6]
-    zz [height="0" width="0" fixedsize="true" label="" fillcolor="black"];
+    node [fontsize=45 fontname="Arial"
+	      penwidth=10 shape="circle" style="filled" height="1.25" width="1.25" fixedsize="true" fillcolor="white"];
+    edge [fontsize=55 fontname="Arial" penwidth=10]
+    zz [height="0.05" width="0.05" fixedsize="true" label="" fillcolor="black"];
     0 [label="0"]
     1 [label="1"]
     4 [label="4"]
