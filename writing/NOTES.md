@@ -88,10 +88,6 @@
 
 * 2011.06.30 - Sections to refactor in chapter 4
 
-  * Section 4.1.2: Requirements on the synthesis approach
-
-    * Image 4.1 cannot be read
-
   * Restate the requirement that all scenarios start in the same system state
     somewhere. This is left implicit because of scenario collections so far. 
 
@@ -100,9 +96,6 @@
   * Normalize images and verify that abbreviates are correctly introduced.
 
       \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop} respectively}.
-
-  * Is a proof (argument) needed in Section 4.4.2 (injecting goals ensures
-    system consistency)?
 
   * Section 4.5 - LTS synthesis from high-level MSCs
 
