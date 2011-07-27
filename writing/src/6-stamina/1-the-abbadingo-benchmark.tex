@@ -1,6 +1,4 @@
-\section{Objectives\label{section:stamina-background}}
-
-\subsection{Background on the Abbadingo contest\label{subsection:stamina-abbadingo}}
+\section{The Abbadingo benchmark\label{section:stamina-abbadingo}}
 
 Abbadingo is designed as a grid of 16 induction problems. A competing learner is provided a set of training strings labeled as positive or negative by an unseen DFA and is required to predict the labels that the DFA would assign to a set of testing strings. The 16 problems are classified in a grid of two difficulty dimensions. The first one is the size of the target automata, as the number of its states (64, 128, 256 or 512). The second is the sparsity of the training sample, in terms of four sparsity levels. These levels have been tuned by manually inspecting learning curves of the Trakhenbrot-Barzdin algorithm. Indeed, the latter was a state-of-the-art induction algorithm in 1997. Therefore, the problem grid has been adjusted in such a way that it solves the four problems with largest samples.
 
