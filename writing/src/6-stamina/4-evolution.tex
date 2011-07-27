@@ -6,23 +6,19 @@ In the spirit of Abbadingo, the competition website is still available online an
 
 \item The average score obtained by Blue-fringe on each cell has been published in the documentation section of the website. Also, the cell difficulty level has been made obsolete and is only kept for documentation purposes of the competition itself.
 
-\item The public hall of fame has been updated in a direction similar to what has been discussed in Section~\ref{subsection:stamina-trends-on-hardest-cells}. Indeed, instead of displaying the winners of broken cells only, each cell is annotated with the three best challengers in descending order of their average score for that cell (which is also given). 
+\item The public hall of fame has been updated. Instead of displaying the winners of broken cells only, each cell is annotated with the three best challengers in descending order of their average score for that cell, which is also given. 
 
-\item The oracle has not been modified and still gives a binary feedback only, to continue preventing hill-climbing. However, the private participant section has been updated in a way similar to the hall of fame. Now, the private submission grid displays the average score obtained on each of the cell for which she has submitted.
+\item The oracle has been modified to provide the exact score obtained when attempting to break a problem. The private submission grid of each participant displays the best score obtained on each problem for which she submitted. 
 
 \end{itemize}
 
-In both cases -- public hall of fame and private section -- having submitted for the five problems of a cell is a necessary condition for results to be taken into account. Imposing such a criteria guarantees sound comparisons between participants. It is also a strong incentive to run a technique on all problems of a given difficulty, partly overcoming the problem of having only partial results available for analyzes that we discussed earlier. These choices have been made with a double objective in mind. The first one is to provide a more transparent feedback in the form of an exact scoring mechanism helping participants to self-evaluate, without being tempted to hijack the oracle (changes in the private section). The second one is to keep a competitive aspect to the platform, which counts in the motivation for using it (implemented by the new hall of fame). 
-
-Future work along a certain number of directions is worth considering, some of them being even required to use the platform to evaluate the techniques of the present thesis:
+These choices have been made to provide a more transparent feedback while keeping a competitive aspect to the platform, which counts in the motivation for using it. Future work along a certain number of directions is worth considering:
 
 \begin{itemize}
 
-\item First, interactive inductive techniques (e.g. QSM) could hardly compete so far, due to the absence of an online oracle answering membership queries. While implementing such an oracle does not present particular difficulties (except, maybe, to guarantee scalability in presence of numerous demanding challengers), it would require generating fresh new problems to avoid interfering with the current grid and challengers already competing on it. 
+\item First, interactive inductive techniques (e.g. QSM) could hardly compete so far, due to the absence of an online oracle answering membership queries. While implementing such an oracle does not present particular difficulties, it would require generating fresh new problems to avoid interfering with the current grid and challengers already competing on it. 
 
-\item White box benchmarks -- where target machines would be disclosed together with samples -- could also be envisaged in order to help evaluating, on a common basis, inductive techniques involving domain information like fluents or mandatory merge constraints. Alternatively, sharing binaries for generating new target machines and samples could help reusing the Stamina protocol. 
-
-\item Last, the protocol used to generate samples (random walks from the machine, noisy perturbation to obtain negative strings and the presence of duplicates in the training set) is an interesting aspect of Stamina, but does not seem to have been used by participants. While it allows tackling the induction problem with statistical approaches, it also triggers a question about the splitting between training and test samples and the impact it could have on the observed frequency of use, in the training set, of each transition of the target. At the time of writing, further study of competition data is still required to answer the question.
+\item White box benchmarks, where target machines would be disclosed together with samples, could also be envisaged. This would to help evaluating inductive techniques that use domain knowledge. Alternatively, sharing binaries for generating new target machines and samples could help reusing the Stamina protocol. 
 
 \end{itemize}
 

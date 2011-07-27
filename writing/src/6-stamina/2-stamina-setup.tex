@@ -3,10 +3,10 @@
 The competition scenario chosen for Stamina is very similar to the one of Abbadingo: 
 
 \begin{quotation}
-A learner downloads a training set made of positive and negative strings, infers a model using her induction technique, uses it to label strings of a test sample and finally, submits these labels to the competition server. The latter scores the submission and provides a binary feedback, according to whether the problem is considered broken or not.
+A learner downloads a training set made of positive and negative strings and induces a model using her induction technique. The learned model is then used to label strings of a test sample and finally, these labels are submitted to the competition server. The latter scores the submission and provides a binary feedback, according to whether the problem is considered broken or not.
 \end{quotation}
 
-If the competition scenario is similar, Stamina differs from Abbadingo in that it focuses on the complexity of the learning with respect to the alphabet size, and therefore relies on an adapted generation protocol for target automata and samples. The next sections details the choices that have been made and the key differences with Abbadingo.
+While the competition scenario is similar, Stamina differs from Abbadingo in that it focuses on the complexity of the learning with respect to the alphabet size, and therefore relies on an adapted generation protocol for target automata and samples.
 
 \subsection{Competition grid}
 
@@ -34,13 +34,13 @@ As in Abbadingo, induction problems are classified in a grid. Here, the competit
 
 \item An increasing size of the alphabet forms a first difficulty dimension, ranging from 2 to 50 letters. The lower bound allows comparing results with Abbadingo on easiest problems while the upper bound is representative of behavior models found in the literature.
 
-\item Unlike Abbadingo in which the varying automaton size is a difficulty dimension (ranging from 64 to 512), Stamina only considers automata of roughly 50 states. By contrast, these automata present characteristics of behavior models in terms of the variance of their state degree, among other differences (see section~\ref{subsection:stamina-machines})
+\item Unlike Abbadingo in which the varying automaton size is a difficulty dimension (ranging from 64 to 512), Stamina only considers automata of roughly 50 states. These automata present characteristics of behavior models in terms of the variance of their state degree, among other differences (see section~\ref{subsection:stamina-machines}).
 
 \item The second difficulty dimension, the decreasing size of the training sample, is similar to Abbadingo. Nevertheless, samples in Stamina are generated ``from the machine'' by a random walk procedure, instead of randomly drawn from all possible strings (see section~\ref{subsection:stamina-samples}).
 
-\item Instead of an accuracy measure, submissions in Stamina are scored using a \emph{binary classification rate} (BCR). BCR places an equal emphasis on the accuracy of an inferred model in terms of acceptance of positive sequences and rejection of negative ones. Obtaining a BCR score of at least 99\% is required to consider a problem broken. A cell is broken if its five problems are broken by the same learner (see section~\ref{subsection:stamina-scoring})
+\item Instead of an accuracy measure, submissions in Stamina are scored using a \emph{balanced classification rate} (BCR). BCR places an equal emphasis on the accuracy of an inferred model in terms of acceptance of positive sequences and rejection of negative ones. Obtaining a BCR score of at least 99\% is required to consider a problem broken. A cell is broken if its five problems are broken by the same learner (see section~\ref{subsection:stamina-scoring})
 
-\item Unlike Abbadingo, Stamina allowed only one winner, being the first learning technique to break a hardest cell among those broken in the competition. To adjust the grid and choose cell difficulties, Blue-fringe has been scored on each problem (see section~\ref{subsection:stamina-baseline}). An implementation of this baseline algorithm is available for download.
+\item Unlike Abbadingo, Stamina allowed only one winner; the latter is the first learning technique to break a hardest cell among those broken during the competition. To adjust the grid and choose cell difficulties, Blue-fringe has been ran and scored on each problem (see section~\ref{subsection:stamina-baseline}). The adjustement consisted in ensuring that Blue-fringe almost breaks the problems of the very first cell (alphabet of 2 letters and sparsity of 100\%)\footnote{3 of the 5 problems in the cell are broken by Blue-fringe, which obtains a BCR score of 98\% on the two remaining problems} while obtaining a decent score on cells immediately adjacent. An open-source implementation of this baseline algorithm has been made available for download.
 
 \end{itemize}
 
@@ -50,13 +50,13 @@ In order to generate state machines, a quick review of software models has been 
 
 \begin{description}
 
-\item[Number of states] All state machines have approximately 50 states. Although somewhat larger than the conventional state machines identified in the literature, this is to ensure that a well-performing technique could scale to infer models for reasonably complex software systems. Also, is has been decided not to consider state machines of exactly 50 states to avoid introducing a strong bias in the benchmark. Automaton sizes range from 41 to 59 states with an uniform distribution. Note that this latter information was not disclosed during the competition.
+\item[Number of states] All state machines have approximately 50 states. Although somewhat larger than the conventional state machines identified in the literature, this is to ensure that a well-performing technique could scale to infer models for reasonably complex software systems. Also, is has been decided not to consider state machines of exactly 50 states to avoid introducing a strong bias in the benchmark. Automaton sizes actually range from 41 to 59 states. This latter information was not disclosed during the competition.
 
-\item[Accepting ratio] A roughly equal proportion of accepting and rejecting states has been chosen, a feature is shared with Abbadingo. While most software models, and LTS in particular, have all accepting states it has been decided to keep non accepting states as well. Doing so keeps our setup sufficiently close to former ones and, in particular, avoids restricting the problem to the inference of prefix-closed regular languages. As discussed in Section~\ref{section:inductive-background}, inferring prefix-closed languages looks an easier problem than general regular inference. Hence, a competition winner would be expected to perform equally well, if not better, when inferring machines with all accepting states.
+\item[Accepting ratio] A roughly equal proportion of accepting and rejecting states has been chosen, a feature shared with Abbadingo. While states of most behavior models, notably LTS, are accepting states it has been decided to keep non accepting states as well. Doing so keeps our setup sufficiently close to former ones and, in particular, avoids restricting the problem to the inference of prefix-closed regular languages.
 
 \item[Degree distribution] Following observations from the literature, state machines present an important variance of their state degree, especially on largest alphabets. Also, they may have sink accepting states, that is, states with no outgoing transition.
 
-\item[Deterministic and minimal] Following common setup of regular inference experiments, all Stamina machines are both deterministic and minimal.
+\item[Deterministic and minimal] Following a common setup of regular inference experiments, all Stamina machines are both deterministic and minimal.
 
 \end{description}
 
@@ -66,19 +66,26 @@ Training and test samples have been generated using a dedicated generation proce
 
 \begin{description}
 
-\item[Generated by the target] A dedicated algorithm has been implemented to generate positive strings by walking through the automaton. From the initial state it randomly selects outgoing transitions with an uniform distribution. When an accepting state $v$ is reached, the generation ends with a probability of $1.0/(1 + 2*outdegree(v))$. This procedure simulates an ``end of string'' transition from state $v$ with half the probability of an existing transition. The length distribution of the strings generated is approximately centered on $5 + depth(automaton)$. As in Abbadingo, this provides a good chance of reaching the deepest state of the automaton. However, no guarantee is given of having a structurally complete sample.
+\item[Generated by the target] A dedicated algorithm has been implemented to generate positive strings by walking through the automaton. From the initial state it randomly selects outgoing transitions with a uniform distribution. When an accepting state $v$ is reached, the generation ends with a probability of $1.0/(1 + 2*outdegree(v))$. This procedure simulates an ``end of string'' transition from state $v$ with half the probability of an existing transition. The length distribution of the strings generated is approximately centered on $5 + depth(automaton)$. As in Abbadingo, this provides a good chance of reaching the deepest state of the automaton. However, no guarantee is given of having a structurally complete sample.
 
-\item[Negative strings] Negative strings are generated by randomly perturbing positive strings. Three kinds of edit operation are considered: substituting, inserting, or deleting a symbol. The editing position is randomly chosen according to an uniform distribution over the string length. Substitution and insertion also use an uniform distribution over the alphabet. The number of editing operations is chosen according to a Poisson distribution (with a mean of 3) and the three editing operations have an equal change of being selected. The randomly edited string is included in the negative sample provided that it is indeed rejected by the target machine. Otherwise, it is simply discarded.
+\item[Negative strings] Negative strings are generated by randomly perturbing positive strings. Three kinds of edit operation are considered: substituting, inserting, or deleting a symbol. The editing position is randomly chosen according to a uniform distribution over the string length. Substitution and insertion also use a uniform distribution over the alphabet. The number of editing operations is chosen according to a Poisson distribution (with a mean of 3) and the three editing operations have an equal change of being selected. The randomly edited string is included in the negative sample provided that it is indeed rejected by the target machine. Otherwise, it is simply discarded.
 
 \end{description}
 
-The random walk algorithm and perturbation procedure serve as building blocks for the generation of training and test samples for each problem. Using them, a set of 20.000 strings is first sampled from the target machine. This sample contains roughly equal number of positive and negative strings and usually contains duplicates. The distinct strings of the initial sample are then equally partitioned into two sets, taking care of respecting the positive and negative balance in each one. The first set is used to generate the test sample, the second one to generate the learning sample. The test sample contains 1500 strings randomly drawn without replacement from the first set. It never contains duplicates, to avoid favoring repeated strings in the scoring metric. The official training sets are sampled from the second set with different levels of sparsity (100\%, 50\%, 25\%, 12.5\%) and usually contain duplicates, as a consequence of the random walk generation from the target machine. As a consequence of this procedure, training and test sets do never intersect.
+The random walk algorithm and perturbation procedure serve as building blocks for the generation of training and test samples for each problem. A set of 20.000 strings is first generated as described above; it contains a roughly equal number of positive and negative strings and contains duplicates. The distinct strings are then equally partitioned into two sets $S_0$ and $S_1$, taking care of respecting the positive and negative balance in each one.
+\begin{itemize}
+\item A test sample contains 1500 strings randomly drawn from $S_0$ without replacement. It never contains duplicates to avoid favoring repeated strings in the scoring metric.
+\item The official training sets are sampled from $S_1$ with different levels of sparsity (100\%, 50\%, 25\%, 12.5\%). They usually contain duplicates, as a consequence of the random walk generation from the target machine. 
+\end{itemize}
+Training and test sets do never intersect.
 
 \subsection{Submission and Scoring\label{subsection:stamina-scoring}}
 
-Solutions to Stamina problems must be submitted as binary strings to the competition server\footnote{available at http://stamina.chefbe.net}. For this, the learner is expected to produce a binary sequence of labels where, for each test string, a $1$ is added to the sequence if the string is considered to be accepted, and a $0$ otherwise. To establish the solution accuracy, the sequence is compared to a reference string representing the correct labeling of the test set by the target model. The overlap between the two binary strings is measured with the \emph{balanced classification rate (BCR)}. The harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of the inferred model in terms of the acceptance of positive sequences and the rejection of negative ones. Also, it does not require the test set to be balanced in terms of number of positive and negative sequences. 
+Solutions to Stamina problems must be submitted as binary strings to the competition server\footnote{available at http://stamina.chefbe.net}. For this, the learner is expected to produce a binary sequence of labels where, for each test string, a $1$ is added to the sequence if the string is considered to be accepted, and a $0$ otherwise. 
 
-Harmonic BCR is the harmonic mean of two factors. $Sensitivity$ is the proportion of positive matches that are predicted to be positive and $Specificity$ is the proportion of true negatives that are predicted to be negative. Conventionally, BCR is simply computed as the arithmetic mean of sensitivity and specificity, but the harmonic mean is preferred here because it favors balance between the two. So in terms of the sets of true and false positives and negatives ($TP$, $FP$, $TN$ and $FN$),
+To asses the solution accuracy, the sequence is compared to a reference string representing the correct labeling of the test set by the target model. The overlap between the two binary strings is measured with the \emph{balanced classification rate (BCR)}. The harmonic BCR measure is chosen because it places an equal emphasis on the accuracy of the inferred model in terms of the acceptance of positive sequences and the rejection of negative ones. Also, it does not require the test set to be balanced in terms of number of positive and negative sequences. 
+
+Harmonic BCR is the harmonic mean of two factors. $Sensitivity$ is the proportion of positive matches that are predicted to be positive and $Specificity$ is the proportion of true negatives that are predicted to be negative. Conventionally, BCR is simply computed as the arithmetic mean of sensitivity and specificity, but the harmonic mean is preferred here because it favors balance between the two factors. In terms of the sets of true and false positives and negatives ($TP$, $FP$, $TN$ and $FN$),
 
 $$Sensitivity=\frac{|TP|}{|TP \cup FN|}$$ 
 
@@ -86,11 +93,11 @@ $$Specificity=\frac{|TN|}{|TN \cup FP|}$$
 
 $$BCR=\frac{2*Sensitivity*Specificity}{Sensitivity + Specificity}$$
 
-As in Abbadingo, hill-climbing is made almost impossible by a binary feedback from the oracle, according to whether the problem is broken or not. For recall, a problem is considered broken if the BCR score obtained is greater than or equal to 0.99. A cell is considered broken if all of its five problems are broken. The Stamina website dedicates a private section to  each registered participant that provides visual feedback about the performance of her algorithm(s). In this section, problems and cells of the submission grid turn to green when broken.
+A problem is considered broken if the BCR score obtained is greater than or equal to 0.99. As in Abbadingo, hill-climbing is made almost impossible by a binary feedback from the oracle, according to whether the problem is broken or not. A cell is considered broken if all of its five problems are broken. The Stamina website dedicates a private section to each registered participant that provides visual feedback about the performance of her algorithm(s). In this section, problems and cells of the submission grid turn to green when broken.
 
 \subsection{Blue-fringe baseline\label{subsection:stamina-baseline}}
 
-Blue-fringe has been ran on all Stamina problems, first to adjust the grid for guaranteeing the feasibility of the competition and second, to fix the difficulty level of each cell, on which the winning criteria relies.
+Blue-fringe has been ran on all Stamina problems to adjust the grid in terms of feasibility and to fix the difficulty level of each cell.
 
 Adjusting the grid is similar in spirit to what has been done for Abbadingo. The idea is to adjust free parameters (actual sizes of the training and test sets, average length of the strings with respect to the automaton depth, and so on) in such a way that the state-of-the-art algorithm, here Blue-fringe, breaks the easiest problems. This trial-and-error process converged with three problems broken in the easiest cell (therefore not itself broken) and reasonable scores for the two remaining problems as well as those of adjacent cells.
 
@@ -112,8 +119,6 @@ The performance of the baseline is summarized in Table~\ref{table:stamina-baseli
 \caption{Average BCR of Blue-fringe in each cell; the difficulty level is shown in parenthesis.\label{table:stamina-baseline}}
 \end{table}
 
-Thanks to these scores, the difficulty level of each cell has been calibrated using the rules defined in Table~\ref{stamina:table:calibration}. If the notion of cell difficulty has been very useful for driving the competition -- the winner being the first technique to have broken a hardest cell -- it is not used anymore since the competition has evolved to an evaluation platform with more exact scoring.
-
 \begin{table}
 \begin{center}
 \begin{tabular}{c|c}
@@ -133,5 +138,8 @@ Difficulty level & Score\\
   \includegraphics*{src/6-stamina/images/bluefringe-performance}}
   \caption{Performance curves of Blue-fringe\label{stamina:image:bluefringe-performance}.}
 \end{figure}
+
+Thanks to these scores, the difficulty level of each cell has been calibrated using the rules defined in Table~\ref{stamina:table:calibration}. The notion of cell difficulty has been very useful for driving the competition, as the winner was the first technique to have broken a hardest cell. It is not used anymore since the competition has evolved to an evaluation platform with exact scoring (see Section~\ref{section:stamina-platform}).
+
 
 
