@@ -40,7 +40,7 @@ The idea behind the satisfiability part of DFASAT is to first reduce the problem
 
 The principle of reducing DFA induction to graph coloring dates back to 1997, more or less as the Abbadingo contest itself, see e.g.~\cite{Coste:1997}. It consist in coloring the states of a PTA with a minimal number of colors such that two nodes that may not merge have different colors. As explained in chapter~\ref{chapter:inductive-synthesis} two states of the PTA may not merge if their continuations are incompatible.
 
-The main drawback of such an approach is that the number of constraints quickly becomes huge for big samples. This can lead to coloring problem instances that are impractical in practice. In spite of a compact boolean encoding of the graph coloring problem and huge enhancements in SAT solving in recent years, some of the Abbadingo and Stamina problems remain intractable with this technique only. See~\cite{Heule:2010}, by the same authors as DFASAT, for details about their graph coloring and SAT translations.
+The main drawback of such an approach is that the number of constraints quickly becomes huge for big samples. This can lead to coloring problem instances that are impractical in practice. In spite of a compact Boolean encoding of the graph coloring problem and huge enhancements in SAT solving in recent years, some of the Abbadingo and Stamina problems remain intractable with this technique only. See~\cite{Heule:2010}, by the same authors as DFASAT, for details about their graph coloring and SAT translations.
 
 \subsubsection*{Mixing state-merging and SAT solving}
 

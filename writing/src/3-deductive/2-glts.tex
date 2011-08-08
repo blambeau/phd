@@ -1,6 +1,6 @@
 \section{Introducing guarded transition systems\label{section:deductive-glts}}
 
-This section introduces guarded LTS (g-LTS) as an intermediate formalism between guarded hMSCs and LTS. It provides a convenient milestone on the way from a guarded hMSC to the corresponding LTS, in particular, for determining the set of traces accepted by the guarded hMSC. 
+This section introduces guarded LTS (g-LTS) as an intermediate formalism between guarded hMSCs and LTS. This formalism provides a convenient milestone on the way from a guarded hMSC to the corresponding LTS, in particular, for determining the set of traces accepted by the guarded hMSC. 
 
 \begin{definition}[Guarded LTS]
 \noindent A guarded LTS is defined as a structure $(Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ where 
@@ -8,17 +8,18 @@ This section introduces guarded LTS (g-LTS) as an intermediate formalism between
 \item $Q$ is a finite set of states,
 \item $\Sigma$ is a set of event labels, 
 \item $\Phi$ is a set of fluents defined on $\Sigma$,
-\item $\delta$ is a transition relation $Q \times \Sigma_{\tau}\cup\mathcal{P}(2^\Phi) \times Q$,
+\item $\delta$ is a transition relation $Q \times L \times Q$,
 \item $q_{0} \in Q$ is the initial state,
 \item $C_{0} \in \mathcal{P}(2^\Phi)$ is an initial condition. 
 \end{itemize}
+where the set of transition labels is defined as $L = \Sigma \cup \{\tau\} \cup \mathcal{P}(2^\Phi)$ 
 \end{definition}
 
-In a guarded LTS, transitions are labeled either by a guard or by an event. Non-observable $\tau$-transitions are also allowed. 
+In a guarded LTS, transitions are labeled either by a guard, an event, or $\tau$. As with LTS $\tau$-transitions are non-observable from the environment (see Section \ref{section:background-state-machines}). In the sequel, $\Sigma_{\tau}$ will denote $\Sigma \cup \{\tau\}$.
 
-A guard is a propositional formula over fluents in $\Phi$. The set of such formula is denoted by $\mathcal{P}(2^\Phi)$, as in Section \ref{section:background-fluents}. Intuitively, the guard must be evaluated to true for its transition to be activated. This is made precise is the next section.
+A guard is a propositional formula over fluents in $\Phi$. The set of such formula is denoted by $\mathcal{P}(2^\Phi)$, as in Section \ref{section:background-fluents}. Intuitively, the guard must be evaluated to true for its transition to be activated. This is made more precise is the next section.
 
-The condition $C_0$ plays the same role as in guarded hMSCs. It is a boolean formula that constraints the acceptable initial values of fluents. 
+The condition $C_0$ plays the same role as in guarded hMSCs. It is a Boolean formula that constrains the acceptable initial values of fluents. 
 
 \subsection{Trace semantics\label{subsection:glts-trace-semantics}} 
 
@@ -27,15 +28,15 @@ The semantics of g-LTS is defined in terms of event traces involving no guards a
 \begin{definition}[g-LTS execution]
 An \emph{execution} of a g-LTS $G = (Q,\Sigma,\Phi,\\\delta,q_{0},C_{0})$ from $q_0$ is a pair $(Init, \textless l_0, \ldots,l_n\textgreater)$, where 
 \begin{itemize}
-\item $Init \in 2^\Phi$ is an initial fluent value assignment, mapping every fluent in $\Phi$ to true or false,
-\item $\textless l_0,\ldots,l_n \textgreater$ is an finite sequence of labels $l_i \in \Sigma_{\tau}\cup\mathcal{P}(2^\Phi)$, some of them being event labels (including $\tau$) and others being guards.
+\item $Init \in 2^\Phi$ is an initial fluent value assignment mapping every fluent in $\Phi$ to true or false,
+\item $\textless l_0,\ldots,l_n \textgreater$ is an finite sequence of labels $l_i \in \Sigma_{\tau}\cup\mathcal{P}(2^\Phi)$, each of them being either an event label, $\tau$, or a guard.
 \end{itemize}
 \end{definition}
 
-Only certain executions are considered valid from the initial state of the g-LTS. This is captured by the following definition:
+Only certain executions are to be considered valid from the initial state of the g-LTS. This is captured by the following definition.
 
 \begin{definition}[Valid g-LTS execution]
-An execution $S = (Init,\textless l_0,\ldots,l_n\textgreater)$ of a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ is \emph{valid} from its initial state $q_0$ iif the following \emph{acceptance conditions} are met for every $i$ such that $0 \leqslant i < n$:\\
+An execution $S = (Init,\textless l_0,\ldots,l_n\textgreater)$ of a g-LTS $(Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ is \emph{valid} from its initial state $q_0$ iff the following \emph{acceptance conditions} are met for every $i$ $(0 \leqslant i < n)$:\\
 \vspace{-0.8cm}
 \begin{tabbing}
 \indent trace inclusion:~~~~~~~\= $\exists q_{i+1} \in Q$ such that $(q_i,l_i,q_{i+1}) \in \delta$\\
@@ -46,53 +47,73 @@ An execution $S = (Init,\textless l_0,\ldots,l_n\textgreater)$ of a g-LTS $G = (
 where $S_i$ is the fluent value assignment after the i-th event in the trace, with $S_0 = Init$.
 \end{definition}
 
-\noindent A few remarks are in order here about the three acceptance conditions:
 \begin{description}
-\item[trace inclusion] states that the label sequence denotes an existing path in the automaton. Note that the condition $(q_i,l_i,q_{i+1}) \in \delta$ is such that guard labels are not considered syntactically, but semantically. This is because guards are mathematically defined as sets of fluent assignments, that is, as elements of $\mathcal{P}(2^\Phi)$.
-\item[admissible start] states that the initial fluent value assignment must meet the initial condition $C_0$.
-\item[guard satisfaction] ensures that all guards are met along the sequence. The fluent value assignment $S_i$ follows from fluent definitions, as explained in Section \ref{subsection:background-fluents-single-traces}. The presence of guards in the label sequence can simply be ignored.
+\item[The trace inclusion condition] states that the label sequence must denote an existing path in the automaton.
+\item[The admissible start condition] states that the initial fluent value assignment must meet the initial condition $C_0$.
+\item[The guard satisfaction condition] ensures that all guards are met along the sequence. The fluent value assignment $S_i$ is determined by fluent definitions, as explained in Section \ref{subsection:background-fluents-single-traces}. 
 \end{description}
 
-The trace semantics of a g-LTS is defined as a set of event traces. Roughly, it consists of all valid executions where $\tau$ labels as well as guards have been removed. This is precisely captured by the the following definition.
+The trace semantics of a g-LTS is defined in terms of sets of event traces. Roughly, it consists of all valid executions where $\tau$ labels as well as guards were removed. This is precisely captured by the the following definitions.
 
-\begin{definition}[g-LTS trace semantics]
+\begin{definition}[g-LTS trace]
+A g-LTS trace is a pair $(Init,\textless e_0,\ldots,e_n\textgreater)$ where 
+\begin{itemize}
+\item $Init \in 2^\Phi$ is an initial fluent value assignment mapping every fluent in $\Phi$ to true or false,
+\item $\textless e_0,\ldots,e_n \textgreater$ is an finite sequence of event labels $e_i \in \Sigma$.
+\end{itemize}
+\end{definition}
+
+Unlike an execution, a g-LTS trace only contains event labels, but no $\tau$ nor guards. Such trace still includes an fluent assignment $Init$ that associates a truth-value to each fluent for the initial state.
+
+\begin{definition}[Valid g-LTS traces]
 The set of traces accepted by a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ is defined as:
 \begin{align*}
-\mathcal{L}(G) &= \{~w|_{\Sigma} \mid \exists~Init \in 2^\Phi~s.t.~(Init,w)~is~a~valid~execution~for~G~\}
+\{~(Init, s) \mid \exists~(Init, w) \mbox{~a valid execution of $G$ such that~} s = w|_{\Sigma}~\}
+\end{align*}
+where $w|_{\Sigma}$ denotes the projection of $w$ over the alphabet $\Sigma$ (see Section \ref{section:background-state-machines}).
+\end{definition}
+
+In other words, the set of valid g-LTS traces corresponds to valid executions for which $\tau$ and guards have been abstracted away. The traces above are g-LTS traces, that is, they explicitely state an initial fluent assignment. The set of pure event traces can be defined through existential quatification over such a fluent assignment:
+
+\begin{definition}[Trace semantics of g-LTS]
+The set of pure event traces accepted by a g-LTS $G$ is defined as:
+\begin{align*}
+\{~ s \mid \exists~Init \mbox{~such that~} (Init,s) \mbox{~is a valid g-LTS trace for G}~\}
 \end{align*}
 \end{definition}
 
-Section \ref{subsection:from-glts-to-lts} provides a composition algorithm to capture this set of traces through a pure LTS, that is, a LTS with event labels only. It relies on g-LTS variants of the LTS hiding and composition operators defined in Section \ref{section:background-state-machines}. These two operators are introduced in the next section.
+In the definitions above, g-LTS traces are used as a convenient milestone between g-LTS executions and pure event traces. Indeed, the explicit initial fluent assignment $Init$ proves useful for user feedback when model-checking g-hMSC and g-LTS (see Section \ref{section:tool-model-checker}). 
 
-\subsection{Hiding and composition in presence of guards}
+Section \ref{subsection:from-glts-to-lts} provides a composition algorithm for capturing valid g-LTS traces through LTS. It relies on g-LTS variants of the LTS hiding and composition operators defined in Section \ref{section:background-state-machines}. These two operators are introduced in the next section.
 
-The hiding operator on g-LTSs is very similar to the one on LTSs, defined in Section \ref{subsection:lts-hiding}. 
+\subsection{Hiding and composition in the presence of guards}
+
+The hiding operator on g-LTS is very similar to the one on LTS, defined in Section \ref{subsection:lts-hiding}. 
 
 \begin{definition}[g-LTS hiding]
-The \emph{hiding} of a set of labels $I$ in a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ defines the g-LTS
+The \emph{hiding} of a set of labels $L$ in a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ yields the g-LTS
 \begin{equation*}
-G \setminus I = (Q,\Sigma \setminus I,\Phi,\delta_{hidden},q_{0},C_0)
+G \setminus L = (Q,\Sigma \setminus L,\Phi,\delta_{hidden},q_{0},C_0)
 \end{equation*}
 \noindent where $\delta_{hidden}$ is the smallest relation satisfying the following rules:
 \begin{center}
 \begin{tabular}{cc}
-$\frac{\displaystyle G \stackrel{l}{\longrightarrow} G'}{\displaystyle G \setminus I \stackrel{l}{\longrightarrow} G' \setminus I}~~l \notin I$ & 
-$\frac{\displaystyle G \stackrel{l}{\longrightarrow} G'}{\displaystyle G \setminus I \stackrel{\tau}{\longrightarrow} G' \setminus I}~~l \in I$ \\
+$\frac{\displaystyle G \stackrel{l}{\longrightarrow} G'}{\displaystyle G \setminus L \stackrel{l}{\longrightarrow} G' \setminus L}~~l \notin L$ & 
+$\frac{\displaystyle G \stackrel{l}{\longrightarrow} G'}{\displaystyle G \setminus L \stackrel{\tau}{\longrightarrow} G' \setminus L}~~l \in L$ \\
 \end{tabular}
 \end{center}
+where $G \stackrel{l}{\longrightarrow} H$ denotes that the g-LTS $G$ may transits into a g-LTS $H$ through a transition labeled $l$ from its initial state (see Section~\ref{section:background-state-machines}). 
 \end{definition}
 
-As with LTSs, the hiding operator makes a set of labels invisible by replacing them by $\tau$ transitions. Note that the definition above allows hiding both guards and events. 
+As with LTS, the hiding operator makes a set of labels invisible by replacing them by $\tau$ transitions. Note that the definition here allows hiding both guards and events. 
 
-The special case where $I = \mathcal{P}(2^\Phi)$ yields a g-LTS with no guard remaining. In this case, we will consider that the hiding operator actually returns a LTS defined as defined below, where $\delta_{hidden}$ is as given above:
+The special case where $L = \mathcal{P}(2^\Phi)$ yields a g-LTS with no guard remaining. We will then consider that the hiding operator actually returns the LTS defined as follows:
 \begin{equation*}
 G \setminus \mathcal{P}(2^\Phi) = (Q,\Sigma,\delta_{hidden},q_0)
 \end{equation*}
 
-\noindent We also define a composition operator on g-LTS, as follows:
-
 \begin{definition}[g-LTS composition]
-Let $G = (Q_1,\Sigma_1,\Phi_1,\delta_1,q_{1},C_{1})$ and $H = (Q_2,\Sigma_2,\Phi_2,\delta_2,q_{2},C_{2})$ denote two g-LTS. Their \emph{composition} is another g-LTS 
+Let $G = (Q_1,\Sigma_1,\Phi_1,\delta_1,q_{1},C_{1})$ and $H = (Q_2,\Sigma_2,\Phi_2,\delta_2,q_{2},C_{2})$ denote two g-LTS. Their \emph{composition} is another g-LTS, namely,
 \begin{equation*}
 G \parallel H = (S_1 \times S_2,\Sigma_1\cup\Sigma_2,\Phi_1\cup\Phi_2,\delta,(q_1,q_2),C_1 \wedge C_2)
 \end{equation*}
@@ -110,6 +131,4 @@ $\frac{\displaystyle G \stackrel{g}{\longrightarrow} G',~H \stackrel{h}{\longrig
 \end{tabular}
 \end{definition}
 
-The first three rules are the same as with LTS composition (see Section \ref{subsection:lts-composition}); they explicitly exclude guards here. The last rule states that the two LTSs must transit on guards together, provided that their conjunction is satisfiable. The resulting transition is then labeled with this conjunction.
-
-Note that this composition operator is not intended to provide a counterpart to LTS composition for agents whose behaviors would be modeled with g-LTSs. Among others, forcing agents to synchronize together on guards is arbitrary. It is mainly introduced here for the specific case of the composition algorithm given in the next section.
+The first three rules are the same as the LTS composition ones (see Section \ref{subsection:lts-composition}); here, they explicitly exclude guards. The last rule states that the two LTSs must transit on guards together, provided that the guard conjunction is satisfiable. The resulting transition is then labeled with this conjunction.

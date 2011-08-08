@@ -11,7 +11,7 @@ Task nodes in a g-hMSC may be refined either by a MSC or by a finer-grained g-hM
 
 A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks ars starting and terminating. Automated process enactement typically provides such support through agent work lists, reminders sent to them, and so on. 
 
-If such synchronization is kept implicit in the process model, it is convenient to associate with a task special events when we will reason in terms of the traces that the g-hMSC accepts (see Chapter \ref{chapter:deductive}). For a task $T$ such events are denoted by $T_{start}$ and $T_{end}$, respectively; they denote \emph{broadcasting} interactions, which means that all agents are supposed to monitor them. 
+Such synchronization is kept implicit in the process model. However, it is convenient to associate with a task special events when we will reason in terms of the traces that the g-hMSC accepts (see Chapter \ref{chapter:deductive}). For a task $T$ such events are denoted by $T_{start}$ and $T_{end}$, respectively; they denote \emph{broadcasting} interactions, which means that all agents are supposed to monitor them. 
 
 \item[A decision node] states specific conditions for the tasks along outgoing branches to be performed. Each outgoing branch is labeled by a Boolean expression on fluents, called guard. A guard must be evaluated to true for the corresponding branch to be followed.
 
