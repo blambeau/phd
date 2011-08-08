@@ -54,29 +54,18 @@ In addition, such modeling language should support stakeholders and analysts in 
 
 Formal modeling approaches help meeting the requirements above. The semantics of a formal modeling language provides precise rules of interpretation that allow many of the problems with natural language to be overcome. Formal specifications may also be manipulated by automated tools for a wide variety of purposes. Among them, model \emph{analysis} and model \emph{synthesis} are intertwined activities that help reaching quality models, mostly along completeness, consistency  and precision.
 
-\begin{description}
-
-\item[Model analysis] may be done at surface level, e.g. by query-based checks on model \cite{VanLamsweerde:2009}, or more deeply according to different types of approaches, such as model-checking \cite{Clarke:1986, Queille:1982}. For example, model analysis may be used:
-
-\begin{itemize}
-\item to detect inconsistencies between different system views;
-\item to complete system descriptions, using examples and counter-example returned by queries and checks to trigger new model construction;
-\item to gain modeling precision and accuracy by incrementally refining models as the result of analysis feedback;
-\end{itemize}
-
-\item[Model synthesis] helps creating and completing models thanks to multiple sources of knowledge. Among others, model synthesis may be used:
-
-\begin{itemize}
-\item to complete a multi-view description by synthesizing missing models or completing existing ones;
-\item to define the operational semantics of high-level models through their rewriting as lower-level ones;
-\item to make analyses available at a high-level of system description that were available at those lower-levels;
-\end{itemize}
-
-\end{description}
-
-In practice, the boundaries between model synthesis and model analysis are a bit fuzzy. As stated above, model synthesis helps making model analysis available; on the other hand, feedback of analyses may actually yield models and can thus be seen as a kind of model synthesis. Be that as it may, this thesis investigates model synthesis more specifically\footnote{its companion by Christophe Damas \cite{Damas:2011} investigates model analysis} by reporting research efforts along two particular model synthesis axes.
+This thesis investigates model synthesis more specifically, its companion by Christophe Damas \cite{Damas:2011} investigates model analysis.
 
 \section{Model synthesis along two axes}
+
+Model synthesis may be conducted along two main axes that differ in terms of the underlying objectives:
+
+\begin{itemize}
+\item on one side, model synthesis can be used to complete a multi-view description by synthesizing missing models or completing existing ones;
+\item on the other side, model synthesis can be used to define an operational semantics for high-level models through lower-level ones; this also allows making analysis such as model-checking available to high-level models.
+\end{itemize}
+
+This thesis investigates model synthesis more specifically\footnote{its companion by Christophe Damas \cite{Damas:2011} investigates model analysis} by reporting research efforts along two particular model synthesis axes.
 
 \subsection{Top-down synthesis for semantics and analysis}
 
