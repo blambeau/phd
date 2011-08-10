@@ -1,0 +1,23 @@
+\section{Contributions\label{section:conclusion-contributions}}
+
+Contributions along the first axe of model synthesis follows from our work on guarded hMSC, a process modeling language proposed in the companion thesis by Christophe Damas \cite{Damas:2011}:
+
+\begin{itemize}
+
+\item This thesis has defined a formal semantics for guarded hMSC. This semantics is defined through the introduction of guarded LTS, a kind of labeled transition systems allowing events and guards on transitions. A declarative trace semantics is defined for guarded LTS.
+
+\item A synthesis algorithm has been proposed that operationalizes the semantics of guarded hMSC and guarded LTS in terms of pure LTS. Among others, this semantics makes guarded models amenable to trace-based model checking, requiring only a few adaptations of existing compositional techniques.
+
+\end{itemize}
+
+Contributions along the second axe, i.e. model synthesis as a support for multi-view modeling, are:
+
+\begin{itemize}
+
+\item An interactive procedure for synthesizing LTS agent state machines, from positive and negative MSC scenarios as well as their flowcharting in high-level MSCs. This procedure uses grammar induction for generalizing behaviors and may be guided by an end-user who classifies additional scenarios as positive or negative examples of system behaviors.
+
+\item A technique to constrain and prune the search space of inductive LTS synthesis by incorporating various sources of knowledge about the target system. This technique is instantiated to take into account fluent definitions, legacy components, goals and domain properties. This guarantees the consistency of the synthesized state machines with other models, notably goals. 
+
+\end{itemize}
+
+Both contributions are supported by libraries and tools, available under open-source licences. Techniques and tools have been evaluated on typical case studies and synthetic data. In the latter case, an novel evaluation protocol for inductive model synthesis has been proposed and ran as a formal competition.

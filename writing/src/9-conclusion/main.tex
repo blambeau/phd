@@ -1,1 +1,40 @@
 \chapter{Conclusion\label{chapter:conclusion}}
+
+Models are increasingly recognized as an effective means for elaborating requirements, exploring designs of software systems, analyzing and setting up work processes, and so on. Models help abstracting from multiple details in order to focus on key system aspects.
+
+This abstraction process naturally leads to capture complex systems with multiple models. Each of them focuses on particular facets of the system, i.e. its intentional, structural, operational and behavioral dimensions. For example, scenarios illustrate interactions between agents forming the system whereas goals make the underlying objectives precise.
+
+If building software systems is known to be an difficult task, one can hardly argue that building quality models for them is easier.  To play a significant role, models should adequately represent the essence of the target system; they should be complete enough to capture all its pertinent facets; models should also be precise when taken in isolation; they should be consistent with each other in multi-view modeling; and so on. Adequate modeling languages, tools and techniques are therefore required to help building them.
+
+Albeit intertwined, two particular activities can be formaly supported: model \emph{analysis} and model \emph{synthesis}. Model analysis mostly aims at querying and verifying models against various kinds of properties; this typically involves techniques such as model checking. Model synthesis aims at producing models for various source of knowledge, typically other models.
+
+This thesis has investigated model synthesis techniques more particularly, that can be classified along two main underlying objectives:
+
+\begin{itemize}
+
+\item Model synthesis may be used for defining the operational semantics of high-level models, in terms of low-level ones. This kind of model synthesis is also motivated by the wish to make high-level models amenable to analysis, through techniques available on lower-level models.
+
+For example the thesis defines an operational semantics for guarded high-level Message Sequence Charts (g-hMSC), the process modeling language used in \cite{Damas:2011}. This semantics is defined in terms of labeled transition systems, through a compositional synthesis algorithm. This allows using a slight adaptation of the technique from \cite{Giannakopoulou:2003} to model check g-hMSC processes.
+
+\item Model synthesis also proves useful for producing missing models in multi-view descriptions, or completing existing ones. The idea here is to use the inherent overlap of multi-model system descriptions to semi-automatically produce or complete models from various sources of knowledge.
+
+For example, the thesis shows how agent state machines can be interactively synthesized from positive and negative scenarios, under the control of goals and domain properties. This technique reuses and extends grammar induction algorithms from \cite{Oncina:1992, Lang:1998}.
+
+\end{itemize}
+
+Note that, in addition to persuing different goals, these two uses of model synthesis differ in important ways.
+
+\begin{itemize}
+
+\item Semantic-driven synthesis is derivative by nature. In contrast, the completion of multi-view system descriptions benefits from inductive synthesis processes such as grammar induction or inductive logic programming.
+
+\item When used for triggering analyses, produced models have a short lifetime, generally limited to the analysis itself. Models in multi-view descriptions have a different lifecycle as they are often kept as software documentation or for requirements traceability. 
+
+\item In the first case, models are generally kept hidden from the user who has a passive role in the generation process. In the second case, models must generally be validated by the end-user. The latter may also play an active role in the synthesis process, such as the oracle who classifies scenarios as positive of negative system behaviors.
+
+\end{itemize}
+
+We concludes this thesis with two sections. Section \ref{section:conclusion-contributions} summarizes our contributions to model synthesis along the two axes discussed above. Section \ref{section:conclusion-limitations} then discusses limitations and possible future directions. 
+
+\input{src/9-conclusion/1-contributions}
+\input{src/9-conclusion/2-limitations}
