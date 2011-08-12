@@ -1,1 +1,38 @@
-\section{Limitations and future directions\label{section:conclusion-limitations}}
+\section{Limitations and perspectives\label{section:conclusion-limitations}}
+
+As formally defined in Chapter \ref{chapter:framework}, our multi-view modeling framework raises a certain number of issues in terms of expressiveness of the models involved:
+
+\begin{itemize}
+
+\item Labeled transition systems do not distinguish between input and output events. Such distinction may be necessary for specific analyses, such as implied scenario detection \cite{Letier:2005b}. This could be addressed either by considering the use of input-output automata \cite{Lynch:1987} or explicitly introducing models for capturing the structural system dimension \cite{Jackson:1995, Magee:1995}.
+
+\item Considering any prefix of an accepted trace as an accepted trace might appear arbitrary. While keeping our framework simple to use, it also slightly limits the class of systems that can be captured with our behavior models. Classical automata could be envisaged here as they distinguish between accepting and non-accepting states. However, enriching the scenario language would be necessary as well. This could lead to an unwanted sophistication of a modeling language used by end-users.
+
+\item Our framework does not distinguish between successful and unsuccessful system executions. Among others, this does not allow reasoning in terms of deadlocks, an important aspect when analyzing distributed systems. Labeled transition systems can easily be extended to support this, see e.g. \cite{Uchitel:2003}. Here as well, enriching scenario models would be necessary to benefit of deadlock analysis in multi-view modeling.
+
+\end{itemize}
+
+About the semantics of guarded hMSC, synthesis algorithms and the model-checker:
+
+\begin{itemize}
+
+\item The expressiveness of guarded hMSC as a process language is rather limited. In particular, guards are limited to Boolean variables such as fluents (\emph{tracking} variables are also introduced in \cite{Damas:2011}, but they are Boolean variables as well). Higher-level modeling abstractions could possibly be defined and translated to our trace semantics, such as \emph{counters} or \emph{resources}. In our experience however, the LTS trace semantics defined in the thesis actually limits the kind of abstractions that can be possibly translated. 
+
+\item When a safety property is violated by a process, our model checker returns a counter-example as a pure event-trace. Works remains to be done so as to provide an interpretation of such counter-example on the process model itself. 
+
+\end{itemize}
+
+About our inductive LTS synthesis technique and related grammar induction contributions:
+
+\begin{itemize}
+
+\item When using the interactive feature of QSM, an important open question is the robustness to possible misclassification of scenarios queries by the end-user. Traditional ways to deal with noisy inputs include probabilistic learning methods, which are not necessary relevant here. The availability of domain knowledge could help detecting and/or correcting such mistakes.
+
+\item QSM also raises an issue about the number of scenario submitted for classification by the end-user. As illustrated in experiments, additional system knowledge such as fluents and goals helps reducing the number of questions to be rejected. However, the number of accepted scenarios does not similarly reduce. This might lead to usability issues for large systems.
+
+\item The projection of the synthesized LTS on local agents is known to possibly introduce additional behaviors, the so-called implied scenarios. Negative implied scenarios, i.e. undesirable system behaviors, may hurt multi-model consistency such as violating safety goals. Refactoring techniques to eliminate such implied scenarios still need to be developed.
+
+\item The ASM and ASM$^*$ algorithms raise theoretical issues about induction convergence. Indeed, inferring from positive and negative automata no longer fits exactly in the identification in the limit framework. The definition of a characteristic sample would
+need to be adapted as well as the experimental protocol.
+
+\end{itemize}
