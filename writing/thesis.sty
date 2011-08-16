@@ -7,6 +7,7 @@
 \usepackage{pdflscape}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{setspace} % \singlespacing, \onehalfspacing, and \doublespacing
 \usepackage{enumerate}
 
@@ -220,8 +221,9 @@
 %
 % For theorems and corollaries.
 %
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\numberwithin{equation}{chapter}
 
 \usepackage{sectsty}
 \allsectionsfont{\usefont{OT1}{phv}{bc}{n}\selectfont}
