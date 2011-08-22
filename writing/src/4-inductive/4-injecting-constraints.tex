@@ -1,10 +1,19 @@
-\section{Injecting constraints for multi-view consistency\label{section:inductive-mutliview-consistency}}
+\section{Using constraints for multi-view consistency\label{section:inductive-mutliview-consistency}}
 
-The interactive QSM algorithm described in section~\ref{section:lts-induction-from-mscs} always provides a System LTS consistent with the available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. The latter strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the accepting states and the error states, respectively. All states belonging to the same class are not necessarily merged in the final solution; however, the \texttt{Compatible} function guarantees that only states belonging to the same class \emph{can} be merged.
+The interactive QSM algorithm described in Section~\ref{section:lts-induction-from-mscs} provides a system LTS consistent with all available positive and negative scenarios. The Blue-Fringe strategy can also be applied to reduce the number of additional scenarios submitted to the end-user. The latter strategy relies on two equivalence classes partitioning the states of an augmented PTA. These classes correspond to the accepting states and the error states, respectively. All states belonging to the same class are not necessarily merged in the final solution; however, the \texttt{Compatible} function guarantees that only states belonging to the same class \emph{can} be merged.
 
-This approach can be extended to achieve multi-view consistency by incorporating various sources of information. This information refines the equivalence partition and further constrains the compatible merging operations. Section \ref{subsection:induction-pruning-with-domain-knowledge} shows how to incorporate domain knowledge such as fluent definitions. Section \ref{subsection:induction-pruning-with-goals} shows how to inject goals. Injecting knowledge-based constraints has many advantages: it ensures strong consistency of the System LTS with other views; it reduces the number of scenario queries in the interactive setting; and it speeds up the search.
+This approach can be extended to achieve multi-view consistency by incorporating various sources of information. Such information refines the equivalence partition and further constrains the compatible merging operations. Injecting knowledge-based constraints has many advantages: 
+\begin{itemize}
+\item it ensures strong consistency of the system LTS with other views,
+\item it reduces the number of scenario queries in the interactive setting,
+\item it speeds up the search.
+\end{itemize}
 
-The optimization techniques detailed hereafter are based on various equivalence relations on system states. We use the term equivalence relation here in its usual mathematical sense, that is, a symmetric, reflexive, and transitive binary relation over states. The general principle underlying our techniques is the following:
+Section \ref{subsection:induction-pruning-with-domain-knowledge} shows how to incorporate domain knowledge such as fluent definitions. Section \ref{subsection:induction-pruning-with-goals} shows how goals can be used to constrain the generalization. 
+
+The optimization techniques detailed hereafter are based on various equivalence relations over system states. The term \emph{equivalence relation} is used here in its usual mathematical sense, namely, a symmetric, reflexive, and transitive binary relation over states. 
+
+The general principle underlying our techniques is the following:
 \begin{quote}
 \emph{Two states will be considered for merging if they agree according to all considered equivalence relations.}
 \end{quote}
@@ -14,22 +23,31 @@ The equivalence relations considered in the following sections are all invariant
 
 \subsection{Injecting domain knowledge\label{subsection:induction-pruning-with-domain-knowledge}}
 
-The domain knowledge used to constrain state merging comes from multiple sources: fluent definitions, knowledge about components in the environment of the software-to-be, and specifications of domain properties. We discuss these successively.
+The domain knowledge used to constrain state merging comes from multiple sources: 
+\begin{itemize}
+\item fluent definitions, 
+\item knowledge about components in the environment of the software-to-be, 
+\item specifications of domain properties.
+\end{itemize}
+
+We discuss them successively.
 
 %%
 
 \subsubsection*{Propagating fluents}
 
-Fluent definitions provide simple and natural domain descriptions to constrain induction. For example, the definition
-
+Fluent definitions provide simple and easy-to-provide domain descriptions to constrain induction. For example, the definition
 \begin{center}
 fluent $DoorsClosed = \textless \{$close doors$\}, \newline
  \{$open doors, emergency open$\} \textgreater $ initially $true$ \\
 \end{center}
+describes train door states as being either closed ($DoorsClosed = true$) or open ($DoorsClosed = false$); it also states which event is responsible for which state change. 
 
-\noindent describes train door states as being either closed ($DoorsClosed = true$) or open ($DoorsClosed = false$); it also states which event is responsible for which state change. Such descriptions can be effectively used to constrain the induction process so that the synthesized System LTS conforms to them. The idea is to compute the value of every fluent at each PTA state by symbolic execution (see Section~\ref{section:background-fluents}). 
+Such descriptions can be effectively used to constrain the induction process so that the synthesized System LTS conforms to them. The idea is to decorate each state of the PTA with the value of every fluent. This can be done using a symbolic execution algorithm \cite{Damas:2006, Damas:2011} (see Section~\ref{section:background-fluents}).
 
-The pruning rule for constraining the induction process is here to \emph{avoid merging inconsistent states} according to these decorations. The specific equivalence relation is thus the set of state pairs where both states have the same fluent value assignment. The decoration of the merged state is simply inherited from the states being merged.
+The pruning rule for constraining the induction process is here to \emph{avoid merging inconsistent states} according to these decorations. 
+
+The specific equivalence relation is thus the set of state pairs where both states have the same fluent value assignment. The decoration of the merged state is simply inherited from the states being merged.
 \begin{quote}
 \emph{Two states will be considered for merging if they have the same value for every fluent.}
 \end{quote}
@@ -39,14 +57,14 @@ Fig.~\ref{dc-augmented-pta} shows the result of propagating the values of the fl
 \begin{figure}
 \centering
 \scalebox{.33}{\includegraphics*{src/4-inductive/images/dc-augmented-pta}}
-\caption{Propagating fluents along the PTA to prune inductive search space\label{dc-augmented-pta}; DC stands for \emph{DoorsClosed}.}
+\caption{Propagating fluents along the PTA to prune the inductive search space\label{dc-augmented-pta} (DC stands for \emph{DoorsClosed})}
 \end{figure}
 
 %%
 
 \subsubsection*{Unfolding models of external components}
 
-Quite often the components being modeled need to interact with other components in their environment - \textit{e.g.}, legacy components in a bigger existing system, foreign components in an open system, etc. In such cases the behavior of external components is generally known - typically, through some behavioral model \cite{Hall:2004}. Here we assume that external components are known by their LTS model. 
+Quite often the components being modeled need to interact with other components in their environment - \textit{e.g.}, legacy components in a bigger existing system, foreign components in an open system, etc. In such cases the behavior of external components is generally known - typically, through some behavioral model \cite{Hall:2004}. External components are assumed here to be known by their LTS model. 
 
 For example, Fig.~\ref{Fig.:alarm-sensor} shows the LTS for a legacy alarm sensor in our train system. When the alarm button is pressed by a passenger, this component propagates a corresponding signal to the train controller. 
 
@@ -56,14 +74,14 @@ For example, Fig.~\ref{Fig.:alarm-sensor} shows the LTS for a legacy alarm senso
 \caption{LTS model for an alarm sensor\label{Fig.:alarm-sensor}.}
 \end{figure}
 
-A LTS model of an external component can constrain the induction process so that the synthesized system LTS conforms to it. The idea is to decorate the PTA with states of the external LTS by unfolding the latter on the PTA. Such decoration is performed by jointly visiting the PTA and the external LTS; the latter synchronizes on shared events and stays in its current state on other events.
+A LTS model of an external component can constrain the induction process so that the synthesized system LTS conforms to it. The idea is to decorate the PTA with states of the external LTS by unfolding the latter onto the PTA. Such decoration is performed by jointly visiting the PTA and the external LTS; the latter synchronizes on shared events and remains in its current state on other events.
 
 Fig.~\ref{Fig.:alarm-unfolded-pta} shows the result of unfolding the alarm sensor LTS from Fig.~\ref{Fig.:alarm-sensor} on the augmented PTA built from the scenarios described in Fig.~\ref{Fig:init:scen}. Each state of the PTA is labeled with the number of the corresponding state in the alarm sensor LTS. 
 
 \begin{figure}
 \centering
 \scalebox{.35}{\includegraphics*{src/4-inductive/images/alarm-unfolded-pta}}
-\caption{Unfolding the alarm sensor LTS on the PTA\label{Fig.:alarm-unfolded-pta}.}
+\caption{Unfolding the alarm sensor LTS onto the PTA\label{Fig.:alarm-unfolded-pta}.}
 \end{figure}
 
 The pruning rule for constraining the induction process is now to \emph{avoid merging states decorated with distinct states of the external component}. The specific equivalence relation used here is the set of states where both states have the same external LTS state. 
@@ -88,14 +106,14 @@ The technique for constraining induction through descriptive or prescriptive sta
 
 \subsection{Injecting goals\label{subsection:induction-pruning-with-goals}}
 
-For reasons explained in Section \ref{section:background-goals}, we restrict our attention here to goals and domain properties that can be formalized as pure FLTL safety properties. For recall, these properties refers to  ``\emph{something bad never happens}''.
+For reasons discussed in Section \ref{section:background-goals}, we restrict our attention to goals and domain properties that can be formalized as pure FLTL safety properties. Remember that these properties refer to  ``\emph{something bad may never happen}''.
 
-Consider the goal requiring train doors to remain closed while the train is moving:
+Consider the following goal requiring train doors to remain closed while the train is moving:
 \begin{center}
 \artifact{Maintain[DoorsClosed While Moving]} = $\square(Moving \rightarrow DoorsClosed)$
 \end{center}
 
-Fig.~\ref{Fig.:tester-automaton-inductive} shows the tester automaton for this property. The accepting state of such tester captures all traces that violate the safety property; any trace leading to it corresponds to an undesired system behavior. In particular, the trace \artifact{<start, open>} corresponds to the initial negative scenario in Fig.~\ref{Fig:init:scen}. As seen in Fig.~\ref{Fig.:tester-automaton-inductive}, the tester provides many more negative traces. Property testers can in fact provide potentially infinite classes of negative scenarios.
+Fig.~\ref{Fig.:tester-automaton-inductive} shows the tester automaton for this property (cfr. Section \ref{subsection:background-property-and-tester-automata}). The accepting state of this tester captures all traces violating the safety property; any trace leading to it corresponds to an undesired system behavior. In particular, the trace \artifact{<start, open>} corresponds to the initial negative scenario in Fig.~\ref{Fig:init:scen}. As seen in Fig.~\ref{Fig.:tester-automaton-inductive}, the tester provides many more negative traces. Property testers can in fact provide potentially infinite classes of negative scenarios.
 
 \begin{figure}
 \centering
@@ -111,15 +129,15 @@ The property tester is used to constrain the induction process in a way similar 
 \caption{Augmented PTA decorated using the tester automaton from Fig.~\ref{Fig.:tester-automaton-inductive}\label{Fig.:goal-unfolded-pta}.}
 \end{figure}
 
-The pruning rule for constraining the induction process is now to \emph{avoid merging states decorated with distinct states of the property tester}. The specific equivalence relation used here is the set of states where both states correspond to the same property tester state. 
+The pruning rule for constraining the induction process is now to \emph{avoid merging states decorated with distinct states of the property tester}. The specific equivalence relation used here is the set of states where both states correspond to the same state of the property tester. 
 \begin{quote}
 \emph{Two states will be considered for merging if they have the same property tester state.}
 \end{quote}
 
 This pruning technique guarantees the consistency between the synthesized System LTS and the considered goals and domain properties. In other words, for every goal or domain property $G$ injected in the synthesis process, the following consistency condition holds (see Section \ref{subsection:background-goals-consistency}):
 \begin{align*}
-\mathcal{L}^-(G) \cap \mathcal{L}(System) &= \emptyset
+\mathcal{L}^-(G) \cap \mathcal{L}(System) &= \emptyset,
 \end{align*}
-\noindent where $System$ here denotes the synthesized System LTS and $\mathcal{L}^-(G)$ captures all traces violating $G$.
+where \emph{System} here denotes the synthesized system LTS and $\mathcal{L}^-(G)$ captures all traces violating $G$.
 
-Note that the guarantee given by the condition above is weaker than the \emph{consistent system view} condition (\ref{relation:inductive-statement-negative}) of the problem statement (see Section \ref{subsection:inductive-synthesis-statement}). The latter requires the consistency of the synthesized system $\system$ while the condition above only applies to the System LTS. As with implied negative scenarios, a goal could be satisfied by the synthesized System LTS while being violated by the real distributed system. This issue is further examined in Section \ref{section:inductive-discussion}.
+Note that the guarantee given by the above condition is weaker than the \emph{consistent system view} condition (\ref{relation:inductive-statement-negative}) in Section \ref{subsection:inductive-synthesis-statement}. The latter requires the consistency of the synthesized system $\system$ while the above condition only applies to the system LTS. As with implied negative scenarios, a goal could be satisfied by the synthesized System LTS while being violated by the real distributed system. This issue is further discussed in Section \ref{section:inductive-discussion}.

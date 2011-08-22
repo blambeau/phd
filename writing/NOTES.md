@@ -1,4 +1,6 @@
 * 2011.07.01 -- Definitely grep on TODO ;-)
+* 2011.08.22 -- grep "safety goal" -> "safety property"
+* 2011.08.22 -- grep "respect" -> "meet"
 
 * 2011.06.24 - Sections to refactor in chapter 2
 

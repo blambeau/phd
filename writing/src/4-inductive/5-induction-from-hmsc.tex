@@ -1,24 +1,24 @@
 \section{LTS synthesis from high-level MSCs\label{section:inductive-from-hMSC}}
 
-The previous sections have shown how system behaviors specified in collections of MSC scenarios can be first generalized as a System LTS, then decomposed as a set of agent LTSs. The technique supports the incremental enrichment of an initial scenario collection through scenario queries. It also takes other models into account, such as goals, so as to preserve multi-view consistency. Behavior generalization, incremental synthesis and multi-view consistency are the three main requirements identified in Section \ref{subsection:inductive-synthesis-requirements}. 
+Section \ref{subsection:inductive-synthesis-approach} discussed how system behaviors specified in collections of MSC scenarios can be first generalized as a system LTS, then decomposed as a set of agent LTSs. The QSM technique supports the incremental enrichment of an initial scenario collection through scenario queries. It also takes other models into account, such as goals, so as to preserve multi-view consistency. Behavior generalization, incremental synthesis and multi-view consistency were the three main requirements identified in Section \ref{subsection:inductive-synthesis-requirements}. 
 
-Coupled with other synthesis techniques such as goal mining from scenarios\footnote{whose simplest form consists in asking ``why'' when facing with a negative scenario.} \cite{Damas:2006}, interactive LTS induction is really effective; starting from a small initial scenario collection, richer system models can be synthesized in only a few iterations. Chapters~\ref{chapter:evaluation} and \ref{chapter:tool-support} illustrate this claim with evaluations and overview of the tool support.
+When it is coupled with other synthesis techniques such as goal mining from scenarios\footnote{whose simplest form consists in asking ``why'' questions about negative scenarios.} \cite{Damas:2006}, interactive LTS induction appears really effective; starting from a small initial scenario collection, richer system models can be synthesized through a few iterations only. Chapters~\ref{chapter:evaluation} and \ref{chapter:tool-support} will illustrate this claim through evaluations and discussion of tool support.
 
-However, for any non-toy system, a large scenario collection might become unmanageable. Among others, consistency of the collection might be difficult to guarantee without costly refactoring on scenarios. One reason is that all scenarios of a collection are required to start in the same system state; this usually implies a lot of redundancy in system descriptions.
+For non-toy systems, however, large scenario collections might become unmanageable. In particular, the consistency of the collection might be difficult to guarantee without costly refactoring of scenarios. One notable reason is that all scenarios of a collection are required to start in the same system state; this may imply a lot of redundancy in the required input descriptions.
 
-One way to tackle this problem is to use high-level message sequence charts (hMSCs) for structuring scenario descriptions. As detailed in Section \ref{subsection:background-hmsc}, hMSCs are directed graphs where each node refers to a MSC or a finer grained hMSC (see Fig.~\ref{image:train-hmsc}). Scenarios can then be structured by introducing alternatives, sequences and loops.
+One way to tackle this problem is to use high-level message sequence charts (hMSCs) for structuring scenario descriptions. As detailed in Section \ref{subsection:background-hmsc}, hMSCs are directed graphs where each node refers to a MSC or a finer grained hMSC (see Fig.~\ref{image:train-hmsc}). Scenarios can then be structured by introducing scenario alternatives, sequencing and loops.
 
-Having a structured form of scenario \emph{helps} specifying a large system with scenarios; it does not \emph{solves} the problem of achieving a complete and consistent view of agent behaviors:
+A structured form of scenario \emph{helps} specifying a large system with scenarios. It does not \emph{solve} the problem of achieving a complete and consistent view of agent behaviors:
 \begin{itemize}
-\item capturing all possible interleavings of a distributed system proves difficult with scenarios; a hMSC is therefore hardly complete in practice,
-\item complementary features of a system deserve being specified in complementary models; in addition to using multiple system views, having system behaviors specified in more than one hMSC makes sense.
+\item capturing all possible interleavings of a distributed system proves difficult with scenarios; a single hMSC is therefore hardly complete in practice;
+\item complementary system features are to be specified in complementary models; in addition to multiple system views, specifying system behaviors in multiple hMSCs makes sense.
 \end{itemize}
 
-Having a synthesis technique to merge and to generalize behaviors described in hMSCs seems a convenient extension to the synthesis technique described so far. For this, the LTS synthesis statement is first revisited in Section~\ref{subsection:hmsc-induction-problem-revisited}. The inductive algorithm is then adapted in Section \ref{subsection:hmsc-induction-algo-adaptation}.
+A synthesis technique for merging and generalizing behaviors described in hMSCs appears to be a convenient extension to the synthesis technique described in sections \ref{section:lts-induction-from-mscs} and \ref{section:inductive-mutliview-consistency}. To this end, the LTS synthesis statement is first revisited in Section~\ref{subsection:hmsc-induction-problem-revisited}. Our inductive algorithm is then adapted in Section \ref{subsection:hmsc-induction-algo-adaptation}.
 
 \subsection{Revisiting the LTS synthesis statement\label{subsection:hmsc-induction-problem-revisited}}
 
-Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply amounts to compute the union of their respective languages. This is equivalent to building a new hMSC $H$ reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios $S^+_1,\ldots,S^+_n$, typically coming from scenario queries, could be integrated in a similar way. This is illustrated in Fig.~\ref{figure:multiple-hmscs}.
+Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors amounts to compute the union of their respective languages. This is equivalent to building a new hMSC $H$ reaching the finer-grained $H_1,\ldots,H_n$ from its initial state. Additional positive scenarios $S^+_1,\ldots,S^+_n$, typically coming from scenario queries, may be integrated in a similar way. This is illustrated in Fig.~\ref{figure:multiple-hmscs}.
 
 \begin{figure}\centering
 \scalebox{.70}{
@@ -26,7 +26,7 @@ Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors simply a
 \caption{Merging multiple hMSCs amounts to builds a new one that reaches finer-grained hMSCs from its initial state.\label{figure:multiple-hmscs}} 
 \end{figure}
 
-However, a hMSC only permits specifying positive behaviors. As explained in previous sections, negative information is needed to avoid poor generalizations. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
+However, a hMSC only captures positive behavior examples. As explained in previous sections, negative information is needed for avoiding overgeneralization. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
 
 Without loss of generality therefore, we will assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows: 
 

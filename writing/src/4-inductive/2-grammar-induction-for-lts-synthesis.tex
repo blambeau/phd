@@ -1,118 +1,112 @@
 \section{Grammar induction for LTS synthesis\label{section:inductive-background}}
 
-\emph{Inductive learning} aims at finding a theory that generalizes a set of observed examples. In \emph{grammar induction}, the theory to be learned is a formal language and the set of positive examples is made of strings defined on a specific alphabet. A negative sample corresponds to a set of strings not belonging to the target language. When the target language is regular and the learned language is represented by a deterministic finite state automaton (DFA), the problem is known as DFA induction. For a regular language $L$, $A(L)$ will denote its canonical automaton, that is the DFA having the smallest number of states and accepting $L$. For recall, $A(L)$ is unique up to a renumbering of its states \cite{Hopcroft:1979}.
+\emph{Inductive learning} aims at finding a theory that generalizes a set of observed examples. In \emph{grammar induction}, the theory to be learned is a formal language; the set of positive examples is made of strings defined on a specific alphabet. A negative sample corresponds to a set of strings not belonging to the target language. When the target language is regular and the learned language is represented by a deterministic finite state automaton (DFA), the problem is known as DFA induction. For a regular language $L$, $A(L)$ will denote its canonical automaton, that is the DFA having the smallest number of states and that accepts $L$. We know from \cite{Hopcroft:1979} that $A(L)$ is unique up to a renumbering of its states.
 
 \subsection{DFA identification in the limit\label{subsection:dfa-identification-in-the-limit}}
 
-\emph{Identification in the limit} is a learning framework in which an increasing sequence of strings is presented to the learning algorithm \cite{Gold:1967}. The strings are randomly drawn and correctly labeled as positive or negative. Learning is successful if the algorithm infers the target language in finite time after having seen finite samples. This framework justifies why successful DFA learning needs both positive and negative strings. Gold showed that the class of regular languages cannot be identified in the limit from positive strings only \cite{Gold:1967}. In practice, convergence in finite time toward an exact solution is often bargained with reasonably fast convergence toward a good approximate solution \cite{Lang:1992}.
+\emph{Identification in the limit} is a learning framework in which an increasing sequence of strings is presented to the learning algorithm \cite{Gold:1967}. The strings are randomly taken and correctly labeled as positive or negative. Learning is successful if the algorithm infers the target language in finite time after having seen finite samples. This framework explains why successful DFA learning needs both positive and negative strings. Gold showed that the class of regular languages cannot be identified in the limit from positive strings only \cite{Gold:1967}. In practice, convergence in finite time towards an exact solution is often bargained with reasonably fast convergence towards a good approximate solution \cite{Lang:1992}.
 
 \subsection{The search space of DFA induction\label{subsection:gi-background-search-space}}
 
-We will use the common notations from formal language theory. Let $\Sigma$ denote a finite alphabet. $a$, $b$, $c$ denote elements of $\Sigma$, sometimes called \emph{words}. $u$, $v$, $w$ denote \emph{strings} over $\Sigma$ and $\lambda$ denotes the empty string. A string $u$ is a prefix of $v$ if there exists a string $w$ such that $uw = v$. A language $L$ is any subset of the set $\Sigma^*$ of strings over $\Sigma$. 
+We will use the common notations from formal language theory. Let $\Sigma$ denote a finite alphabet; $a$, $b$, $c$ denote elements of $\Sigma$, sometimes called \emph{symbols}; $u$, $v$, $w$ denote \emph{strings} over $\Sigma$ and $\lambda$ denotes the empty string. A string $u$ is a prefix of $v$ if there exists a string $w$ such that $uw = v$. A language $L$ is any subset of the set $\Sigma^*$ of strings over $\Sigma$. 
 
-In essence, words here correspond to event labels in our background material from Chapter~\ref{chapter:framework} whereas strings correspond to traces. We also recall the definition of finite automaton below; for recall, a LTS is a special case of finite automaton with all accepting states. Section~\ref{subsection:inductive-lts-synthesis-reduction} describes the reduction of LTS synthesis to DFA induction in more details. 
+Symbols here correspond to event labels in Chapter~\ref{chapter:framework} whereas strings correspond to traces. The definition of finite automaton is recalled hereafter; remember that a LTS is a special case of finite automaton where all states are accepting states. Section~\ref{subsection:inductive-lts-synthesis-reduction} will discuss the reduction of LTS synthesis to DFA induction in more detail. 
 
 \begin{definition}[Finite automaton]
-A finite automaton is a 5-tuple $(Q,\Sigma,\\\delta,q_0,F)$ where $Q$ is a finite set of states, $\Sigma$ is an alphabet, $\delta$ is a transition function mapping $Q\times\Sigma$ to $2^Q$, $q_0$ is the initial state, and $F$ is a subset of $Q$ identifying the accepting states. The automaton is called a DFA if for any $q$ in Q and any $e$ in $\Sigma$, $\delta(q,e)$ has at most one member. 
+A finite automaton is a 5-tuple $(Q,\Sigma,\\\delta,q_0,F)$ where $Q$ is a finite set of states, $\Sigma$ is an alphabet, $\delta$ is a transition function mapping $Q\times\Sigma$ to $2^Q$, $q_0$ is the initial state, and $F$ is a subset of $Q$ identifying the accepting states. The automaton is called a DFA if for any $q$ in Q and any $e$ in $\Sigma$, $\delta(q,e)$ has at most one element. 
 \end{definition}
 
-Generalizing a positive sample $S_+$ can be performed by merging states from an initial automaton that only accepts it. This initial automaton is called a prefix tree acceptor; it is denoted by $PTA(S_+)$. It is the largest DFA\footnote{precisely the largest \emph{trimmed} DFA, that is, a DFA in which all states are reachable from the initial state} accepting exactly $S_+$ (see Fig.~\ref{fig:pta:quotient}). The generalization operation is formally defined through the concept of \emph{quotient automaton}.
+Generalizing a positive sample $S_+$ can be performed by merging states from an initial automaton that only accepts it. This initial automaton is called a prefix tree acceptor; it is denoted by $PTA(S_+)$. This automaton is the largest DFA\footnote{precisely the largest \emph{trimmed} DFA, that is, a DFA in which all states are reachable from the initial state} accepting exactly $S_+$ (see Fig.~\ref{fig:pta:quotient}). The generalization operation is formally defined through the concept of \emph{quotient automaton}.
 
 \begin{definition}[Quotient automaton]
-Given an automaton $A$ and a partition $\pi$ defined on its state set, the quotient automaton $A/\pi$ is obtained by merging all states $q$ belonging to the same partition subset $B(q,\pi)$. A state $B(q,\pi)$ in $A/\pi$ thus corresponds to a subset of the states in $A$. 
+Given an automaton $A$ and a partition $\pi$ defined on its state set, the quotient automaton $A/\pi$ is obtained by merging all states $q$ belonging to the same partition subset $B(q,\pi)$. A state $B(q,\pi)$ in $A/\pi$ thus corresponds to a subset of states in $A$. 
 
-A state $B(q,\pi)$ is accepting in $A/\pi$ if and only if at least one state of $B(q,\pi)$ is accepting in $A$. Similarly, there is a transition on the letter $\mathrm{a}$ from state $B(q,\pi)$ to state $B(q',\pi)$ in $A/\pi$ if and only if there is a transition on $\mathrm{a}$ from at least one state of $B(q,\pi)$ to at least one state of $B(q',\pi)$ in $A$. 
+A state $B(q,\pi)$ is accepting in $A/\pi$ if and only if at least one state of $B(q,\pi)$ is accepting in $A$. Similarly, there is a transition on the symbol $\mathrm{a}$ from state $B(q,\pi)$ to state $B(q',\pi)$ in $A/\pi$ if and only if there is a transition on $\mathrm{a}$ from at least one state of $B(q,\pi)$ to at least one state of $B(q',\pi)$ in $A$. 
 \end{definition}
 
 \begin{figure}
 \begin{center}
 \scalebox{.5}{\includegraphics*{src/4-inductive/images/pta}}
 \scalebox{.5}{\includegraphics*{src/4-inductive/images/autoPairB}}
-\caption{$PTA(S_+)$ (above) where $S_+ = \{\lambda,a,bb,bba,baab,baaaba\}$ is a structurally complete sample 
-for the canonical automaton $A(L)$ (below). $A(L) = PTA(S_+)/\pi$ with $\pi=\{\{0,1,4,6,8,10\},\{2,3,5,7,9\}\}$.\label{fig:pta:quotient}}
+\caption{$PTA(S_+)$ where $S_+ = \{\lambda,a,bb,bba,baab,baaaba\}$ is a structurally complete sample 
+for the canonical automaton $A(L)$ shown at the bottom. $A(L) = PTA(S_+)/\pi$ with $\pi=\{\{0,1,4,6,8,10\},\{2,3,5,7,9\}\}$.\label{fig:pta:quotient}}
 \end{center}
 \end{figure}
 
-By construction of a quotient automaton, any accepting path in $A$ is also an accepting path in $A/\pi$. It follows that, for any partition $\pi$ of the state set of $A$, $L(A/\pi) \supseteq L(A)$. In words, \textsl{merging states in an automaton generalizes the language it accepts.}
+By construction of a quotient automaton, any accepting path in $A$ is also an accepting path in $A/\pi$. Therefore, for any partition $\pi$ of the state set of $A$, $L(A) \subseteq L(A/\pi) $. Merging states in an automaton thus generalizes the accepted language.
  
-Learning a regular language is possible if $S_+$ is representative enough of the unknown language $L$ and if the correct space of possible solutions is searched through. These notions are stated precisely hereafter.
+A regular language can be learnt if $S_+$ is representative enough of the unknown language $L$ and if an adequate space of possible generalizations is searched through. These notions are stated precisely hereafter.
 
 \begin{definition}[Structural completeness] A positive sample $S_+$ of a language $L$ is structurally complete with respect to an automaton $A$ accepting $L$ if, when generating $S_+$ from $A$, every transition of $A$ is used at least once and every final state is used as accepting state of at least one string.
 \label{structural:completeness}
 \end{definition}
 
-Rather than a requirement on the sample, structural completeness should be considered as a limit on the possible generalizations that are allowed from a sample. If a proposed solution is an automaton in which some transition is never used while parsing the positive sample, no evidence supports the existence of this transition and this solution should be discarded. 
+Rather than a requirement on the sample, structural completeness should be considered as a limit on the possible generalizations allowed from a sample. If a proposed solution is an automaton in which some transition is never used while parsing the positive sample, no evidence supports the existence of this transition; this solution should therefore be discarded. 
 
-\begin{theorem}[DFA search space]
+\begin{theorem}[DFA search space~\cite{Dupont:1994}]
 \label{search:theo}
-If a positive sample $S_+$ is structurally complete with respect to a canonical automaton $A(L)$ then there exists a partition of the state set of $PTA(S_+)$ such that $PTA(S_+)/\pi = A(L)$~\cite{Dupont:1994}.
+If a positive sample $S_+$ is structurally complete with respect to a canonical automaton $A(L)$, there exists a partition of the state set of $PTA(S_+)$ such that $PTA(S_+)/\pi = A(L)$.
 \end{theorem} 
 
-This result defines the search space of the DFA induction problem as the set of all automata which can be obtained by merging states of the PTA. Some automata of this space are not deterministic but an efficient determinization process can enforce the solution to be a DFA (see section~\ref{section:lts-induction-from-mscs}).
+This theorem defines the search space of the DFA induction problem as the set of all automata that can be obtained by merging states of the PTA. Some automata in this space are not deterministic; an efficient determinization process can however enforce the solution to be a DFA (see Section~\ref{section:lts-induction-from-mscs}).
 
-Figure~\ref{fig:pta:quotient} presents the prefix tree acceptor (above) built from the sample 
-$S_+ = \{\lambda,a,bb,bba,baab,baaaba\}$ which is structurally complete with respect to the canonical automaton (below).
+Fig.~\ref{fig:pta:quotient} presents the prefix tree acceptor (top) built from the sample 
+$S_+ = \{\lambda,a,bb,bba,baab,baaaba\}$ which is structurally complete with respect to the canonical automaton (bottom).
 This automaton is a quotient of the PTA for the partition $\pi=\{\{0,1,4,6,8,10\},\{2,3,5,7,9\}\}$ of its state set.
 
-To summarize, learning a regular language $L$ can be performed by identifying the canonical automaton $A(L)$ of $L$ from a positive sample $S_+$. If the sample is structurally complete with respect to this target automaton, it can be derived by merging states of the PTA built from $S_+$. A negative sample $S_-$ is used to guide this search and avoid over-generalization. In the sequel, $||S||$ denotes the sum of the lengths of the strings in a sample $S$.
+To summarize, learning a regular language $L$ can be performed by identifying the canonical automaton $A(L)$ of $L$ from a positive sample $S_+$. If the sample is structurally complete with respect to this target automaton, it can be derived by merging states of the PTA built from $S_+$. A negative sample $S_-$ is used to guide this search and avoid overgeneralization. 
 
-The size\footnote{Let $n$ be the number of states of $PTA(S_+)$. By construction, $n \in \mathcal{O}(||S_+||)$. The search space size is the number of ways a set of $n$ elements can be partitioned into nonempty subsets. This is called a Bell number $B(n)$. It can be defined by the Dobinski's formula: $B(n) = \frac{1}{e} \sum_{k=0}^{\infty} \frac{k^n}{n!}$. This function grows much faster than $2^n$.} of this search space makes any trivial enumeration algorithm irrelevant for any practical purposes. Moreover, finding a minimal consistent DFA, is a NP-complete problem~\cite{Gold:1978,Angluin:1978}. Interestingly, only a fraction of this space is efficiently searched through by the RPNI algorithm or the \textsc{QSM} algorithm described in Section~\ref{section:lts-induction-from-mscs}.
+The size\footnote{Let $n$ be the number of states of $PTA(S_+)$. Let $||S||$ denote the sum of the lengths of the strings in a sample $S$. By construction, $n \in \mathcal{O}(||S_+||)$. The size of a search space is the number of ways a set of $n$ elements can be partitioned into nonempty subsets. This is called a Bell number $B(n)$. It can be defined through the Dobinski's formula: $B(n) = \frac{1}{e} \sum_{k=0}^{\infty} \frac{k^n}{n!}$. This function grows much faster than $2^n$.} of this search space makes any enumeration algorithm irrelevant for any practical purpose. Moreover, finding a minimal consistent DFA is known to be a NP-complete problem~\cite{Gold:1978,Angluin:1978}. Interestingly, the RPNI algorithm or the \textsc{QSM} algorithm described in Section~\ref{section:lts-induction-from-mscs} only search through a fraction of this space.
 
 \subsection{Characteristic samples for the RPNI algorithm\label{subsection:gi-background-rpni}}
 
-We do not fully detail the RPNI algorithm in the present section but the original version forms a particular case
-of our interactive algorithm \textsc{QSM}, as discussed in Section~\ref{section:lts-induction-from-mscs}. The convergence of RPNI to the correct automaton $A(L)$ is guaranteed when the algorithm receives a sample as input that includes a \textsl{characteristic sample} of the target language~\cite{Oncina:1992}. A proof of convergence is presented in~\cite{Oncina:1993} in the more general case of transducer learning. Some further notions are needed here.
+The RPNI algorithm is not fully detailed here; the original version is a particular case of our interactive algorithm \textsc{QSM}, see Section~\ref{section:lts-induction-from-mscs}. The convergence of RPNI to the correct automaton $A(L)$ is guaranteed when the algorithm receives an input sample that includes a \textsl{characteristic sample} of the target language~\cite{Oncina:1992}. A proof of convergence is presented in~\cite{Oncina:1993} in the more general case of transducer learning. Some further notions are needed here.
 
 \begin{definition}[Short prefixes and suffixes] 
 Let $Pr(L)$ denote the set of prefixes of $L$, with $Pr(L) = \{u | \exists v, uv \in L\}$. The right-quotient of $L$ by $u$, or set of suffixes of $u$ in $L$, is defined by $L/u = \{v | uv \in L\}$. The set of short prefixes $Sp(L)$ of $L$ is defined by $Sp(L) = \{x \in Pr(L) | \neg\exists u \in \Sigma^*$ with $L/u = L/x$ and $u < x\}$.
 \end{definition}
 
-In a canonical automaton $A(L)$ of a language $L$, the set of short prefixes is the set of the first strings in standard order\footnote{The standard order of strings on the alphabet $\Sigma=\{a,b\}$ is $\lambda < a < b < aa < ab < ba < bb < aaa < \ldots$} $<$, each of which leads to a particular state of the canonical automaton. Consequently, there are as many short prefixes as states in $A(L)$. In other words, the short prefixes uniquely identify the states of $A(L)$. The set of short prefixes of the canonical automaton of Fig.~\ref{fig:pta:quotient} is $Sp(L) = \{\lambda, b\}$.
+In a canonical automaton $A(L)$ of language $L$, the set of short prefixes is the set of first strings in standard order\footnote{The standard order of strings on the alphabet $\Sigma=\{a,b\}$ is $\lambda < a < b < aa < ab < ba < bb < aaa < \ldots$} $<$, each leading to a particular state of the canonical automaton. As a consequence, there are as many short prefixes as states in $A(L)$. In other words, the short prefixes uniquely identify the states of $A(L)$. The set of short prefixes of the canonical automaton of Fig.~\ref{fig:pta:quotient} is $Sp(L) = \{\lambda, b\}$.
 
 \begin{definition}[Language kernel]
- The kernel $N(L)$ of the language $L$ is defined as $N(L) = \{xa | x \in Sp(L), a \in \Sigma, xa \in Pr(L)\} \cup \{\lambda\}$.
+ The kernel $N(L)$ of language $L$ is defined as $N(L) = \{xa | x \in Sp(L), a \in \Sigma, xa \in Pr(L)\} \cup \{\lambda\}$.
 \end{definition}
 
-The kernel is made of the short prefixes extended by one letter, and the empty string. By construction $Sp(L) \subseteq N(L)$. The kernel elements represent the transitions of the canonical automaton $A(L)$ since they are obtained by adding one letter to the short prefixes that represent the states of $A(L)$. The kernel of the language defined by the canonical automaton of Fig.~\ref{fig:pta:quotient} is $N(L) = \{\lambda, a, b, ba, bb\}$.
+The kernel of a language is thus made of its short prefixes extended by one letter together with the empty string. By construction $Sp(L) \subseteq N(L)$. The kernel elements capture the transitions of the canonical automaton $A(L)$. Indeed, they are obtained by adding one letter to the short prefixes which capture its states. The kernel of the language defined by the canonical automaton of Fig.~\ref{fig:pta:quotient} is $N(L) = \{\lambda, a, b, ba, bb\}$.
 
 \begin{definition}[Characteristic sample]
-A sample $S^c=(S_{+}^c,S_{-}^c)$ is characteristic for
-the language $L$ and the algorithm RPNI if it satisfies the
-following conditions: 
+A sample $S^c=(S_{+}^c,S_{-}^c)$ is characteristic for the language $L$ and the algorithm RPNI if it satisfies the following conditions: 
 \begin{enumerate}
-\item  $\forall x\in N(L)$, \textbf{if}\ $x\in L$ \ \textbf{then
-}\ $x$\ $\in S_{+}^c$\ \textbf{else}\ $\exists u\in \Sigma ^{*}$ such that $xu\in S_{+}^c$.
-
-\item  $\forall x\in Sp(L),\forall y\in N(L)$ \textbf{if}\ $L/x\neq
-L/y$ \textbf{then}\ $\exists u\in \Sigma ^{*}$ such that \\$(xu\in S_{+}^c$\ and $yu\in S_{-}^c)$\ or\ $(xu\in S_{-}^c$
-\ and $yu\in S_{+}^c)$.
+\item  $\forall x\in N(L)$: \textbf{if}\ $x\in L$ \ \textbf{then}\ $x$\ $\in S_{+}^c$\ \textbf{else}\ $\exists u\in \Sigma ^{*}$ such that $xu\in S_{+}^c$.
+\item  $\forall x\in Sp(L),\forall y\in N(L)$: \textbf{if}\ $L/x\neq L/y$ \textbf{then}\ $\exists u\in \Sigma ^{*}$ such that \\$(xu\in S_{+}^c$\ and $yu\in S_{-}^c)$\ or\ $(xu\in S_{-}^c$ and $yu\in S_{+}^c)$.
 \end{enumerate}
 \label{Characteristic:Sample}
 \end{definition}
 
-Condition~1 guarantees that each element of the kernel belongs to $S_{+}^c$ if it also belongs to the language or, otherwise, is prefix of a string of $S_{+}^c$. This condition implies the structural completeness of the sample $S_{+}^c$ with respect to $A(L)$. In this case, theorem~\ref{search:theo} guarantees that the automaton $A(L)$ can be derived by merging states from $PTA(S_{+}^c)$. 
+Condition~1 states that each element of the kernel belongs to $S_{+}^c$, if it also belongs to the language, or is prefix of a string of $S_{+}^c$ otherwise. This condition implies the structural completeness of the sample $S_{+}^c$ with respect to $A(L)$. In this case, Theorem~\ref{search:theo} guarantees that the automaton $A(L)$ can be derived by merging states from $PTA(S_{+}^c)$. 
 
-When an element $x$ of the short prefixes and an element $y$ of the kernel do not have the same set of suffixes ($L/x\neq L/y$), they necessarily correspond to distinct states in the canonical automaton. In this case, condition~2 guarantees that a suffix $u$ would distinguish them. In other words, the merging of a state corresponding to a short prefix $x$ in $PTA(S_{+}^c)$ with another state corresponding to an element $y$ of the kernel is made incompatible by the existence of $xu$ in $S_{+}^c$ and $yu $ in $S_{-}^c$ or the converse.
+When an element $x$ of the short prefixes and an element $y$ of the kernel do not have the same set of suffixes ($L/x\neq L/y$), they necessarily correspond to distinct states in the canonical automaton. In this case, Condition~2 guarantees that a suffix $u$ would distinguish them. In other words, the merging of a state corresponding to a short prefix $x$ in $PTA(S_{+}^c)$ with another state corresponding to an element $y$ of the kernel is made incompatible by the existence of $xu$ in $S_{+}^c$ and $yu $ in $S_{-}^c$, or the converse.
 
-To sum up, good examples to learn a canonical automaton $A(L)$ allow to avoid merging of non equivalent states $q$ and $q'$. These good examples are the short prefixes of $q$ and $q'$ respectively, concatenated with the same suffix $u$ to form a positive example from one state and a negative example from the other. 
+To sum up, good examples for learning a canonical automaton $A(L)$ allow the merging of non equivalent states $q$ and $q'$ to be avoided. These good examples are the short prefixes of $q$ and $q'$ concatenated with the same suffix $u$ to form a positive example from one state and a negative example from the other. 
 
-There may exist several distinct characteristic samples for a given language $L$ as several suffixes $u$ may satisfy condition 1 or 2. Note that if $|Q|$ denotes the number of states of the canonical automaton $A(L)$, the set of short prefixes contains $|Q|$ elements and the kernel has $\mathcal{O}(|Q|\cdot |\Sigma |)$ elements. Hence the number of strings in a characteristic sample is given by 
-\[
-|S_{+}^c|=\mathcal{O}(|Q|^2\cdot |\Sigma |)\mbox{ and }|S_{-}^c|=\mathcal{O}(|Q|^2\cdot |\Sigma |). 
-\]
+There may exist several distinct characteristic samples for a given language $L$ as several suffixes $u$ may satisfy Condition 1 or 2. If $|Q|$ denotes the number of states of the canonical automaton $A(L)$, the set of short prefixes contains $|Q|$ elements and the kernel has $\mathcal{O}(|Q|\cdot |\Sigma |)$ elements. Hence the number of strings in a characteristic sample is given by 
+\begin{align*}
+|S_{+}^c| &= \mathcal{O}(|Q|^2\cdot |\Sigma |) \\
+|S_{-}^c| &= \mathcal{O}(|Q|^2\cdot |\Sigma |)
+\end{align*}
 
-One can verify that $S = (S_+, S_-)$, with $S_+ = \{\lambda, a, bb, bba, baab, baaaba\}$ and $S_- = \{b, ab, aba\}$, forms a characteristic sample for the language accepted by the canonical automaton in Fig.~\ref{fig:pta:quotient}.
+For the language accepted by the canonical automaton in Fig.~\ref{fig:pta:quotient}, one can check that $S = (S_+, S_-)$, with $S_+ = \{\lambda, a, bb, bba, baab, baaaba\}$ and $S_- = \{b, ab, aba\}$, forms a characteristic sample 
 
-Note that the definition of a characteristic sample given above may be considered quite strong. It is however the standard definition of such a sample for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. It is based on a worst case analysis which does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the letters of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to produce approximate state machines with a very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
+The definition of a characteristic sample given above may appear quite strong. It is however the standard definition for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. The definition is based on a worst case analysis that does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the letters of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to produce approximate state machines with a very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
 
-\subsection{Reducing LTS synthesis to RPNI induction\label{subsection:inductive-lts-synthesis-reduction}}
+\subsection{LTS synthesis as RPNI induction\label{subsection:inductive-lts-synthesis-reduction}}
 
-The synthesis of a System LTS from MSC collections can be reduced to a grammar induction problem as follows. 
+The synthesis of a system LTS from MSC collections can be reduced to a grammar induction problem as follows. 
 
-Consider a scenario collection $Sc = (S^+, S^-)$. From Chapter~\ref{chapter:framework}, $\mathcal{L}^+(Sc)$ denotes the set of positive traces extracted from positive scenarios and from the preconditions of the negative ones; $\mathcal{L}^-(Sc)$ denotes the set of negative traces extracted from the negative scenarios. Both of them denote finite sets of finite sequences over an alphabet $\Sigma$; this is valid under both partial and total ordering of MSC events. Last, recall that $\mathcal{L}^+(Sc)$ is prefix-closed, that is, the prefixes of positive traces are positive traces as well.
+Consider a scenario collection $Sc = (S^+, S^-)$. $\mathcal{L}^+(Sc)$ denotes the set of positive traces extracted from positive scenarios and from the preconditions of the negative ones; $\mathcal{L}^-(Sc)$ denotes the set of negative traces extracted from the negative scenarios (see Chapter~\ref{chapter:framework}). Both denote finite sets of finite sequences over an alphabet $\Sigma$. This holds both under partial and total ordering of MSC events. Also remember that $\mathcal{L}^+(Sc)$ is prefix-closed, that is, the prefixes of positive traces are positive traces as well.
 
-$\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ form valid samples for grammar induction. They can be respectively used as positive and negative input samples of the RPNI algorithm. As $\mathcal{L}^+(Sc)$ is prefix-closed the regular language learned by RPNI will be prefix-closed as well. Therefore the resulting DFA is a LTS; in other words, it contains only accepting states. 
+$\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ form valid samples for grammar induction. They can be used as positive and negative input samples of the RPNI algorithm, respectively. As $\mathcal{L}^+(Sc)$ is prefix-closed, the regular language learned by RPNI will be prefix-closed as well. Therefore the resulting DFA is a LTS; it contains only accepting states. 
 
-This \emph{System} LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and rejects all negative ones from $\mathcal{L}^-(Sc)$. In other words, it covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the System LTS and the scenario collection $Sc$ are consistent.
+This system LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and excludes all negative ones from $\mathcal{L}^-(Sc)$. In other words, it covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the system LTS and the scenario collection $Sc$ are consistent.
 
 The next section details this approach on QSM, our interactive variant of the RPNI algorithm. 
