@@ -2,30 +2,32 @@
 
 Process models capture tasks performed by agents together with their control flow. The aim here is to model work processes for effective software support \cite{Dumas:2005}. A process lifecycle typically includes \emph{process modeling} \cite{OMG:2004, OMG:2008, Clarke:2008, Damas:2009}; \emph{process enactment} \cite{Manolescu:2002, Buhler:2005, Sauer:2006}; \emph{process monitoring} \cite{Muehlen:2000}; and process restructuring based on monitored data. 
 
-The process models considered in the thesis will be guarded high-level message sequence charts (g-hMSC), an extension of hMSCs with guards on fluents \cite{Damas:2009, Damas:2011}. Guarded hMSCs capture \emph{decision-based processes} where decisions relying on the state of the process environment regulate the nature of the subsequent tasks and their composition. An example of g-hMSC is given in Fig.~\ref{image:scheduler-ghmsc} for the meeting scheduling example. 
-\begin{description}
+Process models considered in the thesis will be formalized as guarded high-level message sequence charts (g-hMSC), an extension of hMSCs with guards on fluents \cite{Damas:2009, Damas:2011}. Guarded hMSCs capture \emph{decision-based processes} where decisions relying on the state of the process environment regulate the nature of the subsequent tasks and their composition. 
 
+An example of g-hMSC is given in Fig.~\ref{image:scheduler-ghmsc} for the meeting scheduling case study. Such processes are frequently found in medical therapies, for example.  
+
+\begin{description}
 \item[A task] is a unit of work to be performed by collaboration of agents involved in the process. 
 
-Task nodes in a g-hMSC may be refined either by a MSC or by a finer-grained g-hMSC. For example, the \texttt{InitiateMeeting} task in Fig.~\ref{image:scheduler-ghmsc} is refined through a MSC illustrating interactions between the initiator, the scheduler and participants. 
+Task nodes in a g-hMSC may be refined either by a MSC or by a finer-grained g-hMSC. For example, the \texttt{InitiateMeeting} task in Fig.~\ref{image:scheduler-ghmsc} is refined into a MSC illustrating interactions between the initiator, the scheduler and participants. 
 
-A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks ars starting and terminating. Automated process enactement typically provides such support through agent work lists, reminders sent to them, and so on. 
+A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks ars starting and terminating. Automated process enactement typically provides such support through agent worklists, reminders sent to them, and the like. 
 
-Such synchronization is kept implicit in the process model. However, it is convenient to associate with a task special events when we will reason in terms of the traces that the g-hMSC accepts (see Chapter \ref{chapter:deductive}). For a task $T$ such events are denoted by $T_{start}$ and $T_{end}$, respectively; they denote \emph{broadcasting} interactions, which means that all agents are supposed to monitor them. 
+Such synchronization is kept implicit in the process model. However, it proves convenient to associate with a task special events when we will reason in terms of the traces that the g-hMSC accepts (see Chapter \ref{chapter:deductive}). For a task $T$ such events are denoted by $T_{start}$ and $T_{end}$, respectively. They correspond to \emph{broadcasting} interactions, which implies that all agents are supposed to monitor them. 
 
-\item[A decision node] states specific conditions for the tasks along outgoing branches to be performed. Each outgoing branch is labeled by a Boolean expression on fluents, called guard. A guard must be evaluated to true for the corresponding branch to be followed.
+\item[A decision node] states specific conditions for the tasks along outgoing branches to be performed. Each outgoing branch is labeled by a Boolean expression on fluents, called \emph{guard}. A guard must be evaluated to true for the corresponding branch to be followed.
 
-For example, the guards in Fig.~\ref{image:scheduler-ghmsc} refer to three fluents: \texttt{second\_cycle}, \texttt{date\_conflict} and \texttt{resolve\_by\_weakening}. The former may simply be defined as shown below; the two others are to be defined in terms of events introduced in refinements of other tasks.
+For example, the guards in Fig.~\ref{image:scheduler-ghmsc} refer to the three fluents: \texttt{second\_cycle}, \texttt{date\_conflict} and \texttt{resolve\_by\_weakening}. The former is defined as below; the two others are to be defined in terms of events introduced in refinements of other tasks.
 \begin{center}
 fluent $second\_cycle = \textless \{ ExtendDateRange_{end}, \newline WeakenConstraints_{end} \},
  \{ InitiateMeeting_{end} \} \textgreater $\\
 \end{center}
 
-Instead of initial values for fluents, a g-hMSC is given an initial condition that constrains the acceptable initial fluent values. This allows us to model processes where different instances can start in different states; initial values for fluents can then be defined at instance level rather than at class level. The initial condition will be denoted by $C_0$. In our example, it might be defined as follows:
+Instead of initial values for fluents, a g-hMSC is given an \emph{initial condition} that constrains the acceptable initial fluent values. This allows processes to be modelled where different instances can start in different states; initial values for fluents can then be defined at instance level rather than at class level. The initial condition will be denoted by $C_0$. In our example, it might be defined as follows:
 \begin{align*}
 C_0 = \neg second\_cycle \wedge \neg date\_conflict \wedge \neg resolve\_by\_weakening
 \end{align*}
 
 \end{description} 
 
-The trace semantics of guarded hMSCs will be defined in Chapter \ref{chapter:deductive} together with synthesis techniques to rewrite them as state machines for automated reasoning.
+The trace semantics of guarded hMSCs will be defined in Chapter \ref{chapter:deductive} together with synthesis techniques to derive them as state machines for automated reasoning.

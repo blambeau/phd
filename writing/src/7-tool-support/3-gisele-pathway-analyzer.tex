@@ -51,7 +51,7 @@ The Gisele tool reverses this by considering a richer model with a strong suppor
 
 Rewritings algorithms are implemented in the ``Process rewriting'' module, and rely on external libraries for parsing, rewriting ASTs, manipulating graphs and automata. This module also provides traceability support between the multiple views to the rich model.
 
-\item[Process analyzer] This module implements the process analyses discussed in \cite{Damas:2011}, through multiple concretization of an abstract fix-point algorithm on guarded LTS. It makes intensive uses of automata and binary decision diagrams with the help of dedicated libraries. 
+\item[Process analyzer] This module implements the process analyses discussed in \cite{Damas:2011}, through multiple concretization of an abstract fixpoint algorithm on guarded LTS. It makes intensive uses of automata and binary decision diagrams with the help of dedicated libraries. 
 
 Results of all analyses are kept as decoration of g-LTS states. The rich model triggers analysis executions when such decorations are needed for answering queries and computing views. It also keep analysis results in cache to avoid making costly checks too often.
 
