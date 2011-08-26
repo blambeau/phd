@@ -1,19 +1,19 @@
 \section{Interactive state machine induction from scenarios\label{section:tool-support-isis}}
 
-The interactive LTS synthesis technique described in Chapter \ref{chapter:inductive-synthesis} is implemented in the ISIS tool (Interactive State machine Induction from Scenarios). The tool supports the following features:
+The interactive LTS synthesis technique described in Chapter \ref{chapter:inductive-synthesis} is implemented in the ISIS tool (Interactive State machine Induction from Scenarios). The tool integrates the following features:
 
 \begin{itemize}
 \item The edition and visualization of scenarios, with a graphical syntax ala MSC (see Section \ref{section:background-scenarios});
 \item The definition of fluents and goals, on a per-agent basis (see Sections \ref{section:background-fluents} and \ref{section:background-goals});
-\item The verification of a multi-view modeling specification, in terms of scenario and goal consistency (see Section \ref{subsection:background-scenario-consistency})
+\item The verification of a multi-view modeling specification, in terms of the consistency of scenarios, state machines and goals (see Section \ref{subsection:background-scenario-consistency})
 \item The interactive induction of LTS state machines from scenarios, taking fluents and goals into account (see Chapter \ref{chapter:inductive-synthesis});
-\item The decoration of scenario timelines and state machines with fluent invariant (see Section \ref{section:background-fluents})
+\item The decoration of scenario timelines and state machines with fluent invariants (see Section \ref{section:background-fluents})
 \item The induction of safety goals from scenarios (see \cite{Damas:2011})
 \end{itemize}
 
 Figure \ref{image:isis-tool} shows a snapshot of the ISIS tool. On the left, the current scenario specification is outlined: the agents forming the systems are listed together with associated fluent and goal definitions; positive and negative MSC scenarios are listed below. On the right, two scenarios are shown for the train system case study. The scenario ``Normal journey'' in the background is annotated with fluent invariants.
 
-\begin{figure}[H]
+\begin{figure}
 \centering\scalebox{.525}{
   \includegraphics*{src/7-tool-support/images/isis}}
   \caption{The ISIS tool, scenarios of the train system case-study\label{image:isis-tool}}
@@ -28,7 +28,7 @@ Analyses and synthesis techniques in ISIS are available ``on demand'' by right-c
 \item[Discover goals] launches the induction of goals discussed in \cite{Damas:2011}.
 \end{description}
 
-\begin{figure}[H]
+\begin{figure}
 \centering\scalebox{.625}{
   \includegraphics*{src/7-tool-support/images/isis-context}}
   \caption{Available analyses and synthesis techniques in the ISIS tool\label{image:isis-tool-context}}
@@ -36,7 +36,7 @@ Analyses and synthesis techniques in ISIS are available ``on demand'' by right-c
 
 During inductive synthesis, scenario questions are submitted to the end-user for classification (see Fig.~\ref{image:isis-tool-scenario-question}). When rejecting a scenario, a ``No, why?'' button invites her to explain the rejection by updating fluent and goal definitions. 
 
-\begin{figure}[H]
+\begin{figure}
 \centering\scalebox{.425}{
   \includegraphics*{src/7-tool-support/images/isis-question-1}}
   \caption{A scenario question submitted to the end-user during inductive LTS synthesis\label{image:isis-tool-scenario-question}}
@@ -46,14 +46,14 @@ At the end of the synthesis process, new scenarios appear in the collection acco
 
 The LTS state machine of each agent also appears in the specification outline. State machines can be visualized with or without fluent assertions. The LTS state machine of the train controller is show in both modes in Fig.~\ref{image:isis-after}. 
 
-\begin{figure}[H]
+\begin{figure}
 \centering\scalebox{.525}{
   \includegraphics*{src/7-tool-support/images/isis-after}}
   \caption{After synthesis, the annotated state machines can be visualized.\label{image:isis-after}}
 \end{figure}
 
+\subsubsection*{Discussion}
+
 The ISIS tool has been used successfuly on various case studies during the evaluation of the thesis (see Chapter \ref{chapter:evaluation}). The integrated approach to multi-view model synthesis proves very useful in practice. Indeed, the availability of mutliple synthesis techniques helps enriching each view by launching the adequate synthesis assistant.
 
-This approach could be better supported in practice by complementing the ``on demand'' approach with additional guidance. The idea here would be to run the different synthesis techniques in background. A list of suggestions could be maintained such as ``\emph{new scenarios available for classification, run LTS synthesis!}'' or ``\emph{new goals have been inferred, click here}''. Consistency checking of the specification would certainly benefit from a similar feature.
-
-
+This approach could be better supported in practice by complementing the ``on demand'' approach with additional guidance. The idea here would be to run the different synthesis techniques in background. A list of suggestions could be maintained such as ``\emph{new scenarios available for classification, run LTS synthesis!}'' or ``\emph{new goals have been inferred, click here}''. Consistency checking of the specification would certainly benefit from a similar feature. The tool described in the next section makes an investigation into this kind of tool support. 

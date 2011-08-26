@@ -1,0 +1,14 @@
+workflow MettingScheduling do
+  InitiateMeeting
+  AcquireConstraints
+  until not(date_conflict) or second_cycle
+    Arbitrate
+    if resolve_by_weakening
+      WeakenConstraints
+    else
+      ExtendDateRange
+      AcquireConstraints
+    end
+  end
+  ScheduleMeeting
+end
