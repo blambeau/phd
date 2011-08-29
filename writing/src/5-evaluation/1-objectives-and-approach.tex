@@ -1,0 +1,19 @@
+\section{Objectives and approach\label{section:evaluation-objectives-and-approach}}
+
+The aim of this chapter is to answer qualitative questions about our inductive synthesis technique, such as: \emph{how well does it work in practice?}, \emph{is it easy enough to use for an end-user?}, or \emph{fast enough for practical cases?}, etc. 
+
+Although these questions are difficult to answer in absolute terms, specific experiments have been conducted to provide some answers. In particular, our inductive synthesis technique has been ran in different settings: with or without membership queries, with or without domain knowledge, and so on (see later). In each case, three particular measures have been taken that have a clear impact on the usability of the synthesis technique:
+\begin{description}
+\item[Model accuracy] Loosely speaking, \emph{model accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model one actually searches. 
+
+Model accuracy is easy to measure in experiments because the target model is known. Depending on the experiment (see later), we use either a binary value, the learned model is or is not the same as the known target, or a more finer-grained one. In the latter case, the measure ranges from 0.0 to 1.0 according to whether the learned model is considered far or very close to the target model. 
+
+Accuracy is harder to evaluate on real-world cases, that is, when the target model is unknown. In practice, human inspection of learned models is typically required to assess accuracy.
+
+\item[Number of queries] The number of queries submitted to the oracle is a key measure that drives the usability of QSM in practice. 
+
+This is certainly true when the oracle is a human being, for obvious reasons. Note that a large number of queries might be a problem even with automated oracles: some of them might be expensive, online oracles might be slow, and so on.
+
+\item[Induction time] Last, the time taken to infer a model also deserves special attention. While a reasonable induction time is welcome in every case, real-time interactions are required for usability in presence of a human oracle.
+\end{description}
+
