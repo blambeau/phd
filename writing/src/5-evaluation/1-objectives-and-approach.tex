@@ -2,18 +2,33 @@
 
 The aim of this chapter is to answer qualitative questions about our inductive synthesis technique, such as: \emph{how well does it work in practice?}, \emph{is it easy enough to use for an end-user?}, or \emph{fast enough for practical cases?}, etc. 
 
-Although these questions are difficult to answer in absolute terms, specific experiments have been conducted to provide some answers. In particular, our inductive synthesis technique has been ran in different settings: with or without membership queries, with or without domain knowledge, and so on (see later). In each case, three particular measures have been taken that have a clear impact on the usability of the synthesis technique:
+These questions are difficult to answer in absolute terms. Specific experiments have thus been conducted to provide some answers. The latter are mostly expressed in terms of three specific measures that have a clear impact on the usability of the synthesis technique:
 \begin{description}
-\item[Model accuracy] Loosely speaking, \emph{model accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model one actually searches. 
+\item[Model accuracy] Loosely speaking, \emph{model accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model that one actually searches. 
 
-Model accuracy is easy to measure in experiments because the target model is known. Depending on the experiment (see later), we use either a binary value, the learned model is or is not the same as the known target, or a more finer-grained one. In the latter case, the measure ranges from 0.0 to 1.0 according to whether the learned model is considered far or very close to the target model. 
+Model accuracy is easy to measure in experiments as the target model is known. Depending on the experiment, we use either a binary value or a more finer-grained one. In the former case, accuracy simply captures whether the learned model is \emph{the same} as the known target or not. In the latter case we will use an accuracy measure ranging from 0.0 to 1.0 according to whether the learned model is considered far or very close to the target model, as estimated with a test sample (see later).
 
-Accuracy is harder to evaluate on real-world cases, that is, when the target model is unknown. In practice, human inspection of learned models is typically required to assess accuracy.
+Note that accuracy is harder to evaluate on real-world cases, that is, when the target model is unknown. In practice, human inspection of learned models is typically required to assess accuracy.
 
 \item[Number of queries] The number of queries submitted to the oracle is a key measure that drives the usability of QSM in practice. 
 
-This is certainly true when the oracle is a human being, for obvious reasons. Note that a large number of queries might be a problem even with automated oracles: some of them might be expensive, online oracles might be slow, and so on.
+This is certainly true when the oracle is a human being, for obvious reasons. However, a large number of queries might also be a problem with automated oracles: online oracles may be slow, others might be expensive, and so on.
 
-\item[Induction time] Last, the time taken to infer a model also deserves special attention. While a reasonable induction time is welcome in every case, real-time interactions are required for usability in presence of a human oracle.
+\item[Induction time] Last, the time taken to infer a model deserves special attention. While a reasonable induction time is welcome in any case, real-time interactions are required for usability in presence of a human oracle.
 \end{description}
 
+Our experiments have been designed to isolate the effect of orthogonal features of our inductive technique on the three measures above. Among others, they isolate and quantify gains and costs of the following features:
+\begin{itemize}
+\item The use of an oracle who can answer scenario questions: a gain is expected for model accuracy at the cost of a longer induction time.
+\item The use of the Blue-fringe heuristic instead of the RPNI search order: an accuracy gain is expected as well as a reduction of the number of scenario questions for QSM;
+\item The effect of using domain knowledge such as fluent and goals: an accuracy gain and a reduction of scenario questions should be observed as well;
+\item The effect of using control information such as a hMSC: here also, an accuracy gain is expected.
+\end{itemize}
+
+In practice, two categories of experiments have been conducted, as reflected by the following sections. The specific experimentation protocols used will be described in each case.
+\begin{itemize}
+\item Section \ref{section:evaluation-experiments-on-case-studies} discusses experiments conducted on three case-studies involving multiple models. In addition to assessing the expected effects above, the aim is to evaluate the feasibility of inductive LTS synthesis in practice. The ISIS tool itself has been used as an effective support for designing and conducting the experiments described here (see Section \ref{section:tool-support-isis}).
+\item Section \ref{section:evaluation-experiments-on-synthetic-data} complements this with experiments conducted on random automata and samples. The aim here is to study the performance of QSM and ASM in a more systematic way, on synthetic datasets growing significantly beyond those of the case-studies. This also allows us comparing them with state-of-the-art induction algorithms by following a known evaluation protocol. These experiments do not evaluate the use of fluents or goals to constraint the induction. 
+\end{itemize}
+
+ 

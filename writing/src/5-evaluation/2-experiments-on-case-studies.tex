@@ -4,21 +4,24 @@ QSM and ASM have been evaluated on three different case-studies of varying compl
 
 \subsection{Evaluation methodology}
 
-The objective here was to assess the impact of constraining induction through fluents, models of external components, domain descriptions and goals. Impact was measured in terms of the number of generated scenario questions and adequacy of the synthesized models.
+In addition to a practical evaluation of our tool-supported approach to multi-view model synthesis, our objective was to assess the impact of constraining induction through fluents, models of external components, domain descriptions and goals. Impact was measured in terms of the number of generated scenario questions and accuracy of the synthesized models.
 
- For each case study, we proceeded in two steps:
+For each case study, we proceeded in two steps:
 \begin{enumerate}
 \item\label{stepA}
 \begin{enumerate}
 \item\label{CondA} Design a scenario collection allowing for meaningful subsequent comparison, that is, a scenario collection sufficiently rich to allow an adequate system LTS to be induced under one setting of the experiment at least.
-\item\label{CondB} Define a common set of fluent definitions identifiable from this scenario collection.
+\item\label{CondB} Define a common set of fluent definitions identifiable from this scenario collection. From this set of fluents, define a common set of domain properties and goals.
 \end{enumerate}
 \item\label{stepB} Evaluate the techniques on this scenario collection, without and with fluents, goals, domain descriptions, or models of external components.
 \end{enumerate}
 
-In Step~\ref{stepA}, condition~(a) amounts to require the scenario collection to be structurally complete; every transition in the LTS being synthesized must occur in at least one scenario (see Section \ref{section:inductive-background}). We used the ISIS tool to incrementally set up such a scenario collection (see Section \ref{section:tool-support-isis}). We started from an initial set of scenarios that end-users would typically provide. By generating scenario queries, adding domain properties and goals, and validating induced LTSs, we found a number of additional scenarios that were initially missing. These scenarios are added to the collection for the comparisons in Step~\ref{stepB}.
-
-The size of the scenario collection resulting from Step~\ref{stepA} is shown in Table~\ref{CaseStudies}. $S_+$ and $S_-$ correspond to the number of positive and negative scenarios respectively. The average scenario length is reported in the last column. The sizes of the target global LTS in terms of number of different event labels (alphabet size), states, and transitions are also reported. 
+In Step~\ref{stepA}, condition~(a) amounts to require the scenario collection to be structurally complete; every transition in the LTS being synthesized must occur in at least one scenario (see Section \ref{section:inductive-background}). We used the ISIS tool to incrementally set up such a scenario collection (see Section \ref{section:tool-support-isis}):
+\begin{itemize}
+\item We started from an initial set of scenarios that end-users would typically provide.
+\item By generating scenario queries, adding domain properties and goals, and validating induced LTS, we found a number of additional scenarios that were initially missing. 
+\item These scenarios are added to the collection for the comparisons in Step~\ref{stepB}.
+\end{itemize}
 
 \begin{table}[H]
 \centering
@@ -31,7 +34,9 @@ Phone    & 16     & 23     & 33          & 6     & 4     & 11\\\hline
 \caption{Sizes of the case studies.\label{CaseStudies}}
 \end{table} 
 
-To perform the number of generated scenario queries, an oracle was implemented to simulate the end-user. This oracle knows the target LTS for each problem and correctly classifies scenario queries as positive or negative.
+The size of the scenario collection resulting from Step~\ref{stepA} is shown in Table~\ref{CaseStudies}. $S_+$ and $S_-$ correspond to the number of positive and negative scenarios respectively. The average scenario length is reported in the last column. The sizes of the target global LTS in terms of number of different event labels (alphabet size), states, and transitions are also reported. 
+
+To measure the number of generated scenario queries in Step \ref{stepB}, an oracle has been implemented to simulate the end-user. This oracle knows the target LTS for each problem and correctly classifies scenario queries as positive or negative.
 
 %%%%%
 
@@ -39,41 +44,36 @@ To perform the number of generated scenario queries, an oracle was implemented t
 
 Table~\ref{RPNI:Blue-fringe} reports the results obtained when running QSM with the RPNI search order and the Blue-fringe heuristics, respectively. Comparisons are reported for the three case-studies when no additional knowledge is used to constrain induction. 
 
-The table shows the number of queries the oracle had to answer and the adequacy of the induced model. $Q_+$ and $Q_-$ denote the number of accepted and rejected scenario queries, respectively. The model is said to be \emph{adequate} if it matches the target known LTS. The main observations are:
-\begin{itemize}
-\item The large number of generated questions makes RPNI unusable with an end-user on bigger systems. In contrast, the number of rejected scenario queries is drastically reduced thanks to the Blue-fringe search strategy. 
-\item In the Phone system, an adequate LTS cannot be synthesized with only the scenario collection. Wrong generalizations do occur; some states are merged whereas they need to be distinguished in the adequate model.
-\item Finally, the number of rejected scenarios tends to be much larger on these test cases than the number of accepted ones. This observation confirms the usefulness of scenario queries. Negative answers force the induction algorithm to be restarted when an incorrect search path has been taken (see Algo~\ref{QSM}).
-\end{itemize}
-
-%The superiority of Blue-Fringe over RPNI had already been observed in a non-interactive setting~\cite{Lang:1998}, when the learning sample is not rich enough. Interestingly, the Blue-Fringe strategy also pays off in our QSM interactive learning algorithm by reducing the number of membership queries to be submitted to an oracle.
-
-As Blue-Fringe is seen to be far superior to the RPNI strategy, subsequent comparisons are made only with Blue-Fringe.
-
 \begin{table}[H]
 \centering
 \begin{tabular}{|l||c||c|c|c|}\hline
-Problem   & Search      &$Q_+$&$Q_-$& Model adequacy\\\hline\hline
+Problem   & Search      &$Q_+$&$Q_-$& Model accuracy\\\hline\hline
 Mine Pump & RPNI        & 1   & 30  & missing/unallowed paths\\\cline{2-5}
           & Blue-Fringe & 1   & 4   & adequate model\\\hline
 Train     & RPNI        & 4   & 83  & adequate model\\\cline{2-5}
           & Blue-Fringe & 5   & 5   & adequate model\\\hline
-Phone     & RPNI        & 5   & 172 & missing/unallowed paths\\\cline{2-5}
-          & Blue-Fringe & 6   & 17  & adequate model\\\hline
+Phone     & RPNI        & 5   & 171 & missing/unallowed paths\\\cline{2-5}
+          & Blue-Fringe & 5   & 19  & missing/unallowed paths\\\hline
 \end{tabular}
-\caption{RPNI search order versus Blue-Fringe strategy for the QSM algorithm.\label{RPNI:Blue-fringe}}
+\caption{RPNI search order versus Blue-Fringe strategy for QSM.\label{RPNI:Blue-fringe}}
 \end{table}
+
+The table shows the number of queries the oracle had to answer together with a binary measure of model accuracy. $Q_+$ and $Q_-$ denote the number of accepted and rejected scenario queries, respectively. The model is said to be \emph{adequate} if it matches the target known LTS, formally if it denotes the same language (see Section \ref{section:background-state-machines}). 
+
+The main observations from these results are:
+\begin{itemize}
+\item The large number of generated questions makes RPNI unusable with an end-user on bigger systems. In contrast, the number of rejected scenario queries is drastically reduced thanks to the Blue-fringe search strategy. 
+\item In the Phone system, an adequate LTS cannot be synthesized with the sole use of the initial scenario collection and scenario questions. Wrong generalizations do occur; some states are merged whereas they need to be distinguished in an adequate model.
+\item Finally, the number of rejected scenarios tends to be much larger than the number of accepted ones. This observation confirms the usefulness of scenario queries. Negative answers force the induction algorithm to be restarted when an incorrect search path has been taken (see Algo~\ref{QSM}).
+\end{itemize}
+
+As Blue-Fringe is seen to be far superior to the RPNI strategy, subsequent comparisons are made only with Blue-Fringe.
 
 %%%%%
 
 \subsection{Impact of fluent propagation}
 
-Table~\ref{Fluents:res} shows the influence of fluent decorations to constrain the induction process:
-\begin{itemize}
-\item The number of rejected scenario queries is decreasing with the number of fluents. Such questions can even disappear when the set of fluent definitions is large enough. 
-\item For the same induced LTS, in contrast, the number of accepted scenarios remains the same. Fluent-based state information can only increase the number of incompatible states and hence, reduce the number of scenario questions to be rejected.
-\item As shown on the Phone system, fluent definitions yield a better model adequacy. Two fluents are sufficient for an adequate model to be found.
-\end{itemize}
+In this second experiment, the synthesis is performed for each case study on an increasing number of fluents, among those available.
 
 \begin{table}[H]
 \centering
@@ -97,9 +97,16 @@ Phone&0&5&19&missing/unallowed paths\\\cline{2-5}
 \caption{Impact of fluent propagation.\label{Fluents:res}}
 \end{table}
 
+Table~\ref{Fluents:res} summarizes the influence of fluent decorations to constrain the induction process:
+\begin{itemize}
+\item The number of rejected scenario queries is decreasing with the number of fluents. Such questions can even disappear when the set of fluent definitions is large enough. 
+\item In contrast, for the same induced LTS, the number of accepted scenarios remains the same. Fluent-based state information can only increase the number of incompatible states and hence, reduce the number of scenario questions to be rejected.
+\item As shown on the Phone system, fluent definitions yield a better model accuracy. Two fluents are sufficient for an adequate model to be found.
+\end{itemize}
+
 %%%%%
 
-\subsection{Impact of inferred properties}
+\subsection{Impact of goals and domain properties}
 
 From a scenario collection and fluent definitions, our ISIS tool may automatically infer various important requirements and domain properties, using a inference technique from \cite{Damas:2006, Damas:2011} (see Section~\ref{section:tool-support-isis}). This feature has been used to measure the impact of goals and domain properties on the induction.
 
@@ -121,7 +128,7 @@ For the Phone system, three requirements were inferred automatically, e.g.,
 
 The inferred properties were used in turn to incrementally constrain the induction process. Table \ref{Properties:res} shows the results. 
 
-\begin{table}[H]
+\begin{table}
 \centering
 \begin{tabular}{|l||c||c|c|c|}\hline
 Problem   & Nb. properties &$Q_+$&$Q_-$& Model adequacy\\\hline\hline
@@ -175,18 +182,9 @@ Phone     & RPNI        & 0   & 0     & 0     & 5   & 172 & m/u paths\\\cline{2-
 
 In order to measure the impact of using a hMSC as input of the synthesis process, ASM has been evaluated on an extended version of our train system. In this respect, the evaluation protocol is slightly different from the one presented in the previous section: 
 \begin{itemize}
-
-\item The target model of the train system has first been built using ISIS as a LTS of 19 states with an alphabet of size 10 (see Figure~\ref{image:case-studies-big-train-2}). 
-
+\item The target model of the train system has first been built using ISIS as a LTS of 19 states and 10 events (see Figure~\ref{image:case-studies-big-train-2}). 
 \item A typical collection of scenarios has also been built for the system and represented as an augmented PTA: 9 positive and 5 negative strings for a total of 55 states.
-
-\item Using the target model, state pairs of the PTA have been identified as corresponding to the same system state and immediately merged. These early state merging occur before starting the induction. The ASM algorithm is then given the automaton resulting from these merges as input; it generalizes it by merging additional state pairs under the control of the negative scenarios.
-
-The early state merging phase simulates the control information typically offered by a hMSC. Early merged state pairs are chosen following a ``loop identification'' heuristic, representative of the way such a specification is incrementally built by an end-user using an hMSC. 
-
-For instance, opening then closing the doors from the initial state naturally returns in the initial state, see the loop between states 0 and 2 in Figure~\ref{image:case-studies-big-train-2}. Some loops are less natural to identify from the scenarios: the sequence of events ($leaving$, $high$, $approaching$, $low$, $at station$) form a loop starting from state 3 for example. 
-
-Equivalent state pairs identified this way have been classified in four categories, following the expected difficulty for an end-user of discovering them in the scenarios. ASM has then been evaluated on increasing proportion of such state pairs being merged early: 3\%, 6\%, 10\% and 15\%. Doing so simulates the use of a hMSC of increasing richness as input of the induction process. 
+\item Using the target model, state pairs of the PTA have been identified as corresponding to the same system state and immediately merged. These early state merging occur before lauching inductive synthesis. The automaton resulting from these state merging is then given as input of ASM; the latter generalizes the automaton by merging additional state pairs under the control of the negative scenarios.
 \end{itemize}
 
 \begin{figure}[H]
@@ -195,27 +193,35 @@ Equivalent state pairs identified this way have been classified in four categori
 \caption{Target model of the train system.\label{image:case-studies-big-train-2}}
 \end{figure}
 
+The early state merging phase simulates the control information typically offered by a hMSC. Early merged state pairs are chosen following a ``loop identification'' heuristic, representative of the way such a specification is incrementally built by an end-user using an hMSC. 
+
+For instance, opening then closing the doors from the initial state naturally returns in the initial state, see the loop between states 0 and 2 in Figure~\ref{image:case-studies-big-train-2}. Some loops are less natural to identify from the scenarios: the sequence of events ($leaving$, $high$, $approaching$, $low$, $at station$) form a loop starting from state 3 for example. 
+
+Equivalent state pairs identified this way have been classified in four categories, following the expected difficulty for an end-user of discovering them in the scenarios. ASM has then been evaluated on increasing proportion of such state pairs being merged early: 3\%, 6\%, 10\% and 15\%. Doing so simulates the use of a hMSC of increasing richness as input of the induction process. 
+
 \begin{table}[H]
 \centering
 \small
 \begin{tabular}{|l|c|c|}\hline
-Algorithm& $|identified|$ &Accuracy\\\hline\hline
-RPNI      & -  & 0.55\\\hline
-Blue-fringe& -  & 0.83\\\hline
-MSM       & 0  & 0.55\\\cline{2-3}
-          & 3  & 0.71\\\cline{2-3}
-          & 6  & 0.73\\\cline{2-3}
-          & 10 & 0.88\\\cline{2-3}
-          & 15 & 0.90\\\hline
+Algorithm& \% equivalent state pairs merged early &Accuracy\\\hline\hline
+RPNI      & -    & 0.55\\\hline
+Blue-fringe& -   & 0.83\\\hline
+ASM       & 0 \%  & 0.55\\\cline{2-3}
+          & 3 \%  & 0.71\\\cline{2-3}
+          & 6 \%  & 0.73\\\cline{2-3}
+          & 10 \% & 0.88\\\cline{2-3}
+          & 15 \% & 0.90\\\hline
 \end{tabular}
-\caption{Classification accuracy obtained with different setups on the train case study.\label{RE:experesults} The number $|identified|$ refers to the percentage of the PTA states involved in the early state merging phase.}
+\caption{Classification accuracy obtained with different setups on the train case study.\label{RE:experesults}}
 \end{table} 
 
-Table~\ref{RE:experesults} compares the accuracy of the LTS learned using RPNI, Blue-fringe and ASM with an increasing number of pre-merged PTA states. Remember that ASM uses the same search order as RPNI and does not profit from the Blue-fringe heuristic (see Section \ref{section:inductive-from-hMSC}).
+Table~\ref{RE:experesults} compares the accuracy of the LTS learned using RPNI, Blue-fringe\footnote{that is, RPNI with the Blue-fringe search heuristics} and ASM with an increasing percentage of equivalent PTA state pairs merged early. Remember that ASM uses the same search order as RPNI and does not profit from the Blue-fringe heuristic (see Section \ref{section:inductive-from-hMSC}).
 
-The reported accuracy is no longer a binary measure here. Instead, the accuracy of the learned model is computed as the average classification rate computed over 10 independent test samples. Each of these samples contains 80 positive or negative scenarios randomly drawn from the target LTS. The classification rate correspond to the percentage of these scenarios correctly classified by the learned model. 
+The reported accuracy is no longer a binary measure here. Instead, the accuracy of the learned model is computed as the average classification rate computed over 10 independent test samples. Each of these samples contains 80 positive or negative scenarios randomly drawn from the target LTS. The classification rate corresponds to the percentage of these scenarios correctly classified by the learned model. 
 
-This experiment shows that enriching the input hMSC leads to a better accuracy, outperforming Blue-fringe when such information is rich enough. The results also show that no algorithm has been able to identify perfectly the target model on such sparse samples. It is worth noting that, for the need of this evaluation, only a few negative scenarios have been used as source of negative information while other sources do exist, such as fluents and goals.
+This experiment shows that enriching the input hMSC leads to a better accuracy. ASM even outperforms Blue-fringe when such control information is rich enough (in the experiment, around 10\% of the state pairs known to correspond to the same system state). 
+
+The results also show that no algorithm has been able to identify perfectly the target model on such sparse samples. Note that, for the need of this evaluation, only a few negative scenarios have been used as source of negative information while other sources do exist, such as fluents and goals.
 
 %%%%%
 
