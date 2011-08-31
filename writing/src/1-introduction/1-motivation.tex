@@ -1,21 +1,20 @@
+\section{Models and their use for software systems}
+
 Models are increasingly recognized as an effective means for elaborating requirements and exploring designs of software systems. A model is an abstract representation of the target system, where key features are highlighted, specified and inter-related to each other \cite{VanLamsweerde:2009}. Models are widely used at different steps of the software development process and for different software-related purposes.
 
 %%%
 
 \emph{Requirements engineering} for example, aims at deciding precisely what the system should do. It has been claimed that this is the hardest part of software development \cite{Brooks:1987}. Using models for exploring and stating requirements has multiple benefits:
-
 \begin{itemize}
 \item They force stakeholders and analysts to be more precise in their system description.
 \item They allow them to abstract from multiple details in order to focus on key system aspects.
 \item They provide a basis for early detection and fixing of errors.
 \end{itemize}
-
-Model-oriented approaches to system requirements include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. Models explain how system objectives may be refined in lower-level objectives, also called goals. KAOS emphasizes more on semi-formal and formal reasoning about behavioural goals, i.e. goals that prescribe system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals, i.e. goals that cannot be established in a clear-cut sense.
+Model-oriented approaches to system requirements include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. Models explain how system objectives may be refined in lower-level objectives, also called goals. KAOS emphasizes more on semi-formal and formal reasoning about behavioral goals, i.e. goals that prescribe system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals, i.e. goals that cannot be established in a clear-cut sense.
 
 %%%
 
 \emph{Software design} may be captured by Model Driven Engineering (MDE) approaches and driven by UML models \cite{OMG:2004} and Domain Specific Languages \cite{VanDeursen:2000, Fowler:2010}. Such approaches model the application domain rather than the computing or algorithmic concepts. The use of models here has several advantages:
-
 \begin{itemize}
 \item They enforce the separation between the abstract domain concepts and their concrete implementation. This allows focusing on each aspect at the adequate level of abstraction.
 \item Code fragments can often be generated from models, which is less error-prone and time consuming than manually translating models to code. In the case of domain specific languages, models may even be truly executable already. 
@@ -24,16 +23,17 @@ Model-oriented approaches to system requirements include KAOS \cite{VanLamsweerd
 
 %%%
 
-\emph{Work processes} may be represented by different graphical models. Such models take different forms: flowchart style, e.g. Activity Diagrams \cite{OMG:2004} or Business Process Modeling Notation (BPMN) \cite{OMG:2008}, task trees, e.g. Little-Jil \cite{Clarke:2008}. Such models may be limited to graphical representations, e.g. Activity Diagrams and BPMN or have a strong formal semantics, e.g. Little-Jil and YAWL \cite{Vanderaalst:2005}. These approaches allow:
-
+\emph{Work processes} may be represented by different graphical models. Such models take different forms: flowchart style, e.g. Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005} or Business Process Modeling Notation (BPMN) \cite{OMG:2008}, task trees, e.g. Little-Jil \cite{Clarke:2008}. Modeling here allows:
 \begin{itemize}
-\item Analyzing and verifying models before translating them to work organization on the field. This allows early detecting errors and bottlenecks, among others.
-\item Partly or fully triggering the execution of necessary tasks, through reminders to process actors or automated processing for example.
+\item Analyzing and verifying models before translating them to work organization on the field. This includes early detecting errors and bottlenecks, among others.
+\item Partly or fully triggering the execution of necessary tasks, through reminders to process actors, automated scheduling and task processing, and so on.
 \end{itemize}
 
 \section{Requirements on multi-view modeling languages}
 
-Complex systems are better described with multiple views, each of them being captured through a specific kind of model. Such models focus on particular facets of the system, i.e. its intentional, structural, operational and behavioral dimensions. Scenarios, for example, illustrate interactions between agents forming the system whereas goals make the underlying objectives precise. Models often overlap on specific aspects of their system descriptions. For example, the agents forming the system appear both in scenarios and in a goal model.
+Complex systems are better described with multiple views. In that case, different models focus on particular facets of the system, i.e. its intentional, structural, operational and behavioral dimensions \cite{VanLamsweerde:2009}. 
+
+Scenarios, for example, illustrate typical interactions between agents whereas their state machines provide a complete description of their internal behavior. A process model might describe the operational decomposition of a complex work into smaller tasks whereas goals make the underlying objectives precise.
 
 Reaching quality models in such multi-view approaches is far from an easy task. Adequate modeling languages, tools and techniques are therefore required to help building them. To play a significant role, a good multi-view modeling language should meet the following requirements \cite{VanLamsweerde:2009}:
 
@@ -42,7 +42,7 @@ Reaching quality models in such multi-view approaches is far from an easy task. 
 \item \emph{Analyzable}: the modeling abstractions should be accurate enough to support useful forms of analysis.
 \end{itemize}
 
-In addition, such modeling language should support stakeholders and analysts in building quality models. A ``good'' model should meet the following requirements \cite{VanLamsweerde:2009}:
+In addition, such modeling language should support stakeholders and analysts in building quality models. A ``good'' model should meet the following requirements:
 
 \begin{itemize}
 \item \emph{Adequate}: the models should adequately represent the essence of the target system while abstracting unnecessary details;
@@ -52,25 +52,19 @@ In addition, such modeling language should support stakeholders and analysts in 
 \item \emph{Comprehensible}: the models should be easy enough to understand by the people who need to use them;
 \end{itemize}
 
-Formal modeling approaches help meeting the requirements above. The semantics of a formal modeling language provides precise rules of interpretation that allow many of the problems with natural language to be overcome. Formal specifications may also be manipulated by automated tools for a wide variety of purposes. Among them, model \emph{analysis} and model \emph{synthesis} are intertwined activities that help reaching quality models, mostly along completeness, consistency  and precision.
+Formal modeling approaches help meeting the requirements above. The semantics of a formal modeling language provides precise rules of interpretation that allow many of the problems with natural language to be overcome. Formal specifications may also be manipulated by automated tools for a wide variety of purposes. Among them, model \emph{analysis} and model \emph{synthesis} are intertwined activities that help reaching quality models, mostly along the completeness, consistency and precision requirements.
 
-This thesis investigates model synthesis more specifically, its companion by Christophe Damas \cite{Damas:2011} investigates model analysis.
+This thesis investigates model synthesis more specifically whereas its companion by Christophe Damas \cite{Damas:2011} investigates model analysis.
 
-\section{Model synthesis along two axes}
+\section{Synthesis for multi-view system modeling}
 
-Model synthesis may be conducted along two main axes that differ in terms of the underlying objectives:
+Roughly, model synthesis can be seen as the systematic construction of models from various sources of knowledge about the target system. Classical sources of knowledge are given by early system descriptions, interviews with stakeholders, software prototypes, etc. For a complete description of requirements elicitation and system modeling from such sources see, e.g., \cite{VanLamsweerde:2009}.
+
+In multi-view modeling approaches, a typical source of knowledge for building a given model is simply given by the other models already available. Formal modeling languages precisely define rules for consistency between multiple models; the same rules can then be used the other way around to semi-automatically synthesize some models using the other ones. 
+
+However, the specific usage of a model synthesis technique may be motivated by different 
 
 \begin{itemize}
 \item on one side, model synthesis can be used to complete a multi-view description by synthesizing missing models or completing existing ones;
 \item on the other side, model synthesis can be used to define an operational semantics for high-level models through lower-level ones; this also allows making analysis such as model-checking available to high-level models.
 \end{itemize}
-
-This thesis investigates model synthesis more specifically\footnote{its companion by Christophe Damas \cite{Damas:2011} investigates model analysis} by reporting research efforts along two particular model synthesis axes.
-
-\subsection{Top-down synthesis for semantics and analysis}
-
-\subsection{Left-to-right synthesis for multi-view modeling} 
-
-
-
-
