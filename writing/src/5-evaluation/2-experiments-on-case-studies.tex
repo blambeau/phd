@@ -184,12 +184,12 @@ In order to measure the impact of using a hMSC as input of the synthesis process
 \begin{itemize}
 \item The target model of the train system has first been built using ISIS as a LTS of 19 states and 10 events (see Figure~\ref{image:case-studies-big-train-2}). 
 \item A typical collection of scenarios has also been built for the system and represented as an augmented PTA: 9 positive and 5 negative strings for a total of 55 states.
-\item Using the target model, state pairs of the PTA have been identified as corresponding to the same system state and immediately merged. These early state merging occur before lauching inductive synthesis. The automaton resulting from these state merging is then given as input of ASM; the latter generalizes the automaton by merging additional state pairs under the control of the negative scenarios.
+\item Using the target model, a few state pairs of the PTA have been identified as corresponding to the same system state and immediately merged. These early state merging occur before lauching inductive synthesis. The automaton resulting from this phase is then given as input of ASM, which is then evaluated (see below); the algorithm generalizes the automaton by merging additional state pairs under the control of the negative scenarios.
 \end{itemize}
 
 \begin{figure}[H]
 \centering
-\scalebox{.35}{\includegraphics*{src/5-evaluation/images/case-studies-big-train-2}}
+\scalebox{.38}{\includegraphics*{src/5-evaluation/images/case-studies-big-train-2}}
 \caption{Target model of the train system.\label{image:case-studies-big-train-2}}
 \end{figure}
 
