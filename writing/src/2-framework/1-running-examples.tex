@@ -8,11 +8,11 @@ A simplified train control system will be used as a running example for illustra
 
 The system is composed of a software train controller, actuators for doors and train acceleration, sensors and passengers. Through the actuators, the software controller controls operations like starting or stopping the train, opening or closing doors, and so on. A safety goal requires train doors to remain closed while the train is moving. If the train is not moving and the passenger presses the alarm button, the controller must open the doors immediately. If the train is moving and the passenger presses the alarm button, the controller must stop the train first and then open the doors. 
 
-The latter situation is depicted in the scenario of Fig.~\ref{image:train-scenario-all-agents}, where horizontal arrows denote interaction events amon agent instance. The precise semantics of such scenario will be made clear in the following sections.
+The latter situation is illustrated with a scenario in Fig.~\ref{image:train-scenario-all-agents}, where horizontal arrows denote interaction events among agent instances. The precise semantics of such scenario will be made clear in the following sections.
 
 \begin{figure}[H]\centering
 \scalebox{0.75}{
-  \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/2-framework/images/train-scenario-all-agents}
+  \includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/2-framework/images/train-scenario-all-agents}
 }
 \caption{A scenario illustrating train stopping in emergency when an alarm is pressed.\label{image:train-scenario-all-agents}}
 \end{figure}
@@ -34,5 +34,5 @@ A soft goal requires meetings to be scheduled as quickly as possible once initia
 \caption{A process model for a meeting scheduling process.\label{image:scheduler-ghmsc}}
 \end{figure}
 
-This meeting scheduling process is illustrated in Fig.~\ref{image:scheduler-ghmsc}, where boxes denote tasks. The precise semantics of such model will be detailed in Chapter \ref{chapter:deductive}.
+This meeting scheduling process is illustrated in Fig.~\ref{image:scheduler-ghmsc}, where boxes denote tasks. The precise semantics of such model will be detailed in Chapter~\ref{chapter:deductive}.
 
