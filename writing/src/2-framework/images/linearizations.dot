@@ -1,7 +1,12 @@
 digraph G {
-  graph [rankdir="LR" ranksep=0];
-  node [fixedsize=true width=0.5];
-  zz [label="" color="white" fillcolor="white" shape="circle" style="filled" fixedsize=true width=0.0];
+  graph [pack=true rankdir=LR ranksep=0.01 margin=0];
+  node [shape=circle color=black width=0.5 height=0.5 fixedsize=true]
+  edge [arrowsize=0.7]
+
+  zz [label="" color="white" fillcolor="white" shape="circle" style="filled" 
+      width=0.05 height=0.05 fixedsize=true ];
+  zz -> 0 [label=""];
+
   0 [color="black" fillcolor="white" shape="circle" style="filled"];
   1 [color="black" fillcolor="white" shape="circle" style="filled"];
   2 [color="black" fillcolor="white" shape="circle" style="filled"];
@@ -15,7 +20,7 @@ digraph G {
   10 [color="black" fillcolor="white" shape="circle" style="filled"];
   11 [color="black" fillcolor="white" shape="circle" style="filled"];
   12 [color="black" fillcolor="white" shape="circle" style="filled"];
-  zz -> 0 [label=""];
+
   10 -> 11 [label="open-sig."];
   11 -> 12 [label="open"];
   9 -> 10 [label="stop"];

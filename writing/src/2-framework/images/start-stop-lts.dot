@@ -9,12 +9,6 @@ digraph G {
 
   0 [color="black" fillcolor="white" shape="circle" style="filled"];
   1 [color="black" fillcolor="white" shape="circle" style="filled"];
-  2 [color="black" fillcolor="white" shape="circle" style="filled"];
-  3 [color="black" fillcolor="white" shape="circle" style="filled"];
-  4 [color="black" fillcolor="white" shape="circle" style="filled"];
-
-  0 -> 1 [label="start-signal"];
-  1 -> 2 [label="alarm-signal"];
-  2 -> 3 [label="stop-signal"];
-  3 -> 4 [label="open-signal"];
+  0 -> 1 [label="start"];
+  1 -> 0 [label="stop"];
 }
