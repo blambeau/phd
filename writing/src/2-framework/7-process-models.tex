@@ -1,8 +1,8 @@
 \section{Process models as guarded high-level message sequence charts\label{section:background-process-models}}
 
-Process models capture tasks performed by agents together with their control flow. The aim here is to model work processes for effective software support \cite{Dumas:2005}. A process lifecycle typically includes \emph{process modeling} \cite{OMG:2004, OMG:2008, Clarke:2008, Damas:2009}; \emph{process enactment} \cite{Manolescu:2002, Buhler:2005, Sauer:2006}; \emph{process monitoring} \cite{Muehlen:2000}; and process restructuring based on monitored data. 
+Process models capture tasks performed by agents together with their control flow. The aim here is to model work processes for effective software support \cite{Dumas:2005}. A process lifecycle typically includes \emph{process modeling} \cite{OMG:2004, OMG:2008, Clarke:2008, Damas:2009}; \emph{process enactment} \cite{Manolescu:2002, Buhler:2005, Sauer:2006}; \emph{process monitoring} \cite{Muehlen:2000}; and \emph{process restructuring} based on monitored data. 
 
-Process models considered in the thesis will be formalized as guarded high-level message sequence charts (g-hMSC), an extension of hMSCs with guards on fluents \cite{Damas:2009, Damas:2011}. Guarded hMSCs capture \emph{decision-based processes} where decisions relying on the state of the process environment regulate the nature of the subsequent tasks and their composition. 
+Process models considered in the thesis will be formalized as guarded high-level message sequence charts (g-hMSC), an extension of hMSCs with guards on fluents \cite{Damas:2009}. Guarded hMSCs capture \emph{decision-based processes} where decisions relying on the state of the process environment regulate the nature of the subsequent tasks and their composition. 
 
 An example of g-hMSC is given in Fig.~\ref{image:scheduler-ghmsc} for the meeting scheduling case study. Such processes are frequently found in medical therapies, for example.  
 
@@ -11,13 +11,13 @@ An example of g-hMSC is given in Fig.~\ref{image:scheduler-ghmsc} for the meetin
 
 Task nodes in a g-hMSC may be refined either by a MSC or by a finer-grained g-hMSC. For example, the \texttt{InitiateMeeting} task in Fig.~\ref{image:scheduler-ghmsc} is refined into a MSC illustrating interactions between the initiator, the scheduler and participants. 
 
-A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks ars starting and terminating. Automated process enactement typically provides such support through agent worklists, reminders sent to them, and the like. 
+A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks are starting and terminating. Automated process enactement typically provides such support through agent worklists, reminders sent to them, and the like. 
 
-Such synchronization is kept implicit in the process model. However, it proves convenient to associate with a task special events when we will reason in terms of the traces that the g-hMSC accepts (see Chapter \ref{chapter:deductive}). For a task $T$ such events are denoted by $T_{start}$ and $T_{end}$, respectively. They correspond to \emph{broadcasting} interactions, which implies that all agents are supposed to monitor them. 
+Such synchronization is kept implicit in the process model. However, for reasoning about timing of tasks and manipulating the traces that a g-hMSC accepts (see Chapter \ref{chapter:deductive}), it proves convenient to associate with a task special events for denoting its start and end. For a task $T$ such events will be denoted by $T_{start}$ and $T_{end}$, respectively. They correspond to \emph{broadcasting} interactions, which implies that all agents are supposed to monitor them.
 
 \item[A decision node] states specific conditions for the tasks along outgoing branches to be performed. Each outgoing branch is labeled by a Boolean expression on fluents, called \emph{guard}. A guard must be evaluated to true for the corresponding branch to be followed.
 
-For example, the guards in Fig.~\ref{image:scheduler-ghmsc} refer to the three fluents: \texttt{second\_cycle}, \texttt{date\_conflict} and \texttt{resolve\_by\_weakening}. The former is defined as below; the two others are to be defined in terms of events introduced in refinements of other tasks.
+For example, the guards in Fig.~\ref{image:scheduler-ghmsc} refer to the three fluents: \emph{second\_cycle}, \emph{date\_conflict} and \emph{resolve\_by\_weakening}. The former is defined as below; the two others are to be defined in terms of events introduced in refinements of other tasks.
 \begin{center}
 fluent $second\_cycle = \textless \{ ExtendDateRange_{end}, \newline WeakenConstraints_{end} \},
  \{ InitiateMeeting_{end} \} \textgreater $\\
