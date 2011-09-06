@@ -31,6 +31,7 @@ An \emph{execution} of a g-LTS $G = (Q,\Sigma,\Phi,\\\delta,q_{0},C_{0})$ from $
 \item $Init \in 2^\Phi$ is an initial fluent value assignment mapping every fluent in $\Phi$ to true or false,
 \item $\textless l_0,\ldots,l_n \textgreater$ is an finite sequence of labels $l_i \in \Sigma_{\tau}\cup\mathcal{P}(2^\Phi)$, each of them being either an event label, $\tau$, or a guard.
 \end{itemize}
+\label{definition:glts-execution}
 \end{definition}
 
 Due to guards, only certain executions are to be considered valid from the initial state of the g-LTS. This is captured by the following definition.
@@ -72,6 +73,7 @@ The set of g-LTS traces accepted by a g-LTS $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{
 \{~(Init, s) \mid \exists~(Init, w) \mbox{~a valid execution of $G$ such that~} s = w|_{\Sigma}~\}
 \end{align*}
 where $w|_{\Sigma}$ denotes the projection of $w$ over the alphabet $\Sigma$ (see Section \ref{section:background-state-machines}).
+\label{definition:valid-glts-traces}
 \end{definition}
 
 In other words, the set of valid g-LTS traces corresponds to valid executions where $\tau$ and guards have been removed. 
