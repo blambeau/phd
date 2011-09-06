@@ -199,6 +199,3 @@ Unlike the original g-hMSC and its g-LTS reformulation, this LTS does not contai
 By construction, our composition technique always considers $2^{\mid\Phi\mid}$ initial fluent assignments, pruning those that do not satisfy $C_0$. In practice, certain fluents have a specific initial value; in this case, the corresponding fluent automaton can be optimized by removing a transition from its initial state. This allows avoiding to compute some of the unsatisfiable conjunctions on the compound initial state. 
 
 The approach might even be improved so as to consider only fluent initializations satisfying $C_0$. If such optimization speeds up the computation in practice, the exponential blow of the resulting trace LTS remains unavoidable. It naturally results from the ability of models with guards to cover numerous behaviors in an implicit, compact way.
-
-\section{Summary}
-
