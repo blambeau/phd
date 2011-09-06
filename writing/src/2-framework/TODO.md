@@ -1,7 +1,3 @@
-* 2.3.0 Introduction to State Machines
-
-  * Is the concept of Terminating LTS really used ??
-  
 * 2.3.2 Systems as agent compositions
 
   * Add an image for composition
