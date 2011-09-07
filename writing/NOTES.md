@@ -1,7 +1,9 @@
-* 2011.07.01 -- Definitely grep on TODO ;-)
-* 2011.08.22 -- grep "safety goal" -> "safety property"
-* 2011.08.22 -- grep "respect" -> "meet"
-* 2011.08.31 -- How to change captions' font??
+* Definitely grep on TODO ;-)
+* grep "safety goal" -> "safety property"
+* grep "respect" -> "meet"
+* grep "respect" -> "meet"
+* grep "(see later)" -> "(see Section X)"
+* How to change captions' font??
 
 * 2011.06.30 - Sections to refactor in chapter 4
 
