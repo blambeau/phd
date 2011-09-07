@@ -13,11 +13,11 @@ Verification techniques require a formal semantics for process models. As our gu
 \caption{Guarded LTS as an intermediate level between g-hMSC and LTS.\label{image:deductive-chapter-overview}}
 \end{figure}
 
-We will only consider the traces of a process globally, that is, as sequences of events seen by an external observer. In other words, in spite of a multi-agent view through message sequence charts, we will not consider agent state machines in isolation. The aim of process modeling is \emph{not} to specify valid executions of the agents themselve, but to capture the control flow of their tasks. 
+We will only consider the traces of a process globally, that is, as sequences of events seen by an external observer. In other words, in spite of a multi-agent view through message sequence charts, we will not consider agent state machines in isolation. The aim of process modeling is \emph{not} to specify valid executions of the agents themselves, but to capture the control flow of their tasks. 
 
 As a consequence, we will assume a strong sequential composition of g-hMSC nodes and a total ordering of all events inside MSCs (see Section~\ref{subsection:background-hmsc}). In other words, we will assume that agents synchronize with each other when tasks are started and completed. 
 
-To delimit task boundaries in event traces and reason about execution time, each task $T$ will be associated with special events $T_{start}$ and $T_{end}$. These events are assumed to be monitored by all agents; thus, they allow explicitely capturing the required synchronization scheme.
+To delimit task boundaries in event traces and reason about execution time, each task $T$ will be associated with special events $T_{start}$ and $T_{end}$. These events are assumed to be monitored by all agents; thus, they allow explicitly capturing the required synchronization scheme.
 
 Instead of transforming a guarded hMSC into a LTS directly, we will generate an intermediate form called guarded labeled transition systems (g-LTS). Roughly, a g-LTS is a transition system with guards or events on transitions. It is a structured form of LTS aimed to avoid state explosion. This intermediate form is therefore easier to understand and supports different types of analysis at an abstract level; it may also facilitate code generation for process enactment. 
 
