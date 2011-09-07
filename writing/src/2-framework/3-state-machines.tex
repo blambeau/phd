@@ -24,7 +24,7 @@ The \emph{alphabet} $\Sigma$ captures the notion of \emph{agent interface} as a 
 
 The set of finite sequences over an alphabet $\Sigma$ will be denoted by $\Sigma^{*}$.
 
-The label $\tau$ in the above definition of a LTS is used to denote so-called \emph{non-observable} transitions. Such transitions allow us to model agent state changes that cannot be monitored by its environment. In the sequel, we will denote $\Sigma\cup\{\tau\}$ by $\Sigma_{\tau}$, refering then to an alphabet augmented with the $\tau$ label.
+The label $\tau$ in the above definition of a LTS is used to denote so-called \emph{non-observable} transitions. Such transitions allow us to model agent state changes that cannot be monitored by its environment. In the sequel, we will denote $\Sigma\cup\{\tau\}$ by $\Sigma_{\tau}$, referring then to an alphabet augmented with the $\tau$ label.
 
 Note that LTS do not distinguish between \emph{sent} and \emph{received} events. Such distinction may be required when connecting state machines with scenarios. We will assume this structural information to be available elsewhere, typically from a context or architecture diagram~\cite{Ward:1985, Magee:1995}. We will also assume that an event label uniquely determines the interacting agents; an event may however be received by more than one of them. 
 

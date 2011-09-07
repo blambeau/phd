@@ -11,7 +11,7 @@ An example of g-hMSC is given in Fig.~\ref{image:scheduler-ghmsc} for the meetin
 
 Task nodes in a g-hMSC may be refined either by a MSC or by a finer-grained g-hMSC. For example, the \texttt{InitiateMeeting} task in Fig.~\ref{image:scheduler-ghmsc} is refined into a MSC illustrating interactions between the initiator, the scheduler and participants. 
 
-A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks are starting and terminating. Automated process enactement typically provides such support through agent worklists, reminders sent to them, and the like. 
+A g-hMSC defines a strong sequential composition of task nodes; a total ordering of all events also applies inside MSCs (see Section \ref{subsection:background-hmsc}). This assumes an implicit synchronization scheme used by the agents to know when tasks are starting and terminating. Automated process enactment typically provides such support through agent worklists, reminders sent to them, and the like. 
 
 Such synchronization is kept implicit in the process model. However, for reasoning about timing of tasks and manipulating the traces that a g-hMSC accepts (see Chapter \ref{chapter:deductive}), it proves convenient to associate with a task special events for denoting its start and end. For a task $T$ such events will be denoted by $T_{start}$ and $T_{end}$, respectively. They correspond to \emph{broadcasting} interactions, which implies that all agents are supposed to monitor them.
 
