@@ -21,7 +21,7 @@ digraph G {
 	4 -> 6 [label="open"]
 
     0 -> 5 [label="alarm"]
-	5 -> 4 [label="stop"]
+	5 -> 4 [label="prop."]
 
     6 -> 0 [label="close"]
     1 -> 0 [label="stop"]
