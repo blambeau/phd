@@ -1,24 +1,22 @@
-\section{Evolution toward an evaluation platform\label{section:stamina-platform}}
+\section{Evolution towards an evaluation platform\label{section:stamina-platform}}
 
-In the spirit of Abbadingo, the competition website is still available online and aims at becoming an online benchmark for evaluating novel induction techniques. To achieve this goal a few changes have already been made on the competition server:
-
+In the spirit of Abbadingo, the competition website is still available online. It is aimed at becoming an online benchmark for evaluating novel induction techniques. To achieve this goal a few changes were made on the competition server:
 \begin{itemize}
 
-\item The average score obtained by Blue-fringe on each cell has been published in the documentation section of the website. Also, the cell difficulty level has been made obsolete and is only kept for documentation purposes of the competition itself.
+\item The average score obtained by Blue-fringe on each cell has been published in the documentation section of the website. Moreover, the cell difficulty level has been made obsolete; it is only kept for documentation of the competition itself.
 
-\item The public hall of fame has been updated. Instead of displaying the winners of broken cells only, each cell is annotated with the three best challengers in descending order of their average score for that cell, which is also given. 
+\item The public hall-of-fame has been updated. Instead of displaying the winners of broken cells only, each cell is annotated with the three best challengers in descending order of their average score for that cell. Their score is also disclosed. 
 
 \item The oracle has been modified to provide the exact score obtained when attempting to break a problem. The private submission grid of each participant displays the best score obtained on each problem for which she submitted. 
 
 \end{itemize}
 
-These choices have been made to provide a more transparent feedback while keeping a competitive aspect to the platform, which counts in the motivation for using it. Future work along a certain number of directions is worth considering:
-
+These choices were made to provide a more transparent feedback while keeping a competitive aspect to the platform. Future work is worth considering:
 \begin{itemize}
 
-\item First, interactive inductive techniques (e.g. QSM) could hardly compete so far, due to the absence of an online oracle answering membership queries. While implementing such an oracle does not present particular difficulties, it would require generating fresh new problems to avoid interfering with the current grid and challengers already competing on it. 
+\item Interactive inductive techniques, e.g. QSM, could hardly compete so far due to the absence of an online oracle answering membership queries. Implementing such an oracle presents no particular difficulty; it would however require generating fresh new problems to avoid interfering with the current grid and challengers already competing on it. 
 
-\item White box benchmarks, where target machines would be disclosed together with samples, could also be envisaged. This would to help evaluating inductive techniques that use domain knowledge. Alternatively, sharing binaries for generating new target machines and samples could help reusing the Stamina protocol. 
+\item White box benchmarks, where target machines would be disclosed together with samples, might also be envisaged. This would help evaluating inductive techniques that use domain knowledge; the target machines prove useful for simulating such information. Alternatively, sharing binaries for generating new target machines and samples could help reusing the Stamina protocol. 
 
 \end{itemize}
 

@@ -1,15 +1,15 @@
 \section{Competition results\label{section:stamina-results}}
 
-The Stamina competition started on March 2010 with the 31th of December announced as an official deadline for submitting results. Between these two dates, 1856 submissions have been made by 11 challengers. Among them, 61 have a BCR score of at least 99\%, breaking 42 different problems in 10 different cells.
+The Stamina competition started on March 2010 with December 31 as official deadline for submitting results. Between these two dates, 1856 submissions were made by 11 challengers. Among them, 61 have a BCR score of at least 99\%, breaking 42 different problems in 10 different cells.
 
-The competition hall of fame is shown in Fig.\ref{table:stamina-hall-of-fame}. A quick temporal review shows that:
+The competition hall of fame is shown in Fig.\ref{table:stamina-hall-of-fame}. A quick temporal review shows the following:
 \begin{itemize} 
-\item The easiest cell (alphabet 2, sparsity 100\%) has been broken only five days after the competition start. This credits to Manuel V\'azquez de Parga Andrade with the Equipo algorithm, that learns automata teams~\cite{Garcia:2010}). 
-\item This first result has been followed by an apparent lull in the competition. Some challengers were actually submitting at that time without successfully breaking new problems and cells. Therefore, in the absence of a more detailed hall of fame, this activity was not directly visible on the competition website. 
+\item The easiest cell (alphabet 2, sparsity 100\%) has been broken only five days after the competition start. This first result was achieved by Manuel V\'azquez de Parga Andrade with the Equipo algorithm; the latter learns automata teams~\cite{Garcia:2010}). 
+\item This first result has been followed by an apparent quiet period in the competition. Some challengers were actually submitting, without successfully breaking new problems and cells. Therefore, in the absence of a more detailed hall of fame page, no activity was visible on the competition website. 
 \item A few weeks after, Marijn Heule and Sicco Verwer, with the DFASAT algorithm (described later), started solving all cells of difficulty~1 in the left-most column. 
-\item After a new apparent lull, they eventually broke the first cell of difficulty~2 (alphabet 50, sparsity 100\%) therefore taking the head of the competition. 
-\item They eventually won the competition with an extra cell broken (alphabet 50, sparsity 50\%), the only cell of difficulty~3 broken during the competition. 
-\item Individual problems have also been broken in cells of the second column (sparsity 50\%), as shown by numbers in Table~\ref{table:stamina-hall-of-fame}.
+\item After a new apparent lull, they eventually broke the first cell of difficulty~2 (alphabet 50, sparsity 100\%), thereby taking the head of the competition. 
+\item They eventually won the competition with an extra cell broken (alphabet 50, sparsity 50\%). This was the only cell of difficulty~3 broken during the competition. 
+\item Individual problems were also broken in cells of the second column (sparsity 50\%), as shown by numbers in Table~\ref{table:stamina-hall-of-fame}.
 \end{itemize}
 
 \begin{table}
@@ -25,45 +25,55 @@ The competition hall of fame is shown in Fig.\ref{table:stamina-hall-of-fame}. A
 \textbf{50} & DFASAT (2) & DFASAT (3) & - (4) & - (4) \\
 \end{tabular}
 \end{center}
-\caption{Stamina hall of fame. Broken cells are annotated with the winner name. In other cells, the number in italics indicates how many of the five problems were broken the 31th of December, if any. Difficulty levels in parenthesis are recalled from Table~\ref{table:stamina-baseline}.\label{table:stamina-hall-of-fame}}
+\caption{Stamina hall of fame. Broken cells are annotated with the winner name. In other cells, the number in italics indicates how many of the five problems were broken on December 31, if any. Difficulty levels in parenthesis are recalled from Table~\ref{table:stamina-baseline}.\label{table:stamina-hall-of-fame}}
 \end{table}
 
-As the same table shows, no problem has been broken in the last two columns, that is with a sample sparsity of 25\% or less. This fact must be interpreted with caution. First, while fewer activity has been monitored on such cells, a few approaches actually performed quite well, above the baseline in particular. Also, because of specific strategies used by the different participants, only partial results were available at the end of the competition. In other words, participants have not submitted results on all available problems, so that making comparisons and drawing conclusions is made difficult.
+As the same table shows, no problem has been broken in the last two columns, that is with a sample sparsity of 25\% or less. This fact must be interpreted with caution. 
+\begin{itemize}
+\item While fewer activity has been monitored on such cells, a few approaches actually performed quite well, in particular above the baseline. 
+\item Because of specific strategies used by the different participants, only partial results were available at the end of the competition. In other words, participants have not submitted results on all available problems, making it difficult to compare and draw conclusions.
+\end{itemize}
 
 \subsection{The winning algorithm\label{subsection:stamina-winning}}
 
-DFASAT reuses the baseline algorithm in an appropriate way but relies on additional key ingredients: an adapted heuristics for scoring candidate merging operations, a random perturbation of such heuristics and intense search after an original reduction to a satisfiability problem (hence the DFA\textbf{SAT} name). Each of them is described in turn in the following sections.
+DFASAT reuses the baseline algorithm in an appropriate way but relies on additional key ingredients, namely,
+\begin{itemize}
+\item An adapted heuristics for scoring candidate merging operations;
+\item A random perturbation of such heuristics;
+\item An intense search after original reduction to a satisfiability problem (hence the DFA\textbf{SAT} name). 
+\end{itemize}
+Each of them is described in turn in the following sections.
 
 \subsubsection*{Regular induction seen as a SAT problem}
 
-The idea behind the satisfiability part of DFASAT is to first reduce the problem of finding the minimal DFA consistent with a labeled sample to a graph coloring problem; to encode the latter into a satisfiability problem; finally, to solve it using an efficient SAT solver. 
+The idea behind the satisfiability part of DFASAT is to (a) reduce the problem of finding the minimal DFA consistent with a labeled sample to a graph coloring problem; (b) encode the latter into a satisfiability problem; and (c) solve it using an efficient SAT solver. 
 
-The principle of reducing DFA induction to graph coloring dates back to 1997, more or less as the Abbadingo contest itself, see e.g.~\cite{Coste:1997}. It consist in coloring the states of a PTA with a minimal number of colors such that two nodes that may not merge have different colors. As explained in chapter~\ref{chapter:inductive-synthesis} two states of the PTA may not merge if their continuations are incompatible.
+The principle of reducing DFA induction to graph coloring dates back to 1997, more or less like the Abbadingo contest itself -- see, e.g., \cite{Coste:1997}. It consists of coloring PTA states with a minimal number of colors such that two states that may not merge have different colors. As explained in Chapter~\ref{chapter:inductive-synthesis}, two PTA states may not merge if their continuations are incompatible.
 
-The main drawback of such an approach is that the number of constraints quickly becomes huge for big samples. This can lead to coloring problem instances that are impractical in practice. In spite of a compact Boolean encoding of the graph coloring problem and huge enhancements in SAT solving in recent years, some of the Abbadingo and Stamina problems remain intractable with this technique only. See~\cite{Heule:2010}, by the same authors as DFASAT, for details about their graph coloring and SAT translations.
+The main drawback of this approach is the number of constraints which may become huge for big samples. This can lead to coloring problem instances that are impractical in practice. In spite of compact Boolean encoding of the graph coloring problem and major improvements in SAT solving in recent years, some of the Abbadingo and Stamina problems remain intractable with this technique only. See~\cite{Heule:2010} for details about graph coloring and SAT translations in DFASAT.
 
 \subsubsection*{Mixing state-merging and SAT solving}
 
 To overcome this tractability problem, the authors reuse classical state-merging upstream their SAT solving technique. The idea here is to execute the first steps of Blue-fringe to first reduce the PTA to a partially identified DFA. 
 
-Executing even the first steps of a state-merging algorithm drastically reduce the number of states of the graph coloring problem, and hence the number of constraints. However, the state-merging step implies that the solution provided by the SAT solver is no longer exact. As the first few merges performed by Blue-fringe are supported by a lot of evidence, they are then expected to lead to an optimal solution in practice, provided that a good scoring heuristics is used~\cite{Heule:2010}. 
+Executing even the first steps of a state-merging algorithm may drastically reduce the number of states of the graph coloring problem, and hence the number of constraints. However, the state-merging step implies that the solution provided by the SAT solver is no longer exact. As the first few merges performed by Blue-fringe are supported by a lot of evidence, they are then expected to lead to an optimal solution in practice provided some good scoring heuristics is used~\cite{Heule:2010}. 
 
-Interestingly, according to the winners themselves, the Blue-fringe + SAT technique was not sufficient to break Stamina cells above the first difficulty level. As another technique already had gained a cell of same difficulty, further optimizations have been required to win the competition.
+According to the winners themselves, the Blue-fringe + SAT technique was not sufficient to break Stamina cells above the first difficulty level. As another technique already had gained a cell of same difficulty, further optimizations were required to win the competition.
 
-\subsubsection*{A few additional ingredients required}
+\subsubsection*{Additional adaptations}
 
-In order to obtain convincing results on harder cells, a few additional ingredients have been added to the procedure:
+In order to obtain convincing results on harder cells, a few additional ingredients were added to the procedure:
 
 \begin{itemize}
 \item DFASAT uses a different scoring heuristics than the one used by Blue-fringe. Since Abbadingo it is commonly admitted that the heuristics must be based on the number of merged states sharing the same positive or negative label. To win the Stamina competition, DFASAT used a different one, related to the number of merged transitions sharing the same symbol. 
 
 The explanation relies on the kind of automata considered, especially on large alphabets: as two different states of the target DFA are unlikely to have many outgoing transitions in common, two PTA states having more than a few of them are very likely to correspond to the same target state.
 
-\item Instead of considering only one solution DFASAT includes a search strategy over multiple candidates. This seems natural with SAT-based graph coloring since all possible solutions are captured in a compact form. The authors have also intentionally introduced search in two other places. 
+\item Instead of considering only one solution, DFASAT includes a search strategy over multiple candidates. This seems natural with SAT-based graph coloring since all possible solutions are captured in a compact form. The authors have also intentionally introduced search in two other places. 
 \begin{itemize}
-\item The first one involves a random perturbation of the scoring heuristics, to reduce the criticality of wrong initial merges potentially made during the first phase. 
-\item The second one is to look for non-minimal consistent automata by considering more colors than actually required for coloring the graph. 
+\item The first involves a random perturbation of the scoring heuristics to reduce the criticality of wrong initial merges potentially made during the first phase. 
+\item The second is to look for non-minimal consistent automata by considering more colors than actually required for coloring the graph. 
 
-Doing so appears in contradiction with the Occam's razor principle, but makes sense in the context of Stamina. The actual problem to solve in the competition is not strictly speaking the identification of target automata but the learning of good approximate solutions reaching 99\% of BCR score. Looking for automata of about 50 states is probably a better criteria than looking for the minimal consistent one.
+This appears to contradict Occam's razor principle but makes sense in the context of Stamina. The actual problem to solve in the competition is not strictly speaking the identification of target automata but the learning of good approximate solutions reaching 99\% of BCR score. Looking for automata of about 50 states is probably a better criteria than looking for the minimal consistent one.
 \end{itemize}
 \end{itemize}

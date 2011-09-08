@@ -1,7 +1,11 @@
 * Definitely grep on TODO ;-)
 * grep "safety goal" -> "safety property"
 * grep "respect" -> "meet"
-* grep "respect" -> "meet"
+* grep "toward" -> "towards"
+* grep "different" -> "various"
+* grep "in that respect" -> "along this line"
+* grep "among others" -> ""
+* grep "letter" -> "symbol"
 * grep "(see later)" -> "(see Section X)"
 * How to change captions' font??
 
