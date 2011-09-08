@@ -1,22 +1,22 @@
 \section{Experiments on synthetic datasets\label{section:evaluation-experiments-on-synthetic-data}}
 
-QSM and ASM have been evaluated on synthetic datasets. The aim was to study their performance when the problem size, in terms of number of states of the target LTS, grows significantly beyond those of the case-studies presented in Section~\ref{section:evaluation-experiments-on-case-studies}. 
+In addition to experiments on case-studies, QSM and ASM have been evaluated on synthetic datasets. The aim was to study their performance when the problem size, in terms of number of states of the target LTS, grows significantly beyond those of the case-studies. 
 \begin{itemize}
 \item This allow us to illustrate the expected performance of our algorithms on state machines whose size is more representative of real-world cases. 
-\item It also 
+\item It also provides performance profiles of our algorithms, for application contexts where the sizes of the target machines and/or of the learning samples are bigger than ours. These profiles are given in terms of accuracy, number of scenario questions and induction time reported for increasing learning sample sizes.
 \end{itemize}
 
-For the reasons explained in Section~\ref{section:evaluation-objectives-and-approach}, we do not rely here on additional domain knowledge such as fluents, goals or models of legacy components.
+For reasons explained in Section~\ref{section:evaluation-objectives-and-approach}, however, we do not rely here on additional domain knowledge such as fluents, goals or models of legacy components.
 
 Section~\ref{subsection:evaluation-synthetic-protocol} describes the methodology used to generate automata, learning and test samples. Section~\ref{subsection:evaluation-synthetic-qsm} then discusses the evaluation of QSM. Section~\ref{subsection:evaluation-synthetic-asm} discusses the one of ASM.
 
 \subsection{Evaluation protocol\label{subsection:evaluation-synthetic-protocol}}
 
-The procedure that has been used to evaluate ASM and QSM on synthetic data is inspired from the Abbadingo protocol \cite{Lang:1998}. Roughly, evaluating an induction algorithm consists in running it on learning samples of increasing size, in terms of their number of positive and negative strings. The accuracy of an induced model is then measured in terms of the number of strings of an independent test sample that the learned model correctly classifies. This is made clearer below.
+The procedure that has been used to evaluate ASM and QSM on synthetic data is inspired from the Abbadingo protocol \cite{Lang:1998}. Roughly, evaluating an induction algorithm consists in running it on learning samples of increasing size, in terms of their number of positive and negative strings. The accuracy of an induced model is then measured in terms of the number of strings of an independent test sample that the learned model correctly classifies.
 
-Experiments here are made on random LTS of increasing sizes: $n$ = 20, 50, 100 and 200 states. Only alphabets of two symbols are considered, a feature inherited from Abbadingo\footnote{see Chapter \ref{chapter:stamina} about the influence of the alphabet size on the evaluation of induction algorithms.}. Unlike the latter, experiments here are performed on LTS, not on the more general class of DFA (see Section \ref{section:background-lts-and-regular-languages}). In other words, all states of random automata are accepting states.
+Experiments here are made on random LTS of increasing sizes: $n$ = 20, 50, 100 and 200 states. Only alphabets of two symbols are considered, a feature inherited from Abbadingo\footnote{see Chapter \ref{chapter:stamina} for additional experiments on larger alphabets and a study of the influence of the alphabet size on induction algorithms.}. To match our application context, experiments here have been performed on LTS, not on the more general class of DFA (see Section \ref{section:background-lts-and-regular-languages}). In other words, all states of random automata are accepting states.
 
-The randomly generated LTS are trimmed to remove unreachable states and minimized to obtain canonical target machines (see Section \ref{section:background-state-machines}). Moreover, only automata without terminating state are kept for the experiments. Such states typically capture deadlocks in multi-agent systems considered in our context and should therefore be avoided. The number of states of an automaton generated using this procedure was approximately 3/5 of the requested size. The latter has been increased accordingly.
+Inspired from Abbadingo, the randomly generated LTS are trimmed to remove unreachable states and minimized to obtain canonical target machines (see Section \ref{section:background-state-machines}). Moreover, only automata without terminating state are kept for the experiments. Such states typically capture deadlocks in multi-agent systems considered in our context and should therefore be avoided.
 
 In order to build learning and test samples for a given target LTS, an initial set of $n^2$ different strings has been first synthesized. These strings are randomly generated without replacement using a uniform distribution over the collection of all binary strings of length $[0, p+5]$ where $p$ is the depth of the automaton. The depth of an automaton is defined as the length of the longest shortest path from the initial state to any other state. This bound is chosen so as to ensure that deepest states have a good change to be reached by at least one input string of a sample. This is a necessary condition for structural completeness of the sample (see Section \ref{section:inductive-background}), which was not guaranteed however.
 
@@ -32,7 +32,7 @@ All experiments reported hereafter have been performed on at least 10 randomly g
 
 \subsection{Evaluation of QSM on synthetic datasets\label{subsection:evaluation-synthetic-qsm}}
 
-This section reports evaluation results for the QSM algorithm. An automatic oracle has been implemented to answer the questions asked during its execution. This oracle correctly answers the membership queries since it has access to the target LTS.
+This section reports evaluation results for the QSM algorithm. An automatic oracle has been implemented to answer the questions asked during its execution. This oracle correctly answers the membership queries since it has access to the target LTS in such controlled experiments.
 
 \subsubsection*{Generalization accuracy}
 
@@ -60,7 +60,7 @@ Results from Section \ref{subsection:evaluation-bluefringe-on-casestudies} on ca
 Observe that the learning sample sizes are well chosen to illustrate the convergence of this family of induction algorithms:
 \begin{itemize}
 \item For a given target size, the curves show the different induction phases. When the sample is sparse, 3\% or 6\% for example, poor accuracy results are first observed. The accuracy grows while the learning sample becomes larger; it does so rapidely until an accuracy of about 0.95 is reached. Beyond this point, the accuracy continues to grow with the learning sample size but much slowly. 
-\item The relative performances described above do not depend much of the target size. However, the curves seem successively shifted left when the target size grows. This can be explained by the fact that a quadratic learning sample with respect to the size of the target LTS tend to be richer for large LTS than for the small ones. 
+\item The relative performances described above do not depend much on the target size. However, the curves seem successively shifted left when the target size grows. This can be explained by the fact that a quadratic learning sample with respect to the size of the target LTS tend to be richer for large LTS than for the small ones. 
 \end{itemize}
 
 \subsubsection*{Number of queries\label{subsection:evaluation-synthetic-queries-on-qsm}}
@@ -71,7 +71,7 @@ Figure~\ref{image:evaluation-qsm-number-of-questions} presents the number of gen
 
 \begin{itemize}
 \item The number of strings classified as positive tends to increase initially with the learning sample size before staying roughly constant when the learning process has nearly converged. The additional information required to guarantee correct identification mostly depends on the negative strings.
-\item QSM-fringe tends to generate fewer strings classified as negative by the oracle than QSM-rpni. In both cases, however, the number of rejected queries decreases with the learning sample size. As a comparison of Fig.~\ref{image:evaluation-qsm-number-of-questions} and Fig~\ref{image:evaluation-qsm-accuracy} shows, it even reaches zero when the algorithm has converged toward an exact model.
+\item QSM-fringe tends to generate fewer strings classified as negative by the oracle than QSM-rpni. In both cases, however, the number of rejected queries decreases with the learning sample size. As a comparison of Fig.~\ref{image:evaluation-qsm-number-of-questions} and Fig~\ref{image:evaluation-qsm-accuracy} shows, it even reaches zero when the algorithm has converged toward the exact model.
 \end{itemize}
 
 \begin{figure}
@@ -125,12 +125,12 @@ The evaluation of ASM on synthetic data is very similar to the one conducted on 
 
 The experimentation protocol that we used to achieve this objective is a slight adaptation of the one discussed in Section \ref{subsection:evaluation-synthetic-protocol}:
 \begin{itemize}
-\item Experiments here are made on randomly generated target LTS with 32 and 64 states; alphabets stll have two symbols only.
+\item Experiments here are made on randomly generated target LTS with 32 and 64 states. Following Abbadingo, alphabets still have two symbols only (we further discuss this limitation in Chapter~\ref{chapter:stamina}).
 \item Learning and test samples are randomly generated as before. RPNI and Blue-fringe are both evaluated on these samples to provide a reference for the comparisons with ASM.  
 \item In order to provide its input to ASM, a specific procedure simulates the control information given by a hMSC:
 \begin{itemize}
 \item For a given learning sample, an augmented PTA is first built. As in Section \ref{subsection:evaluation-casestudies-asm}, an early state merging phase then occurs. The idea is to merge specific state pairs of the PTA that are known to correspond to the same state in the target LTS.
-\item For this, unique labels are associated to randomly chosen states of the target LTS. Increasing proportions of the number of states labeled in this way have been used: 5\%, 10\%, 20\% and 100\%. The PTA and the target LTS are then jointly visited and state labels are reported as decorations of the PTA states. 
+\item Unique labels are associated to randomly chosen states of the target LTS. Increasing proportions of the number of states labeled in this way have been used: 5\%, 10\%, 20\% and 100\%. The PTA and the target LTS are then jointly visited and state labels are reported as decorations of the PTA states. 
 \item States of the PTA sharing the same label are merged early. This effectively simulates the availability of control information through a hMSC, by introducing loops in the input scenarios. The automaton resulting from this step is then used as input of ASM, that further generalizes it by merging additional state pairs under the control of the negative strings.
 \end{itemize}
 \end{itemize}
@@ -144,7 +144,7 @@ Figure~\ref{image:evaluation-asm-accuracy} reports the proportion of independent
 \end{center}
 \end{figure}
 
-ASM overcomes RPNI on all executions, which is actually expected. Remember from Section~\ref{subsection:automaton-state-merging} that ASM reduces to RPNI in the special case where its input is a PTA, that is, when no early state merging occurs in our experiment. As early merges are correct by construction, ASM can only obtain a better generalization accuracy than RPNI.
+ASM overcomes RPNI on all executions, which is actually expected. Remember from Section~\ref{subsection:automaton-state-merging} that ASM reduces to RPNI in the special case where its input is a PTA, that is, when no early state merging occurs in our experiment. By construction of our experiments, the early state merging performed are sound. Therefore, they could not hurt the obtained generalization accuracy; hence, ASM can only obtain the same or a better accuracy score than RPNI.
 
 Observe, however, that 5\% of labeling information is comparable, from the point of view of the generalization accuracy, to the use of the Blue-fringe heuristic for selecting state pairs to be merged. Beyond this proportion, the accuracy continues to increase. Interestingly, the accuracy gain is already visible when the sample is sparse.
 
