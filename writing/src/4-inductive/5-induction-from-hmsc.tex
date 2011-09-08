@@ -98,22 +98,27 @@ More precisely, the adaptations required to the different functions of the algor
 \item On one side, the positive traces from the input hMSC $H$ are captured through a LTS, provided a suitable choice of hMSC semantics. The choice of $\mathcal{L}_{arch}(H)$ appears natural for distributed systems; in that case, the synthesis algorithm from \cite{Uchitel:2003}, introduced in Section \ref{subsection:background-hmsc}, is used to synthesize the LTS from the hMSC.
 \item On the other side, the scenario collection is captured through a PTA, as in RPNI and QSM.
 \end{itemize}
-The LTS and the PTA are then merged as a single LTS and returned by \emph{Initialize}. For this, the standard algorithm for capturing the union of regular languages \cite{Hopcroft:1979} is used.
+The standard algorithm for capturing the union of regular languages is then used \cite{Hopcroft:1979} to merge the LTS and the PTA as a single LTS; the latter is returned by \emph{Initialize}.
 
-\item[ChooseStatePair] In order to preserve the merging order used by RPNI, this function must be slightly adapted. The idea is to pre-compute the natural order among the states of the initial DFA solution. A breadth first search is used and each of them is numbered when encountered. 
+\item[ChooseStatePair] The main generalization loop in ASM does not fold up a PTA anymore, but successively merges the states of an automaton, which might be any graph\footnote{hence the ``Automaton State Merging'' name.}. In our current ASM implementation, the \emph{ChoosenStatePair} function is slightly adapted to preserve the RPNI search order. ASM pre-computes the natural order among states of the initial LTS solution returned by \emph{Initialize}. A breadth-first search is used; each state is numbered when visited.
 
-Not that the Blue-Fringe strategy does not require special support. The distinction between red and blue states does not rely on any assumption about the initial solution being a tree; in particular, the fact that a fringe state is the root of a tree in RPNI and QSM is incidental (see \texttt{Merge} below).
+\item[Merge] Maybe surprisingly, the \emph{Merge} function does not require specific adaptations. The merging-for-determinization process is often implemented under the assumption of a tree invariant property \cite{Lang:1998}. This property states that, when considering two states to be merged, at least one of them is the root of a tree. Such property holds for RPNI and QSM, even when the Blue-Fringe optimization is used. It is a sufficient condition for the determinization process to be finite.
 
-\item[Merge] The merging for determinization process is often implemented assuming a tree invariant property. This property states that, when considering two states to be merged, at least one of them is the root of a tree. Such a property holds for RPNI and QSM, even when the Blue-Fringe optimization is used. It is a sufficient condition for the determinization process to be finite. 
+Even though it is convenient, the tree invariant property is not required \cite{Lambeau:2008}. The main merging loop and the \texttt{Merge} function can be implemented without the tree invariant property because the recursive determinization process stops naturally when non determinism is completely reduced. 
 
-Even though it is convenient, the tree invariant property is not required, as explained in \cite{Lambeau:2008}. The main merging loop and the \texttt{Merge} function can be implemented without the tree invariant property because the recursive determinization process stops naturally on the first DFA encountered. This observation allows one to start from an arbitrary DFA and, as soon as non-determinism occurs, to reduce it. 
-%Fig.~\ref{figure:merging-for-determ-on-dfa} gives an example of such a recursive operation.
+\item[Consistent] This function does not require specific adaptation either.
 
 \end{description}
 
-The main loop of the ASM algorithm can then be seen as generalizing any regular language, under the control of a negative sample; hence the ``Automaton State Merging'' name. 
+Our current ASM implementation does not go beyond: it is not optimized with the Blue-fringe heuristics; it does not have the interactive feature of QSM; it may not be constrained with domain knowledge either. Improvements along these three directions are discussed below.
 
-In order to use the Blue-Fringe heuristic (see below), the obtained DFA may be augmented with error states encoding the negative sample given by $S_-$. 
+\subsubsection*{Blue-fringe heuristics}
+
+Adding the Blue-Fringe heuristic to ASM would require two main adaptations: 
+\begin{itemize}
+\item The LTS returned by \emph{Initialize} should be augmented with error states encoding the negative strings captured by negative scenarios in the collection. This requires a slight adaptation of the algorithm for computing the union of regular language; this adaptation is needed to handle the error states of an augmented PTA built from the scenario collection.
+\item The distinction made by Blue-fringe between red and blue states does not rely on any assumption about the initial solution being a PTA; in particular, the fact that a fringe state is the root of a tree in RPNI and QSM is incidental. 
+\end{itemize}
 
 The interactive feature of QSM could be easily adapted and plugged to ASM. It consist in replaincing the main loop ASM by the one of QSM (see Algorithm~\ref{QSM} in Section~\ref{section:lts-induction-from-mscs}). In the latter, the \texttt{GenerateQuery} function must be adapted as follows:
 
