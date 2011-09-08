@@ -79,7 +79,7 @@ Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our 
 
 \begin{figure}[h]
 \centering
-\scalebox{0.60}{\includegraphics[trim=3mm 3mm 10mm 3mm, clip]{src/4-inductive/images/overview}}
+\scalebox{0.63}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/overview}}
 \caption{Inductive LTS synthesis from MSCs: overview\label{image:inductive-synthesis-overview}}
 \end{figure}
 
@@ -119,13 +119,11 @@ The above formula makes use of the hiding, determinization and minimization oper
 
 %The generalization invariant guarantees that the \emph{consistent system view} condition holds for the System LTS. Strictly speaking, the approach is correct only if this condition holds for the system re-composition $\system$. This might not be the case in presence of negative implied scenarios. This issue is further examined in Section~\ref{section:inductive-discussion}.
 
-As we just mentioned it, the generalization step is driven by RPNI; however, this is just a first milestone toward an inductive LTS synthesis approach that meets all requirements in Section \ref{subsection:inductive-synthesis-requirements}. 
+As we just mentioned it, the generalization step is driven by RPNI; Section \ref{section:inductive-background} provides some background on this grammar induction approach. However, this is just a first milestone toward an inductive LTS synthesis approach that meets all requirements in Section \ref{subsection:inductive-synthesis-requirements}. 
 \begin{itemize}
 \item Scenario behaviors are generalized without requiring additional state or flowchart information. 
 \item RPNI does not support incremental system synthesis; multi-model consistency is not guaranteed either. 
 \end{itemize}
-
-Section \ref{section:inductive-background} provides some background on this grammar induction approach.
 
 Section~\ref{section:lts-induction-from-mscs} will therefore introduce the Query-driven State Merging (QSM) algorithm that extends RPNI with features for user interaction and incremental generalization. QSM supports the elicitation of additional, ``interesting'' scenarios that were not originally supplied by the end-user. The original collection of scenarios is completed by asking the user scenario queries that are generated during synthesis. A \emph{scenario query} consists of showing the user a specific scenario, asking her to classify it as positive or negative. Answers to such queries guide the generalization process towards more accurate state machines while incrementally enriching the initial scenario collection.
 

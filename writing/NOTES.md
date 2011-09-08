@@ -2,11 +2,13 @@
 * grep "safety goal" -> "safety property"
 * grep "respect" -> "meet"
 * grep "toward" -> "towards"
+* grep "to constraint" -> "to constrain"
 * grep "different" -> "various"
 * grep "in that respect" -> "along this line"
 * grep "among others" -> ""
 * grep "letter" -> "symbol"
 * grep "(see later)" -> "(see Section X)"
+* grep ", as" -> "as"
 * How to change captions' font??
 
 * 2011.06.30 - Sections to refactor in chapter 4

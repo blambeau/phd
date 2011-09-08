@@ -4,7 +4,7 @@ Section \ref{subsection:inductive-synthesis-approach} discussed how system behav
 
 When it is coupled with other synthesis techniques such as goal mining from scenarios\footnote{whose simplest form consists in asking ``why'' questions about negative scenarios.} \cite{Damas:2006}, interactive LTS induction appears really effective; starting from a small initial scenario collection, richer system models can be synthesized through a few iterations only. Chapters~\ref{chapter:evaluation} and \ref{chapter:tool-support} will illustrate this claim through evaluations and discussion of tool support.
 
-For non-toy systems, however, large scenario collections might become unmanageable. In particular, the consistency of the collection might be difficult to guarantee without costly refactoring of scenarios. One notable reason is that all scenarios of a collection are required to start in the same system state; this may imply a lot of redundancy in the required input descriptions.
+For non-toy systems, however, large scenario collections might become unmanageable. In particular, the consistency of the collection might be difficult to guarantee without costly refactoring of scenarios. One notable reason is that all scenarios of a collection are required to start in the same system state. This may imply a lot of redundancy in the required input descriptions. Moreover, this constraint may appear arbitrary for end-users who have to draw the scenarios in the first place.
 
 One way to tackle this problem is to use high-level message sequence charts (hMSCs) for structuring scenario descriptions. As detailed in Section \ref{subsection:background-hmsc}, hMSCs are directed graphs where each node refers to a MSC or a finer grained hMSC (see Fig.~\ref{image:train-hmsc}). Scenarios can then be structured by introducing scenario alternatives, sequencing and loops.
 
@@ -23,50 +23,54 @@ Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors amounts 
 \begin{figure}\centering
 \scalebox{.70}{
 \includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/multiple-hmscs}}
-\caption{Merging multiple hMSCs amounts to builds a new one that reaches finer-grained hMSCs from its initial state.\label{figure:multiple-hmscs}} 
+\caption{Merging multiple hMSCs amounts to building a new hMSC reaching finer-grained hMSCs from its initial state.\label{figure:multiple-hmscs}} 
 \end{figure}
 
-However, a hMSC only captures positive behavior examples. As explained in previous sections, negative information is needed for avoiding overgeneralization. Negative scenarios, fluents, goals, etc. all provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations considered later stay compatible with the constraint mechanism based on equivalence relations on system states.
+However, a hMSC only captures positive behavior examples. As explained in previous sections, negative information is needed for avoiding overgeneralization. Negative scenarios, fluents, goals, and the like provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations introduced in the sequel remain compatible with the constraint mechanism based on equivalence relations on system states.
 
-Without loss of generality therefore, we will assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows: 
+We may therefore assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows.
 
 \begin{quote}
-\underline{Given}~a hMSC $H$ and a scenario collection $Sc = (S^+,S^-)$ consistent with each other
+\underline{Given}~a hMSC $H$ and a scenario collection $Sc = (S^+,S^-)$ consistent with each other, that is,
 \begin{align*}
 [\mathcal{L}^+(Sc) \cup \mathcal{L}(H)] \cap \mathcal{L}^-(Sc) &= \emptyset
 \end{align*}
-\underline{Synthesize}~the system as a composition of agent LTSs
+\underline{Synthesize}~the system as a composition of agent LTSs:
 \begin{align*}
 System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \end{align*}
-\underline{Such that}~$H$, $Sc$ and $System$ are consistent.
+\underline{Such that}~$H$, $Sc$ and $System$ are consistent with each other.
 \end{quote}
 
-The hMSC trace semantics is left open in the formulation above. In other words, one has to decide which set of behaviors does $\mathcal{L}(H)$ denote. We recall below the relations between the three hMSC languages covered in Section \ref{subsection:background-hmsc}: 
+The selected hMSC trace semantics is not specified in the formulation above. In other words, the set of behaviors captured by $\mathcal{L}(H)$ has to be decided. Remember the relations between the three hMSC languages discussed in Section \ref{subsection:background-hmsc}: 
 \begin{align}
 \mathcal{L}_{strong}(H) \subseteq \mathcal{L}_{weak}(H) &\subseteq \mathcal{L}_{arch}(H)
 \end{align}
 
-$\mathcal{L}_{strong}(H)$ denotes the set of system behaviors with strong sequential composition of hMSC nodes and total event ordering inside MSCs. It is the simplest and most intuitive model for stakeholders involved in early phases of system design. However, it supposes an implicit synchronization scheme used by the agents that is usually not available in real distributed systems. $\mathcal{L}_{arch}(H)$ is the most realistic for such systems, as it captures all possible interleavings of agent behaviors. $\mathcal{L}_{weak}(H)$ is mainly used for explaining and detecting implied scenarios in hMSC specifications \cite{Uchitel:2003}; it is also the hardest to compute.
+$\mathcal{L}_{strong}(H)$ denotes the set of system behaviors with strong sequential composition of hMSC nodes and total event ordering inside MSCs. It is the simplest model. However, it assumes an implicit synchronization scheme to be used by the agents. The latter is usually not available in real distributed systems. $\mathcal{L}_{arch}(H)$ is the most realistic one for such systems as it captures all possible interleavings of agent behaviors. $\mathcal{L}_{weak}(H)$ is mainly used for explaining and detecting implied scenarios in hMSC specifications \cite{Uchitel:2003}; it is also the hardest to compute.
 
-Making a choice of semantics is required for generalizing behaviors because inductive synthesis takes a set of traces as input. The chosen semantics must of course fit domain assumptions. From an algorithmic point of view however, the three hMSC languages above require the same adaptations of the inductive process, as explained in the next sections.
+Making a choice of semantics is required for generalizing behaviors because inductive synthesis takes a set of traces as input. From an algorithmic point of view, however, the three hMSC languages require the same adaptations of the inductive process, as explained in the next sections.
 
-\subsection{Generalizing high-level MSC languages\label{subsection:hmsc-induction-algo-adaptation}}
+\subsection{Generalizing hMSC behaviors\label{subsection:hmsc-induction-algo-adaptation}}
 
-Recall that learning a regular language $L$ aims at generalizing a positive sample $S_+$ under the control of a negative sample $S_-$ such that the following relation of language inclusions holds:
+Remember that learning a regular language $L$ aims at generalizing a positive sample $S_+$ under the control of a negative sample $S_-$ such that the following relation of language inclusions holds:
 \begin{align}
 S_+~~\subseteq~~L~~\subseteq~~\Sigma^*\setminus S_-
 \end{align}
 
 LTS synthesis from a scenario collection $Sc$ reduces to grammar induction because the sets $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ are valid positive and negative samples, respectively (see Section \ref{subsection:inductive-lts-synthesis-reduction}). In particular, they denote \emph{finite} sets of traces.
 
-When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces. Therefore, the current problem statement no longer fits exactly in the identification in the limit framework presented in Section \ref{section:inductive-background}. 
+When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces. Therefore, the current problem statement no longer exactly fits the identification-in-the-limit framework introduced in Section \ref{section:inductive-background}. 
 
-From a theoretical point of view, it means that generalizing hMSC languages is a different problem than generalizing MSC languages; therefore, further study would be needed to re-state the convergence criteria and the notion of characteristic sample in particular. From an algorithmic point of view, however, only a few adaptations of RPNI and QSM are required. They are explained in the next section.
+From a theoretical point of view, this means that generalizing hMSC behaviors is a different problem than generalizing MSC behaviors; therefore, further study would be needed to re-state the convergence criteria and the notion of characteristic sample in particular. 
+
+From an algorithmic point of view, however, only a few adaptations of RPNI and QSM appear necessary. They are detailed in the next section.
 
 \subsection{The Automaton State Merging algorithm\label{subsection:automaton-state-merging}}
 
-The algorithm to generalize behaviors specified in a hMSC is given in Algorithm~\ref{ASM}, called Automaton State Merging (ASM). It is very similar to QSM, given in Section~\ref{section:lts-induction-from-mscs}, except that the interactive feature is ommited here (we discuss it later). QSM itself being an interactive extension to RPNI, Algorithm~\ref{ASM} is almost RPNI itself which might appear suprising at first glance.
+The algorithm for generalizing hMSC behaviors is our Algorithm~\ref{ASM}, called Automaton State Merging (ASM). As sketched below, its overall structure is very similar to QSM in Section~\ref{section:lts-induction-from-mscs}; the interactive feature is omited here as it raises a few issues that we discuss later. QSM itself being an interactive extension to RPNI, Algorithm~\ref{ASM} is very similar to RPNI itself which might appear suprising at first glance.
+
+The main difference between RPNI/QSM on one side and ASM on the other side lies in the \emph{initial automaton} built by \texttt{Initialize}. RPNI and QSM initially convert the input \emph{sample} as a PTA, hence a tree, whereas ASM converts the input \emph{language} of the hMSC as a LTS, hence a graph. 
 
 \begin{algorithm}
 {
@@ -86,13 +90,15 @@ $A_{new} \leftarrow$ {\tt Merge$(A,q,q')$}\\
 \caption{\textsc{ASM}, a state-merging algorithm from high-level Message Sequence Charts\label{ASM}}
 \end{algorithm}
 
-The main difference between RPNI and QSM on one side and ASM on the other side is the initial automaton solution built by \texttt{Initialize}. RPNI and QSM initially convert the input \emph{sample} as a PTA, hence a tree, whereas ASM converts the input \emph{language} of the hMSC as a DFA, hence an graph. The main loop of the ASM algorithm can then be seen as generalizing any regular language, under the control of a negative sample; hence the ``Automaton State Merging'' name. A few adaptations are however required to the different functions of the algorithm: 
-
+More precisely, the adaptations required to the different functions of the algorithm are the following:
 \begin{description}
 
-\item[Initialize] This function is adapted to return a DFA instead of a PTA. On one side, the positive traces from the hMSC may be captured through a LTS as discussed in Section \ref{subsection:background-hmsc}, provided a choice of hMSC semantics. On the other side, the scenario collection can be captured through a PTA. These two automata can be merged through standard algorithms for capturing the union of regular languages \cite{Hopcroft:1979}. 
-
-In order to use the Blue-Fringe heuristic (see below), the obtained DFA may be augmented with error states encoding the negative sample given by $S_-$. 
+\item[Initialize] This function is adapted to return a LTS instead of a PTA. This LTS is built from two sources:
+\begin{itemize}
+\item On one side, the positive traces from the input hMSC $H$ are captured through a LTS, provided a suitable choice of hMSC semantics. The choice of $\mathcal{L}_{arch}(H)$ appears natural for distributed systems; in that case, the synthesis algorithm from \cite{Uchitel:2003}, introduced in Section \ref{subsection:background-hmsc}, is used to synthesize the LTS from the hMSC.
+\item On the other side, the scenario collection is captured through a PTA, as in RPNI and QSM.
+\end{itemize}
+The LTS and the PTA are then merged as a single LTS and returned by \emph{Initialize}. For this, the standard algorithm for capturing the union of regular languages \cite{Hopcroft:1979} is used.
 
 \item[ChooseStatePair] In order to preserve the merging order used by RPNI, this function must be slightly adapted. The idea is to pre-compute the natural order among the states of the initial DFA solution. A breadth first search is used and each of them is numbered when encountered. 
 
@@ -104,6 +110,10 @@ Even though it is convenient, the tree invariant property is not required, as ex
 %Fig.~\ref{figure:merging-for-determ-on-dfa} gives an example of such a recursive operation.
 
 \end{description}
+
+The main loop of the ASM algorithm can then be seen as generalizing any regular language, under the control of a negative sample; hence the ``Automaton State Merging'' name. 
+
+In order to use the Blue-Fringe heuristic (see below), the obtained DFA may be augmented with error states encoding the negative sample given by $S_-$. 
 
 The interactive feature of QSM could be easily adapted and plugged to ASM. It consist in replaincing the main loop ASM by the one of QSM (see Algorithm~\ref{QSM} in Section~\ref{section:lts-induction-from-mscs}). In the latter, the \texttt{GenerateQuery} function must be adapted as follows:
 

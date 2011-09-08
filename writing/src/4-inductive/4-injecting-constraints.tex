@@ -4,20 +4,19 @@ The interactive QSM algorithm described in Section~\ref{section:lts-induction-fr
 
 This approach can be extended to achieve multi-view consistency by incorporating various sources of information. Such information refines the equivalence partition and further constrains the compatible merging operations. Injecting knowledge-based constraints has many advantages: 
 \begin{itemize}
-\item it ensures strong consistency of the system LTS with other views,
-\item it reduces the number of scenario queries in the interactive setting,
-\item it speeds up the search.
+\item It ensures strong consistency of the system LTS with other views;
+\item It reduces the number of scenario queries in the interactive setting;
+\item It speeds up the search.
 \end{itemize}
 
 Section \ref{subsection:induction-pruning-with-domain-knowledge} shows how to incorporate domain knowledge such as fluent definitions. Section \ref{subsection:induction-pruning-with-goals} shows how goals can be used to constrain the generalization. 
 
-The optimization techniques detailed hereafter are based on various equivalence relations over system states. The term \emph{equivalence relation} is used here in its usual mathematical sense, namely, a symmetric, reflexive, and transitive binary relation over states. 
-
-The general principle underlying our techniques is the following:
+The optimization techniques detailed hereafter are based on various equivalence relations over system states. The term \emph{equivalence relation} is used here in its usual mathematical sense, namely, a symmetric, reflexive, and transitive binary relation over states. The general principle underlying our techniques is the following:
 \begin{quote}
 \emph{Two states will be considered for merging if they agree according to all considered equivalence relations.}
 \end{quote}
-The equivalence relations considered in the following sections are all invariant under state merging; a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA. The results of such pre-processing are kept as annotations on PTA states. The above principle for state merging is very general. It could therefore be further instantiated to other equivalence relations not considered here.
+
+%The equivalence relations considered in the following sections are all invariant under state merging; a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA. The results of such pre-processing are kept as annotations on PTA states. The above principle for state merging is very general. It could therefore be further instantiated to other equivalence relations not considered here.
 
 %%%%%
 
@@ -25,11 +24,10 @@ The equivalence relations considered in the following sections are all invariant
 
 The domain knowledge used to constrain state merging comes from multiple sources: 
 \begin{itemize}
-\item fluent definitions, 
-\item knowledge about components in the environment of the software-to-be, 
-\item specifications of domain properties.
+\item Fluent definitions;
+\item Knowledge about components in the environment of the software-to-be;
+\item Specifications of domain properties.
 \end{itemize}
-
 We discuss them successively.
 
 %%
