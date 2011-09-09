@@ -1,8 +1,31 @@
 \section{Interactive LTS synthesis from MSC collections\label{section:lts-induction-from-mscs}}
 
-Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm, a Query driven State-Merging LTS induction technique. \textsc{QSM} takes a consistent scenario collection as input and produces a LTS as output. The completion of the initial scenario collection with classified scenarios that are generated during learning is another output of the algorithm. The input collection must contain at least one positive scenario. The synthesized LTS is consistent with the final scenario collection; it covers all  positive scenarios and excludes all negative ones.
+This section introduces QSM, a Query driven State-Merging LTS induction technique; its specification is the following:
 
-Roughly, the induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs from the initial LTS. The process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. This process terminates when no state pairs can still be considered for merging.
+\begin{quote}
+\underline{Given}
+\begin{itemize}
+\item A consistent MSC collection showing typical examples and counterexamples of system behaviors:
+\begin{align*}Sc = (S^+,S^-)\end{align*}
+\item An \emph{oracle} correctly classifying system traces as positive or negative examples of desired system behaviors
+\end{itemize}
+\underline{Synthesize}~a LTS capturing system behaviors,
+\begin{align*}System\end{align*}
+\underline{Such that}
+\begin{itemize}
+\item $Sc$ is correctly extended with the answers to scenario questions by the oracle,
+\item \emph{System} is consistent with the extended scenario collection.
+\end{itemize}
+\end{quote}
+
+Let us stress a few points about QSM preconditions and postconditions:
+\begin{itemize}
+\item QSM requires the scenario collection to be consistent. Remember from Section~\ref{subsection:background-scenario-consistency} that this requires all scenarios to start in the same system state.
+\item QSM requires the oracle to \emph{correctly} classify generated scenario questions, also called \emph{membership queries}. In other words, it does not support classification errors. The generation of scenario questions will be detailed in Section~\ref{QSM:query}.
+\item QSM guarantees that the synthesized system LTS and the scenario collection, extended with the classified scenarios, are consistent. Provided preconditions are met, this implies that the extended collection will itself be consistent in output.
+\end{itemize}
+
+Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm. Roughly, the induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs from the initial LTS. The process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. This process terminates when no state pairs can still be considered for merging.
 
 In the sequel, two states will be said compatible for merging (resp. incompatible) if the quotient LTS which results from their merging is consistent (resp. inconsistent) with the current scenario collection.
 
@@ -32,11 +55,9 @@ In Algorithm \ref{QSM}, the \texttt{Initialize} function returns an initial cand
 
 Next, pairs of states are iteratively chosen from the current solution according to the \texttt{ChooseStatePair} function. The quotient automaton obtained by merging such states, and possibly some additional states, is computed by the \texttt{Merge} function. The consistency of this quotient automaton is then checked by the \texttt{Consistent} function using available negative scenarios in the collection. The various functions are more precisely specified hereafter.
 
-When consistent, new scenarios are generated through the \texttt{GenerateQuery} function. These scenarios are submitted to the end-user for classification (see section~\ref{QSM:query}). The scenario collection is then refined with these scenarios, according to their classification. If all generated scenarios are classified as positive, the quotient automaton becomes the current candidate solution. The process is iterated until no more pair of states can be considered for merging. When a generated scenario is classified as negative, the algorithm is recursively called on the extended scenario collection.
+When consistent, new scenarios are generated through the \texttt{GenerateQuery} function. These scenarios are submitted to the end-user for classification (see Section~\ref{QSM:query}). The scenario collection is then refined with these scenarios, according to their classification. If all generated scenarios are classified as positive, the quotient automaton becomes the current candidate solution. The process is iterated until no more pair of states can be considered for merging. When a generated scenario is classified as negative, the algorithm is recursively called on the extended scenario collection.
 
 Section~\ref{QSM:merging} describes the general process of merging compatible state pairs while Section~\ref{QSM:query} focuses on the generation of queries submitted to the end-user. Section~\ref{BlueFringe} discusses an optimization of the search order implemented in \texttt{ChooseStatePair} known as the the Blue-Fringe strategy~\cite{Lang:1998}.
-
-%The original RPNI algorithm can be seen as a particular instance of \textsc{QSM} when no query is generated or, equivalently, without the inner \textbf{while} loop. The advantage of \textsc{QSM} is that a finer control of the generalization offered by the state-merging operations can be obtained by validating these generalizations with an oracle, i.e. the end-user.
 
 \subsection{Merging compatible state pairs\label{QSM:merging}}
 
