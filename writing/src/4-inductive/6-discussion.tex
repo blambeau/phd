@@ -1,4 +1,12 @@
-\section{Discussion\label{section:inductive-discussion}}
+\section{Summary and discussion\label{section:inductive-discussion}}
+
+This chapter discussed how grammar induction can be used to synthesize LTS state machines from end-user scenarios. The RPNI algorithm provides a basis to generalize system behaviors described in the scenarios as a system LTS; the latter can then be decomposed to obtain a state machine for each system agent. 
+
+Our QSM algorithm extends RPNI with an interactive feature where an end-user classifies generated scenarios as positive or negative examples of desired system behaviors. This constrains the induction process towards good behavior generalizations and completes the initial scenario collection with additional behavior examples and counterexamples.
+
+Moreover, QSM may be constrained through equivalence relations defined on system states. This mechanism has been instantiated with fluent definitions, domain properties, models of legacy components and goals. In addition to guaranteeing multi-view model consistency, the injection of such knowledge prunes the induction search space for better performance.
+
+
 
 \subsection{Rationale behind the generalization step}
 
