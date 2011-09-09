@@ -10,11 +10,8 @@
            (page 76)
 * 4.4.1 -- Remark about equivalence relations being invariant under state merging
            -> Discussion
-* 4.5.1 -- The fact that the constraint mechanism remains compatible must be 
-           discussed once again later (see Axel's comments on page 88)
 * 4.5.2 -- Relation (4.9) should probably appear at beginning of the chapter
 * 4.5.3 -- Give an example of ASM in action
-
 
 %\subsubsection*{Rationale behind the generalization step}
 
