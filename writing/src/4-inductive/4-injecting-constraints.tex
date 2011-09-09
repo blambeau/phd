@@ -16,8 +16,6 @@ The optimization techniques detailed hereafter are based on various equivalence 
 \emph{Two states will be considered for merging if they agree according to all considered equivalence relations.}
 \end{quote}
 
-%The equivalence relations considered in the following sections are all invariant under state merging; a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA. The results of such pre-processing are kept as annotations on PTA states. The above principle for state merging is very general. It could therefore be further instantiated to other equivalence relations not considered here.
-
 %%%%%
 
 \subsection{Injecting domain knowledge\label{subsection:induction-pruning-with-domain-knowledge}}
@@ -139,3 +137,20 @@ This pruning technique guarantees the consistency between the synthesized System
 where \emph{System} here denotes the synthesized system LTS and $\mathcal{L}^-(G)$ captures all traces violating $G$.
 
 Note that the guarantee given by the above condition is weaker than the \emph{consistent system view} condition (\ref{relation:inductive-statement-negative}) in Section \ref{subsection:inductive-synthesis-statement}. The latter requires the consistency of the synthesized system $\system$ while the above condition only applies to the system LTS. As with implied negative scenarios, a goal could be satisfied by the synthesized System LTS while being violated by the real distributed system. This issue is further discussed in Section \ref{section:inductive-discussion}.
+
+\subsection{Discussion and implementation notes\label{subsection:qsm-constraints-implementation-notes}}
+
+The equivalence relations considered in the previous sections are all invariant under state merging. In other words, a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA; the results of such pre-processing are kept as annotations on PTA states. 
+
+Our implementation reuses the decoration algorithm from \cite{Damas:2006} to propagate fluent values on the PTA (see Section~\ref{subsection:fluents-along-multiple-traces}). Its generalization in~\cite{Damas:2011} may be used as an effective mean to unfold models of legacy components and tester automata on the PTA without additional developments.
+
+The principle for constraining state merging through equivalence relations appeared in~\cite{Coste:1998, Coste:2004}. It can be further instantiated to other equivalence relations not considered here. In particular, it is \emph{not} limited to relations that are invariant under state merging.
+
+As an illustrative example, consider the following generalization of the way fluent values are used to constraint induction. We know from Section~\ref{subsection:fluents-along-multiple-traces} that the states of any LTS can be annotated with invariants defined on fluents. Let $inv$ denote a function mapping each PTA state to its state invariant; let also denote by \emph{Dom} a domain property that must be met in every state of the system LTS. Consider the following pruning rule:
+\begin{quote}
+\emph{Two states $q$ and $q'$ will be considered for merging if $inv(q) \wedge inv(q') \models \mbox{Dom}$}
+\end{quote}
+
+The equivalence relation here is the set of state pairs whose conjunction of invariants satisfies the domain property. This equivalence relation is \emph{not} invariant under state merging. The merging constraint can however be enforced; to achieve this, the compound state resulting from merging $q$ and $q'$ has to be annotated by the conjunction of their state invariants; this new invariant is then used in subsequent merges.
+
+In the general case of DFA induction\footnote{that is, in contrast to LTS induction}, a similar mechanism is needed to implement the Blue-fringe optimization with an augmented PTA. In that case, an error state may be merged with a non accepting state provided the result is not merged later with an accepting one. That is, the relation capturing the equivalence of states in terms of their continations is not invariant under state merging.
