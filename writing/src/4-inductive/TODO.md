@@ -1,5 +1,3 @@
-* 4.1.3 -- The Generalization step is not clear. Introduce the tree-shaped PTA. 
-           See Axel's comments on page 61.
 * 4.1.3 -- Rationale behind the generalization step -> Discussion
 * 4.1.3 -- A word about correctness -> Discussion
 * 4.2.4 -- Is is possible to reverse the presentation: intuition -> math???

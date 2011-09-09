@@ -22,6 +22,7 @@ Generalizing a positive sample $S_+$ can be performed by merging states from an 
 Given an automaton $A$ and a partition $\pi$ defined on its state set, the quotient automaton $A/\pi$ is obtained by merging all states $q$ belonging to the same partition subset $B(q,\pi)$. A state $B(q,\pi)$ in $A/\pi$ thus corresponds to a subset of states in $A$. 
 
 A state $B(q,\pi)$ is accepting in $A/\pi$ if and only if at least one state of $B(q,\pi)$ is accepting in $A$. Similarly, there is a transition on the symbol $\mathrm{a}$ from state $B(q,\pi)$ to state $B(q',\pi)$ in $A/\pi$ if and only if there is a transition on $\mathrm{a}$ from at least one state of $B(q,\pi)$ to at least one state of $B(q',\pi)$ in $A$. 
+\label{definition:quotient-automaton}
 \end{definition}
 
 \begin{figure}

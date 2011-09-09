@@ -29,9 +29,8 @@ The consistency condition covers the three following criteria, discussed in Sect
 
 \item[Consistent system view:] the system covers all positive scenarios and the preconditions of all negatives ones; it also excludes all negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
 \begin{align}
-&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System),\\
-&\mathcal{L}^-(Sc) \cap \mathcal{L}(System) = \emptyset,
-\label{relation:inductive-statement-negative}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)         \label{relation:inductive-statement-positive}\\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(System) = \emptyset, \label{relation:inductive-statement-negative}
 \end{align}
 where $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ encode the scenario collection in terms of positive and negative event traces, respectively.
 
@@ -83,21 +82,30 @@ Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our 
 \caption{Inductive LTS synthesis from MSCs: overview\label{image:inductive-synthesis-overview}}
 \end{figure}
 
-\noindent \textbf{The generalization step} extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a system LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the RPNI algorithm (RPNI stands for Regular Positive and Negative Inference) developed in the context of grammar induction \cite{Oncina:1992}, see Section \ref{section:inductive-background} hereafter. Roughly, it proceeds as follows.
+\subsubsection*{The generalization step}
 
-An initial LTS $A_0$ accepting all the positive scenario traces is incrementally refined as automata $A_1,\ldots,A_n$ by merging well-chosen state pairs. The aim is to generalize accepted behaviors so that the following relations hold:
+This step extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a system LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the RPNI algorithm (RPNI stands for Regular Positive and Negative Inference) developed in the context of grammar induction \cite{Oncina:1992}, see Section \ref{section:inductive-background} hereafter. Roughly, it proceeds as follows.
+
+An initial LTS $A_0$ is built as a first solution; it has the shape of a tree that accepts all positive scenario traces but does not generalize behaviors. To achieve such generalization, the initial LTS is incrementally refined as automata $A_1,\ldots,A_n$ by merging well-chosen state pairs (see Fig.~\ref{Fig:algo:steps} on page~\pageref{Fig:algo:steps} for an illustration of this process).
+
+This process is such that the two relations below hold. Relation~(\ref{equation:generalization-step-1}) states that the initial LTS $A_0$ is a valid solution when it comes to accepting the positive traces. Relation~(\ref{relation:inductive-language-refinements}) states that the generalization process is monotonic in that the behaviors accepted by an intermediate solution will remain accepted by every of its successors, up to the final LTS $A_n$.
 \begin{align}
-&\mathcal{L}^+(Sc) = \mathcal{L}(A_0) \\
+&\mathcal{L}^+(Sc) = \mathcal{L}(A_0) \label{equation:generalization-step-1}\\
 &\mathcal{L}(A_0) \subseteq \mathcal{L}(A_1) \subseteq \ldots \subseteq \mathcal{L}(A_n)
 \label{relation:inductive-language-refinements}
 \end{align}
+
 To avoid overgeneralization, this process is performed under the control of the negative traces from $\mathcal{L}^-(Sc)$. Every intermediate solution $A_i$ has to meet the \emph{consistent system view} condition; the latter provides a useful algorithm invariant, namely,
 \begin{align}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(A_i)        \label{relation:inductive-invariant}\\
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset \label{relation:inductive-invariant-II}
 \end{align}
 
-\noindent \textbf{The decomposition step} computes a LTS for each agent by projecting the system LTS onto their respective alphabet. For an agent $Ag$ the projection of the system LTS $S$ is given by:
+This invariant provides a proof argument if compared to relations (\ref{relation:inductive-statement-positive}) and (\ref{relation:inductive-statement-negative}). Correctness arguments will be detailed in Section~\ref{XXX}.
+
+\subsubsection*{The decomposition step}
+
+In a second step, a LTS for each agent is computed by projecting the system LTS onto their respective alphabet. For an agent $Ag$ the projection of the system LTS $S$ is given by:
 \begin{align}
 (S \setminus \Sigma_{Ag}^c)^\Delta
 \end{align}
@@ -105,19 +113,7 @@ To avoid overgeneralization, this process is performed under the control of the 
 
 The above formula makes use of the hiding, determinization and minimization operators on LTS discussed in Section~\ref{section:background-state-machines}.
 
-%\subsubsection*{Rationale behind the generalization step}
-
-%Our synthesis requirements include ``behavior generalization''. Looking at relation (\ref{relation:inductive-language-refinements}) we might ask ourselves what drives the generalization process and until when. By construction, the first automaton $A_0$ already meets the consistent system view conditions (\ref{relation:inductive-invariant}) and (\ref{relation:inductive-invariant-II}). Therefore, $A_0$ is a valid, yet trivial, solution. Why not simply use it?
-
-%The answer is to be found in the Occam's principle stating that ``among all models explaining the world equally well, the simplest should be preferred''. Using grammar induction this amounts to searching for the \emph{smallest} automaton consistent with the positive and negative scenarios, also called the \emph{input sample}. The initial automaton $A_0$ is rarely the simplest model according to this criteria. 
-
-%Looking for the smallest automaton consistent with an input sample is known to be NP-hard \cite{Gold:1978, Angluin:1978}. The RPNI algorithm offers a consistent approximated solution in polynomial time; this solution is the smallest consistent deterministic automaton when the input sample is rich enough, in particular when it forms a so-called \emph{characteristic sample} (see later) \cite{Oncina:1992}.
-
-%\subsubsection*{A word about correctness}
-
-%The decomposition step guarantees that the \emph{structural consistency} and \emph{consistent agent view} conditions hold. It is a straight application of the material given in Chapter~\ref{chapter:framework}. 
-
-%The generalization invariant guarantees that the \emph{consistent system view} condition holds for the System LTS. Strictly speaking, the approach is correct only if this condition holds for the system re-composition $\system$. This might not be the case in presence of negative implied scenarios. This issue is further examined in Section~\ref{section:inductive-discussion}.
+\subsubsection*{Meeting additional requirements}
 
 As we just mentioned it, the generalization step is driven by RPNI; Section \ref{section:inductive-background} provides some background on this grammar induction approach. However, this is just a first milestone toward an inductive LTS synthesis approach that meets all requirements in Section \ref{subsection:inductive-synthesis-requirements}. 
 \begin{itemize}

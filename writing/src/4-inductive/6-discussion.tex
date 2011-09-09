@@ -1,1 +1,7 @@
 \section{Discussion\label{section:inductive-discussion}}
+
+From a grammar induction point of view, the ASM algorithm can be seen as generalizing any positive regular language $\mathcal{L}^+$ under the control of a negative sample $S^-$. As such, RPNI is thus a special case where the positive language forms a sample $S^+$, that is a finite set of strings.
+
+Moreover, goals and domain properties can still be used to prune the ASM search space with the technique discussed in Section~\ref{subsection:induction-pruning-with-goals}. As goals actually capture negative languages through their tester automaton, this amounts to consider a generalization of ASM to generalize a positive language $\mathcal{L}^+$ under the control of a negative one $\mathcal{L}^-$. This generalization is called ASM$^*$ and briefly discussed in \cite{Lambeau:2008}.
+
+
