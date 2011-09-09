@@ -9,6 +9,8 @@
 * grep "letter" -> "symbol"
 * grep "(see later)" -> "(see Section X)"
 * grep ", as" -> "as"
+* grep "profit" -> "benefit"
+* grep "fluent invariant" -> "state invariant"
 * How to change captions' font??
 
 * 2011.06.30 - Sections to refactor in chapter 4

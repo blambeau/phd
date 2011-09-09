@@ -4,7 +4,7 @@ A clinical pathway is a well-defined process, based on medical protocols, guidel
 
 The tool presented in this section is motivated by a joint project aimed at building and analyzing models of clinical pathways. Guarded hMSCs have been chosen as the particular kind of process models, for which analyses discussed in \cite{Damas:2011} have been implemented. These analyses are actually made at the g-LTS level; the tool here thus relies on the synthesis algorithm from g-hMSC to g-LTS described in Section \ref{subsection:from-ghmsc-to-glts}.
 
-A snapshot of the main screen of the tool is shown in Fig.~\ref{image:gisele-tool}. A guided tour of the tool on a medical case-study can be found in \cite{Damas:2011}. In this section, we will highlight keypoints of its implementation and discuss a few design decisions. The main features implemented in the tool are:
+A snapshot of the main screen of the tool is shown in Fig.~\ref{image:gisele-tool}. A guided tour of the tool on a medical case-study can be found in \cite{Damas:2011}. In this section, we will highlight key points of its implementation and discuss a few design decisions. The main features implemented in the tool are:
 
 \begin{figure}
 \centering\scalebox{.525}{
@@ -55,9 +55,9 @@ Rewritings algorithms are implemented in the ``Process rewriting'' module, and r
 
 \item[Process analyzer] This module implements the process analyses discussed in \cite{Damas:2011}; they rely on different instantiations of an abstract fixpoint algorithm on g-LTS. Such analyses makes an intensive use of automata and binary decision diagrams with the help of dedicated libraries. 
 
-For every process instance, the rich model automatically triggers the execution of an analyse as soon as its results are needed. Those results are kept as decoration of the g-LTS states. These decorated states are kept as an cache for analysis results. This cache is cleaned up when a process definition changes by simply throwing its g-LTS away.
+For every process instance, the rich model automatically triggers the execution of an analysis as soon as its results are needed. Those results are kept as decoration of the g-LTS states. These decorated states are kept as an cache for analysis results. This cache is cleaned up when a process definition changes by simply throwing its g-LTS away.
 
-\item[Web GUI] The last module is the graphical user interface (GUI), that mostly runs inside a web browser. Thanks to services offered by the rich model, the implementation of the GUI turns to a simple model navigator, implemented internaly with an MVC pattern. 
+\item[Web GUI] The last module is the graphical user interface (GUI), that mostly runs inside a web browser. Thanks to services offered by the rich model, the implementation of the GUI turns to a simple model navigator, implemented internally with an MVC pattern. 
 
 The main screen of this navigator is made of three panels (see Fig~\ref{image:gisele-tool}). 
 \begin{itemize}
@@ -72,8 +72,8 @@ The main screen of this navigator is made of three panels (see Fig~\ref{image:gi
 
 This rich model module and its use of the ``Process rewriting'' and ``Process analyzer'' is an important design decision of the Gisele tool. The idea is to make the opposite of the ISIS tool with respect to analyses and user feedback. 
 
-In the ISIS tool, synthesis and analyses are made ``on demand'': for example, the user explicitely launches consistency checks and receives dedicated feedback as a result (see Section \ref{section:tool-support-isis}).
+In the ISIS tool, synthesis and analyses are made ``on demand'': for example, the user explicitly launches consistency checks and receives dedicated feedback as a result (see Section \ref{section:tool-support-isis}).
 
-In the Gisele tool, the end-user navigates her model thanks to the GUI that runs inside a web browser. Everytime she looks at a task, the tree at right provides her with feedback about analyses and their results: green means success, red means fail. The pattern is inspired from continuous compilation chains in integrated development environments (IDE) such as Eclipse. 
+In the Gisele tool, the end-user navigates her model thanks to the GUI that runs inside a web browser. Every time she looks at a task, the tree at right provides her with feedback about analyses and their results: green means success, red means fail. The pattern is inspired from continuous compilation chains in integrated development environments (IDE) such as Eclipse. 
 
-Our experience with that pattern is that it provides a natural and effective user experience in terms of modeling and continuous improvement of a clinical pathway. However, the smoothness of the navigation might be slightly hurted because the execution of analyses is automatically triggered but may require time to finish. The current version of the tool freezes the GUI with a friendly waiting message. Other heuristics are worth considering, such as implementing a background execution of the analyses that are the most likely needed or deferring the display of specific parts of the UI.
+Our experience with that pattern is that it provides a natural and effective user experience in terms of modeling and continuous improvement of a clinical pathway. However, the smoothness of the navigation might be slightly hurt because the execution of analyses is automatically triggered but may require time to finish. The current version of the tool freezes the GUI with a friendly waiting message. Other heuristics are worth considering, such as implementing a background execution of the analyses that are the most likely needed or deferring the display of specific parts of the UI.

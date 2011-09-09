@@ -1,52 +1,56 @@
 \section{A model-checker for process models\label{section:tool-model-checker}}
 
-Our model-checker for guarded hMSC extends the compositional model-checking technique presented in \cite{Giannakopoulou:2003}. The latter allows model-checking LTS state machines against FLTL safety properties. Our tools extends this to the model-checking of g-hMSC and g-LTS. 
+Our model-checker for guarded hMSC extends the compositional model-checking technique presented in \cite{Giannakopoulou:2003}. The latter supports model-checking of LTS state machines against FLTL safety properties. Our tools extends this to the model-checking of g-hMSC and g-LTS models. 
 
-The model-checking technique is illustrated on Fig.~\ref{image:model-checking-technique}. Let us read it backwards:
+The model-checking technique is outlined on Fig.~\ref{image:model-checking-technique}. Let us look at it backwards from right to left:
 \begin{itemize}
-\item Roughly, compositional model-checking consists in searching for an accepting state in the composition of two automata: one for the model being checked (top), the other for the negation of the checked property (the tester automaton at bottom). Note that our tool is limited to safety properties, for which such tester always exists (see Section \ref{subsection:background-property-and-tester-automata}).
-\item The model automaton is synthesized from the g-hMSC and fluent definitions using the techniques described in Chapter \ref{chapter:deductive}. At first glance (see below), it is the pure LTS capturing the trace semantics of the input g-hMSC.
-\item The tester automaton is synthesized using the technique described in \cite{Giannakopoulou:2003}. Roughly, it consists in translating the negation of the checked safety property to a B\"uchi automaton \cite{Giannakopoulou:2002}; the latter is then composed with fluent automata and with a synchronizer automaton forcing the transition on the B\"uchi automaton after every system event. 
+\item Roughly, compositional model-checking consists in searching for an accepting state in the composition of two automata: one for the model being checked (top), the other for the negation of the checked property (tester automaton at bottom). Our tool is limited to safety properties, for which such tester always exists (see Section \ref{subsection:background-property-and-tester-automata}).
+\item The model automaton is synthesized from the g-hMSC and fluent definitions using the techniques described in Chapter \ref{chapter:deductive}. At first glance, it is a pure LTS capturing the trace semantics of the input g-hMSC (see below).
+\item The tester automaton is synthesized using the technique described in \cite{Giannakopoulou:2003}. Roughly, it consists in translating the negation of the checked safety property into a B\"uchi automaton \cite{Giannakopoulou:2002}; the latter is then composed with fluent automata and with a synchronizer automaton forcing the transition on the B\"uchi automaton after every system event. 
 \end{itemize} 
 
 \begin{figure}
 \centering\scalebox{.525}{
   \includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/7-tool-support/images/model-checking-technique}}
-  \caption{Model-checking guarded hMSC: automaton compositions\label{image:model-checking-technique}}
+  \caption{Model-checking guarded hMSC: automata compositions\label{image:model-checking-technique}}
 \end{figure}
 
-The main differences between our model-checker and the technique described in \cite{Giannakopoulou:2003} and its implementation in LTSA are the following.
+The main differences between our model-checker and the technique described in \cite{Giannakopoulou:2003} and its LTSA implementation are the following.
 \begin{itemize}
 
-\item Unlike LTSA, our tool makes use of guarded automata instead of simple LTS. Guarded automata are a flavor of guarded LTS that distinguishes between accepting and non-accepting states. 
+\item Unlike LTSA, our tool makes use of \emph{guarded} automata instead of simple LTS. Guarded automata are a flavor of guarded LTS that distinguishes between accepting and non-accepting states. 
 
-Guarded automata allows us to capture B\"uchi automata, fluent automata, LTS, g-LTS and standard automata with only one data structure. Only one composition algorithm is also required for apparently different compositions operators in Fig.~\ref{image:model-checking-technique}. 
+Guarded automata allow us to capture standard automata, B\"uchi automata, fluent automata, LTS and g-LTS through one single data structure. A single composition algorithm is sufficient for apparently different composition operators in Fig.~\ref{image:model-checking-technique}. 
 
-The composition operator on guarded automata extends the one described in Section \ref{subsection:glts-operators} by making a distinction between accepting and non-accepting states. This operator reduces to g-LTS composition when composed automata have all accepting states; it reduces to LTS composition if they don't have guards either. 
+The composition operator on guarded automata extends the one described in Section \ref{subsection:glts-operators} by making a distinction between accepting and non-accepting states. This operator reduces to g-LTS composition when the composed automata have accepting states only; it reduces to LTS composition if they don't have guards. 
 
-Last, this operator requires computing the conjunctions of guards and checking their satisfiability. Our tool uses Binary Decision Diagrams (BDD) to implement this efficiently \cite{Bryant:1986}. 
+The composition operator requires computing the conjunctions of guards and checking their satisfiability. Our tool uses Binary Decision Diagrams (BDD) to implement this efficiently \cite{Bryant:1986}. 
 
 \item LTSA checks temporal properties for a specific initial state, specified through an initial value for each fluent. Guarded models use an initial condition $C_0$ instead (see Sections~\ref{section:background-process-models} and \ref{section:deductive-glts}). Such condition actually captures a class of fluent initial states. 
 
-Therefore, our tool must check the temporal property for any initial state satisfying the initial condition. This simply requires the definition of fluent automata given in Section~\ref{subsection:from-glts-to-lts} instead of the one given in \cite{Giannakopoulou:2003}; the synchronizer automaton must also be slightly adapted so as to first synchronize with guarded transitions from initial states of the fluent automata.
+Therefore, our tool must check the temporal property for any initial state satisfying the initial condition. This requires the definition of fluent automata given in Section~\ref{subsection:from-glts-to-lts} instead of the one given in \cite{Giannakopoulou:2003}; the synchronizer automaton must also be slightly adapted so as to first synchronize with guarded transitions from initial states of the fluent automata.
 
-\item For effective feedback in case of a property violation our tool needs to keep track of the initial fluent assignment during search. To achieve this, the model and tester automata are not pure LTS; instead, they have fluent value assignments on all transitions from their initial state. These transitions capture the choice of an fluent initial state at the beginning of every trace. 
-
-To achieve this, the construction of the model and tester automata is slightly changed. First, observe that their construction relies on a composition with fluent automata. In both cases, this composition yields guarded transitions from the initial state. By construction, these guards reduce to simple conjunctions of fluent literals, that is, a form of fluent value assignments. The last step of the construction of these automata usually consists in hiding guards. In our case, this hiding step is simply updated in such a way that these guarded transitions from the initial state are kept. All other guards are still hidden. 
+\item For effective feedback in case of a property violation, our tool needs to keep track of the initial fluent assignment during search. To achieve this, the model and tester automata are not pure LTS; instead, they have fluent value assignments on all transitions from their initial state. These transitions capture the choice of a fluent initial state at the beginning of every trace (see Section~\ref{subsection:from-glts-to-lts}). 
 
 \end{itemize}
 
 \subsubsection*{Discussion}
 
-The tool is implemented in Java 1.5.0 and has been tested on a few case studies (see, e.g. \cite{Damas:2010}). Numerous improvements could be made:
+Our tool is implemented in Java 1.5.0. It has been tested on a few case studies (see, e.g., \cite{Damas:2010} and \cite{Damas:2011}). 
+
+Numerous improvements could be made:
 \begin{itemize}
-\item Our model-checking procedure relies on three costly compositions: one for building the model, one for the tester and one for the model-checking itself. 
+\item Our model-checking procedure relies on three costly compositions: one for building the model, one for the tester and one for the model-checking itself (see Fig.~\ref{image:model-checking-technique}). 
 
-The third one is implemented as an effective search: it ends and returns a trace as soon as a violation is found, that is, without explicitely representing the composed automaton. In contrast, our tool explicitely represents the tester and the model automata. 
+The third composition is implemented as a search: it ends and returns a trace as soon as a property violation is found instead of capturing the composed automaton in a data structure and analyzing it afterwards. In contrast, our tool explicitly capture the tester and the model automata. 
 
-There are both advantages and inconvenients in doing so. Verifying a property requires explicitely representing the whole state space of the guarded hMSC, which has been shown exponential in the number of fluents. An implicit search strategy could be implemented here. However it would prove less efficient for verifying more than one safety property on the same model. Indeed, the model automata can be minimized if explicitly captured. A search strategy would not profit from this state space reduction.
+There are pros and cons in doing so instead of a whole search strategy covering the three compositions:
+\begin{itemize}
+\item On the negative side, verifying a property requires explicitly capturing the whole state space of the guarded hMSC; this is known to be exponential in the number of fluents (see Section~\ref{subsection:from-glts-to-lts}).
+\item On the positive side, our strategy proves more efficient when multiple safety properties are checked on the same process model. Indeed, the g-hMSC may be synthesized as a LTS automata only once; moreover, the latter can be minimized. A search strategy would not benefit from this state space reduction.
+\end{itemize}
 
-\item Unlike LTSA, our tool does not support model-checking of liveness properties. The procedure described in \cite{Giannakopoulou:2003} could certainly be adapted to guarded models in a similar way as for safety properties.
+\item Unlike LTSA, our tool does not support model-checking of liveness properties; it does not implement partial order reduction optimization either. The procedures described in \cite{Giannakopoulou:2003} could certainly be adapted to guarded models.
 \end{itemize}
 
 %The logical architecture of our model-checker is depicted in Fig.~\ref{image:model-checker}. Its implementation mostly relies on three main modules:
