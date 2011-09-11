@@ -101,13 +101,14 @@ To avoid overgeneralization, this process is performed under the control of the 
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset \label{relation:inductive-invariant-II}
 \end{align}
 
-This invariant provides a proof argument if compared to relations (\ref{relation:inductive-statement-positive}) and (\ref{relation:inductive-statement-negative}). Correctness arguments will be detailed in Section~\ref{XXX}.
+This invariant provides a proof argument if compared to relations (\ref{relation:inductive-statement-positive}) and (\ref{relation:inductive-statement-negative}). Correctness arguments will be detailed in Section~\ref{subsection:inductive-discussion-correctness}.
 
 \subsubsection*{The decomposition step}
 
 In a second step, a LTS for each agent is computed by projecting the system LTS onto their respective alphabet. For an agent $Ag$ the projection of the system LTS $S$ is given by:
 \begin{align}
 (S \setminus \Sigma_{Ag}^c)^\Delta
+\label{definition:decomposition-step}
 \end{align}
 \noindent where $\Sigma_{Ag}^c$ denotes the set of all system events excluding those of $Ag$'s interface.
 
