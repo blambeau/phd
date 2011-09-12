@@ -1,0 +1,51 @@
+\section{Behavior model synthesis aimed at model analysis\label{section:related-for-analysis}}
+
+This section focusses on behavior model synthesis techniques aimed at making models amenable to analysis, such as model checking. Section~\ref{section:related-for-analysis-1} focusses on analysis and model-checking of process models specifically. Section~\ref{section:related-for-analysis-2} discusses approaches for model-checking scenario models. Section~\ref{section:related-for-analysis-2} briefly discusses how implied scenarios can be used for validating structural system designs.
+
+%%%
+
+\subsection{Model checking and analysis of process models\label{section:related-for-analysis-1}}
+
+The technique detailed in Chapter~\ref{chapter:deductive} for capturing the trace semantics of guarded hMSC models aims at enabling a various set of analyses on our process models. The model checking of guarded hMSCs has been discussed in Section~\ref{section:tool-model-checker}. 
+
+Other related techniques are detailed in a companion thesis~\cite{Damas:2011}. These include the formal analysis of guards, such as satisfiability and completeness checks; checking of task preconditions; analysis of non-functional process requirements such as timing and dosage properties. All these techniques are performed at the g-LTS level (see Section~\ref{section:deductive-glts}). They use various instantiations of the symbolic execution algorithm briefly introduced in Section~\ref{subsection:fluents-along-multiple-traces}.
+
+Various process languages exist in the literature such as UML Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005}, BPMN \cite{OMG:2008}, Little-Jil \cite{Clarke:2008}. The main advantages of guarded hMSCs over those is their emphasis on decisions-based processes, through formal fluent-based guards in particular.
+
+Efforts were recently made to adapt verification technology to process models. Typically, a state machine model is derived from the input model and then checked against properties. For example, structural consistency constraints on UML activity diagrams can be checked using the NuSMV model checker~\cite{Eshuis:2006}. Similar constraints can be verified on Little-JIL process models~\cite{Lerner:2004}, after task conversion into LTS, using LTSA~\cite{Magee:1999}. LTSA was also used for deadlock analysis and model-checking of workflow schemas represented in FSP/LTS~\cite{Karamanolis:2000}.
+
+%%%
+
+\subsection{Model checking scenario models\label{section:related-for-analysis-2}}
+
+Theoretical results for the model checking of Message Sequence Charts have been pioneered by Alur et al. \cite{Alur:1999, Alur:2000}. While these results enable practical approaches to model-checking through automaton synthesis, the authors do not provide practical algorithms for doing so.
+
+The semantic links between MSC, hMSC and LTS appeared in \cite{Uchitel:2001, Uchitel:2001b}, enabling the model-checking and animation of hMSC models in LTSA \cite{Uchitel:2003}. In particular, a synthesis algorithm is given that allows deriving FSP specifications for capturing the traces of each agent involved in a hMSC (see Section~\ref{subsection:background-hmsc}). 
+
+Observe that such technique could be seen as a way to synthesize agent state machines from scenarios. However, it is a derivative technique that does not involve behavior generalization. Moreover, in the original approach, state machines are not intended to be seen or manipulated directly by the end-user. For this reason, this thesis considered the synthesis algorithm from \cite{Uchitel:2003} as the definition of the operational semantics for hMSC and a practical way for model-checking them.
+
+%%%
+
+\subsection{Implied scenarios synthesis for structural validation\label{section:related-for-analysis-3}}
+
+When specifying systems with scenario models, implied scenarios are behaviors that are not explicitly present in system descriptions but can be shown to appear in every system implementation respecting those descriptions \cite{Alur:2000, Uchitel:2004}. This is inherent to distributed systems that are described system-wise but implemented component-wise: capturing all interleavings of agent behaviors in scenario models is generally impossible.
+
+A technique is described in \cite{Uchitel:2004} to validate a hMSC specification with experts. For a hMSC $H$, implied scenarios are defined as traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ (see Section \ref{subsection:background-hmsc}). Implied scenarios are enumerated and submitted for classification as positive or negative. Accepted scenarios simply enrich the initial scenario collection as new examples of desired system behavior. Rejected scenarios are more problematic as they denote traces that will necessarily be exhibited by any system consistent with the hMSC.
+
+This technique can thus be used for validating the system decomposition in terms of agents and their respective interfaces. Indeed, the presence of rejected implied scenarios is a sign that the system decomposition should be refactored.
+
+Implied scenarios may also appear with our techniques, as discussed in Section~\ref{subsection:inductive-discussion-correctness}. The algorithm from \cite{Uchitel:2004} could be easily adapted to validate system designs in our case; the set of implied scenarios to consider is defined as follows:
+\begin{align*}
+\mathcal{L}(\agentscomposed) \setminus \mathcal{L}(\mbox{System})
+\end{align*}
+where \emph{System} denotes the system LTS induced by QSM or ASM.
+
+%%%
+
+%\subsection{LTS synthesis for checking software specifications}
+
+%Goals and domain properties can be translated to tester automata using \cite{Giannakopoulou:2003} (see Section \ref{section:background-goals}). Such tester captures all event traces violating a LTL safety property. This technique is at the heart of the compositional model-checker implemented in the LTSA tool \cite{Magee:1999}, where a event-based model of system is checked against declarative safety properties. 
+
+%A related technique is discussed in \cite{Letier:2008} where labeled transition systems are derived from operational software specifications built according to the KAOS goal-oriented method. This technique differs from the previous one in that it targets the formal analysis and animation of goal models themselves. It also takes care of reconciling the synchronous and asynchronous frameworks used by KAOS and LTSA, respectively.  
+
+%In both cases, the synthesis of state machines from goals aims at formal model analysis. By nature, this is a derivation process that does not involve behavior generalization. Instead, system behaviors are translated to operational models from declarative ones.

@@ -1,81 +1,12 @@
 \chapter{Related Work\label{chapter:discussion}}
 
-This chapter gives an overview of research efforts along model synthesis as reported in the literature. 
+This chapter discusses related work on model synthesis. We restrict our attention here to \emph{behavior} model synthesis specifically; we also briefly discuss a few goal inference techniques that nicely fit our formal framework. 
 
-%%%
+More specifically, Section~\ref{section:related-from-scenarios} discusses a few approaches aiming at deriving state machine models from scenarios. Section~\ref{section:related-for-analysis} discusses behavior model synthesis aimed at analyzing scenario specifications and process models. Section~\ref{section:related-for-requirements} then discusses a few approaches that use induction and model synthesis as a mean to infer requirements and explore system designs.
 
-\section{State machine synthesis from scenarios\label{section:related-state-machines-from-scenarios}}
+Model synthesis is a fairly broad topic. In particular, this chapter does not discuss model synthesis approaches aimed at controller synthesis~\cite{Clarke:1981, Pnueli:1989, Asarin:1995}, program synthesis \cite{Manna:1971, Balzer:1985, Wasowski:2003}, model-based code generation \cite{Kohler:2000, Wasowski:2003}, model-based reverse engineering \cite{Briand:2003, Yu:2005}.
 
-This section reports specific techniques for synthesizing state machines from scenarios and high-level scenarios.
-
-\subsection*{LTS synthesis for model checking hMSC}
-
-Semantic links between MSC, hMSC and LTS first appeared in \cite{Uchitel:2001, Uchitel:2001b}. For a hMSC $H$, the technique to capture the set of agent and system traces $\mathcal{L}_{arch}(H)$ through LTS (see Section \ref{section:background-state-machines}) come from in \cite{Uchitel:2003}. 
-
-Such LTS synthesis mostly aims at model-checking and animating hMSC specifications. In that sense, they fall into the category of techniques aiming at model analysis. As a consequence, they do not involve behavior generalization or multi-view model completion.  Also, state machines here are not intended to be seen or manipulated directly by the end-user.
-
-\subsection*{Synthesis of statecharts from sequence diagrams}
-
-Whittle and Schumann proposed a technique for generating UML statecharts from sequence diagrams that capture positive scenarios and positive scenarios only \cite{Whittle:2000}. Their technique requires scenario interactions to be annotated by pre and post-conditions on global state variables expressed in the Object Constraint Language (OCL). 
-
-In a similar spirit, Kruger et al. proposed a technique for translating MSCs into statecharts \cite{Kruger:2000}. Their technique
-also requires state information, through MSC conditions, as additional input.
-
-Both techniques generalize behaviors described in input scenarios by introducing sequencing and loops. The availability of the state information needed for this might be problematic in practice, as end-users hardly reason in terms of pre and post- conditions.
-
-\subsection*{Minimally adequate teacher for learning state machines}
-
-Makinen and Systa developed an interactive approach for synthesizing UML statecharts from sequence diagrams that capture positive scenarios in~\cite{Makinen:2001}. This is another attempt to use grammatical inference techniques for modeling software system behaviors while involving behavior generalization. It is inspired from the model of minimally adequate teacher proposed by Angluin in~\cite{Angluin:1987}. We see two important limitations of this approach.
-
-\begin{itemize}
-
-\item The inputs are not scenarios but local traces in agent state machine. These traces are sequences of events seen by a single agent, that is, along a single scenario timeline. The alphabet of possible events and the learning strings are then specific to each agent and the learning problem has to be tackled separately for each agent while losing a global view of the system. 
-
-Practical tests with our approach have shown that the learning task becomes simpler if one restricts it to the induction of separate agent models. When the technique involves interactions with the end-user, this is however less adequate since it requires her to be able to classify traces in a different target language for each agent. It is much more convenient to interact with the end-user in the scenario language of the global system because this is the language she used in the first place.
-
-\item The end-user is also asked to answer both membership and equivalence queries. Membership queries are traces to be classified as positive or negative examples of agent behaviors, and are similar to our scenario queries. Equivalence queries, in contrast, denote the ability to classify state machines candidates as correctly capturing full agent behaviors. Such queries are difficult to answer by an end-user in practice, as those machine are precisely unknown in the first place. 
-
-\end{itemize}
-
-%%%
-
-\section{State machine synthesis from goals}
-
-Goals and domain properties can be translated to tester automata using \cite{Giannakopoulou:2003} (see Section \ref{section:background-goals}). Such tester captures all event traces violating a LTL safety property. This technique is at the heart of the compositional model-checker implemented in the LTSA tool \cite{Magee:1999}, where a event-based model of system is checked against such declarative safety properties. 
-
-A related technique is discussed in \cite{Letier:2008} where labeled transition systems are derived from operational software specifications built according to the KAOS goal-oriented method. This technique differs from the previous one in that it targets the formal analysis and animation of goal models themselves. It also takes care of reconciling the synchronous and asynchronous frameworks used by KAOS and LTSA, repectively.  
-
-In both cases, the synthesis of state machines from goals aims at formal model analysis. By nature, this is a derivation process that does not involve behavior generalization. Instead, system behaviors are translated to operational models from declarative ones. 
-
-%%%
-
-\section{Goal synthesis from scenarios}
-
-A technique for synthesizing goals from a scenario collection is presented in~\cite{Damas:2006}. It consist in decorating MSC timelines with invariants on fluents monitored and controlled by the associated agent. From these invariants, goals are induced that respect two kinds of specification patterns, namely \emph{maintain goals} $\square(P \rightarrow Q)$ and \emph{immediate achieve goals} $\square(P \rightarrow \circ Q)$. Inferred goals are submitted for classification by an expert. 
-
-This synthesis technique helps enriching a multi-view system description while guaranteeing multi-view consistency. Indeed, an inferred goal is stated as a general rule observed from available examples. Accepted goals confirm the rule and enrich the goal model accordingly; rejected ones infirm the rule and call for enriching the scenario collection with a counter example. As it mostly relies on the availability of fluent invariants, the technique could be extended to infer goals from any annotated LTS, and hence, from agent state machines or a hMSC. 
-
-Another technique is due to Van Lamsweerde and Willemet, who developed an inductive learning technique for generating goal specifications in linear temporal logic (LTL) from positive and negative scenarios expressed in MSC-like form \cite{VanLamsweerde:1998}. The user has to provide pre/postconditions of scenario interactions which might be harder to give than fluent definitions.
-
-Yet another approach is proposed in \cite{Alrajeh:2007} that uses inductive logic programming for extracting requirements from example scenarios and a partial requirements specification. Scenarios represent positive and negative system behaviors whereas the requirements specification captures an initial but incomplete background knowledge of the envisioned system. The specification is completed by learning a set of missing requirements that cover all of the desirable scenarios, but none of the undesirable ones.
-
-%%%
-
-\section{Implied scenarios synthesis for validation}
-
-When designing systems through scenarios, implied scenarios are those behaviors that are not explicitly present in system descriptions but can be shown to appear in every system implementation respecting those descriptions \cite{Alur:2000, Uchitel:2004}. This is inherent to distributed systems that are described system-wise but implemented component-wise: capturing all interleavings of agent behaviors in models is generally impossible.
-
-A technique is described in \cite{Uchitel:2004} to validate a hMSC specification with experts. For a hMSC $H$, implied scenarios are defined as traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ (see Section \ref{subsection:background-hmsc}). Implied scenarios are enumerated and submitted for classification as positive or negative. Accepted scenarios simply enrich the initial scenario description as new examples of system behavior. Rejected scenarios are more problematic: by definition of an implied scenario, such traces will necessarily be exhibited by any system consistent with the hMSC. 
-
-In general, the presence of rejected implied scenarios is a sign that the system decomposition in terms of agents and interfaces should be refactored. For this reason, they have been mostly ignored in the thesis. In particular, our inductive synthesis technique in Chapter~\ref{chapter:inductive-synthesis} does not prevent them from occuring.
-
-\section{State machine synthesis from scenarios and goals}
-
-With multi-view behavior modeling frameworks, scenarios capture a lower-bound of system behavior whereas goals actually capture an upper bound. That is, scenarios describe behaviors that the system must exhibit whereas goals prune the space of acceptable behaviors of the system to be. 
-
-This is clearly captured by the consistency condition of our LTS synthesis chapter in Chapter \ref{chapter:inductive-synthesis}:
-\begin{align*}
-&\mathcal{L}^+(\me{Scenarios}) \subseteq \mathcal{L}(\me{System}) \\
-&\mathcal{L}^-(\me{Goals}) \cap \mathcal{L}(\me{System}) = \emptyset
-\end{align*}
+\input{src/8-discussion/1-bms-from-scenarios}
+\input{src/8-discussion/2-bms-for-analysis}
+\input{src/8-discussion/3-bms-for-requirements}
 

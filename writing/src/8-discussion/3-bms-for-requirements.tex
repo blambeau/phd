@@ -1,0 +1,54 @@
+\section{Eliciting requirements from scenarios\label{section:related-for-requirements}}
+
+This section discusses two particular ways of eliciting requirements from scenarios. Section~\ref{related-for-requirements-1} discusses various approaches for inferring goals from scenarios. Section~\ref{related-for-requirements-2} discusses how scenarios and safety properties can be used conjointly for incremental requirement elicitation. 
+
+\subsection{Goal inference from scenarios\label{related-for-requirements-1}}
+
+A technique for synthesizing goals from scenario collections is presented in~\cite{Damas:2006, Damas:2011} and implemented in the ISIS tool (see Section~\ref{section:tool-support-isis}). It consist in decorating MSC timelines with invariants on fluents monitored and controlled by the associated agent. From these invariants, goals are induced that respect two kinds of specification patterns, namely \emph{maintain goals} $\square(P \rightarrow Q)$ and \emph{immediate achieve goals} $\square(P \rightarrow \circ Q)$. Inferred goals are submitted for classification by an expert. 
+
+This synthesis technique helps enriching a multi-view system description while guaranteeing multi-view consistency. Indeed, an inferred goal is stated as a general rule observed from available examples. Accepted goals confirm the rule and enrich a goal model accordingly; rejected ones infirm the rule and call for enriching the scenario collection with a counter example. 
+
+As it mostly relies on the availability of fluent invariants, the technique could be extended to infer goals from any annotated LTS, and hence, from agent state machines or a hMSC. 
+
+Another technique is due to Van Lamsweerde and Willemet, who developed an inductive learning technique for generating goal specifications in linear temporal logic (LTL) from positive and negative scenarios expressed in MSC-like form \cite{VanLamsweerde:1998}. The user has to provide pre/postconditions of scenario interactions which might be harder to give than fluent definitions.
+
+Yet another approach is proposed in \cite{Alrajeh:2007} that uses inductive logic programming for extracting requirements from example scenarios and a partial requirements specification. Scenarios represent positive and negative system behaviors whereas the requirements specification captures an initial but incomplete background knowledge of the envisioned system. The specification is completed by learning a set of missing requirements that cover all of the desirable scenarios, but none of the undesirable ones.
+
+\subsection{Incremental requirement elicitation from scenarios and safety properties\label{related-for-requirements-2}}
+
+Within a multi-view behavior modeling framework like ours, scenarios capture a lower-bound of system behavior whereas goals actually capture an upper bound. That is, scenarios describe behaviors that the system must exhibit whereas goals prune the space of acceptable behaviors of the system to be. 
+
+This is clearly captured by the consistency condition of our LTS synthesis chapter in Chapter \ref{chapter:inductive-synthesis}:
+\begin{align*}
+&\mathcal{L}^+(\me{Scenarios}) \subseteq \mathcal{L}(\agentscomposed) \\
+&\mathcal{L}^-(\me{Goals}) \cap \mathcal{L}(\agentscomposed) = \emptyset
+\end{align*}
+
+In \cite{Uchitel:2007, Uchitel:2009}, Uchitel et al. developed a technique to capture both the lower bound given by scenarios and the upper bound given by goals within the same behavior model. Modal Transition Systems (MTS) \cite{Larsen:1988} are used instead of LTS for capturing trace-based system behaviors. MTSs are transition systems that distinguish between required, possible and proscribed behaviors. 
+
+MTSs allow supporting incremental system design through scenario questions aimed at eliciting missing requirements. Roughly, the authors adapt the techniques from \cite{Uchitel:2003} and \cite{Giannakopoulou:2003} to capture through MTSs (a) a structured form of MSC scenarios and (b) safety properties expressed in a 3-valued variant of FLTL. Obtained MTSs are merged so as to capture the lower and upper bounds of system behaviors in a single MTS; the latter preserves the semantics of both scenarios and goals. 
+
+So-called \emph{maybe traces} of this MTS are used as scenario questions generated to the user. Such traces denote system behaviors that do not violate safety properties but have not been explored in the scenario specification. Accepted traces denote missing scenarios in the specification whereas rejected ones help identifying missing safety properties. 
+
+In terms of our formal framework, those scenario questions belong to:
+\begin{align*}
+\overline{\mathcal{L}^-(\me{Goals})} \setminus \mathcal{L}^+(\me{Scenarios})
+\end{align*}
+
+When all goals denote safety properties, this language is regular and can be captured through standard automata. Our toolset could therefore be extended with this kind of interactive analysis in addition to our induction approach.
+
+Observe that, while both rely on scenario questions, the approach from Uchitel et al. is not equivalent to ours. In particular, in the former no generalization of scenario behaviors occurs. This actually raises questions about the convergence of the elicitation process in \cite{Uchitel:2007, Uchitel:2009}. 
+
+Indeed, multiple scenarios tend to cover overlapping but \emph{different} paths in the target machine of the composed system. When these scenarios are captured with a transition system $T$, some of its states are trace equivalent with respect to the target system whereas they are not equivalent with respect to $T$ itself. The latter tends to grow when new scenarios are added because no state merging occurs; if $T$ grows, new questions appear and the process diverges. 
+This fact is independent of the \emph{kind} of transition system used to capture behaviors, e.g., LTS, MTS or standard automata. 
+
+To sum up, to our understanding there is no guarantee for the convergence of $\mathcal{L}^+(\me{Scenarios})$ towards the behaviors of the composed system $\mathcal{L}(\agentscomposed)$. As a consequence, even if the safety properties converge towards an adequate set capturing counterexamples of desired system behaviors, $\overline{\mathcal{L}^-(\me{Goals})} \setminus \mathcal{L}^+(\me{Scenarios})$ itself never gets empty.
+
+In contrast, grammar induction is known to converge towards the target machine when its input sample grows \cite{Oncina:1993} (see Chapter~\ref{section:inductive-background}). In particular, the identification-in-the-limit framework guarantees that, when its input is rich enough, QSM induces the target system without generating any scenario question. Available domain knowledge, goals in particular, tend to enrich QSM input.
+
+These observations open interesting perspectives for future research. Indeed, the two approaches seem complementary. In particular, the system LTS induced with QSM, $\mathcal{L}(System)$, tends to converge towards $\mathcal{L}(\agentscomposed)$. In other words, asking scenario questions from the following language:
+\begin{align*}
+\overline{\mathcal{L}^-(\me{Goals})} \setminus \mathcal{L}(\me{System})
+\end{align*}
+appears promising as an elicitation technique \`a la \cite{Uchitel:2007, Uchitel:2009} but with a convergence criteria. Such technique would complement ours as well in that it helps overcoming the limitation of not having a structurally complete sample in the first place.
+
