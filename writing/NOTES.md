@@ -1,5 +1,4 @@
 * grep "letter" -> "symbol"
-* grep "(see later)" -> "(see Section X)"
 * grep ", as" -> "as"
 * grep "fluent invariant" -> "state invariant"
 * grep "case-studies" -> "case studies"
