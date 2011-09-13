@@ -28,21 +28,20 @@ In \cite{Uchitel:2007, Uchitel:2009}, Uchitel et al. developed a technique to ca
 
 MTSs allow supporting incremental system design through scenario questions aimed at eliciting missing requirements. Roughly, the authors adapt the techniques from \cite{Uchitel:2003} and \cite{Giannakopoulou:2003} to capture through MTSs (a) a structured form of MSC scenarios and (b) safety properties expressed in a 3-valued variant of FLTL. Obtained MTSs are merged so as to capture the lower and upper bounds of system behaviors in a single MTS; the latter preserves the semantics of both scenarios and goals. 
 
-So-called \emph{maybe traces} of this MTS are used as scenario questions generated to the user. Such traces denote system behaviors that do not violate safety properties but have not been explored in the scenario specification. Accepted traces denote missing scenarios in the specification whereas rejected ones help identifying missing safety properties. 
+So-called \emph{maybe traces} are extracted from this MTS and used as scenario questions generated to the user. They denote system behaviors that do not violate safety properties but have not been explored in the scenario specification. Accepted traces denote missing scenarios in the specification whereas rejected ones help identifying missing safety properties. 
 
 In terms of our formal framework, those scenario questions belong to:
 \begin{align*}
 \overline{\mathcal{L}^-(\me{Goals})} \setminus \mathcal{L}^+(\me{Scenarios})
 \end{align*}
 
-When all goals denote safety properties, this language is regular and can be captured through standard automata. Our toolset could therefore be extended with this kind of interactive analysis in addition to our induction approach.
+When all goals denote safety properties, this language is regular and can be captured through standard automata. Our toolset could therefore be complemented with this interactive synthesis technique.
 
-Observe that, while both rely on scenario questions, the approach from Uchitel et al. is not equivalent to ours. In particular, in the former no generalization of scenario behaviors occurs. This actually raises questions about the convergence of the elicitation process in \cite{Uchitel:2007, Uchitel:2009}. 
+Observe that, while both rely on scenario questions, the approach from Uchitel et al. and our inductive synthesis approach are not equivalent. In particular, no generalization of scenario behaviors occurs in the former. This actually raises questions about the convergence of the underlying elicitation process. 
 
-Indeed, multiple scenarios tend to cover overlapping but \emph{different} paths in the target machine of the composed system. When these scenarios are captured with a transition system $T$, some of its states are trace equivalent with respect to the target system whereas they are not equivalent with respect to $T$ itself. The latter tends to grow when new scenarios are added because no state merging occurs; if $T$ grows, new questions appear and the process diverges. 
-This fact is independent of the \emph{kind} of transition system used to capture behaviors, e.g., LTS, MTS or standard automata. 
+Indeed, multiple scenarios tend to cover overlapping but \emph{different} paths in the target machine of the composed system. When these scenarios are captured with a transition system $T$, some of its states are trace equivalent with respect to the target system but are not equivalent in $T$. The latter tends to grow when new scenarios are added because no state merging occurs; if $T$ grows, new questions appear and the process diverges. This fact is independent of the \emph{kind} of transition system used to capture behaviors, e.g., LTS, MTS or standard automata. 
 
-To sum up, to our understanding there is no guarantee for the convergence of $\mathcal{L}^+(\me{Scenarios})$ towards the behaviors of the composed system $\mathcal{L}(\agentscomposed)$. As a consequence, even if the safety properties converge towards an adequate set capturing counterexamples of desired system behaviors, $\overline{\mathcal{L}^-(\me{Goals})} \setminus \mathcal{L}^+(\me{Scenarios})$ itself never gets empty.
+To sum up, to our understanding, \cite{Uchitel:2009} offers no guarantee for the convergence of $\mathcal{L}^+(\me{Scenarios})$ towards the behaviors of the composed system $\mathcal{L}(\agentscomposed)$. As a consequence, even if the safety properties converge towards an adequate set capturing counterexamples of desired system behaviors, $\overline{\mathcal{L}^-(\me{Goals})} \setminus \mathcal{L}^+(\me{Scenarios})$ itself never gets empty.
 
 In contrast, grammar induction is known to converge towards the target machine when its input sample grows \cite{Oncina:1993} (see Chapter~\ref{section:inductive-background}). In particular, the identification-in-the-limit framework guarantees that, when its input is rich enough, QSM induces the target system without generating any scenario question. Available domain knowledge, goals in particular, tend to enrich QSM input.
 
