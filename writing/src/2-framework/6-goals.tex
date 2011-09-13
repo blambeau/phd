@@ -2,7 +2,7 @@
 
 A \emph{goal} is a prescriptive statement of intent whose satisfaction requires the collaboration of agents forming the system. Unlike goals, \emph{domain properties} are descriptive statement about the environment -- such as physical laws, organizational rules, etc. Goals are structured in AND/OR refinement graphs that show how they contribute to each other~\cite{VanLamsweerde:2000}.
 
-Section~\ref{subsection:background-goals-as-fltl-assertions} formalizes goals and domain properties in fluent linear temporal logic (FLTL). Their integration with state machines and scenarios is discussed in Section~\ref{subsection:background-goals-consistency}. Section~\ref{subsection:background-property-and-tester-automata} then presents how all system traces satisfying (resp. violating) a safety goal can be specified through a property (resp. a tester) automata.
+Section~\ref{subsection:background-goals-as-fltl-assertions} formalizes goals and domain properties in fluent linear temporal logic (FLTL). Their integration with state machines and scenarios is discussed in Section~\ref{subsection:background-goals-consistency}. Section~\ref{subsection:background-property-and-tester-automata} then presents how all system traces satisfying (resp. violating) a goal can be specified through a property (resp. a tester) automata, provided that the goal denotes a pure safety property.
 
 \subsection{Properties as FLTL assertions\label{subsection:background-goals-as-fltl-assertions}}
 
@@ -47,12 +47,12 @@ The above relation requires the system to exclude any trace violating the proper
 
 We also consider consistency rules between goals and scenarios, as follows:
 \begin{itemize}
-\item Behaviors illustrated in positive scenarios may not violate safety goals. A more formal expression of this depends on the concrete form of scenario specification (scenario collection or hMSC) and on hypotheses about event ordering and weak or strong bMSC synchronization. It is similar to relation (\ref{equation:state-machines-and-goals-consistency}), \emph{mutatis mutandis}.
-\item A negative scenario $N$ \emph{illustrates} the violation of a safety goal, say $G$, if the following condition holds:
+\item Behaviors illustrated in positive scenarios may not violate safety properties. A more formal expression of this depends on the concrete form of scenario specification (scenario collection or hMSC) and on hypotheses about event ordering and weak or strong bMSC synchronization. It is similar to relation (\ref{equation:state-machines-and-goals-consistency}), \emph{mutatis mutandis}.
+\item A negative scenario $N$ \emph{illustrates} the violation of a safety property, say $G$, if the following condition holds:
 \begin{equation}
 \mathcal{L}^{-}(N) \subseteq \mathcal{L}^{-}(G)
 \end{equation}
-\noindent that is, if the negative traces it defines are among those prescribed by the safety goal.
+\noindent that is, if the negative traces it defines are among those prescribed by the safety property.
 \end{itemize}
 
 \subsection{Property and tester automata\label{subsection:background-property-and-tester-automata}}

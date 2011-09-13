@@ -1,5 +1,3 @@
-* Definitely grep on TODO ;-)
-* grep "safety goal" -> "safety property"
 * grep "respect" -> "meet"
 * grep "toward" -> "towards"
 * grep "different" -> "various"

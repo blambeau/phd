@@ -63,7 +63,7 @@ Covering more behaviors is allowed by our formal statement but not enforced. The
 \noindent Our problem statement must therefore be strengthened: 
 \begin{itemize}
 \item All models used as input at some stage or another of the synthesis are required to be consistent with each other. 
-\item The synthesized output system itself must be consistent with all such models. In particular, the synthesized system may not violate safety goals if the latter are provided as input.
+\item The synthesized output system itself must be consistent with all such models. In particular, the synthesized system may not violate goals if the latter are provided as input.
 \end{itemize}
 
 \end{description}
@@ -128,4 +128,4 @@ Our multi-view synthesis requirement is tackled in Section~\ref{section:inductiv
 
 Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios (see Section \ref{subsection:background-hmsc}). Section~\ref{section:inductive-from-hMSC} shows how hMSCs can be added to scenario collections as input of the generalization process. In this setting, negative scenarios and other models can still be used to constrain induction so as to achieve multi-view consistency. Accepting hMSCs as input also allows us to remove some assumptions about input scenarios the were required by the previous algorithms.
 
-Taking hMSCs as input implies both a theoretical and practical shift of perspective. It leads us considering the generalization of state machines under the control of safety goals as a synthesis technique that naturally succeeds the generalization of positive scenario behaviors under the control of negative ones. Among others, this perspective is further discussed in Section~\ref{section:inductive-discussion}.
+Taking hMSCs as input implies both a theoretical and practical shift of perspective. It leads us considering the generalization of state machines under the control of safety properties as a synthesis technique that naturally succeeds the generalization of positive scenario behaviors under the control of negative ones. Among others, this perspective is further discussed in Section~\ref{section:inductive-discussion}.

@@ -8,7 +8,7 @@ The interactive LTS synthesis technique described in Chapter \ref{chapter:induct
 \item Verification of a multi-view modeling specification, more specifically consisting in checking the consistency of scenarios, state machines and goals (see Sections \ref{subsection:background-scenario-consistency} and \ref{subsection:background-goals-consistency}).
 \item Interactive induction of LTS state machines from scenarios, taking fluents and goals into account (see Chapter \ref{chapter:inductive-synthesis}).
 \item Decoration of scenario timelines and state machines with state invariants (see Section \ref{section:background-fluents}).
-\item Induction of safety goals from scenarios (see \cite{Damas:2011}).
+\item Induction of safety properties from scenarios (see \cite{Damas:2011}).
 \end{itemize}
 
 Figure \ref{image:isis-tool} shows a snapshot of the ISIS tool. On the left, the current scenario specification is outlined: the agents forming the system are listed together with associated fluent and goal definitions; positive and negative MSC scenarios are listed below. On the right, two scenarios are shown for the train system case study. The scenario ``Normal journey'' in the background is annotated with computed state invariants.
@@ -21,7 +21,7 @@ Figure \ref{image:isis-tool} shows a snapshot of the ISIS tool. On the left, the
 
 The analysis and synthesis techniques in ISIS are made available ``on demand'' by right-clicking the name of a specification (see Fig.~\ref{image:isis-tool-context}).
 \begin{description}
-\item[Check specification] allows the user to check if the collection of positive and negative scenarios is consistent (as defined in Section~\ref{subsection:background-scenario-consistency}) and that the scenarios do not violate safety goals (as defined in Section~\ref{subsection:background-goals-consistency}).
+\item[Check specification] allows the user to check if the collection of positive and negative scenarios is consistent (as defined in Section~\ref{subsection:background-scenario-consistency}) and that the scenarios do not violate known goals (as defined in Section~\ref{subsection:background-goals-consistency}).
 \item[Synthesize LTSs] launches the interactive induction process described in Chapter~\ref{chapter:inductive-synthesis}. ISIS implements the QSM algorithm; the scenario specification is automatically completed with the user answers to generated scenario questions (see Section~\ref{section:lts-induction-from-mscs}). Moreover, the induction is automatically constrained with available fluents and goals (see Section~\ref{section:inductive-mutliview-consistency}). The tool does not support hMSC models; therefore it does not integrate ASM either (see Section~\ref{section:inductive-from-hMSC}).
 \item[Compose System LTS] builds the LTS state machine of the composed system and opens it in the right pane.
 \item[Discover goals] launches the techniques allowing to discover of goals from scenarios as discussed in \cite{Damas:2006, Damas:2011}.
