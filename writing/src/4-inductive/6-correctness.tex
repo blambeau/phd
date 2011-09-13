@@ -159,6 +159,15 @@ For this particular run, we still need to prove that all scenario questions are 
 
 \subsection{Consistency with domain knowledge\label{subsection:proof-with-domain-knowledge}}
 
+\subsubsection*{Safety properties}
+
+The consistency of the synthesized system LTS with safety properties is defined as follows:
+\begin{align*}
+&\mathcal{L}^-(G) \cap \mathcal{L}(\emph{System}) = \emptyset \mbox{~~~for every safety property~G}
+\end{align*}
+
+Provided that negative scenarios generally denote traces violating safety properties, this condition can be seen as a generalization of~(\ref{proof:consistent-system-lts-2}).
+
 %%%
 
 \subsection{Correctness of ASM\label{subsection:correctness-of-asm}}

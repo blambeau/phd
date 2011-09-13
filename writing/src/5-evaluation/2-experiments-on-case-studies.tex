@@ -10,7 +10,7 @@ For each case study, we proceeded in two steps:
 \begin{enumerate}
 \item\label{stepA}
 \begin{enumerate}
-\label{CondA} Design a scenario collection allowing for meaningful subsequent comparison, that is, sufficiently rich to allow an adequate system LTS to be induced under one setting of the experiment at least (see hereafter).
+\item\label{CondA} Design a scenario collection allowing for meaningful subsequent comparison, that is, sufficiently rich to allow an adequate system LTS to be induced under one setting of the experiment at least (see hereafter).
 \item\label{CondB} Define a common set of fluent definitions identifiable from this scenario collection. From this set of fluents, define a common set of domain properties and goals.
 \end{enumerate}
 \item\label{stepB} Evaluate the techniques on this scenario collection, without and then with fluents, goals, domain descriptions, or models of external components.
@@ -49,16 +49,16 @@ Table~\ref{RPNI:Blue-fringe} reports the results obtained when running QSM with 
 \begin{tabular}{|l||l||c|c|c|}\hline
 Problem   & Algorithm   &$Q^+$&$Q^-$& Model adequacy\\\hline\hline
 Mine Pump & QSM-rpni    & 1   & 30  & missing/unallowed traces\\\cline{2-5}
-          & QSM-fringe  & 1   & 4   & equivalent model found\\\hline
-Train     & QSM-rpni    & 4   & 83  & equivalent model found\\\cline{2-5}
-          & QSM-fringe  & 5   & 5   & equivalent model found\\\hline
+          & QSM-fringe  & 1   & 4   & adequate model\\\hline
+Train     & QSM-rpni    & 4   & 83  & adequate model\\\cline{2-5}
+          & QSM-fringe  & 5   & 5   & adequate model\\\hline
 Phone     & QSM-rpni    & 5   & 171 & missing/unallowed traces\\\cline{2-5}
           & QSM-fringe  & 5   & 19  & missing/unallowed traces\\\hline
 \end{tabular}
 \caption{RPNI search order versus Blue-Fringe strategy for QSM.\label{RPNI:Blue-fringe}}
 \end{table}
 
-The table shows the number of queries the oracle had to answer together with a binary measure of model adequacy. $Q^+$ and $Q^-$ denote the number of accepted and rejected scenario questions, respectively. The model is said to be \emph{found} if it matches the known target LTS, formally if the two models are trace equivalent (see Definition \ref{definition:trace-equivalence}). 
+The table shows the number of queries the oracle had to answer together with a binary measure of model adequacy. $Q^+$ and $Q^-$ denote the number of accepted and rejected scenario questions, respectively. The model is said to be \emph{adequate} if it matches the known target LTS, formally if the two models are trace equivalent (see Definition \ref{definition:trace-equivalence}). 
 
 The following main observations can be made from these results:
 \begin{itemize}
@@ -73,46 +73,46 @@ As the Blue-fringe heuristics appeared by far superior to the RPNI search order,
 
 \subsection{Impact of fluent propagation}
 
-In this second experiment, the synthesis is performed for each case study on an increasing number of fluents, among those available.
+In this second evaluation, the synthesis is performed for each case study on an increasing number of fluents among those available.
 
 \begin{table}[H]
 \centering
 \begin{tabular}{|l||c||c|c|c|}\hline
 Problem&Nb. fluents&$Q^+$&$Q^-$&Model adequacy\\\hline\hline
-Mine Pump&0&1&4&target model found\\\cline{2-5}
-&1&1&1&target model found\\\cline{2-5}
-&2&1&0&target model found\\\cline{2-5}
-&3&1&0&target model found\\\hline\hline
-Train&0&5&5&target model found\\\cline{2-5}
-&1&5&3&target model found\\\cline{2-5}
-&2&5&3&target model found\\\cline{2-5}
-&3&5&3&target model found\\\cline{2-5}
-&4&5&2&target model found\\\cline{2-5}
-&5&5&0&target model found\\\hline\hline
+Mine Pump&0&1&4&adequate model\\\cline{2-5}
+&1&1&1&adequate model\\\cline{2-5}
+&2&1&0&adequate model\\\cline{2-5}
+&3&1&0&adequate model\\\hline\hline
+Train&0&5&5&adequate model\\\cline{2-5}
+&1&5&3&adequate model\\\cline{2-5}
+&2&5&3&adequate model\\\cline{2-5}
+&3&5&3&adequate model\\\cline{2-5}
+&4&5&2&adequate model\\\cline{2-5}
+&5&5&0&adequate model\\\hline\hline
 Phone&0&5&19&missing/unallowed traces\\\cline{2-5}
 &1&5&13&missing/unallowed traces\\\cline{2-5}
-&2&6&9&target model found\\\cline{2-5}
-&3&6&4&target model found\\\hline
+&2&6&9&adequate model\\\cline{2-5}
+&3&6&4&adequate model\\\hline
 \end{tabular}
 \caption{Impact of fluent propagation.\label{Fluents:res}}
 \end{table}
 
-Table~\ref{Fluents:res} summarizes the influence of fluent decorations to constrain the induction process:
+Table~\ref{Fluents:res} summarizes the influence of fluent decorations to constrain the induction process. The following observations can be made:
 \begin{itemize}
-\item The number of rejected scenario queries is decreasing with the number of fluents. Such questions can even disappear when the set of fluent definitions is large enough. 
-\item In contrast, for the same induced LTS, the number of accepted scenarios remains the same. Fluent-based state information can only increase the number of incompatible states and hence, reduce the number of scenario questions to be rejected.
-\item As shown on the Phone system, fluent definitions yield a better model accuracy. Together with the initial scenario collection and the answers to scenario questions, two fluents were sufficient for the exact model to be found.
+\item The number of rejected scenario questions is decreasing as the number of fluents is increasing. Such questions can even disappear when the set of fluent definitions is large enough. 
+\item In contrast, for the same induced LTS, the number of accepted scenarios remains the same. Fluent-based state information can only increase the number of incompatible states and hence, reduce the number of rejected scenarios.
+\item As seen in the phone system, fluent definitions yield a better model adequacy. Together with the initial scenario collection and the answers to scenario questions, two fluents were sufficient for a trace equivalent model to be found.
 \end{itemize}
 
 %%%%%
 
 \subsection{Impact of goals and domain properties}
 
-From a scenario collection and fluent definitions, the ISIS tool may automatically infer various important requirements and domain properties, using an inference technique from \cite{Damas:2006, Damas:2011} (see Section~\ref{section:tool-support-isis}). This feature has been used to measure the impact of goals and domain properties on the induction.
+From a scenario collection and fluent definitions, the ISIS tool can automatically infer a variety of requirements and domain properties using an inference technique described in \cite{Damas:2006, Damas:2011} (see Section~\ref{section:tool-support-isis}). This feature were used to measure the impact of goals and domain properties on the induction process.
 
-For the Mine Pump system, the three main requirements were inferred automatically, e.g.,
+For the Mine Pump system, three important requirements were inferred automatically, e.g.,
 \begin{quote}
-\emph{When the water level is below the low water threshold, the pump controller must immediately set the pump to “off”.}
+\emph{When the water level is below the low water threshold, the pump controller must immediately set the pump to ``off''.}
 \end{quote}
 
 For the Big Train system, three requirements and two domain properties were inferred automatically, e.g.,
@@ -126,65 +126,65 @@ For the Phone system, three requirements were inferred automatically, e.g.,
 \emph{When the caller hangs up, the connection should immediately be closed.}
 \end{quote}
 
-The inferred properties were used in turn to incrementally constrain the induction process. Table \ref{Properties:res} shows the results obtained.
+Those inferred properties were used in turn to incrementally constrain the induction process. Table \ref{Properties:res} shows the results obtained.
 
 \begin{table}
 \centering
 \begin{tabular}{|l||c||c|c|c|}\hline
 Problem   & Nb. properties &$Q^+$&$Q^-$& Model accuracy\\\hline\hline
-Mine Pump & 0              & 1   & 4   & target model found\\\cline{2-5}
-          & 1              & 1   & 0   & target model found\\\cline{2-5}
-          & 2              & 1   & 0   & target model found\\\cline{2-5}
-          & 3              & 1   & 0   & target model found\\\hline\hline
-Train     & 0              & 5   & 5   & target model found\\\cline{2-5}
-          & 1              & 5   & 3   & target model found\\\cline{2-5}
-          & 2              & 5   & 3   & target model found\\\cline{2-5}
-          & 3              & 5   & 3   & target model found\\\cline{2-5}
-          & 4              & 5   & 2   & target model found\\\cline{2-5}
-          & 5              & 5   & 0   & target model found\\\hline\hline
+Mine Pump & 0              & 1   & 4   & adequate model\\\cline{2-5}
+          & 1              & 1   & 0   & adequate model\\\cline{2-5}
+          & 2              & 1   & 0   & adequate model\\\cline{2-5}
+          & 3              & 1   & 0   & adequate model\\\hline\hline
+Train     & 0              & 5   & 5   & adequate model\\\cline{2-5}
+          & 1              & 5   & 3   & adequate model\\\cline{2-5}
+          & 2              & 5   & 3   & adequate model\\\cline{2-5}
+          & 3              & 5   & 3   & adequate model\\\cline{2-5}
+          & 4              & 5   & 2   & adequate model\\\cline{2-5}
+          & 5              & 5   & 0   & adequate model\\\hline\hline
 Phone     & 0              & 5   & 19  & missing/unallowed paths\\\cline{2-5}
-          & 1              & 6   & 6   & target model found\\\cline{2-5}
-          & 2              & 6   & 4   & target model found\\\cline{2-5}
-          & 3              & 6   & 4   & target model found\\\hline
+          & 1              & 6   & 6   & adequate model\\\cline{2-5}
+          & 2              & 6   & 4   & adequate model\\\cline{2-5}
+          & 3              & 6   & 4   & adequate model\\\hline
 \end{tabular}
 \caption{Impact of inferred properties on induction.\label{Properties:res}}
 \end{table}
 
-The same observations can be made as with fluents: goals help reaching a better model accuracy while reducing the number of rejected scenario questions. However, goals and domain properties are seen to be slightly more powerful than fluents. With one single goal, there are no rejected scenario questions anymore in the Mine Pump system; the LTS generated for the Phone system is now adequate.
+Compared with fluent injection, similar observations can be made, that is, goals help reaching a better model accuracy while reducing the number of rejected scenario questions. Goals and domain properties are however seen to be slightly more powerful than fluents. With one single goal, there are no rejected scenario questions anymore in the Mine Pump system; the LTS generated for the Phone system is now adequate.
 
 %%%%%
 
 \subsection{Combined use of fluents, properties and external components}
 
-Table~\ref{All:res} shows the results of a QSM-fringe induction constrained with all available fluents, goals and domain properties, and foreign component(s) in each case study. The fact that the number of fluents and goals is the same for each case study is purely coincidental. 
+Table~\ref{All:res} shows the results of QSM-fringe induction constrained with all fluents, goals and domain properties, and foreign component(s) available in each case study. (The fact that the number of fluents and goals is the same for each case study is purely coincidental.)
 
-For each problem, the first line corresponds to the simplest approach, that is, QSM with the RPNI search order and no domain knowledge. The second line shows how much is gained when the various techniques are combined to constraint the interactive synthesis process.
+For each problem, the first line corresponds to the simplest approach, that is, QSM with the RPNI search order and no domain knowledge. The second line shows how much is gained when the various techniques are combined to constrain the interactive synthesis process. For example, QSM-fringe inferred an adequate model for the phone system with only 3 rejected scenario questions; in contrast, 172 rejected questions were not sufficient to find such model with QSM-rpni.
 
 \begin{table}[H]
 \centering
 \begin{small}
 \begin{tabular}{|l||c|c|c|c||c|c|c|}\hline
 Problem   & Search      & Fl. & Goals & Comp. &$Q^+$&$Q^-$& Adequacy\\\hline\hline
-Mine Pump & QSM-rpni    & 0   & 0     & 0     & 1   & 30  & m/u traces\\\cline{2-8}
+Mine Pump & QSM-rpni    & 0   & 0     & 0     & 1   & 30  & not adequate\\\cline{2-8}
           & QSM-fringe  & 3   & 3     & 2     & 1   & 0   & adequate\\\hline\hline
 Train     & QSM-rpni    & 0   & 0     & 0     & 4   & 83  & adequate\\\cline{2-8}
           & QSM-fringe  & 5   & 5     & 2     & 5   & 0   & adequate\\\hline\hline
-Phone     & QSM-rpni    & 0   & 0     & 0     & 5   & 172 & m/u traces\\\cline{2-8}
+Phone     & QSM-rpni    & 0   & 0     & 0     & 5   & 172 & not adequate\\\cline{2-8}
           & QSM-fringe  & 3   & 3     & 1     & 7   & 3   & adequate\\\hline
 \end{tabular}
 \end{small}
-\caption{Combining fluents, properties and external components to constraint induction\label{All:res}.}
+\caption{Combining fluents, properties and external components to constrain induction\label{All:res}.}
 \end{table}
 
 %%%%%
 
-\subsection{Impact of using a hMSC as input\label{subsection:evaluation-casestudies-asm}}
+\subsection{Impact of using additional control information\label{subsection:evaluation-casestudies-asm}}
 
-In order to measure the impact of using a hMSC as input of the synthesis process, ASM has been evaluated on an extended version of our train system. In this respect, the evaluation protocol is slightly different from the one presented in the previous section: 
+To measure the impact of using a hMSC as input of the synthesis process, ASM has been evaluated on an extended version of our train system. The evaluation protocol is slightly different from the one presented in the previous section.
 \begin{itemize}
-\item The target model of the train system has first been built using ISIS as a system LTS of 19 states and 10 events (see Figure~\ref{image:case-studies-big-train-2}). 
-\item A typical collection of scenarios has also been built for the system and represented as an augmented PTA: 9 positive and 5 negative strings for a total of 55 states.
-\item Using the target LTS, a few state pairs of the PTA have been identified as corresponding to the same system state and immediately merged. These early state merging occur before launching the inductive algorithm. The automaton resulting from this phase is then given as input to ASM, whose performance is evaluated (see below); the algorithm generalizes the automaton by merging additional state pairs under the control of the negative scenarios.
+\item The target model of the train system was first been built using ISIS, yielding a system LTS of 19 states and 10 events (see Figure~\ref{image:case-studies-big-train-2}). 
+\item A typical collection of scenarios was also built for the system and represented as an augmented PTA, yielding 9 positive and 5 negative scenarios for a total of 55 states.
+\item Using the target LTS, a few state pairs of the PTA were identified as corresponding to the same system state, and immediately merged. This early state merging occurs before launching the inductive algorithm. The automaton resulting from this phase was then given as input to ASM; its performance was then evaluated (see below). The algorithm generalizes the automaton by merging additional state pairs under the control of the negative scenarios.
 \end{itemize}
 
 \begin{figure}
@@ -195,9 +195,9 @@ In order to measure the impact of using a hMSC as input of the synthesis process
 
 The early state merging phase simulates the control information typically offered by a hMSC. State pairs of the PTA that are merged early have been chosen following a ``loop identification'' heuristic, representative of the way such a specification is incrementally built by an end-user using an hMSC. 
 
-For instance, opening then closing the doors from the initial state naturally returns in the initial state, see the loop between states 0 and 2 in Figure~\ref{image:case-studies-big-train-2}. Some loops are less natural to identify from the scenarios: the sequence of events ($leaving$, $high$, $approaching$, $low$, $at station$) form a loop starting from state 3 for example. 
+For instance, opening and then closing the doors from the initial state naturally returns to the initial state (see the loop between states 0 and 2 in Figure~\ref{image:case-studies-big-train-2}). Some loops are less obvious to identify from the scenarios, e.g., the sequence of events ($leaving$, $high$, $approaching$, $low$, $at station$) forms a loop starting from state 3. 
 
-Equivalent state pairs identified this way have been classified in four categories, following the expected difficulty for an end-user of discovering them in the scenarios. ASM has then been evaluated on increasing proportion of such state pairs being merged early: 3\%, 6\%, 10\% and 15\%. Doing so simulates the use of a hMSC of increasing richness as input of the induction process. 
+Equivalent state pairs identified this way were classified in four categories, according to the expected difficulty for an end-user to discover them in the scenarios. ASM was then evaluated on increasing proportions of such state pairs being merged early: 3\%, 6\%, 10\% and 15\%. This simulates the use of an increasingly rich hMSC as input to the induction process. 
 
 \begin{table}[H]
 \centering
@@ -215,17 +215,19 @@ ASM       & 0 \%  & 0.55\\\cline{2-3}
 \caption{Classification accuracy obtained with different setups on the train case study.\label{RE:experesults}}
 \end{table} 
 
-Table~\ref{RE:experesults} compares the accuracy of the LTS learned using RPNI, Blue-fringe and ASM with an increasing percentage of equivalent PTA state pairs merged early. Remember that in our current implementation, ASM uses the same search order as RPNI and does not profit from the Blue-fringe heuristic (see Section \ref{section:inductive-from-hMSC}).
+Table~\ref{RE:experesults} compares the accuracy of the LTS learned using RPNI, Blue-fringe and ASM, with an increasing percentage of equivalent PTA state pairs merged early. (Remember that in our current implementation, ASM uses the same search order as RPNI and does not benefit from the Blue-fringe heuristic -- see Section \ref{section:inductive-from-hMSC}).
 
-The reported accuracy is no longer a binary measure here. Instead, the accuracy of the learned model is computed as the average classification rate computed over 10 independent test samples. Each of these samples contains 80 positive or negative scenarios randomly drawn from the target LTS. The classification rate corresponds to the percentage of these scenarios correctly classified by the learned model. 
+As seen in Table~\ref{RE:experesults}, the reported model adequacy is no longer a binary measure here. Instead, an accuracy measure of the learned model is reported as the average classification rate computed over 10 independent test samples. Each of these samples contains 80 positive or negative scenarios randomly drawn from the target LTS. The classification rate corresponds to the percentage of these scenarios correctly classified by the learned model. 
 
-This experiment shows that enriching the input of ASM leads to a better accuracy, which is expected. Interestingly, ASM outperforms Blue-fringe when such control information is rich enough. In the experiment, it already occurs when 10\% of the state pairs known to correspond to the same system state are merged ahead of the induction itself.
+This experiment shows that enriching the input of ASM leads to better accuracy, which is expected. Interestingly, ASM outperforms Blue-fringe when such control information gets rich enough. In the experiment, it already occurs when 10\% of the state pairs known to correspond to the same system state are merged ahead of the induction itself.
 
-The results also show that no algorithm has been able to identify perfectly the target model on such sparse samples. Note that, in order to isolate the effect of injecting control information in the induction process, only a few negative scenarios have been used as source of negative information while other sources do exist, such as fluents and goals.
+The results also show that no algorithm was able to perfectly identify the target model on such sparse samples. In order to isolate the effect of injecting control information in the induction process, only a few negative scenarios were used as source of negative information while other sources do exist, such as fluents and goals.
 
 %%%%%
 
-\subsection{Real-time execution}
+\subsection{Induction time}
 
-All experiments reported in this section have been conducted on a Pentium IV, 1.8 GHz, 512Mb with Java 5.0. When using QSM, our tests showed that the maximum time between two queries was 40ms for the bigger case study. Hence the interactions with the end-user are performed in real-time. We do not expect any performance problem with respect to the user interactivity for typical sizes of requirement models.
+Only the adequacy and the number of generated scenario questions have been discussed so far. The induction time was also systematically monitored in our evaluations as it drives the usability of QSM in practice. 
+
+All experiments reported in this section were conducted on a Pentium IV, 1.8 GHz, 512Mb with Java 5.0. When using QSM, our tests showed that the maximum time between two scenario questions was 40ms for the bigger case study. The interactions with the end-user are performed in real-time. No performance problems are expected with respect to user interactivity for typical sizes of requirement models.
 

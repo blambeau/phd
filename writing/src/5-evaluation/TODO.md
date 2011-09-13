@@ -1,4 +1,12 @@
 grep "accuracy" -> "adequacy"
+grep "experiment" -> "evaluation"
+grep "scenario queries" -> "scenario questions"
+grep "to constraint" -> "to constrain"
+grep "launch" -> "launch"
+grep "input of" -> "input to"
+grep "profit" -> "benefit"
+grep "toward" -> "towards"
+grep "plateform" -> "platform"
 
 # Section 5.1 - Objectives
 
@@ -10,6 +18,10 @@ grep "accuracy" -> "adequacy"
 # Section 5.2.1 - Evaluation methodology (case studies)
 
   * Why not showing the mine pump example?
+
+# Section 5.2.4 - Impact of goals
+
+  * Show all requirements inferred
 
 # Section 5.2.2 - RPNI vs. Blue-fringe order
 

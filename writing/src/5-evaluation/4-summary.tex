@@ -1,36 +1,36 @@
 \section{Summary and discussion\label{section:evaluation-summary}}
 
-This chapter discussed the evaluation of the inductive LTS synthesis technique presented in Chapter \ref{chapter:inductive-synthesis}. Evaluations have been conducted on case-studies and complemented with experiments on synthetic datasets. The latter provide an overview of what can be expected along two dimensions not completely covered with case-studies: the size of the target LTS model and the sparsity of the learning sample.  
+This chapter discussed our evaluation of the inductive LTS synthesis technique presented in Chapter \ref{chapter:inductive-synthesis}. The evaluations were conducted on case studies complemented with experiments on synthetic datasets. The latter provide an overview of what can be expected along two dimensions not completely covered with case-studies: the size of the target LTS model and the sparsity of the learning sample.  
 
-From the point of view of multi-view model synthesis, the following conclusions can be drawn:
+The following conclusions can be drawn.
 \begin{itemize}
 
-\item Together with the Blue-fringe heuristics, the interactive feature of QSM is very effective for reaching a good accuracy of synthesized models. The cost in terms of scenario questions may be important, especially on large systems. Therefore, techniques to reduce the number of scenarios to be classified are required in practice.
+\item Together with the Blue-fringe heuristics, the interactive feature of QSM is very effective in reaching a good adequacy of synthesized models. The cost in terms of number of scenario questions may be significant, especially for large systems. Therefore, techniques for reducing the number of scenarios to be classified are required in practice.
 
-\item Among our pruning techniques, the domain knowledge provided by fluents, goals and legacy components proves very useful. In addition to reducing the number of scenario questions, such knowledge effectively guides the induction process toward accurate LTS models. 
+\item Among our pruning techniques, the domain knowledge provided by fluents, goals and legacy components proves very effective. In addition to reducing the number of scenario questions, such knowledge effectively guides the induction process towards adequate LTS models. 
 
-\item The control information given by a hMSC, simulated in evaluations through a dedicated procedure, also provides an important accuracy gain. While it guides the generalization process toward good generalizations, it has been shown that it does not provide the negative knowledge required to avoid over-generalization.
+\item The control information provided by a hMSC, simulated in evaluations through a dedicated procedure, also results in important gain in adequacy. While guiding the generalization process towards good generalizations, it has been shown that it does not provide the negative knowledge required to avoid overgeneralization.
 
-\item The most important issue with QSM is related to the number of generated scenario questions. As shown in Table~\ref{All:res} and in Fig.~\ref{image:evaluation-qsm-number-of-questions}, the number of rejected questions tend to decrease when the induction input gets richer, either because the sample gets larger or thanks to available domain knowledge. The same is not true for scenarios to be accepted, whose number gets roughly constant.
+\item The most important issue with QSM is related to the number of generated scenario questions. As shown in Table~\ref{All:res} and in Fig.~\ref{image:evaluation-qsm-number-of-questions}, the number of rejected questions tends to decrease as the induction input gets richer, either because the sample gets larger or thanks to available domain knowledge. This contrasts with scenarios to be accepted, whose number tends to become constant in that case.
 
-In practice, this means that QSM will generate scenarios even when its input is rich enough to guarantee very good generalizations without even asking questions (e.g., when given a characteristic sample). Moreover, fluents and goals do not help reducing these questions. As their number might become large for non-toy systems, improvements of our technique might be necessary.
+This means in practice that QSM will generate scenarios even when its input is rich enough to guarantee very good generalizations without even asking questions -- e.g., when given a characteristic sample. Moreover, fluents and goals do not help reducing these questions. As their number might become large for non-toy systems, improvements of our technique might be necessary.
 
-One possible solution could be to extend the possible answers from the oracle. For example, the end-user could request to terminate the induction immediately, without additional scenario questions. The infered state machine would then be submitted for inspection, leading to a form of \emph{equivalence} queries. Such queries are typically answered with an additional negative scenario and the induction restarted if the state machine is not adequate (e.g. \cite{Angluin:1987}, see also Chapter~\ref{chapter:discussion}).
+One possible solution could be to extend the possible answers from the oracle. For example, the end-user could request  the algorithm to terminate immediately, that is, without generating further scenario questions. The infered state machine would then be submitted for inspection, leading to a form of equivalence queries. When the state machine is not adequate, such queries are typically answered with an additional negative scenario and the induction restarted -- e.g., as in L$^*$ \cite{Angluin:1987} (see also Chapter~\ref{chapter:discussion}).
 
 \end{itemize}
 
-We close this chapter by discussing specific issues related to the experiments themselves and the protocols used to conduct them. 
+Let us close this chapter with specific issues related to the experiments themselves and the protocols used to conduct them. 
 \begin{itemize}
 
-\item The coverage of conducted experiments could be slightly extended. In particular, the use of control information and ASM could be further studied with more case-studies. The real use of a hMSC instead of a simulation procedure is worth considering as well.
+\item The coverage of conducted experiments could be slightly extended. In particular, ASM could be further studied on more case studies. The real use of a hMSC instead of a simulation procedure for control information is worth considering as well.
 
-Our current implementation of ASM relies on the RPNI search order and does not support the interactive feature of QSM. This limited the possible comparisons during evaluations. In particular, the effect of control information on the number of generated questions has not been illustrated.
+Moreover, our current implementation of ASM relies on the RPNI search order and does not support the interactive feature of QSM. This limited the possible comparisons during evaluations. In particular, the effect of control information on the number of generated questions has not been studied.
 
-\item The experiments on synthetic datasets provide an in-depth analysis of the performances of QSM and ASM with RPNI and Blue-fringe, which have been taken as state-of-the-art induction algorithms. 
+\item The experiments on synthetic datasets provide performance comparisons for RPNI, Blue-fringe, QSM and ASM. The former two were used as state-of-the-art induction algorithms. 
 
 Another induction algorithm called DFASAT recently appeared that significantly outperforms RPNI and Blue-fringe \cite{Heule:2010} (see Chapter~\ref{chapter:stamina}). This opens new perspectives for comparisons, evaluations and further developments around QSM and ASM. 
 
-\item In contrast to the smaller but ``real'' case studies, the experiments on synthetic datasets are such that target LTS are defined on alphabets of two symbols only. This is a consequence of reusing the protocol from Abbadingo for conducting experiments. 
+\item In contrast to the smaller but ``real'' case studies, the experiments on synthetic datasets refered to target LTS defined on alphabets of two symbols only. This is a consequence of reusing the protocol from Abbadingo for conducting experiments. 
 
-As shown by the case studies themselves, state machines of software systems are commonly defined on larger alphabets. While this does not hurt the soundness of our experiments themselves, it slighlty prevent from generalizing their results. The next chapter addresses this issue by describing our work on the Stamina plateform for evaluating inductive model synthesis techniques with an alternative protocol to Abbadingo.
+As shown in the case studies themselves, state machine models of software systems are commonly defined on much larger alphabets. While this does not hurt the soundness of our evaluations, it slighlty prevent us from generalizing their results. The next chapter will address this issue by describing further work on our Stamina platform for evaluating inductive model synthesis techniques.
 \end{itemize}
