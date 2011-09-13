@@ -12,13 +12,19 @@ Structured forms of scenario specifications, such as hMSCs, prove useful for lar
 
 Proving the correctness of our approach amounts to show that the synthesized system is consistent with the scenarios and domain knowledge taken in input. We discuss proof arguments for the different algorithm settings, starting with the simplest case of RPNI and integrating additional features afterwards, such as scenario questions and consistency with domain knowledge.
 
-Fig.~\ref{XXX} summarizes our approach, which proceeds in two steps: a system LTS is first synthesized, then projected onto agent LTS. In the sequel,
+Fig.~\ref{synthesis-flow-model} summarizes our approach, which proceeds in two steps: a system LTS is first synthesized, then projected onto agent LTS. In the sequel,
 \begin{itemize}
 \item $Sc = (S^+,S^-)$ denotes a scenario collection; its positive and negative behaviors are denoted by $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$, respectively.
 \item $\mathcal{L}(\mbox{System})$ denotes the behaviors captured by the inferred system LTS.
 \item $\mathcal{L}(Ag)$ denotes the behaviors of an arbitrary agent $Ag$.
 \item $\mathcal{L}(\agentscomposed)$ denotes the behaviors obtained when individual agent LTS are composed back again.
 \end{itemize}
+
+\begin{figure}\centering
+\scalebox{.65}{
+\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/synthesis-flow-model}}
+\caption{Inductive synthesis steps and products.\label{figure:synthesis-flow-model}} 
+\end{figure}
 
 Remember from Section~\ref{subsection:inductive-synthesis-statement} that the specification requires three conditions to hold: 
 \begin{itemize}
