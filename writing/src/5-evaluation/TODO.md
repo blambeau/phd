@@ -1,13 +1,3 @@
-grep "accuracy" -> "adequacy"
-grep "experiment" -> "evaluation"
-grep "scenario queries" -> "scenario questions"
-grep "to constraint" -> "to constrain"
-grep "launch" -> "launch"
-grep "input of" -> "input to"
-grep "profit" -> "benefit"
-grep "toward" -> "towards"
-grep "plateform" -> "platform"
-
 # Section 5.1 - Objectives
 
   * What about Pierre's remark about Nb. queries and induction time? Other

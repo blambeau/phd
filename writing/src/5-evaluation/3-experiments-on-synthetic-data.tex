@@ -59,7 +59,7 @@ Results from Section \ref{subsection:evaluation-bluefringe-on-casestudies} are c
 
 Observe that the learning sample sizes were well chosen to illustrate the convergence of this family of induction algorithms:
 \begin{itemize}
-\item For a given target size, the curves show the different induction phases. When the sample is sparse, 3\% or 6\% for example, poor accuracy results are first observed. The accuracy grows while the learning sample becomes larger; it does so rapidely until an accuracy of about 0.95 is reached. Beyond this point, the accuracy continues to grow with the learning sample size but much slowly. 
+\item For a given target size, the curves show the different induction phases. When the sample is sparse, 3\% or 6\% for example, poor accuracy results are first observed. The accuracy grows while the learning sample becomes larger; it does so rapidly until an accuracy of about 0.95 is reached. Beyond this point, the accuracy continues to grow with the learning sample size but much slowly. 
 \item The relative performance data described above do not depend much on the target size. The curves seem successively shifted left when the target size grows. This can be explained by the fact that a quadratic learning sample in the size of the target LTS tends to be richer for large LTS than for smaller ones. 
 \end{itemize}
 
@@ -128,9 +128,9 @@ The experimentation protocol used to achieve this objective is a slight adaptati
 \item Learning and test samples were randomly generated as before. RPNI and Blue-fringe were both evaluated on these samples to provide a reference for the comparisons with ASM.  
 \item In order to provide its input to ASM, a specific procedure simulated the control information given by a hMSC:
 \begin{itemize}
-\item For a given learning sample, an augmented PTA was first built. As in Section \ref{subsection:evaluation-casestudies-asm}, an early state merging phase then occured. The idea was to merge specific state pairs of the PTA that were known to correspond to the same state in the target LTS.
+\item For a given learning sample, an augmented PTA was first built. As in Section \ref{subsection:evaluation-casestudies-asm}, an early state merging phase then occurred. The idea was to merge specific state pairs of the PTA that were known to correspond to the same state in the target LTS.
 \item For this, unique labels were associated to randomly chosen states of the target LTS. Increasing proportions of the number of states labeled in this way were used, namely, 5\%, 10\%, 20\% and 100\%. The PTA and the target LTS are were then jointly visited and state labels are reported as decorations of the PTA states. 
-\item States of the PTA sharing the same label were merged early. This effectively simulated the availability of control information through a hMSC by introducing loops in the input scenarios. The automaton resulting from this step was then used as input of ASM, that further generalized it by merging additional state pairs under the control of the negative strings.
+\item States of the PTA sharing the same label were merged early. This effectively simulated the availability of control information through a hMSC by introducing loops in the input scenarios. The automaton resulting from this step was then used as input to ASM, that further generalized it by merging additional state pairs under the control of the negative strings.
 \end{itemize}
 \end{itemize}
  
@@ -147,4 +147,4 @@ ASM overcomes RPNI on all executions, which is actually expected. Remember from 
 
 From the standpoint of generalization accuracy, however, 5\% of the labeling information is comparable to the use of the Blue-fringe heuristic for selecting state pairs to be merged. Beyond this proportion, the accuracy keeps increasing. Interestingly, the accuracy gain is already visible when the sample is sparse.
 
-Note that the identification of the target does not reduce to a trivial problem even with 100\% of labeling information. As discussed in Section \ref{section:inductive-from-hMSC}, control information is complementary but does not substitute to the negative knowledge provided by negative scenarios, fluent and goals. In particular, it does not prevent overgeneralization from occuring when incompatible state pairs are merged. 
+Note that the identification of the target does not reduce to a trivial problem even with 100\% of labeling information. As discussed in Section \ref{section:inductive-from-hMSC}, control information is complementary but does not substitute to the negative knowledge provided by negative scenarios, fluent and goals. In particular, it does not prevent overgeneralization from occurring when incompatible state pairs are merged. 

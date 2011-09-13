@@ -146,7 +146,7 @@ Our implementation reuses the decoration algorithm from \cite{Damas:2006} to pro
 
 The principle for constraining state merging through equivalence relations appeared in~\cite{Coste:1998, Coste:2004}. It can be further instantiated to other equivalence relations not considered here. In particular, it is \emph{not} limited to relations that are invariant under state merging.
 
-As an illustrative example, consider the following generalization of the way fluent values are used to constraint induction. We know from Section~\ref{subsection:fluents-along-multiple-traces} that the states of any LTS can be annotated with invariants defined on fluents. Let $inv$ denote a function mapping each PTA state to its state invariant; let also denote by \emph{Dom} a domain property that must be met in every state of the system LTS. Consider the following pruning rule:
+As an illustrative example, consider the following generalization of the way fluent values are used to constrain the induction process. We know from Section~\ref{subsection:fluents-along-multiple-traces} that the states of any LTS can be annotated with invariants defined on fluents. Let $inv$ denote a function mapping each PTA state to its state invariant; let also denote by \emph{Dom} a domain property that must be met in every state of the system LTS. Consider the following pruning rule:
 \begin{quote}
 \emph{Two states $q$ and $q'$ will be considered for merging if $inv(q) \wedge inv(q') \models \mbox{Dom}$}
 \end{quote}

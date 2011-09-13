@@ -26,7 +26,7 @@ Merging multiple hMSCs $H_1,\ldots,H_n$ with respect to trace behaviors amounts 
 \caption{Merging multiple hMSCs amounts to building a new hMSC reaching finer-grained hMSCs from its initial state.\label{figure:multiple-hmscs}} 
 \end{figure}
 
-However, a hMSC only captures positive behavior examples. As explained in previous sections, negative information is needed for avoiding overgeneralization. Negative scenarios, fluents, goals, and the like provide a source of negative knowledge that can be used to constraint the induction process. The algorithmic adaptations introduced in the sequel remain compatible with the constraint mechanism based on equivalence relations on system states. This will be detailed in Section~\ref{subsection:automaton-state-merging}.
+However, a hMSC only captures positive behavior examples. As explained in previous sections, negative information is needed for avoiding overgeneralization. Negative scenarios, fluents, goals, and the like provide a source of negative knowledge that can be used to constrain the induction process. The algorithmic adaptations introduced in the sequel remain compatible with the constraint mechanism based on equivalence relations on system states. This will be detailed in Section~\ref{subsection:automaton-state-merging}.
 
 We may therefore assume that behaviors are specified through one hMSC only, complemented with a scenario collection. The latter contains negative scenarios and answers to scenario queries. Under these assumptions, the LTS synthesis statement is restated as follows.
 

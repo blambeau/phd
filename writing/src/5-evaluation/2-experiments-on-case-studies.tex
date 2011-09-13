@@ -36,7 +36,7 @@ Phone    & 16     & 23     & 33          & 6     & 4     & 11\\\hline
 
 The size of the scenario collection resulting from Step~\ref{stepA} is shown in Table~\ref{CaseStudies}. $|S^+|$ and $|S^-|$ denote the number of positive and negative scenarios, respectively. The average scenario length is reported in the last column. The size of the target system LTS are also reported in terms of number of different event labels (alphabet size), states, and transitions. 
 
-In order to measure the number of generated scenario questions in Step \ref{stepB}, an oracle was implemented to simulate the end-user. This oracle knows the system LTS for each problem and correctly classifies scenario queries as positive or negative. Note that this is a strong assumption on the oracle, especially when played by an end-user in practice; this issue has been discussed in Section~\ref{section:inductive-discussion}.
+In order to measure the number of generated scenario questions in Step \ref{stepB}, an oracle was implemented to simulate the end-user. This oracle knows the system LTS for each problem and correctly classifies generated scenario as positive or negative. Note that this is a strong assumption on the oracle, especially when played by an end-user in practice; this issue has been discussed in Section~\ref{section:inductive-discussion}.
 
 %%%%%
 
@@ -63,7 +63,7 @@ The table shows the number of queries the oracle had to answer together with a b
 The following main observations can be made from these results:
 \begin{itemize}
 \item The large number of generated questions makes QSM-rpni unusable with end-users on bigger systems. In contrast, the number of rejected scenario questions is drastically reduced thanks to the Blue-fringe search strategy. 
-\item In the phone system, an adequate system LTS cannot be synthesized with the sole use of the initial scenario collection and scenario questions. Wrong generalizations do occur; some states are merged whereas they need to be distinguished. A richer scenario collection would allow to correctly identify the target model; remember, however, that the initial collections have been chosen so as to observe the accuracy gain of injecting fluent definitions and goals in the synthesis process.
+\item In the phone system, an adequate system LTS cannot be synthesized with the sole use of the initial scenario collection and scenario questions. Wrong generalizations do occur; some states are merged whereas they need to be distinguished. A richer scenario collection would allow to correctly identify the target model; remember, however, that the initial collections have been chosen so as to observe the gain in adequacy when injecting fluent definitions and goals in the synthesis process.
 \item Finally, the number of rejected scenarios tends to be much larger than the number of accepted ones. This observation confirms the usefulness of scenario questions. Negative answers force the induction algorithm to be restarted when an incorrect search path has been taken (see Algorithm~\ref{QSM} in Section~\ref{section:lts-induction-from-mscs}).
 \end{itemize}
 
@@ -131,7 +131,7 @@ Those inferred properties were used in turn to incrementally constrain the induc
 \begin{table}
 \centering
 \begin{tabular}{|l||c||c|c|c|}\hline
-Problem   & Nb. properties &$Q^+$&$Q^-$& Model accuracy\\\hline\hline
+Problem   & Nb. properties &$Q^+$&$Q^-$& Model adequacy\\\hline\hline
 Mine Pump & 0              & 1   & 4   & adequate model\\\cline{2-5}
           & 1              & 1   & 0   & adequate model\\\cline{2-5}
           & 2              & 1   & 0   & adequate model\\\cline{2-5}
@@ -150,7 +150,7 @@ Phone     & 0              & 5   & 19  & missing/unallowed paths\\\cline{2-5}
 \caption{Impact of inferred properties on induction.\label{Properties:res}}
 \end{table}
 
-Compared with fluent injection, similar observations can be made, that is, goals help reaching a better model accuracy while reducing the number of rejected scenario questions. Goals and domain properties are however seen to be slightly more powerful than fluents. With one single goal, there are no rejected scenario questions anymore in the Mine Pump system; the LTS generated for the Phone system is now adequate.
+Compared with fluent injection, similar observations can be made, that is, goals help reaching a better model adequacy while reducing the number of rejected scenario questions. Goals and domain properties are however seen to be slightly more powerful than fluents. With one single goal, there are no rejected scenario questions anymore in the Mine Pump system; the LTS generated for the Phone system is now adequate.
 
 %%%%%
 
@@ -219,7 +219,7 @@ Table~\ref{RE:experesults} compares the accuracy of the LTS learned using RPNI, 
 
 As seen in Table~\ref{RE:experesults}, the reported model adequacy is no longer a binary measure here. Instead, an accuracy measure of the learned model is reported as the average classification rate computed over 10 independent test samples. Each of these samples contains 80 positive or negative scenarios randomly drawn from the target LTS. The classification rate corresponds to the percentage of these scenarios correctly classified by the learned model. 
 
-This experiment shows that enriching the input of ASM leads to better accuracy, which is expected. Interestingly, ASM outperforms Blue-fringe when such control information gets rich enough. In the experiment, it already occurs when 10\% of the state pairs known to correspond to the same system state are merged ahead of the induction itself.
+This experiment shows that enriching the input given to ASM leads to better accuracy, which is expected. Interestingly, ASM outperforms Blue-fringe when such control information gets rich enough. In the experiment, it already occurs when 10\% of the state pairs known to correspond to the same system state are merged ahead of the induction itself.
 
 The results also show that no algorithm was able to perfectly identify the target model on such sparse samples. In order to isolate the effect of injecting control information in the induction process, only a few negative scenarios were used as source of negative information while other sources do exist, such as fluents and goals.
 
