@@ -1,12 +1,5 @@
 \section{Discussion\label{section:inductive-discussion}}
 
-This chapter discussed how grammar induction can be used to synthesize LTS state machines from end-user scenarios. The RPNI induction algorithm provides a basis to generalize scenario behaviors as a system LTS; the latter is then projected on each agent alphabet to obtain their state machines. 
-
-QSM extends RPNI with an interactive feature where an end-user classifies generated scenarios as positive or negative examples of desired system behaviors. This constrains the induction process towards good behavior generalizations and completes the initial scenario collection with additional behavior examples and counterexamples.
-
-Moreover, QSM may be constrained through equivalence relations defined on system states. This mechanism has been instantiated to prune the induction process with fluent definitions, domain properties, models of legacy components and goals. In addition to guaranteeing multi-view model consistency, the injection of such knowledge offers better induction performance.
-
-Structured forms of scenario specifications, such as hMSCs, prove useful for large systems. Among others, they overcome a important limitation when inducing state machines from scenario collections, namely, the requirement that all scenarios start in the same system state. The induction of state machines from hMSC has been shown possible thanks to the ASM algorithm.
 
 \subsection{Correctness\label{subsection:inductive-discussion-correctness}}
 
@@ -96,9 +89,9 @@ The reason has to be found in the possible occurence of so-called \emph{implied 
 
 In other words, implied scenarios are system behaviors that the system LTS does not accept but which necessarily appear when composing the agent LTSs. Implied scenarios appear because, once distributed, the agents lack monitoring abilities to restrict their behavior so as to precisely match the system LTS.
 
-Not all implied scenarios are problematic in practice. In particular, it might happen that all implied scenarios denote examples of desired system behavior. In that case, the presence of implied scenarios is not problematic and may be seen as the result of a second generalization step due to the decomposition and recomposition of agent LTS. The second generalization step proves useful as a structurally complete scenario collection might be difficult to obtain in the first place (see later).
+Not all implied scenarios are problematic in practice. In particular, it might happen that all implied scenarios denote examples of desired behaviors. In that case, the presence of implied scenarios is not problematic and may be seen as the result of a second generalization step due to the decomposition and recomposition of agent LTS. The second generalization step proves useful as a structurally complete scenario collection might be difficult to obtain in the first place (see later).
 
-Negative implied scenarios, that is, implied scenarios denoting counterexamples of desired system behavior, are more problematic. In particular, a behavior trace $t$ could be such that the following conditions hold:
+Negative implied scenarios, that is, counterexamples of desired behaviors, are more problematic. In particular, a behavior trace $t$ could be such that the following conditions hold:
 \begin{align}
 &t \in \mathcal{L}^-(Sc)\\
 &t \notin \mathcal{L}(\mbox{System})\\
