@@ -1,0 +1,30 @@
+\section{Models and their use in software system development\label{section:intro-models}}
+
+Models are increasingly recognized as an effective means for elaborating requirements and exploring designs of software systems. A model is an abstract representation of the target system, where key features are highlighted, specified and inter-related to each other \cite{VanLamsweerde:2009}. Models are widely used at different steps of the software development process and for different software-related purposes.
+
+%%%
+
+\emph{Requirements engineering}, in particular, aims at precisely determining what the system should do and why it should do so. This has been shown to be the hardest part of software development \cite{Brooks:1987}. Using models for exploring, analyzing and specifying requirements has multiple benefits:
+\begin{itemize}
+\item They force stakeholders and analysts to be more precise in their system description.
+\item They allow them to abstract from multiple details in order to focus on key system aspects.
+\item They provide a basis for early detection and fixing of errors.
+\end{itemize}
+Model-oriented approaches to system requirements include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. Models explain how system objectives may be refined in lower-level objectives, also called goals. KAOS emphasizes more on semi-formal and formal reasoning about behavioral goals, i.e. goals that prescribe system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals, i.e. goals that cannot be established in a clear-cut sense.
+
+%%%
+
+\emph{Software design} may be captured by Model Driven Engineering (MDE) approaches and driven by UML models \cite{OMG:2004} and Domain Specific Languages \cite{VanDeursen:2000, Fowler:2010}. Such approaches model the application domain rather than the computing or algorithmic concepts. The use of models here has several advantages:
+\begin{itemize}
+\item They enforce the separation between the abstract domain concepts and their concrete implementation. This allows focusing on each aspect at the adequate level of abstraction.
+\item Code fragments can often be generated from models, which is less error-prone and time consuming than manually translating models to code. In the case of domain specific languages, models may even be truly executable already. 
+\item Design models also yield a natural documentation for the software and the underlying design decisions. 
+\end{itemize}
+
+%%%
+
+\emph{Work processes} may be represented by different graphical models. Such models take different forms: flowchart style, e.g. Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005} or Business Process Modeling Notation (BPMN) \cite{OMG:2008}, task trees, e.g. Little-Jil \cite{Clarke:2008}. Modeling here allows:
+\begin{itemize}
+\item Analyzing and verifying models before translating them to work organization on the field. This includes early detecting errors and bottlenecks, among others.
+\item Partly or fully triggering the execution of necessary tasks, through reminders to process actors, automated scheduling and task processing, and so on.
+\end{itemize}

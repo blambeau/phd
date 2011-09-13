@@ -1,0 +1,27 @@
+\section{Requirements on multi-view modeling languages\label{section:intro-requirements}}
+
+Complex systems are better described with multiple views. In that case, different models focus on particular facets of the system, i.e. its intentional, structural, operational and behavioral dimensions \cite{VanLamsweerde:2009}. 
+
+Scenarios, for example, illustrate typical interactions between agents whereas their state machines provide a complete description of their internal behavior. A process model might describe the operational decomposition of a complex work into smaller tasks whereas goals make the underlying objectives precise. And so on.
+
+Reaching quality models in such multi-view approaches is far from an easy task. Adequate modeling languages, tools and techniques are therefore required to help building them. To play a significant role, a good multi-view modeling language should meet the following requirements \cite{VanLamsweerde:2009}:
+
+\begin{itemize}
+\item \emph{Multi-level}: the system should be captured at different levels of abstraction and precision to enable stepwise elaboration and validation;
+\item \emph{Analyzable}: the modeling abstractions should be accurate enough to support useful forms of analysis.
+\end{itemize}
+
+In addition, such modeling language should support stakeholders and analysts in building quality models. A ``good'' model should meet the following requirements:
+
+\begin{itemize}
+\item \emph{Adequate}: the models should adequately represent the essence of the target system while abstracting unnecessary details;
+\item \emph{Complete}: the models should capture all pertinent facets of the system along the \textsc{why-}, \textsc{what-} and \textsc{how-} dimensions;
+\item \emph{Precise}: the models should be accurate enough to capture system descriptions with as less ambiguity as possible;
+\item \emph{Consistent}: the models should agree on their overlapping descriptions of the system;
+\item \emph{Comprehensible}: the models should be easy enough to understand by the people who need to use them;
+\end{itemize}
+
+Formal modeling approaches help meeting the requirements above. The semantics of a formal modeling language provides precise rules of interpretation that allow many of the problems with natural language to be overcome. Formal specifications may also be manipulated by automated tools for a wide variety of purposes. Among them, model \emph{analysis} and model \emph{synthesis} are intertwined activities that help reaching quality models, mostly along the completeness, consistency and precision requirements.
+
+This thesis investigates model synthesis more specifically whereas its companion one, by Christophe Damas, investigates model analysis \cite{Damas:2011}.
+
