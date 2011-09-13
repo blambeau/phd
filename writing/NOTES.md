@@ -1,4 +1,3 @@
-* grep "toward" -> "towards"
 * grep "different" -> "various"
 * grep "in that respect" -> "along this line"
 * grep "among others" -> ""
