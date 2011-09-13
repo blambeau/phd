@@ -1,4 +1,3 @@
-* grep "in that respect" -> "along this line"
 * grep "among others" -> ""
 * grep "letter" -> "symbol"
 * grep "(see later)" -> "(see Section X)"
