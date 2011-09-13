@@ -1,32 +1,32 @@
-\section{Synthesis for multi-view system modeling\label{section:intro-synthesis}}
+\section{Synthesis as a promising approach for multi-view model building\label{section:intro-synthesis}}
 
-Roughly, model synthesis can be seen as the systematic construction of models from various sources of knowledge about the target system. 
+Model synthesis can be roughly defined as the systematic construction of models from various sources of knowledge about the target system. 
 
-Common sources of knowledge for building models include early system descriptions, interviews with stakeholders, software prototypes, etc. For an in-depth description of requirements elicitation and system modeling from such sources see, e.g., \cite{VanLamsweerde:2009}.
+Common sources of knowledge for model building include early system descriptions, interviews with stakeholders, software prototypes, etc. For an in-depth description of requirements elicitation and system modeling from such sources see, e.g., \cite{VanLamsweerde:2009}.
 
-Multi-view modeling frameworks offer new ways for effectively supporting the incremental building of models. In particular, formal modeling languages define precise consistency rules between models. These rules are commonly used to automate consistency verification and/or model checking. Those same rules can also be used the other way around, that is, to semi-automatically synthesize some models using the information already made available by the others.
+Multi-view modeling frameworks offer new opportunities for effectively supporting the incremental building of models. In particular, the modeling languages often come with precise rules of consistency between the models. These rules are used for automating consistency checks. The same rules can also be used the other way round, to semi-automatically synthesize model fragments using the information already available in other views.
 
-The use of a synthesis technique, however, may be motivated by various needs. As a consequence, the term ``model synthesis'' actually covers a broad spectrum of techniques and practices. In this thesis, we will distinguish between two particular and complementary use cases:
+The use of a synthesis technique may be motivated by various needs. As a consequence, the term ``model synthesis'' may cover a broad spectrum of techniques and practices. In this thesis, we will focus on two particular and complementary forms of synthesis:
+\begin{description}
+\item[Horizontal synthesis] To complete a multi-view model of the target system. A synthesis technique is used here to build models missing from a multi-view framework or to complete existing ones.
+\item[Vertical synthesis] To derive lower-level models from higher-level ones. This yields an operational semantics from the latter makes model-checking tools available to them.
+\end{description}
+
+The two forms of model synthesis will be seen to be failry different in the thesis.
 \begin{itemize}
-\item Model synthesis can be used to define an operational semantics for high-level models in terms of lower-level ones. This also allows making analysis such as model-checking available to high-level models while initially available on lower-level ones.
-\item Model synthesis can also be used to complete a multi-view modeling of the target system. A synthesis technique is used here to build missing models from a multi-view framework or to complete existing ones.
+\item In vertical synthesis, the synthesized models are defined at a lower level of abstraction than the source models they come from; this is not necessarily the case in horizontal synthesis.
+\item The analyses enabled by vertical synthesis are performed on models having a shorter lifetime -- generally limited to the analysis itself. In horizontal synthesis, the resulting models are often kept as software documentation or requirements traceability. 
+\item Vertical synthesis is derivational by nature whereas horizontal synthesis may be inductive.
+\item In vertical synthesis, models are generally kept hidden from the user; the latter has a passive role in the synthesis process. In horizontal synthesis, the produced models must generally be validated by the end-user. The latter may even play an active role in the synthesis process itself.
 \end{itemize}
 
-While the construction of models is involved in both cases, observe that these two uses of model synthesis are rather different.
+The core chapters of this thesis will cover those two forms of model synthesis.
 \begin{itemize}
-\item When defining an operational semantics, the synthesized models are generally defined at a lower-level of abstraction than the source models they come from; this is not necessarily true when completing multi-view models, quite the contrary.
-\item When used for triggering analyses, produced models have a short lifetime, generally limited to the analysis itself. Models in multi-view descriptions have a different life-cycle as they are often kept as software documentation or for requirements traceability. 
-\item Moreover, semantic and analysis-driven synthesis is derivative by nature whereas the completion of multi-view system descriptions may benefit from inductive synthesis processes.
-\item In the former case, models are generally kept hidden from the user who has a passive role in the synthesis process. In the second case, synthesized models must generally be validated by the end-user. The latter may even play an active role in the synthesis process itself.
-\end{itemize}
+\item A technique will be presented for synthesizing agent behavior models from scenarios. The language of Message Sequence Charts (MSCs) will be chosen for describing scenarios of agent interactions. Agent behaviors will be modeled with LTS state machines. The semantic links between MSC scenarios and LTS state machines is based on \cite{Uchitel:2003}.
 
-The core chapters of this thesis describe two particular uses of model synthesis along these axes, illustrating the above differences:
-\begin{itemize}
-\item Guarded high-level Message Sequence Charts (guarded hMSC) are introduced in \cite{Damas:2010, Damas:2011} to model critical processes, such as the ones involved in medical cares. Those models take the form of flowcharts made of tasks and decision nodes with guarded outgoing transitions labeled with boolean expressions on process variables. 
+The proposed synthesis will rely on grammar induction methods from \cite{Oncina:1992, Lang:1998}. Here, the inductive synthesis will take scenarios as examples and counterexamples of desired system behaviors; user interactions will be added to accept or reject scenarios generated by the technique. Moreover, domain knowledge such as goals or models of legacy components will be taken into account to ensure the consistency of the synthesized models while speeding-up the induction process and reducing the number of user interactions.
 
-In this thesis, a precise trace semantics for guarded hMSC is defined in terms of labeled transition systems (LTS) \cite{Keller:1976, Magee:1999}. To achieve this, a guarded flavor of LTS is introduced as an intermediate model. Synthesis algorithms between guarded hMSC, guarded LTS and LTS are described. These algorithms allow making LTS-based model checking available to the process models with only a slight adaptation of the technique from \cite{Giannakopoulou:2003}.
+\item Guarded high-level Message Sequence Charts (guarded hMSC) are introduced in \cite{Damas:2010, Damas:2011} to model critical processes such as the ones involved in medical workflows. Such models take the form of flowcharts of tasks and decision nodes with outgoing guarded transitions labeled with Boolean expressions on process variables. 
 
-\item The thesis also describes a technique that allows synthesizing agent state machines from scenarios. The language of Message Sequence Charts (MSCs) is chosen for describing system behaviors through scenarios; agent state machines are modeled through LTS. The semantics between MSC scenarios and LTS state machines follows \cite{Uchitel:2003}.
-
-Our technique relies on grammar induction algorithms from \cite{Oncina:1992, Lang:1998}. In addition to the synthesis of state machines from scenarios itself, an interactive feature completes the initial collection of scenarios with additional examples and counter-examples of system behavior. Moreover, domain knowledge such as goals or models of legacy components may be taken into account to ensure the consistency of the synthesized models while speeding-up the induction process.
+In the thesis, a precise trace semantics for guarded hMSC will be defined in terms of labeled transition systems (LTS) \cite{Keller:1976, Magee:1999}. To achieve this, a guarded flavor of LTS is introduced as an intermediate model. Synthesis algorithms from guarded hMSC, to guarded LTS to LTS will be described. These algorithms make LTS-based model checking available to the process models though slight adaptations of a technique borrowed from \cite{Giannakopoulou:2003}.
 \end{itemize}

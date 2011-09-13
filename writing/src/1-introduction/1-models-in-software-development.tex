@@ -6,25 +6,26 @@ Models are increasingly recognized as an effective means for elaborating require
 
 \emph{Requirements engineering}, in particular, aims at precisely determining what the system should do and why it should do so. This has been shown to be the hardest part of software development \cite{Brooks:1987}. Using models for exploring, analyzing and specifying requirements has multiple benefits:
 \begin{itemize}
-\item They force stakeholders and analysts to be more precise in their system description.
+\item Models force stakeholders and analysts to be more precise in their formulations.
 \item They allow them to abstract from multiple details in order to focus on key system aspects.
 \item They provide a basis for early detection and fixing of errors.
 \end{itemize}
-Model-oriented approaches to system requirements include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. Models explain how system objectives may be refined in lower-level objectives, also called goals. KAOS emphasizes more on semi-formal and formal reasoning about behavioral goals, i.e. goals that prescribe system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals, i.e. goals that cannot be established in a clear-cut sense.
+Model-oriented approaches to requirements elaboration include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. The models there explain how system goals may be refined in lower-level goals and how the latter are operationalized in operations and constraints. Goals in such frameworks capture prescriptive statements of intent to be satisfied by the agents forming the system. KAOS puts emphasis more on semi-formal and formal reasoning about behavioral goals. These are goals prescribing system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals; these are goals that cannot be established in a clear-cut sense.
 
 %%%
 
-\emph{Software design} may be captured by Model Driven Engineering (MDE) approaches and driven by UML models \cite{OMG:2004} and Domain Specific Languages \cite{VanDeursen:2000, Fowler:2010}. Such approaches model the application domain rather than the computing or algorithmic concepts. The use of models here has several advantages:
+\emph{Software design} may be driven by Model Driven Engineering (MDE) approaches, often based on UML models \cite{OMG:2004} and Domain Specific Languages \cite{VanDeursen:2000, Fowler:2010}. Such approaches model the application domain rather than the computing elements. The use of models for software design has advantages too:
 \begin{itemize}
-\item They enforce the separation between the abstract domain concepts and their concrete implementation. This allows focusing on each aspect at the adequate level of abstraction.
-\item Code fragments can often be generated from models, which is less error-prone and time consuming than manually translating models to code. In the case of domain specific languages, models may even be truly executable already. 
+\item Models enforce the separation between abstract domain concepts and their concrete implementation. This allows engineers to focus on each aspect at the adequate level of abstraction.
+\item Code fragments can often be generated from models; this appears less error-prone and time consuming than manually translating models to code. In case of domain specific languages, models may even be already executable. 
 \item Design models also yield a natural documentation for the software and the underlying design decisions. 
 \end{itemize}
 
 %%%
 
-\emph{Work processes} may be represented by different graphical models. Such models take different forms: flowchart style, e.g. Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005} or Business Process Modeling Notation (BPMN) \cite{OMG:2008}, task trees, e.g. Little-Jil \cite{Clarke:2008}. Modeling here allows:
+On another hand, \emph{work processes} may be captured by graphical models. Such models take different forms, e.g., flowchart style such as Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005} or diagrams in the Business Process Modeling Notation (BPMN) \cite{OMG:2008} or task trees, e.g. Little-Jil \cite{Clarke:2008}. Modeling here proves useful too.
 \begin{itemize}
-\item Analyzing and verifying models before translating them to work organization on the field. This includes early detecting errors and bottlenecks, among others.
-\item Partly or fully triggering the execution of necessary tasks, through reminders to process actors, automated scheduling and task processing, and so on.
+\item Process models may be analyzed and verified before translating them to work organization on the field. Early errors and bottlenecks may thereby be detected.
+\item Process model analysis may also result in restructuring work organization for better performance.
+\item Process models may be partly or fully enacted to trigger the execution of necessary tasks, issue reminders to process actors, control the automated scheduling and processing of tasks, and so on.
 \end{itemize}

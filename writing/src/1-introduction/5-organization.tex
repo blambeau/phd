@@ -1,23 +1,22 @@
 \section{Organization of the thesis\label{section:intro-organization}}
 
-The rest of this thesis is organized as follows:
-
+The rest of the thesis is organized as follows.
 \begin{description}
 
-\item[Chapter 2] installs the background as a guided tour of the multi-view modeling framework. It describes the formalisms we use for scenarios, state machines, goals and process models. The chapter also states consistency rules between them.
+\item[Chapter 2] sets the background picture for the thesis as a guided tour of the multi-view modeling framework. It describes the formalisms we use for scenarios, state machines, goals and process models. The chapter also states consistency rules between these specific views.
 
-\item[Chapter 3] describes our technique for synthesizing state machines from process models. A trace semantics for process models is defined and two algorithms described. The first one rewrites process models as guarded state machine; the second rewrites the latter as pure event-based state machines.
+\item[Chapter 3] describes our technique for vertical synthesis of state machines from process models. A trace semantics for process models is defined together with algorithms for deriving lower-level models. The first algorithm maps process models into guarded state machines; the second algorithm maps the latter into pure event-based state machines.
 
-\item[Chapter 4] describes our technique for synthesizing state machines from scenarios using interactive grammar induction. Starting from a minimal problem statement, additional requirements are gradually incorporated and the algorithm enhanced to meet them.
+\item[Chapter 4] describes our inductive techniques for horizontal synthesis of state machines from scenarios, based on interactive grammar induction. From a minimal problem statement, constraints on the synthesis process are gradually added and the algorithms are incrementally enhanced to meet them.
 
-\item[Chapter 5] discusses how our inductive synthesis technique has been evaluated and the results obtained. It covers qualitative evaluations on case studies and more quantative ones on synthetic datasets.
+\item[Chapter 5] discusses how our inductive synthesis technique has been evaluated. It covers both evaluations on case studies and evaluations on synthetic datasets.
 
-\item[Chapter 6] discusses Stamina, our online plateform for evaluating inductive state machine synthesis. Stamina has first ran as a formal competition, whose results are also briefly summarized.
+\item[Chapter 6] discusses Stamina, our online platform for evaluating inductive synthesis techniques. Stamina first ran as a formal competition whose results are also briefly summarized.
 
-\item[Chapter 7] presents an overview of the tool support: a model checker for guarded process models, an interactive synthesizer of state machines from scenarios and a tool for modeling and analyzing critical processes such as clinical pathways. 
+\item[Chapter 7] discusses the tools developed to support the proposed techniques, namely, a model checker for guarded process models, an interactive synthesizer of state machines from scenarios, and a tool for modeling and analyzing process models for critical applications such as complex medical workflows.
 
-\item[Chapter 8] discusses related work and discusses how other synthesis techniques complement and/or differ from those of the thesis.
+\item[Chapter 8] reviews related work, discussing how other synthesis techniques complement and/or differ from those proposed in the thesis.
 
-\item[Chapter 9] concludes the thesis and states open issues, perspectives, and future work. 
+\item[Chapter 9] concludes the thesis and discusses open issues, perspectives, and future work. 
 
 \end{description}
