@@ -11,6 +11,7 @@
 * grep ", as" -> "as"
 * grep "profit" -> "benefit"
 * grep "fluent invariant" -> "state invariant"
+* grep "case-studies" -> "case studies"
 * How to change captions' font??
 
 * 2011.06.30 - Sections to refactor in chapter 4

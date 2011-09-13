@@ -1,3 +1,5 @@
+grep "accuracy" -> "adequacy"
+
 # Section 5.1 - Objectives
 
   * What about Pierre's remark about Nb. queries and induction time? Other

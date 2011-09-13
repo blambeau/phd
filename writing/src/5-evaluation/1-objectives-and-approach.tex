@@ -1,44 +1,41 @@
 \section{Objectives and approach\label{section:evaluation-objectives-and-approach}}
 
-The aim of this chapter is to answer questions about our inductive synthesis technique, such as: \emph{how well does it work in practice?}, \emph{is it easy enough to use for an end-user?}, or \emph{fast enough for practical cases?}, etc. 
+The aim of this chapter is to answer questions about our inductive synthesis technique, such as: \emph{How well does it work in practice?}, \emph{Is it easy enough to use for an end-user?}, \emph{Is it fast enough for practical cases?} etc. 
 
-These questions are difficult to answer in absolute terms. Specific experiments have thus been conducted to provide some answers. The latter are mostly expressed in terms of three specific measures that have a clear impact on the usability of the synthesis technique:
+These questions are difficult to answer in absolute terms. Specific experiments have therefore been conducted to provide some answers. These latter answers are mostly expressed in terms of three specific criteria that have a clear impact on the usability of the synthesis technique.
 \begin{description}
-\item[Model accuracy] Loosely speaking, \emph{model accuracy} captures the notion of \emph{how well} an inferred model corresponds to the target behavior model that one actually searches. 
+\item[Model adequacy] Roughly speaking, \emph{model accuracy} captures \emph{how well} an inferred model matches the expected target behavior model. 
 
-Model accuracy is easy to measure in controlled experiments in which, by design, the target model is known. Depending on the experiment, we will use either a binary value or a more finer-grained one.
+Model adequacy is easy to measure in controlled experiments in which, by design, the target model is then known. Depending on the experiment, we will use either a binary value or a finer-grained one.
 \begin{itemize}
-\item In the former case, the accuracy measure simply captures whether the learned model is \emph{the same} as the target model or not, in terms of behavioral equivalence (see Definition~\ref{definition:trace-equivalence}).
-\item In the latter case, accuracy will range from 0.0 to 1.0, measuring how far or close the learned model is from the target model. This will be estimated with test samples (see Section~\ref{subsection:evaluation-synthetic-protocol}).
+\item In the former case, the adequacy measure simply captures whether the learned model is \emph{the same} as the target model or not, in terms of behavioral equivalence (see Definition~\ref{definition:trace-equivalence}).
+\item In the latter case, an \emph{accuracy} measure will be used; such measure will range from 0.0 to 1.0 dependent on whether the learned model is considered far or close to the target model. This will be estimated through test samples (see Section~\ref{subsection:evaluation-synthetic-protocol}).
 \end{itemize}
+of 
+Note that adequacy is harder to assess on real-world case studies where the target model is unknown. In practice, human inspection of the learned models is required.
 
-Note that measuring the accuracy of a learned model is harder on real-world cases, that is, when the target model is unknown. In practice, human inspection of learned models is generally required to assess accuracy. In that case, the notion of model accuracy also tend to be more subjective. 
+\item[Number of scenario questions] The number of queries generated to the oracle is a key measure for the usability of QSM in practice. 
 
-\item[Number of queries] The number of queries submitted to the oracle is a key measure that drives the usability of QSM in practice. 
+This is certainly true when the oracle is a human being. A large number of queries might also be a problem with automated oracles; online oracles may be slow, others might be expensive, etc.
 
-This is certainly true when the oracle is a human being, for obvious reasons. However, a large number of queries might also be a problem with automated oracles: online oracles may be slow, others might be expensive, and so on.
-
-\item[Induction time] Last, the time taken to infer a model deserves special attention. While a reasonable induction time is welcome in any case, real-time interactions are required for usability of QSM in presence of a human oracle.
+\item[Induction time] The time taken to infer a model deserves special attention. While a reasonable induction time is desirable in any case, fast, real-time interactions are required for usability of QSM by a human oracle.
 \end{description}
 
-Our experiments have been designed to isolate the effect on the three measures above of the orthogonal features of our inductive technique. Among others, they quantify gains and costs of the following ones:
+Our experiments were designed to isolate the effect on the three measures above of the orthogonal features of our inductive technique. Among others, they quantify the gains and costs of the following ones:
 \begin{itemize}
-\item The use of an oracle who can answer scenario questions: a gain is expected for model accuracy at the cost of a longer induction time.
-\item The use of the Blue-fringe heuristic instead of the RPNI search order: an accuracy gain is expected as well as a reduction of the number of scenario questions;
-\item The effect of using domain knowledge such as fluent and goals: an accuracy gain and a reduction of scenario questions should be observed as well;
-\item The effect of using control information such as a hMSC: here also, an accuracy gain is expected.
+\item The use of an oracle who can answer scenario questions: a gain is expected in model adequacy at the cost of a longer induction time.
+\item The use of the Blue-fringe heuristic instead of the RPNI search order: a gain in adequacy is expected as well as a reduction of the number of scenario questions;
+\item The use of domain knowledge such as fluent and goals: a gain in adequacy and a reduction of scenario questions should be observed as well;
+\item The use of control information encoded into a hMSC: here also, a gain in adequacy is expected.
 \end{itemize}
 
-In practice, two categories of experiments have been conducted, as reflected by the following sections. The specific experimentation protocols used will be described in each case.
+In practice, two kinds of evaluation have been conducted, as detailed in the following sections. The specific evaluation protocols used will be described in each case.
 \begin{itemize}
 
-\item Section \ref{section:evaluation-experiments-on-case-studies} discusses experiments conducted on three case-studies involving multiple models. In addition to assessing the expected effects discussed above, the aim is to evaluate the feasibility of inductive LTS synthesis in practice. Our ISIS tool presented in Section \ref{section:tool-support-isis} has been used as an effective support for designing and conducting the experiments described here.
+\item Section \ref{section:evaluation-experiments-on-case-studies} discusses evaluations conducted on three case-studies involving multiple models. In addition to assessing the expected effects of the above features, the aim is to evaluate the feasibility of inductive LTS synthesis in practice. Our ISIS tool presented in Section \ref{section:tool-support-isis} has been used as an effective support for designing and conducting the evaluations described there.
 
-\item Section \ref{section:evaluation-experiments-on-synthetic-data} complements this case-driven evaluation with experiments conducted on random automata and samples. The aim here is to study the performance of QSM and ASM in a more systematic way using synthetic datasets whose size grows significantly beyond the average one of the case-studies. 
+\item Section \ref{section:evaluation-experiments-on-synthetic-data} complements this case-driven evaluation with experiments conducted on random automata and samples. The aim here is to study the performance of QSM and ASM in a more systematic way using synthetic datasets whose size grows significantly beyond the average one of the case studies. This will also allow us to compare our techniques with state-of-the-art induction algorithms. To achieve sound comparisons, our evaluation protocol inspires from a known benchmark known as Abbadingo \cite{Lang:1998} (see Section~\ref{subsection:evaluation-synthetic-protocol}).
 
-This also allows us to assess the gain of using QSM or ASM in comparison to RPNI and Blue-fringe, taken as state-of-the-art induction algorithms. To achieve a sound comparison, our evaluation protocol inspires from a known benchmark known as Abbadingo \cite{Lang:1998} (see Section~\ref{subsection:evaluation-synthetic-protocol}). 
-
-Note that the experiments on synthetic datasets do not evaluate the use of fluents or goals to constrain the induction. The reason is that accurately simulating such domain knowledge raises a certain number of issues about the design of the evaluation protocol.
+Note that the evaluations on synthetic datasets will not evaluate the use of fluents or goals for constraining induction. The reason is that accurately simulating such domain knowledge raises a certain number of issues about the design of the evaluation protocol.
 
 \end{itemize}
-

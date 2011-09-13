@@ -1,26 +1,26 @@
-\section{Experiments on case studies\label{section:evaluation-experiments-on-case-studies}}
+\section{Evaluations on case studies\label{section:evaluation-experiments-on-case-studies}}
 
-QSM and ASM have been evaluated on three different case-studies of varying complexity. The first one is a mine pump system inspired from~\cite{Joseph:1996}. The second is an extended version of the train system used here as a running example. The third is a phone system handling communications between a caller and a callee.
+QSM and ASM were evaluated on three different case studies of varying complexity. The first one is a mine pump system inspired from~\cite{Joseph:1996} and often used as a ``benchmark'' in the literature. The second case study refers to an extended version of the train system used here as a running example. The third one is a phone system handling communications between a caller and a callee.
 
 \subsection{Evaluation methodology}
 
-In addition to a practical evaluation of our tool-supported approach to multi-view LTS synthesis, our objective was to assess the impact of constraining induction through fluents, models of external components, domain descriptions and goals. Impact was measured in terms of the number of generated scenario questions and the accuracy of the synthesized models.
+Beyond a practical evaluation of our tool-supported approach to multi-view LTS synthesis, our objective was to assess the impact of constraining induction through fluents, models of external components, domain descriptions and goals. Such impact was measured in terms of the number of generated scenario questions and the adequacy of the synthesized models. Induction time was also measured so as to check that fast interactions with the oracle are observed.
 
 For each case study, we proceeded in two steps:
 \begin{enumerate}
 \item\label{stepA}
 \begin{enumerate}
-\item\label{CondA} Design a scenario collection allowing for meaningful subsequent comparison, that is, a scenario collection sufficiently rich to allow an adequate system LTS to be induced under one setting of the experiment at least.
+\label{CondA} Design a scenario collection allowing for meaningful subsequent comparison, that is, sufficiently rich to allow an adequate system LTS to be induced under one setting of the experiment at least (see hereafter).
 \item\label{CondB} Define a common set of fluent definitions identifiable from this scenario collection. From this set of fluents, define a common set of domain properties and goals.
 \end{enumerate}
-\item\label{stepB} Evaluate the techniques on this scenario collection, without and with fluents, goals, domain descriptions, or models of external components.
+\item\label{stepB} Evaluate the techniques on this scenario collection, without and then with fluents, goals, domain descriptions, or models of external components.
 \end{enumerate}
 
-In Step~\ref{stepA}, condition~(a) amounts to require the scenario collection to be structurally complete; every transition in the target system LTS must occur in at least one scenario (see Section \ref{section:inductive-background}). We used the ISIS tool to incrementally set up such a scenario collection (see Section \ref{section:tool-support-isis}):
+In Step~\ref{stepA}, the richness condition on the scenario collection~(a) amounts to require the collection to be structurally complete; every transition in the target system LTS must occur in at least one scenario (see Section \ref{section:inductive-background}). The ISIS tool was used to incrementally set up such a scenario collection (see Section \ref{section:tool-support-isis}):
 \begin{itemize}
-\item We started from an initial set of scenarios that end-users would typically provide.
-\item By generating scenario queries, adding domain properties and goals, and validating induced LTS, we found a number of additional scenarios that were initially missing. 
-\item Some of these scenarios were then added to the collection for the comparisons in Step~\ref{stepB}. Added scenarios have been selected so as to reach a structurally complete collection of scenarios without making it too rich.
+\item An initial set of scenarios that end-users would typically provide was first selected.
+\item By generating scenario questions, adding domain properties and goals, and validating the induced LTS, additional scenarios were found that were initially missing. 
+\item Some of these scenarios were added to the collection for the comparisons in Step~\ref{stepB}. Added scenarios have been selected so as to reach a structurally complete collection of scenarios without making it too rich.
 \end{itemize}
 
 \begin{table}[H]
@@ -34,40 +34,40 @@ Phone    & 16     & 23     & 33          & 6     & 4     & 11\\\hline
 \caption{Sizes of the case studies.\label{CaseStudies}}
 \end{table}
 
-The size of the scenario collection resulting from Step~\ref{stepA} is shown in Table~\ref{CaseStudies}. $|S^+|$ and $|S^-|$ denote the number of positive and negative scenarios, respectively. The average scenario length is reported in the last column. The size of the target system LTS in terms of number of different event labels (alphabet size), states, and transitions are also reported. 
+The size of the scenario collection resulting from Step~\ref{stepA} is shown in Table~\ref{CaseStudies}. $|S^+|$ and $|S^-|$ denote the number of positive and negative scenarios, respectively. The average scenario length is reported in the last column. The size of the target system LTS are also reported in terms of number of different event labels (alphabet size), states, and transitions. 
 
-To measure the number of generated scenario queries in Step \ref{stepB}, an oracle has been implemented to simulate the end-user. This oracle knows the system LTS for each problem and correctly classifies scenario queries as positive or negative. Note that this is a strong assumption on the oracle, especially when played by an end-user in practice; this issue has been discussed in Section~\ref{section:inductive-discussion}.
+In order to measure the number of generated scenario questions in Step \ref{stepB}, an oracle was implemented to simulate the end-user. This oracle knows the system LTS for each problem and correctly classifies scenario queries as positive or negative. Note that this is a strong assumption on the oracle, especially when played by an end-user in practice; this issue has been discussed in Section~\ref{section:inductive-discussion}.
 
 %%%%%
 
 \subsection{RPNI search order vs. Blue-fringe strategy\label{subsection:evaluation-bluefringe-on-casestudies}}
 
-Table~\ref{RPNI:Blue-fringe} reports the results obtained when running QSM with the RPNI search order and the Blue-fringe heuristics, respectively. In the sequel, these two settings will be denoted by QSM-rpni and QSM-fringe, respectively. Comparisons are reported for the three case-studies when no additional knowledge is used to constrain induction. 
+Table~\ref{RPNI:Blue-fringe} reports the results obtained when running QSM with the RPNI search order and the Blue-fringe heuristics, respectively. In the sequel, these two settings will be denoted by QSM-rpni and QSM-fringe, respectively. The comparisons are made without additional knowledge to constrain induction. 
 
 \begin{table}[H]
 \centering
 \begin{tabular}{|l||l||c|c|c|}\hline
-Problem   & Algorithm   &$Q^+$&$Q^-$& Model accuracy\\\hline\hline
+Problem   & Algorithm   &$Q^+$&$Q^-$& Model adequacy\\\hline\hline
 Mine Pump & QSM-rpni    & 1   & 30  & missing/unallowed traces\\\cline{2-5}
-          & QSM-fringe  & 1   & 4   & target model found\\\hline
-Train     & QSM-rpni    & 4   & 83  & target model found\\\cline{2-5}
-          & QSM-fringe  & 5   & 5   & target model found\\\hline
+          & QSM-fringe  & 1   & 4   & equivalent model found\\\hline
+Train     & QSM-rpni    & 4   & 83  & equivalent model found\\\cline{2-5}
+          & QSM-fringe  & 5   & 5   & equivalent model found\\\hline
 Phone     & QSM-rpni    & 5   & 171 & missing/unallowed traces\\\cline{2-5}
           & QSM-fringe  & 5   & 19  & missing/unallowed traces\\\hline
 \end{tabular}
 \caption{RPNI search order versus Blue-Fringe strategy for QSM.\label{RPNI:Blue-fringe}}
 \end{table}
 
-The table shows the number of queries the oracle had to answer together with a binary measure of model accuracy. $Q^+$ and $Q^-$ denote the number of accepted and rejected scenario queries, respectively. The model is said to be \emph{found} if it matches the known target LTS, formally if the two models are trace equivalent (see Definition \ref{definition:trace-equivalence}). 
+The table shows the number of queries the oracle had to answer together with a binary measure of model adequacy. $Q^+$ and $Q^-$ denote the number of accepted and rejected scenario questions, respectively. The model is said to be \emph{found} if it matches the known target LTS, formally if the two models are trace equivalent (see Definition \ref{definition:trace-equivalence}). 
 
-The main observations from these results are:
+The following main observations can be made from these results:
 \begin{itemize}
-\item The large number of generated questions makes QSM-rpni unusable with an end-user on bigger systems. In contrast, the number of rejected scenario queries is drastically reduced thanks to the Blue-fringe search strategy. 
-\item In the Phone system, an adequate system LTS cannot be synthesized with the sole use of the initial scenario collection and scenario questions. Wrong generalizations do occur; some states are merged whereas they need to be distinguished. A richer scenario collection would allow to correctly identify the target model; remember, however, that the initial collections have been chosen so as to observe the accuracy gain of injecting fluent definitions and goals in the synthesis process.
-\item Finally, the number of rejected scenarios tends to be much larger than the number of accepted ones. This observation confirms the usefulness of scenario queries. Negative answers force the induction algorithm to be restarted when an incorrect search path has been taken (see Algo~\ref{QSM}).
+\item The large number of generated questions makes QSM-rpni unusable with end-users on bigger systems. In contrast, the number of rejected scenario questions is drastically reduced thanks to the Blue-fringe search strategy. 
+\item In the phone system, an adequate system LTS cannot be synthesized with the sole use of the initial scenario collection and scenario questions. Wrong generalizations do occur; some states are merged whereas they need to be distinguished. A richer scenario collection would allow to correctly identify the target model; remember, however, that the initial collections have been chosen so as to observe the accuracy gain of injecting fluent definitions and goals in the synthesis process.
+\item Finally, the number of rejected scenarios tends to be much larger than the number of accepted ones. This observation confirms the usefulness of scenario questions. Negative answers force the induction algorithm to be restarted when an incorrect search path has been taken (see Algorithm~\ref{QSM} in Section~\ref{section:lts-induction-from-mscs}).
 \end{itemize}
 
-As the Blue-fringe heuristics is seen to be far superior to the RPNI search order, subsequent comparisons are made only with QSM-fringe.
+As the Blue-fringe heuristics appeared by far superior to the RPNI search order, subsequent comparisons were made only with QSM-fringe.
 
 %%%%%
 
