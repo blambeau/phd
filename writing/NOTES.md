@@ -1,4 +1,3 @@
-* grep "among others" -> ""
 * grep "letter" -> "symbol"
 * grep "(see later)" -> "(see Section X)"
 * grep ", as" -> "as"
