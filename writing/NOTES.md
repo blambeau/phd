@@ -1,15 +1,7 @@
-* grep "letter" -> "symbol"
 * grep ", as" -> "as"
-* grep "fluent invariant" -> "state invariant"
-* grep "case-studies" -> "case studies"
 * How to change captions' font??
 
 * 2011.06.30 - Sections to refactor in chapter 4
-
-  * Restate the requirement that all scenarios start in the same system state
-    somewhere. This is left implicit because of scenario collections so far. 
-
-  * Add a sentence about "membership queries" before using the term.
 
   * Normalize images and verify that abbreviates are correctly introduced.
 

@@ -73,7 +73,7 @@ In a canonical automaton $A(L)$ of language $L$, the set of short prefixes is th
  The kernel $N(L)$ of language $L$ is defined as $N(L) = \{xa | x \in Sp(L), a \in \Sigma, xa \in Pr(L)\} \cup \{\lambda\}$.
 \end{definition}
 
-The kernel of a language is thus made of its short prefixes extended by one letter together with the empty string. By construction $Sp(L) \subseteq N(L)$. The kernel elements capture the transitions of the canonical automaton $A(L)$. Indeed, they are obtained by adding one letter to the short prefixes which capture its states. The kernel of the language defined by the canonical automaton of Fig.~\ref{fig:pta:quotient} is $N(L) = \{\lambda, a, b, ba, bb\}$.
+The kernel of a language is thus made of its short prefixes extended by one symbol together with the empty string. By construction $Sp(L) \subseteq N(L)$. The kernel elements capture the transitions of the canonical automaton $A(L)$. Indeed, they are obtained by adding one symbol to the short prefixes which capture its states. The kernel of the language defined by the canonical automaton of Fig.~\ref{fig:pta:quotient} is $N(L) = \{\lambda, a, b, ba, bb\}$.
 
 \begin{definition}[Characteristic sample]
 A sample $S^c=(S_{+}^c,S_{-}^c)$ is characteristic for the language $L$ and the algorithm RPNI if it satisfies the following conditions: 
@@ -98,7 +98,7 @@ There may exist several distinct characteristic samples for a given language $L$
 
 For the language accepted by the canonical automaton in Fig.~\ref{fig:pta:quotient}, one can check that $S = (S_+, S_-)$, with $S_+ = \{\lambda, a, bb, bba, baab, baaaba\}$ and $S_- = \{b, ab, aba\}$, forms a characteristic sample 
 
-The definition of a characteristic sample given above may appear quite strong. It is however the standard definition for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. The definition is based on a worst case analysis that does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the letters of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to produce approximate state machines with a very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
+The definition of a characteristic sample given above may appear quite strong. It is however the standard definition for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. The definition is based on a worst case analysis that does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the symbols of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to produce approximate state machines with a very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
 
 \subsection{LTS synthesis as RPNI induction\label{subsection:inductive-lts-synthesis-reduction}}
 
