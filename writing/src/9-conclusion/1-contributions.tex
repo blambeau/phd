@@ -1,23 +1,22 @@
 \section{Contributions\label{section:conclusion-contributions}}
 
-Contributions along the first axe of model synthesis follows from our work on guarded hMSC:
+The contributions of the thesis are summarized along these two model synthesis axes.
+
+\subsection*{Horizontal synthesis}
 
 \begin{itemize}
-
-\item This thesis gave a formal semantics to guarded hMSC. This semantics is defined through the introduction of guarded LTS, a kind of labeled transition systems allowing events and guards on transitions. Guarded LTS are given a declarative trace semantics as well as composition and hiding operators.
-
-\item A synthesis algorithm has been proposed that operationalizes the semantics of guarded hMSC and guarded LTS in terms of pure LTS. Among others, this semantics makes guarded models amenable to trace-based model checking, requiring only a few adaptations of existing compositional techniques.
-
+\item The thesis has proposed an interactive procedure for synthesizing agent state machines from positive, negative and structured forms of scenarios. This procedure uses grammar induction for generalizing scenario behaviors. It is interactive with an end-user who classifies additional scenarios as positive or negative examples of system behaviors.
+\item A technique has been discussed to constrain and prune the search space of inductive state machine synthesis. This allows incorporating various sources of knowledge about the target system. This technique has been instantiated to take fluent definitions, legacy components, and goals and domain properties into account. The pruning technique provide guarantees of the consistency of the synthesized state machines with all such system knowledge. It also speeds up the induction search space for better performances and reduces the number of user interactions.
+\item Our induction technique is supported by a tool. This tool also integrates various checks for the consistency of scenarios, state machines and goals as well as a technique to infer safety properties from scenarios. 
+\item The techniques and tools have been evaluated on case studies and synthetic datasets. In the latter case, a novel evaluation protocol for inductive model synthesis has been proposed and ran as a formal competition.
 \end{itemize}
 
-Contributions along the second axe, i.e. model synthesis as a support for multi-view modeling, are:
+\subsection*{Vertical synthesis}
 
 \begin{itemize}
-
-\item An interactive procedure for synthesizing LTS agent state machines, from positive and negative MSC scenarios as well as their flowcharting in high-level MSCs. This procedure uses grammar induction for generalizing behaviors and may be guided by an end-user who classifies additional scenarios as positive or negative examples of system behaviors.
-
-\item A technique to constrain and prune the search space of inductive LTS synthesis by incorporating various sources of knowledge about the target system. This technique is instantiated to take into account fluent definitions, legacy components, goals and domain properties. This guarantees the consistency of the synthesized state machines with other models, notably goals. 
-
+\item This thesis gave a formal semantics to guarded hMSC. This semantics is defined through the introduction of guarded LTS, a kind of labeled transition systems allowing events and guards on transitions. Guarded LTS have been given a declarative trace semantics as well as composition and hiding operators.
+\item Two synthesis algorithms have been proposed to derive guarded hMSC to guarded LTS to pure LTS. Those algorithms have been shown to make guarded process models amenable to a various set of model analysis.
+\item The implementation of a model-checker for guarded hMSC and guarded LTS has been discussed. The thesis also discussed the architecture and important design decisions in the implementation of another toolset aimed at analyzing mission-critical process models.
 \end{itemize}
 
-The techniques listed above are supported by libraries and tools, available under open-source licences. Techniques and tools have been evaluated on typical case studies and synthetic data. In the latter case, an novel evaluation protocol for inductive model synthesis has been proposed and ran as a formal competition.
+
