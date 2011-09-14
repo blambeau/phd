@@ -1,15 +1,82 @@
 \section{Discussion\label{section:inductive-synthesis-discussion}}
 
-\subsection{Rationale behind the generalization step}
+Let us step back a little before closing this chapter and ask two questions:
+\begin{itemize}
+\item \emph{What problem are we trying to solve?}
+\item \emph{Why do we solve it this way?}
+\end{itemize}
+In addition to revisiting our synthesis technique and discussing some perspectives, answers to those questions allow us to compare our approach with other ones. Such comparisons will take place in Chapter~\ref{chapter:related-work}.
 
-Our synthesis requirements include ``behavior generalization''. Looking at relation (\ref{relation:inductive-language-refinements}) we might ask ourselves what drives the generalization process and until when. By construction, the first automaton $A_0$ already meets the consistent system view conditions (\ref{relation:inductive-invariant}) and (\ref{relation:inductive-invariant-II}). Therefore, $A_0$ is a valid, yet trivial, solution. Why not simply use it?
+\subsection{What problem are we trying to solve?}
 
-The answer is to be found in the Occam's principle stating that ``among all models explaining the world equally well, the simplest should be preferred''. Using grammar induction this amounts to searching for the \emph{smallest} automaton consistent with the positive and negative scenarios, also called the \emph{input sample}. The initial automaton $A_0$ is rarely the simplest model according to this criteria. 
+This chapter discussed an horizontal synthesis technique. Remember from Section~\ref{section:intro-synthesis} that the underlying objectives are to elaborate requirements and explore system designs. In this context, horizontal synthesis aims at building models missing from a multi-view framework or completing existing ones.
 
-Looking for the smallest automaton consistent with an input sample is known to be NP-hard \cite{Gold:1978, Angluin:1978}. The RPNI algorithm offers a consistent approximated solution in polynomial time; this solution is the smallest consistent deterministic automaton when the input sample is rich enough, in particular when it forms a so-called \emph{characteristic sample} (see later) \cite{Oncina:1992}.
+In the light of these objectives, our technique can be seen as tackling the following problem:
+\begin{itemize}
+\item There is an expected target system, composed of agents $Ag_1, \ldots, Ag_n$ whose behavior can be modeled through state machines. The behavior of the system itself is defined through agent composition.
+\item A complete description of the system behavior is not available. In particular, agent state machines are unknown or only partially known; the same applies to the underlying behavioral goals.
+\item However, behavior model fragments are available; those fragments take various forms:
+\begin{itemize}
+\item Scenarios may describe examples and counterexamples of desired system behaviors.
+\item The behavior of some agents may be partially or completely captured through definitions of agent state variables and/or known state machines.
+\item Known behavioral goals may define restrictions on system behaviors so as to avoid undesired ones.
+\end{itemize}
+\item We are interested in specifying the system behaviors more completely. This roughly means completing all models in a consistent way.
+\end{itemize}
 
-\subsection{Future directions}
+The problem above presuppose incremental approaches to be solved. Within iterations, system descriptions gets more complete and behavior models gets richer. Additional system features are modeled when successful iterations have completed; refactoring steps are conducted when problems appear, such as undesired implied scenarios.
 
-From a grammar induction point of view, the ASM algorithm can be seen as generalizing any positive regular language $\mathcal{L}^+$ under the control of a negative sample $S^-$. As such, RPNI is thus a special case where the positive language forms a sample $S^+$, that is a finite set of strings.
+Our inductive synthesis technique provides a building block for an integrated approach along this line. Observe that the synthesis of state machines from scenarios can be seen as a ``pretext''. In the multi-view vision above, state machine synthesis is seen as equally important as the completion of the scenario collection with answers to scenario questions; the same applies to the identification of behavior goals triggered when some of these scenarios are rejected. 
 
-Moreover, goals and domain properties can still be used to prune the ASM search space with the technique discussed in Section~\ref{subsection:induction-pruning-with-goals}. As goals actually capture negative languages through their tester automaton, this amounts to consider a generalization of ASM to generalize a positive language $\mathcal{L}^+$ under the control of a negative one $\mathcal{L}^-$. This generalization is called ASM$^*$ and briefly discussed in \cite{Lambeau:2008}.
+The ISIS tool goes one step further as it integrates QSM with other synthesis techniques, such as the inference of behavioral goals from scenarios (see Section~\ref{section:tool-support-isis}).
+
+\subsection{Why do we solve it this way?}
+
+Some standpoints in the problem formulation above are debatable. One could ask whether this incremental process has an end or argue that the ultimate goal is the elaboration of requirements in particular. 
+
+Whatever the answers, we state two reasonable expectations on approaches supporting the incremental building of a multi-view behavior model:
+\begin{quotation}
+\emph{Every time a successful iteration completes, the available models should provide a consistent view of system behaviors.}
+\end{quotation}
+\begin{quotation}
+\emph{If failing to complete, the elaboration process should at least provide a reasonable convergence criteria.}
+\end{quotation}
+
+Section~\ref{section:inductive-correctness} proposed an detailed discussion about the consistency guarantees that one can expect with our approach.
+
+The convergence of the elaboration process also deserves some attention. To keep things simple enough, we leave aside structural aspects hidden behind fluents state variables, our use legacy components, the structure of scenarios, the decomposition step of our approach, and implied scenarios. In other words, we focus here on pure behavioral aspects of scenarios and goals.
+
+In such case, our problem can be stated once again as follows \cite{Uchitel:2007}:
+\begin{itemize}
+\item There is an expected target system, denoted by $S$. Let denote its expected behaviors by $\mathcal{L}(S)$.
+\item Positive scenarios capture a lower bound on system behaviors, that is, behaviors that the system \emph{must} provide. Let denote these behaviors by $\mathcal{L}^+(S)$.
+\item Negative scenarios and goals capture an upper bound on system behaviors, that is, they capture behaviors that the system \emph{may not} exhibit. Let denote these behaviors by $\mathcal{L}^-(S)$.
+\item We are interested in specifying the system behaviors more completely. This roughly means completing scenario and goal descriptions in a consistent way.
+\end{itemize}
+
+In addition, the two expectations on the elaboration process can be stated as follows:
+\begin{itemize}
+\item Every time a successful iteration completes, scenarios and goals should provide a consistent view of system behaviors:
+\begin{align}
+&\mathcal{L}^+(S) \subseteq \mathcal{L}(S)\\
+&\mathcal{L}^-(S) \cap \mathcal{L}(S) = \emptyset
+\end{align}
+\item If failing to complete, the elaboration process should at least provide a reasonable convergence criteria. That is, it should ultimately lead to a situation where scenarios and goals possibly describe the same system:
+\begin{align}
+\mathcal{L}^+(S) = \mathcal{L}(S) = \overline{\mathcal{L}^-(S)}
+\end{align}
+\end{itemize}
+
+%\subsection{Rationale behind the generalization step}
+
+%Our synthesis requirements include ``behavior generalization''. Looking at relation (\ref{relation:inductive-language-refinements}) we might ask ourselves what drives the generalization process and until when. By construction, the first automaton $A_0$ already meets the consistent system view conditions (\ref{relation:inductive-invariant}) and (\ref{relation:inductive-invariant-II}). Therefore, $A_0$ is a valid, yet trivial, solution. Why not simply use it?
+
+%The answer is to be found in the Occam's principle stating that ``among all models explaining the world equally well, the simplest should be preferred''. Using grammar induction this amounts to searching for the \emph{smallest} automaton consistent with the positive and negative scenarios, also called the \emph{input sample}. The initial automaton $A_0$ is rarely the simplest model according to this criteria. 
+
+%Looking for the smallest automaton consistent with an input sample is known to be NP-hard \cite{Gold:1978, Angluin:1978}. The RPNI algorithm offers a consistent approximated solution in polynomial time; this solution is the smallest consistent deterministic automaton when the input sample is rich enough, in particular when it forms a so-called \emph{characteristic sample} (see later) \cite{Oncina:1992}.
+
+%\subsection{Future directions}
+
+%From a grammar induction point of view, the ASM algorithm can be seen as generalizing any positive regular language $\mathcal{L}^+$ under the control of a negative sample $S^-$. As such, RPNI is thus a special case where the positive language forms a sample $S^+$, that is a finite set of strings.
+
+%Moreover, goals and domain properties can still be used to prune the ASM search space with the technique discussed in Section~\ref{subsection:induction-pruning-with-goals}. As goals actually capture negative languages through their tester automaton, this amounts to consider a generalization of ASM to generalize a positive language $\mathcal{L}^+$ under the control of a negative one $\mathcal{L}^-$. This generalization is called ASM$^*$ and briefly discussed in \cite{Lambeau:2008}.
