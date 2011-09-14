@@ -2,10 +2,6 @@
 
   * Add an image for composition
   
-* 2.4.5 Flowcharting scenarios ...
-
-  * Say briefly why not all hMSCs define regular languages.
-
 * Section 2.5.3: a fluent might be TOP in a LTS state. I consider this
   as problematic (Christophe does not). The way fluents are used to prune 
   the induction process implicitly argue in favor of my position IMHO. If 
