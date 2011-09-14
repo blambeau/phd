@@ -15,7 +15,7 @@ Fig.~\ref{figure:synthesis-flow-model} summarizes our approach by showing used a
 \item From the system view point, the result of our synthesis approach is precisely captured by the composition of those state machines.
 \end{itemize}
 
-In this figure and in the following discussion,
+In this figure and in the following discussions,
 \begin{itemize}
 \item $Sc = (S^+,S^-)$ denotes the input scenario collection; its positive and negative languages are denoted by $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$, respectively.
 \item $\mathcal{L}(\me{System})$ denotes the language captured by the inferred system LTS.
@@ -49,20 +49,49 @@ Section~\ref{subsection:system-lts-consistency} briefly discusses the consistenc
 
 \subsection{Consistency of the system LTS\label{subsection:system-lts-consistency}}
 
-RPNI provides a guarantee that the system LTS covers all positive scenarios and rejects all negative ones. In other words, the following conditions hold:
+This section demonstrates that RPNI yields a system LTS consistent with the input scenario collection. The pseudo code given in Algo.~\ref{QSM} is used, ignoring the scenario questions (lines 5 to 10).
+
+\begin{theorem}
+\label{theorem:system-lts-consistency-with-sc}
+The system LTS synthesized by RPNI covers all positive scenarios and rejects all negative ones.
+\begin{align*}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)\\
+&\mathcal{L}^-(Sc) \cap      \mathcal{L}(System) = \emptyset
+\end{align*}
+
+\begin{proof}
+This theorem is proven by induction using the following invariant:
 \begin{align}
-&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)\label{proof:consistent-system-lts-1}\\
-&\mathcal{L}^-(Sc) \cap      \mathcal{L}(System) = \emptyset\label{proof:consistent-system-lts-2}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(A_i)\label{inv:system-lts-consistency-with-sc-1}\\
+&\mathcal{L}^-(Sc) \cap      \mathcal{L}(A_i) = \emptyset\label{inv:system-lts-consistency-with-sc-2}
 \end{align}
-where \emph{System} denotes the system LTS inferred from the scenario collection~\emph{Sc}.
 
-This can be proven by induction. Roughly, 
-\begin{itemize}
-\item A precondition states that input scenarios are consistent. Therefore, conditions (\ref{proof:consistent-system-lts-1}) and (\ref{proof:consistent-system-lts-2}) initially hold on the PTA.
-\item Those conditions hold for any quotient automata considered as intermediate solution of the induction process. On one side, quotient automata may only generalize the positive language (see Definition~\ref{definition:quotient-automaton}). On the other side, quotient automata are automatically discarded when inconsistent with the negative scenarios.
-\end{itemize}
+\begin{description}
+\item[Base:] $A_0$ denotes the PTA returned by \emph{Initialize}.
 
-A detailed proof of RPNI and its convergence can be found in~\cite{Oncina:1993} in the more general case of transducer learning.
+The PTA is the largest DFA accepting the positive language; a precondition states that input scenarios are consistent. Therefore the following conditions hold, entailing the invariant:
+\begin{align}
+&\mathcal{L}^+(Sc) =    \mathcal{L}(A_0)\\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_0) = \emptyset
+\end{align}
+
+\item[Inductive step:] $A_i$ is the quotient automaton denoting the current solution at step $i$.
+
+From a solution $A_i$, the next solution $A_{i+1}$ is computed by the \emph{Merge} function (see line 3 in Algo.~\ref{QSM}). The latter computes a quotient automaton. Definition~\ref{definition:quotient-automaton} guarantees that such quotient automaton may only generalize the language of $A_i$. As the condition~(\ref{inv:system-lts-consistency-with-sc-1}) holds for $A_i$, the following condition holds as well:
+\begin{align*}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(A_i) \subseteq \mathcal{L}(A_{i+1})
+\end{align*}
+
+On an other hand, quotient automata are only kept as next solution if consistent with the negative scenarios (see lines 4 and 11). Therefore, the following condition holds when such solution is kept (line 11):
+\begin{align*}
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_{i+1}) = \emptyset
+\end{align*}
+
+\end{description}
+\end{proof}
+\end{theorem}
+
+A detailed proof of the convergence of RPNI towards the canonical target automaton when it receives a characteristic sample can be found in~\cite{Oncina:1993} in the more general case of transducer learning.
 
 %%%
 
@@ -85,7 +114,7 @@ where $\Sigma_{Ag}^c$ denotes the set of all system events excluding those of $A
 \item (\ref{proof-agent-consistency-3}) follows from the definition (\ref{definition:decomposition-step}) of decomposition step itself (see Section~\ref{subsection:inductive-synthesis-approach}). 
 \end{itemize}
 
-Given that condition (\ref{proof:consistent-system-lts-1}) holds, the following condition is established thanks to (\ref{proof-agent-consistency-1})
+From Theorem~\ref{theorem:system-lts-consistency-with-sc} ensuring the consistency of the system LTS with input scenarios, the following condition is established thanks to (\ref{proof-agent-consistency-1})
 \begin{align}
 &\mathcal{L}^+(Sc \setminus \Sigma_{Ag}^c) \subseteq \mathcal{L}(System \setminus \Sigma_{Ag}^c)\label{proof:consistent-agent-view-milestone}
 \end{align}
@@ -96,25 +125,44 @@ The ``consistent agent view'' condition (\ref{proof:consistent-agent-view}) is e
 
 \subsection{Consistent system view: the problem of implied scenarios\label{subsection:consistent-system-view}}
 
-The positive part of the ``consistent system view'' condition (\ref{proof:consistent-system-view-1}) follows from two main properties of our approach:
+This section discusses the correctness of the ``consistent system view'' condition. The conditions related to the positive and negative scenarios are discussed in turn.
+
+\begin{theorem}
+The synthesized system covers all positive scenarios.
+\begin{align*}
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(\agentscomposed)
+\end{align*}
+
+\begin{proof}
+This condition results from two main properties of our approach:
 \begin{itemize}
-\item The synthesized system LTS covers all positive scenario behaviors, as guaranteed by (\ref{proof:consistent-system-lts-1})
+\item The synthesized system LTS covers all positive scenario behaviors, as guaranteed by Theorem~\ref{theorem:system-lts-consistency-with-sc}.
 \begin{align*}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)
 \end{align*}
-\item Projecting the system LTS on agent alphabets and recomposing their LTS afterwards cannot restrict behaviors:
+\item Projecting the system LTS on agent alphabets and recomposing their LTS afterwards does not restrict behaviors:
 \begin{align*}
 &\mathcal{L}(\mbox{System}) \subseteq \mathcal{L}(\agentscomposed)
 \end{align*}
 This latter condition can be derived from the definition of agent languages (\ref{proof-agent-consistency-3}) and properties of LTS hiding and composition operators (see Section~\ref{section:background-state-machines}).
 \end{itemize} 
 
-The negative part of the ``consistent system view'' condition (\ref{proof:consistent-system-view-2}) requires the composed system to exclude all negative scenarios. Due to the potential presence of implied scenarios, our approach only guarantees a weaker condition (\ref{proof:consistent-system-lts-2}), namely,
+\end{proof}
+\end{theorem}
+
+\begin{theorem}
+The synthesized system excludes all negatives scenarios.
+\begin{align*}
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(\agentscomposed) = \emptyset
+\end{align*}
+\end{theorem}
+
+This theorem would require the composed system to exclude all negative scenarios. Due to the potential presence of implied scenarios, our approach only guarantees the weaker condition given by Theorem~\ref{theorem:system-lts-consistency-with-sc}, namely,
 \begin{align*}
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(\mbox{System}) = \emptyset
 \end{align*}
 
-In other words, the induction algorithm ensures that the \emph{system LTS} excludes all negative scenarios~\cite{Oncina:1993}. This property can however be lost after the decomposition and recomposition steps.
+In other words, the induction algorithm ensures that the system LTS excludes all negative scenarios. This property can however be lost after the decomposition and recomposition steps.
 
 The reason has to be found in the possible occurence of so-called \emph{implied scenarios}. Remember from Section~\ref{subsection:background-hmsc} that implied scenarios may appear when a system is specified globally while implemented component-wise ~\cite{Alur:2000, Uchitel:2004}. In our case, the set of implied scenarios is precisely defined as:
 \begin{align*}
@@ -145,54 +193,122 @@ Note that, fixing implied scenario problems requires rethinking the system decom
 
 The specification of QSM has been strengthened in Section~\ref{section:lts-induction-from-mscs}. This strengthening required the synthesized system to be consistent with all scenario questions in addition to the initial scenario collection. 
 
-Once a system LTS is inferred, correctness arguments for the \emph{structural consistency} and \emph{consistent agent view} conditions remain unchanged. The discussion about implied scenarios also takes place here. Therefore, we only discuss the consistency of the system LTS induced by QSM.
+Provided a consistent system LTS is inferred with QSM, the correctness arguments for the \emph{structural consistency} and \emph{consistent agent view} conditions remain unchanged. The discussion about implied scenarios also takes place here. Therefore, we only prove the consistency of the system LTS induced by QSM when scenario questions are taken into account.
+
+\begin{theorem}
+The system LTS inferred by QSM is consistent with the scenario collection extended with the answers to all scenario questions.
 
 \begin{proof}
-This can be proven by induction along the following lines (cfr. to Algo.~\ref{QSM}):
-\begin{itemize}
-\item The base case captures a QSM run where all scenario questions are answered positively. In such case, QSM roughly reduces to RPNI, for which conditions (\ref{proof:consistent-system-lts-1}) and (\ref{proof:consistent-system-lts-2}) about the consistency of the synthesized system LTS are known to hold \cite{Oncina:1993}.
+This theorem is proven by induction (cfr. Algo.~\ref{QSM}):
+\begin{description}
+\item[Base:] The base case captures a QSM run where all scenario questions are answered positively. 
 
-For this particular run, we still need to prove that all scenario questions are accepted by the synthesized system LTS. Observe that when accepted (line 7), these scenarios are consistent with the current solution $A_{new}$ (line 4). The system LTS returned by QSM is a quotient automaton of $A_{new}$; Definition \ref{definition:quotient-automaton} therefore ensures that the system LTS accepts those scenarios as well.
-\item Every time a scenario question is rejected by the oracle, the scenario collection is correctly extended (see line 9). Provided the oracle does not make classification errors, as required in preconditions, the scenario collection remains consistent. The recursive call on the extended scenario collection provides the inductive step (see line 10).
-\end{itemize}
+In such case, QSM roughly reduces to RPNI, for which Theorem~\ref{theorem:system-lts-consistency-with-sc} is known to hold. We still need to prove that all scenario questions are thus accepted by the synthesized system LTS. 
+
+Observe that scenarios accepted at line 7 are consistent with the current solution $A_{new}$ (line 4). The system LTS returned by QSM is a quotient automaton of $A_{new}$; Definition \ref{definition:quotient-automaton} therefore ensures that the system LTS accepts those scenarios as well.
+
+\item[Inductive step:] The inductive step captures a run where a rejected scenario yields a tail recursive call (line 10).
+
+The discussion about positively accepted scenarios remains unchanged. The scenario collection is correctly extended (see line 7).
+
+Every time a scenario question is rejected by the oracle, the scenario collection is correctly extended as well (see line 9). Provided the oracle does not make classification errors, as required in preconditions, the scenario collection remains consistent for the tail recursive call taking place at line 10.
+\end{description}
 \end{proof}
+\end{theorem}
 
 %%%
 
 \subsection{Consistency with goals and domain properties\label{subsection:proof-with-domain-knowledge}}
 
-The consistency of the synthesized system LTS with available safety properties is captured by the following condition:
+QSM pre- and postconditions have been implicitly strenghtened in Section~\ref{subsection:induction-pruning-with-goals} in order to ensure that the synthesized system does not violate known safety properties. In other words, provided the input scenarios and safety properties are consistent, the following postcondition is required to hold:
 \begin{align}
-&\mathcal{L}^-(G) \cap \mathcal{L}(\emph{System}) = \emptyset \mbox{~~for every safety property~G}\label{consistency-of-system-lts-with-goals}
+&\mathcal{L}^-(G) \cap \mathcal{L}(\agentscomposed) = \emptyset \mbox{~~for every safety property~G}\label{consistency-of-system-lts-with-goals}
 \end{align}
 
-This condition can be seen as the generalization of~(\ref{proof:consistent-system-lts-2}) which required the consistency of the synthesized system LTS with available negative scenarios.
+A weaker condition is proven in Theorem~\ref{theorem:system-lts-consistency-with-goals} as implied scenarios may lead to goals being violated after the decomposition and recomposition steps. Lemma~\ref{lemma:qsm-and-tester-prefixes} first provides a useful milestone.
 
-Condition (\ref{consistency-of-system-lts-with-goals}) is proven by contradiction.
+\begin{lemma}
+When two states $q$ and $q'$ are considered for merging by QSM, all their prefixes are traces leading to the same state in the tester automaton capturing $\mathcal{L}^-(G)$.\label{lemma:qsm-and-tester-prefixes}
 \begin{proof}
-Let $G$ denote a safety property. Suppose the existence of a trace $s$ accepted by the system LTS while violating $G$, that is, $s \in \mathcal{L}(\me{System})$ and $s \in \mathcal{L}^-(G)$
-
-A precondition of QSM requires input scenarios to be consistent with safety properties. The initial PTA solution $A_0$ does not generalize the positive scenario language; therefore $s \notin \mathcal{L}(A_0)$ and (\ref{consistency-of-system-lts-with-goals}) initially holds. 
-
-By construction, there must exists a state pair $(q,q')$ considered for merging by QSM on a quotient automaton $A_i$ of the PTA, such that $s \notin \mathcal{L}(A_i)$ while $s \in \mathcal{L}(A_{i+1})$, where $A_{i+1}$ denotes the quotient automaton resulting from merging $q$ and $q'$ in $A_i$. 
-
-We now prove that $q$ and $q'$ correspond to different states in the tester automaton of $G$ and have thus not been merged.
-
-As $s$ is not accepted by $A_i$ but is accepted by $A_{i+1}$, there exists a suffix $w$ denoting a trace accepted from $q$ in $A_i$ whereas it is non-accepted from $q'$, or the converse. 
-
-The tester automaton for $G$ is known to be deterministic, to have a complete transition function, and only one sink accepting state. As $s$ denotes a trace violating $G$, it reaches such accepting state in its tester. 
-
-Let $t(q)$ and $t(q')$ denote the states of the tester corresponding to $q$ and $q'$ in the PTA, respectively.
-\ldots
+We assume the correctness of the joint traversal for annotating the PTA states with their corresponding states in the tester automaton (see Section~\ref{subsection:induction-pruning-with-goals}). QSM only considers the merging of state pairs corresponding to the same state in the tester automaton. The prefixes property thus holds for the first merge considered on the PTA; it is trivially preserved under state merging and therefore holds for every state pair considered from the successive quotient automata.
 \end{proof}
+\end{lemma}
+
+\begin{theorem}
+\label{theorem:system-lts-consistency-with-goals}
+The system LTS synthesized by QSM is consistent with available safety properties, that is,
+\begin{align*}
+&\mathcal{L}^-(G) \cap \mathcal{L}(\emph{System}) = \emptyset \mbox{~~for every safety property~G}
+\end{align*}
+
+\begin{proof}
+Let $G$ denote a safety property. The proof proceeds by induction on the following loop invariant:
+\begin{align*}
+\mathcal{L}^-(G) \cap \mathcal{L}(A_i) = \emptyset
+\end{align*}
+
+\begin{description}
+\item[Base:] $A_0$ denotes the PTA.
+
+The invariant holds for $A_0$ as (a) the preconditions require the scenarios and the goals to be consistent and (b) the PTA does not generalize the positive scenario language.
+\begin{align*}
+&\mathcal{L}^-(G) \cap \mathcal{L}^+(Sc) = \emptyset\\
+&\mathcal{L}(A_0) = \mathcal{L}^+(Sc)
+\end{align*}
+
+\item[Inductive step:] Let $A_i$ denote a current solution considered by QSM and suppose that the invariant holds. We show that the invariant holds for $A_{i+1}$, that is, the quotient automaton of $A_i$ obtained by merging a candidate state pair $(q,q')$.
+
+By construction of our constraint mechanism based on equivalent state classes, $q$ and $q'$ correspond to the same state $t$ in the tester automaton capturing $\mathcal{L}^-(G)$ (see Section~\ref{subsection:induction-pruning-with-goals}).
+
+The tester is known to be a canonical automaton, that is, it is minimal and deterministic (see Section~\ref{subsection:background-property-and-tester-automata}). A bijection thus exists between states and accepted trace suffixes\footnote{formally called residual languages} \cite{Hopcroft:1979}. 
+
+Therefore, all accepted traces from $q$ (resp. $q'$) in the current solution $A_i$ are rejected traces from $t$ in the tester automaton. By Lemma~\ref{lemma:qsm-and-tester-prefixes} all prefixes of $q$ in $A_i$ (resp. $q'$) are prefixes of $t$ in the tester. As the invariant holds for $A_i$, their respective suffixes must be disjoint.
+
+When $q$ and $q'$ are merged by QSM, the same lemma guarantees that the suffixes ``gained'' by $q'$ (resp. $q$) do not yield new traces in $A_{i+1}$ that would violate the safety property $G$. In other words, the invariant holds for $A_{i+1}$.
+\end{description}
+\end{proof}
+\end{theorem}
 
 %%%
 
-\subsection{Correctness of ASM\label{subsection:correctness-of-asm}}
+\subsection{Correctness in the presence of control information\label{subsection:correctness-of-asm}}
 
-The correctness proof for ASM follows the same reasoning as the one presented for RPNI in Section~\ref{subsection:system-lts-consistency}.
-\begin{itemize}
-\item The input hMSC is required to be consistent with negative scenarios.
-\item The initial solution automaton $A_0$ considered by ASM is returned by the \emph{Initialize} function. The latter implements the synthesis algorithm from \cite{Uchitel:2003} which does not generalize hMSC behaviors. Therefore, the consistency invariant \ref{XXX} initially holds for $A_0$.
-\item The main induction loop is similar to the one of RPNI. It considers successive quotient automata, discarding those inconsistent with the negative scenarios.
-\end{itemize}
+The correctness proof for ASM follows the same reasoning as the one presented for RPNI in Theorem~\ref{theorem:system-lts-consistency-with-sc}. Discussions about structural consistent, consistent agent view and implied scenarios remain unchanged. 
+
+\begin{theorem}
+The system LTS synthesized by ASM is consistent with the hMSC and the scenario collection taken as input.
+\begin{align*}
+&[\mathcal{L}(H)   \cup \mathcal{L}^+(Sc)] \subseteq \mathcal{L}(System)\\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(System) = \emptyset
+\end{align*}
+\begin{proof}
+The theorem is proven by induction, using the following invariant:
+\begin{align*}
+&[\mathcal{L}(H) \cup \mathcal{L}^+(Sc)] \subseteq \mathcal{L}(A_i)\\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset
+\end{align*}
+
+\begin{description}
+\item[Base:] $A_0$ denotes the automaton returned by \emph{Initialize}
+
+The \emph{Initialize} function implements the synthesis algorithm detailed in \cite{Uchitel:2003} which does not generalize hMSC behaviors. Moreover, the input hMSC and the positive scenarios are required to be consistent with the negative scenarios. Therefore the following invariant holds:
+\begin{align*}
+&[\mathcal{L}(H) \cup \mathcal{L}^+(Sc)] = \mathcal{L}(A_0)\\
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_0) = \emptyset
+\end{align*}
+
+\item[Inductive step:]
+The main induction loop is similar to the one of RPNI. It considers successive quotient automata, which generalize the language captured by the current solution $A_i$.
+\begin{align*}
+&[\mathcal{L}(H) \cup \mathcal{L}^+(Sc)] \subseteq \mathcal{L}(A_i) \subseteq \mathcal{L}(A_{i+1})
+\end{align*}
+
+As shown in Algo~\ref{ASM}, quotient automata are not kept unless being consistent with the negative scenarios (lines 3 and 4). Therefore, the following condition holds in any case:
+\begin{align*}
+&\mathcal{L}^-(Sc) \cap \mathcal{L}(A_{i+1}) = \emptyset
+\end{align*}
+
+\end{description}
+\end{proof}
+\end{theorem}
+
