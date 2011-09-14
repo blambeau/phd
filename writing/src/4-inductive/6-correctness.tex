@@ -94,13 +94,13 @@ The ``consistent agent view'' condition (\ref{proof:consistent-agent-view}) is e
 
 %%%
 
-\subsection{Consistent system view and implied scenarios\label{subsection:consistent-system-view}}
+\subsection{Consistent system view: the problem of implied scenarios\label{subsection:consistent-system-view}}
 
 The positive part of the ``consistent system view'' condition (\ref{proof:consistent-system-view-1}) follows from two main properties of our approach:
 \begin{itemize}
 \item The synthesized system LTS covers all positive scenario behaviors, as guaranteed by (\ref{proof:consistent-system-lts-1})
 \begin{align*}
-&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)\\
+&\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)
 \end{align*}
 \item Projecting the system LTS on agent alphabets and recomposing their LTS afterwards cannot restrict behaviors:
 \begin{align*}
@@ -147,29 +147,52 @@ The specification of QSM has been strengthened in Section~\ref{section:lts-induc
 
 Once a system LTS is inferred, correctness arguments for the \emph{structural consistency} and \emph{consistent agent view} conditions remain unchanged. The discussion about implied scenarios also takes place here. Therefore, we only discuss the consistency of the system LTS induced by QSM.
 
-This can be proven by induction along the following lines (see Algo.~\ref{QSM}):
+\begin{proof}
+This can be proven by induction along the following lines (cfr. to Algo.~\ref{QSM}):
 \begin{itemize}
 \item The base case captures a QSM run where all scenario questions are answered positively. In such case, QSM roughly reduces to RPNI, for which conditions (\ref{proof:consistent-system-lts-1}) and (\ref{proof:consistent-system-lts-2}) about the consistency of the synthesized system LTS are known to hold \cite{Oncina:1993}.
 
 For this particular run, we still need to prove that all scenario questions are accepted by the synthesized system LTS. Observe that when accepted (line 7), these scenarios are consistent with the current solution $A_{new}$ (line 4). The system LTS returned by QSM is a quotient automaton of $A_{new}$; Definition \ref{definition:quotient-automaton} therefore ensures that the system LTS accepts those scenarios as well.
 \item Every time a scenario question is rejected by the oracle, the scenario collection is correctly extended (see line 9). Provided the oracle does not make classification errors, as required in preconditions, the scenario collection remains consistent. The recursive call on the extended scenario collection provides the inductive step (see line 10).
 \end{itemize}
+\end{proof}
 
 %%%
 
-\subsection{Consistency with domain knowledge\label{subsection:proof-with-domain-knowledge}}
+\subsection{Consistency with goals and domain properties\label{subsection:proof-with-domain-knowledge}}
 
-\subsubsection*{Safety properties}
+The consistency of the synthesized system LTS with available safety properties is captured by the following condition:
+\begin{align}
+&\mathcal{L}^-(G) \cap \mathcal{L}(\emph{System}) = \emptyset \mbox{~~for every safety property~G}\label{consistency-of-system-lts-with-goals}
+\end{align}
 
-The consistency of the synthesized system LTS with safety properties is defined as follows:
-\begin{align*}
-&\mathcal{L}^-(G) \cap \mathcal{L}(\emph{System}) = \emptyset \mbox{~~~for every safety property~G}
-\end{align*}
+This condition can be seen as the generalization of~(\ref{proof:consistent-system-lts-2}) which required the consistency of the synthesized system LTS with available negative scenarios.
 
-Provided that negative scenarios generally denote traces violating safety properties, this condition can be seen as a generalization of~(\ref{proof:consistent-system-lts-2}).
+Condition (\ref{consistency-of-system-lts-with-goals}) is proven by contradiction.
+\begin{proof}
+Let $G$ denote a safety property. Suppose the existence of a trace $s$ accepted by the system LTS while violating $G$, that is, $s \in \mathcal{L}(\me{System})$ and $s \in \mathcal{L}^-(G)$
+
+A precondition of QSM requires input scenarios to be consistent with safety properties. The initial PTA solution $A_0$ does not generalize the positive scenario language; therefore $s \notin \mathcal{L}(A_0)$ and (\ref{consistency-of-system-lts-with-goals}) initially holds. 
+
+By construction, there must exists a state pair $(q,q')$ considered for merging by QSM on a quotient automaton $A_i$ of the PTA, such that $s \notin \mathcal{L}(A_i)$ while $s \in \mathcal{L}(A_{i+1})$, where $A_{i+1}$ denotes the quotient automaton resulting from merging $q$ and $q'$ in $A_i$. 
+
+We now prove that $q$ and $q'$ correspond to different states in the tester automaton of $G$ and have thus not been merged.
+
+As $s$ is not accepted by $A_i$ but is accepted by $A_{i+1}$, there exists a suffix $w$ denoting a trace accepted from $q$ in $A_i$ whereas it is non-accepted from $q'$, or the converse. 
+
+The tester automaton for $G$ is known to be deterministic, to have a complete transition function, and only one sink accepting state. As $s$ denotes a trace violating $G$, it reaches such accepting state in its tester. 
+
+Let $t(q)$ and $t(q')$ denote the states of the tester corresponding to $q$ and $q'$ in the PTA, respectively.
+\ldots
+\end{proof}
 
 %%%
 
 \subsection{Correctness of ASM\label{subsection:correctness-of-asm}}
 
-
+The correctness proof for ASM follows the same reasoning as the one presented for RPNI in Section~\ref{subsection:system-lts-consistency}.
+\begin{itemize}
+\item The input hMSC is required to be consistent with negative scenarios.
+\item The initial solution automaton $A_0$ considered by ASM is returned by the \emph{Initialize} function. The latter implements the synthesis algorithm from \cite{Uchitel:2003} which does not generalize hMSC behaviors. Therefore, the consistency invariant \ref{XXX} initially holds for $A_0$.
+\item The main induction loop is similar to the one of RPNI. It considers successive quotient automata, discarding those inconsistent with the negative scenarios.
+\end{itemize}
