@@ -1,4 +1,10 @@
 * grep ", as" -> "as"
+* grep "aiming at" -> "aimed at"
+* grep "important" -> "significant"
+* because -> as
+* "various set" -> "variety of"
+* (a), (b) -> (1), (2)
+
 * How to change captions' font??
 
 * 2011.06.30 - Sections to refactor in chapter 4
