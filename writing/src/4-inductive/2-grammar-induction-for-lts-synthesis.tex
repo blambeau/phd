@@ -100,7 +100,7 @@ For the language accepted by the canonical automaton in Fig.~\ref{fig:pta:quotie
 
 The definition of a characteristic sample given above may appear quite strong. It is however the standard definition for the RPNI algorithm~\cite{Oncina:1992,Dupont:1996b}. The definition is based on a worst case analysis that does not make full use of the exact order in which state pairs are considered during the merging process. It does not rely either on a specific order between the symbols of the alphabet. As observed in the experiments described in Chapter~\ref{chapter:evaluation}, a fraction of such a sample is often enough to produce approximate state machines with a very high generalization accuracy for randomly generated target DFAs. This observation is also consistent with the results reported in~\cite{Lang:1998}.
 
-\subsection{LTS synthesis as RPNI induction\label{subsection:inductive-lts-synthesis-reduction}}
+\subsection{LTS synthesis as RPNI induction\label{section:inductive-lts-synthesis-reduction}}
 
 The synthesis of a system LTS from MSC collections can be reduced to a grammar induction problem as follows. 
 
@@ -110,4 +110,4 @@ $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ form valid samples for grammar induc
 
 This system LTS covers all positive traces from $\mathcal{L}^+(Sc)$ and excludes all negative ones from $\mathcal{L}^-(Sc)$. In other words, it covers all positive scenarios and rejects all negative scenarios from $Sc$. Therefore, the system LTS and the scenario collection $Sc$ are consistent.
 
-The next section details this approach on QSM, our interactive variant of the RPNI algorithm. 
+The next section details this approach on QSM, our interactive variant of the RPNI algorithm.

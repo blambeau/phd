@@ -124,15 +124,19 @@ Adding the Blue-Fringe heuristic to ASM would require two main adaptations:
 
 \subsubsection*{Scenario questions}
 
-The interactive feature of QSM could be adapted and plugged to ASM. It consist in replacing the main ASM loop by the one of QSM (see Algorithm~\ref{QSM} in Section~\ref{section:lts-induction-from-mscs}). In Algorithm~\ref{QSM}, the \texttt{GenerateQuery} function should be adapted as follows:
+The interactive feature of QSM could be adapted and plugged to ASM. It consist in replacing the main ASM loop by the one of QSM (see Algorithm~\ref{QSM} in Section~\ref{section:lts-induction-from-mscs}). The \texttt{GenerateQuery} function should be adapted as follows:
 \begin{description}
 
 \item[GenerateQuery] The generation of scenario queries relies on the tree invariant property mentioned above. When merging a state pair $(q,q')$, a scenario query is built with the shortest trace leading to $q$ concatenated with the suffixes of $q'$. An invariant in QSM is that $q'$ is the root of a tree; this invariant is used to generate finite suffixes for scenario questions (see Section~\ref{QSM:query}).
 
-If the tree invariant property no longer holds, the \texttt{GenerateQuery} function must be extended with a procedure for extracting finite suffixes from $q'$. This does not introduce any technical issues; for example, pre-computing a spanning tree on the initial LTS would associate finite suffixes to each of its state. What forms a ``good'' suffix for convergence and scenario classification by end-users is however an open question. As the adapted algorithm no longer fits in the identification-in-the-limit framework, the notion of a characteristic sample would need to be adapted.
+If the tree invariant property no longer holds, the \texttt{GenerateQuery} function must be extended with a procedure for extracting finite suffixes from $q'$. This does not introduce any technical issues; for example, pre-computing a spanning tree on the initial LTS would associate finite suffixes to each of its state. What forms a ``good'' suffix for convergence and scenario classification by end-users is however an open question. As the adapted algorithm no longer fits in the identification-in-the-limit framework, the notion of a characteristic sample would need to be adapted here.
 
 \end{description}
 
 \subsubsection*{Constraints based on domain knowledge}
 
-Even if not supported by our current implementation, the constraint mechanism discussed in Section~\ref{section:inductive-mutliview-consistency} is fully compatible with ASM. Remember that it relies on the partitionning of PTA states according to equivalence relations extracted from domain knowledge. This partitionning can be performed in a similar way on the LTS returned by \texttt{Initialize}. From an algorithmic standpoint, an effective solution actually relies on specific instantiations of the generic LTS decoration algorithm discussed in \cite{Damas:2011} (see Section~\ref{subsection:qsm-constraints-implementation-notes}).
+Even if not supported by our current implementation, the constraint mechanism discussed in Section~\ref{section:inductive-mutliview-consistency} is fully compatible with ASM. Remember that it relies on the partitionning of PTA states according to equivalence relations extracted from domain knowledge. 
+
+This partitionning can be performed in a similar way on the LTS returned by \texttt{Initialize} in ASM. Unlike a PTA, however, such LTS may already contain cycles. The preconditions of ASM must therefore be strengthened with additional preconditions requiring the consistency between input scenarios and available domain knowledge, such as fluents and models of legacy components. Fluent definitions, for example, must yield a deterministic value for each fluent in every state of the initial LTS returned by \emph{Initialize}.
+
+From an algorithmic standpoint, an effective solution for computing the equivalence relations on the initial LTS relies on specific instantiations of the generic LTS decoration algorithm discussed in \cite{Damas:2011} (see Section~\ref{subsection:qsm-constraints-implementation-notes}).
