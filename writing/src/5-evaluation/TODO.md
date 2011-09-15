@@ -5,10 +5,6 @@
   * Maybe show a typical accuracy curve after bullets on expected gains and 
     costs?
 
-# Section 5.2.1 - Evaluation methodology (case studies)
-
-  * Why not showing the mine pump example?
-
 # Section 5.2.4 - Impact of goals
 
   * Show all requirements inferred
@@ -25,6 +21,3 @@
 
   * Update Fig. 5.5 (MSM -> ASM)
 
-# Discussion
-
-  * Noise-free
