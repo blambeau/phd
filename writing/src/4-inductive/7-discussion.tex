@@ -57,14 +57,14 @@ The consistency of scenarios, state machines and goals is captured by the follow
 &\mathcal{L}^-(\me{Goals}) \cap \mathcal{L}(\agentscomposed) = \emptyset
 \end{align*}
 
-As stated in Section~\ref{section:intro-synthesis}, an horizontal synthesis technique typically uses precise consistency rules backwards. Instead of checking them, horizontal synthesis uses these rules to semi-automatically synthesize model fragments using the information already available in other views. Our inductive state machine synthesis technique is illustrative of such process. It can be seen as synthesizing missing state machines from scenarios, under the control of goals:
+As stated in Section~\ref{section:intro-synthesis}, an horizontal synthesis technique uses consistency rules backwards. Instead of checking them, horizontal synthesis uses these rules to semi-automatically synthesize missing models using the information already available in other views. Our inductive state machine synthesis technique is illustrative of such process. It can be seen as synthesizing missing state machines from scenarios, under the control of goals:
 \begin{align*}
 &\mathcal{L}^+(\me{Scenarios}) \subseteq \mathcal{L}(?) \subseteq  \Sigma^* \setminus \mathcal{L}^-(\me{Goals})
 \end{align*}
 
 The choice of grammar induction methods to tackle the synthesis problem is not incidental. Let us assume that the expected target system is fixed, even if unknown. The problem statement requires the synthesized system to cover all desired behaviors in the scenarios while rejecting all negative ones from the goals. The LTS capturing exactly the lower bound $\mathcal{L}^+(\me{Scenarios})$ provides a trivial solution to this problem. Using this LTS for specifying system behaviors would however lead to a specification changing every time a new scenario is elicited. In contrast, a grammar induction approach guarantees that beyond a given point, the inferred specification will not be affected by the addition of new examples and counterexamples of desired system behaviors. 
 
-To sum up, more than offering a practical way of generalizing system behaviors illustrated in the scenarios, our approach provides a guarantee of convergence towards the target system when the available scenarios and goals capture a sufficiently rich knowledge about the target system. Such convergence criterion looks necessary even if the synthesis of state machines is used as a way of elaborating requirements or completing a multi-view system model\footnote{It should be noted here that, in such case, assuming the expected target system to be fixed is questionable.}.
+To sum up, more than offering a practical way of generalizing system behaviors illustrated in the scenarios, our approach provides a guarantee of convergence towards the target system when the available scenarios and goals capture a sufficiently rich knowledge about the target system. Such convergence criterion looks necessary even if the synthesis of state machines is used as a way of elaborating requirements or completing a multi-view system model\footnote{It should be noted here that, in such case, assuming the expected target system to be fixed is questionable; this question is further discussed in next section.}.
 
 It is known that inductive techniques come at a price of an inductive bias~\cite{Mitchell:1980}. In our case, such bias has to be found in the assumption of structural completeness (see Definition~\ref{structural:completeness}). Every transition in the target system is expected to be used at least once in the input scenarios. Moreover, under this assumption, using grammar induction amounts to search for the \emph{smallest} machine consistent with the available scenarios and goals. In the extreme case where no negative knowledge is available, this state machine is the universal automaton; it has only one state and a self looping transition for every event in the system.
 
@@ -72,15 +72,20 @@ Rather than a requirement on the sample, the assumption of structural completene
 
 \subsection{Perspectives}
 
-The discussion about the convergence of our approach towards the target system in Section~\ref{subsection:grammar-induction-rationale} made use of two (tacit) assumptions.
+The discussion in Section~\ref{subsection:grammar-induction-rationale} about the convergence of our approach made use of two assumptions, sometimes tacitly.
 \begin{itemize}
 \item The identification-in-the-limit framework provides convergence guarantees only if both positive examples $\mathcal{L}^+(\me{Scenarios})$ and negative examples $\mathcal{L}^-(\me{Goals})$ are finite sets of traces. The departure from this theoretical framework was already observed when introducing ASM (see Section~\ref{subsection:hmsc-induction-algo-adaptation}). 
 
-From an grammar induction standpoint, the discussion in Section~\ref{subsection:grammar-induction-rationale} goes on step further as it amounts to consider the induction of a regular language $\mathcal{L}$ from a positive regular language $\mathcal{L}^+$ under the control of a negative regular language $\mathcal{L}^-$.
+From an grammar induction standpoint, the discussion in Section~\ref{subsection:grammar-induction-rationale} goes on step further as it amounts to consider the generalization of a positive regular language $\mathcal{L}^+$ under the control of a negative regular language $\mathcal{L}^-$.
+\begin{align*}
+&\mathcal{L}^+~~\subseteq~~?~~\subseteq~~\Sigma^* \setminus \mathcal{L}^-
+\end{align*}
+
+An induction algorithm for tackling such problem was proposed in \cite{Lambeau:2008}, called ASM$^*$. Strictly speaking, the guarantee of convergence for the synthesis of state machines from scenarios and goals in Section~\ref{subsection:grammar-induction-rationale} would require finding a sound notion of characteristic sample for ASM and ASM$^*$. We are however confident that such a candidate exists.
+
+\item Discussing the convergence of an incremental modeling approach only makes sense under the assumption that the expected target system is fixed. Such assumption is hardly realistic in practice. Subsequent modeling cycles introduce additional system features; refactoring steps are often needed as well. Even in such cases, relying on synthesis techniques offering convergence guarantees seems necessary at worse and reasonable at best.
+
+In every case, techniques such as inductive behavior model synthesis aim at being integrated in incremental, multi-view modeling approaches. This supposes that various synthesis techniques are made available in multi-view modeling environments. This raises a question about what constitutes an effective guidance in such environments.
+
+The ISIS tool introduced in Section~\ref{section:tool-support-isis} provides such environment around QSM. The visual inspection of synthesized state machines there leads to the definition of negative scenarios and goals when overgeneralization is detected. This typically triggers new modeling cycles and QSM runs. A smarter use of the system knowledge captured by $\mathcal{L}^-(\me{Goals})$, the upper bound on system behaviors, open new perspectives for additional guidance there. A promising approach will be further discussed in \ref{related-for-requirements-2}.
 \end{itemize}
-
-%\subsection{Future directions}
-
-%From a grammar induction point of view, the ASM algorithm can be seen as generalizing any positive regular language $\mathcal{L}^+$ under the control of a negative sample $S^-$. As such, RPNI is thus a special case where the positive language forms a sample $S^+$, that is a finite set of strings.
-
-%Moreover, goals and domain properties can still be used to prune the ASM search space with the technique discussed in Section~\ref{subsection:induction-pruning-with-goals}. As goals actually capture negative languages through their tester automaton, this amounts to consider a generalization of ASM to generalize a positive language $\mathcal{L}^+$ under the control of a negative one $\mathcal{L}^-$. This generalization is called ASM$^*$ and briefly discussed in \cite{Lambeau:2008}.
