@@ -48,7 +48,7 @@ To keep things simple enough in the sequel, we leave aside structural system asp
 \begin{itemize}
 \item On one side, positive scenarios capture a lower bound on system behaviors. In other words, scenarios denote behaviors that the system \emph{must} exhibit. Let denote these behaviors by $\mathcal{L}^+(\me{Scenarios})$. The enrichment of the scenario language in the transition from QSM to ASM amounts considering that positive system behaviors are captured by an arbitrary (prefix-closed) regular language.
 \item On the other side, negative scenarios and goals capture an upper bound on system behaviors, that is, they capture behaviors that the system \emph{may not} exhibit. As negative scenarios illustrate violations of safety properties, we may ignore them without loss of generality. Let therefore denote these undesired behaviors by $\mathcal{L}^-(\me{Goals})$. In our formal framework, this language may also denote an arbitrary regular language.
-\item Between them, 
+\item Between scenarios and goals, agent state machines may be seen as denoting together the exact behaviors exhibited by the system. Provided those state machines are known, let $\mathcal{L}(\agentscomposed)$ denote the system behaviors. Here as well, this language denote a arbitrary (prefix-closed) regular language.
 \end{itemize}
 
 The enrichment of the scenario language in the transition from QSM to ASM allows us to consider that the behaviors described in scenarios are entirely specified 
