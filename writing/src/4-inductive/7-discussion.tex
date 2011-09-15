@@ -1,33 +1,57 @@
 \section{Discussion\label{section:inductive-discussion}}
 
-Let us step back a little before closing this chapter and ask two questions:
+Let us step back a little before closing this chapter. This discussion section aims at answering two questions:
 \begin{itemize}
 \item \emph{What problem are we trying to solve?}
 \item \emph{Why do we solve it in this way?}
 \end{itemize}
-In addition to revisiting our synthesis technique and discussing some perspectives, answers to those questions allow us to compare our approach with other ones. Such comparisons will take place in Chapter~\ref{chapter:related-work}.
+In addition to revisiting our synthesis technique and discussing some perspectives, answers to those questions will allow us to compare our approach with alternative ones. Such comparisons are conducted in Chapter~\ref{chapter:related-work}. 
 
-\subsection{What problem are we trying to solve?}
+Let us start with the former question, ``what problem are we trying to solve?''. 
 
 This chapter discussed an horizontal synthesis technique. Remember from Section~\ref{section:intro-synthesis} that the underlying objective is to elaborate requirements and explore system designs. In this context, horizontal synthesis aims at building models missing from a multi-view framework or completing existing ones.
 
-In the light of this objective, our inductive synthesis technique can be seen as a building block for tackling the following, more general problem:
+In the light of this objective, our inductive synthesis technique can be seen as a building block in the tackling of a larger multi-view modeling problem. This problem can be stated as follows:
 \begin{itemize}
 \item There is an expected target system, composed of agents $Ag_1, \ldots, Ag_n$ whose behavior can be modeled through state machines. The behavior of the system itself is defined through agent composition.
-\item A complete description of the system behavior is not available. However, behavior model fragments are available; those fragments take various forms:
+\item A complete description of system behaviors is not available. Behavioral model \emph{fragments} may however be available; those fragments take various forms:
 \begin{itemize}
 \item Scenarios may describe examples and counterexamples of desired system behaviors.
 \item The behavior of some agents may be partially or completely captured through definitions of agent state variables and/or known state machines.
-\item Known behavioral goals may define restrictions on system behaviors so as to avoid undesired ones.
+\item Known behavioral goals may define restrictions on agent and system behaviors so as to avoid undesired system histories.
 \end{itemize}
-\item We are interested in specifying the system behaviors more completely. This roughly means completing all models in a consistent way.
+\item System behaviors must be specified more completely. This roughly means completing all models in an incremental, consistent and (hopefully) convergent way.
 \end{itemize}
 
-The problem above presupposes incremental approaches for solving it. Within iterations, system descriptions gets more complete and behavior models gets richer. Additional system features are modeled when successful iterations have completed; refactoring steps are conducted when problems appear, such as undesired implied scenarios.
+As just stated, solving the problem above presupposes an incremental approach. Within iterations, system descriptions gets more complete and behavior models gets richer. Additional system features are modeled when successful iterations have completed; refactoring steps are conducted when problems appear, such as undesired implied scenarios.
 
-Our inductive state machine synthesis technique is only a building block in an integrated approach along this line. Observe that the synthesis of state machines from scenarios can be seen as a ``pretext''. In the multi-view vision above, state machine synthesis is seen as equally important as the completion of the scenario collection with answers to scenario questions; the same applies to the identification of behavior goals triggered when some of these scenarios are rejected. 
+Our inductive state machine synthesis technique is only a building block in an integrated approach along this line\footnote{The ISIS tool introduced in Section~\ref{section:tool-support-isis} goes one step further as it integrates QSM with other synthesis techniques, such as the inference of behavioral goals from scenarios.}. Observe that the synthesis of state machines from scenarios can be partially seen as a ``pretext''. In the rather opinionated multi-view vision above, state machine synthesis is seen as equally important as the completion of the scenario collection with answers to scenario questions; the same applies to the identification of behavior goals triggered when some of these scenarios are rejected.
 
-The ISIS tool goes one step further as it integrates QSM with other synthesis techniques, such as the inference of behavioral goals from scenarios (see Section~\ref{section:tool-support-isis}).
+The following sections revisit and discuss design choices of our synthesis approach in the light of the multi-view modeling vision above.
+
+\subsection{Agent behaviors, or system behaviors?}
+
+The choice of tackling the synthesis of \emph{agent} state machines though the \emph{system} behaviors has not been motivated. Why not inferring one state machine by agent and composing them afterwards, instead of going the other way round?
+
+First, let us stress that such alternative approach makes perfect sense. Our experience in exploring it even suggests that it may provided good results in terms of behavior generalization. That said, a few points would need to be adapted and/or taken into account to further explore it.
+\begin{itemize}
+\item Scenario questions would not be available for guiding induction in a per-agent approach. The interactive feature could be adapted but that would require the user to be able to classify agent traces. This seems less convenient as it amounts to interact with the end-user in a different language for each agent. Moreover, interactions would not occur in the language used by the end-user for specifying scenarios in the first place. 
+\item Our definition of negative scenarios is borrowed from \cite{Uchitel:2002}. Such definition amounts to consider negative \emph{system} traces only. For an effective use of negative scenarios for locally inferring agent state machines, this definition would need to be adapted.
+\item Similarly, our approach considers goals and domain properties system-wide. Unless denoting agent requirements specifically, known safety properties could not be used to constrain the induction process. Even in the absence of implied scenarios, the consistency of inferred state machines with goals would be harder to guarantee.
+\end{itemize}
+
+\subsection{The rationale behind grammar induction}
+
+From the specific standpoint of state machine synthesis, our use of grammar induction was motivated by the need of generalizing system behaviors described in the scenarios. This choice is further discussed here in the broader context of the incremental elaboration of requirements driven by the multi-view building of behavior models.
+
+To keep things simple enough in the sequel, we leave aside structural system aspects hidden behind fluents state variables, our use of legacy components, the structure of scenarios, the decomposition step of our approach, and implied scenarios. In other words, we focus here on pure behavioral aspects in the triangle composed of scenarios, state machines and goals \cite{Damas:2006, Uchitel:2007}.
+\begin{itemize}
+\item On one side, positive scenarios capture a lower bound on system behaviors. In other words, scenarios denote behaviors that the system \emph{must} exhibit. Let denote these behaviors by $\mathcal{L}^+(\me{Scenarios})$. The enrichment of the scenario language in the transition from QSM to ASM amounts considering that positive system behaviors are captured by an arbitrary (prefix-closed) regular language.
+\item On the other side, negative scenarios and goals capture an upper bound on system behaviors, that is, they capture behaviors that the system \emph{may not} exhibit. As negative scenarios illustrate violations of safety properties, we may ignore them without loss of generality. Let therefore denote these undesired behaviors by $\mathcal{L}^-(\me{Goals})$. In our formal framework, this language may also denote an arbitrary regular language.
+\item Between them, 
+\end{itemize}
+
+The enrichment of the scenario language in the transition from QSM to ASM allows us to consider that the behaviors described in scenarios are entirely specified 
 
 \subsection{Why do we solve it in this way?}
 
@@ -40,8 +64,6 @@ Whatever the answers, we state two reasonable expectations on approaches support
 \begin{quotation}
 \emph{If failing to complete, the elaboration process should at least provide a reasonable convergence criteria.}
 \end{quotation}
-
-To keep things simple enough in the sequel, we leave aside structural aspects hidden behind fluents state variables, our use legacy components, the structure of scenarios, the decomposition step of our approach, and implied scenarios. In other words, we focus here on pure behavioral aspects in the triangle composed of scenarios, state machines and goals.
 
 Those left aside, the problem stated in previous section can be stated precisely as follows \cite{Uchitel:2007}:
 \begin{itemize}
