@@ -77,7 +77,7 @@ Fig.~\ref{Fig.:alarm-unfolded-pta} shows the result of unfolding the alarm senso
 \begin{figure}
 \centering
 \scalebox{.35}{\includegraphics*{src/4-inductive/images/alarm-unfolded-pta}}
-\caption{Unfolding the alarm sensor LTS onto the PTA\label{Fig.:alarm-unfolded-pta}.}
+\caption{Unfolding the alarm sensor LTS onto the PTA; \texttt{a.pres} and \texttt{a.prop} stand for \texttt{alarm pressed} and \texttt{alarm propagated}, respectively\label{Fig.:alarm-unfolded-pta}.}
 \end{figure}
 
 The pruning rule for constraining the induction process is now to \emph{avoid merging states decorated with distinct states of the external component}. The specific equivalence relation used here is the set of states where both states have the same external LTS state. 

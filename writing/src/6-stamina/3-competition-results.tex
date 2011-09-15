@@ -46,7 +46,7 @@ Each of them is described in turn in the following sections.
 
 \subsubsection*{Regular induction seen as a SAT problem}
 
-The idea behind the satisfiability part of DFASAT is to (a) reduce the problem of finding the minimal DFA consistent with a labeled sample to a graph coloring problem; (b) encode the latter into a satisfiability problem; and (c) solve it using an efficient SAT solver. 
+The idea behind the satisfiability part of DFASAT is to (1) reduce the problem of finding the minimal DFA consistent with a labeled sample to a graph coloring problem; (2) encode the latter into a satisfiability problem; and (c) solve it using an efficient SAT solver. 
 
 The principle of reducing DFA induction to graph coloring dates back to 1997, more or less like the Abbadingo contest itself -- see, e.g., \cite{Coste:1997}. It consists of coloring PTA states with a minimal number of colors such that two states that may not merge have different colors. As explained in Chapter~\ref{chapter:inductive-synthesis}, two PTA states may not merge if their continuations are incompatible.
 

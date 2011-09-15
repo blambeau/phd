@@ -20,13 +20,6 @@ This section introduces QSM, a Query driven State-Merging synthesis technique. Q
 
 The specification of QSM is similar to the synthesis problem statement in Section~\ref{subsection:inductive-synthesis-statement}. The main differences are related to the presence of the oracle and the fact that the decomposition step is not implemented by QSM itself. Moreover, remember from Section~\ref{subsection:background-scenario-consistency} that requiring the consistency of the input scenario collection amounts to require all scenarios to start in the same system state.
 
-%\begin{itemize}
-%\item QSM requires the scenario collection to be consistent. Remember from Section~\ref{subsection:background-scenario-consistency} that this amount to require all scenarios to start in the same system state.
-%\item Unlike RPNI, QSM relies on the presence of on oracle. The latter is required to \emph{correctly} classify generated scenario questions, also called \emph{membership queries}. In other words, QSM does not support classification errors. The generation of scenario questions will be detailed in Section~\ref{QSM:query}.
-%\item QSM guarantees that the synthesized system LTS and the scenario collection, extended with the classified scenarios, are consistent. Provided preconditions are met, this entails the consistency of the extended collection itself.
-%\item Requiring the consistency of the synthesized system LTS with scenarios is weaker than requiring this on the composed system $\agentscomposed$.
-%\end{itemize}
-
 Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm; RPNI can be seen as a particular instance without the inner-most while loop. Roughly, the induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs from the initial LTS. The process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. This process terminates when no state pairs can still be considered for merging.
 
 In the sequel, two states will be said compatible for merging (resp. incompatible) if the quotient LTS which results from their merging is consistent (resp. inconsistent) with the current scenario collection.
@@ -88,7 +81,7 @@ This recursive operation of removing non-determinism will be called \textsl{merg
 \begin{figure}[H]
 \centering
 \scalebox{.75}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/algo-steps}}
-\caption{Induction step of the \textsc{QSM} algorithm\label{Fig:algo:steps}.}
+\caption{Induction step of the \textsc{QSM} algorithm; \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop}, respectively.\label{Fig:algo:steps}}
 \end{figure}
 
 When two states are merged, the rank of the resulting state is defined as the lowest rank of the pair; in particular, the rank of the merged state when merging $q$ and $q'$ is defined as the rank of $q'$ by construction. If no compatible merging can be found between $q$ and any of its predecessor states according to string ordering, state $q$ is said to be \textsl{consolidated}. In the example, states 0, 1, and 2 are consolidated.

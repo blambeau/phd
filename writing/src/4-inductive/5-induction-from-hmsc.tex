@@ -49,7 +49,7 @@ The selected hMSC trace semantics is not specified in the formulation above. In 
 
 $\mathcal{L}_{strong}(H)$ denotes the set of system behaviors with strong sequential composition of hMSC nodes and total event ordering inside MSCs. It is the simplest model. However, it assumes an implicit synchronization scheme to be used by the agents. The latter is usually not available in real distributed systems. $\mathcal{L}_{arch}(H)$ is the most realistic one for such systems as it captures all possible interleavings of agent behaviors. $\mathcal{L}_{weak}(H)$ is mainly used for explaining and detecting implied scenarios in hMSC specifications \cite{Uchitel:2003}; it is also the hardest to compute.
 
-Making a choice of semantics is required for generalizing behaviors because inductive synthesis takes a set of traces as input. From an algorithmic point of view, however, the three hMSC languages require the same adaptations of the inductive process, as explained in the next sections.
+Making a choice of semantics is required for generalizing behaviors as inductive synthesis takes a set of traces as input. From an algorithmic point of view, however, the three hMSC languages require the same adaptations of the inductive process, as explained in the next sections.
 
 \subsection{Generalizing hMSC behaviors\label{subsection:hmsc-induction-algo-adaptation}}
 
@@ -58,9 +58,9 @@ Remember that learning a regular language $L$ aims at generalizing a positive sa
 S_+~~\subseteq~~L~~\subseteq~~\Sigma^*\setminus S_-
 \end{align}
 
-LTS synthesis from a scenario collection $Sc$ reduces to grammar induction because the sets $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ are valid positive and negative samples, respectively (see Section \ref{subsection:inductive-lts-synthesis-reduction}). In particular, they denote \emph{finite} sets of traces.
+LTS synthesis from a scenario collection $Sc$ reduces to grammar induction as the sets $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ are valid positive and negative samples, respectively (see Section \ref{subsection:inductive-lts-synthesis-reduction}). In particular, they denote \emph{finite} sets of traces.
 
-When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample because $\mathcal{L}(H)$ might contain an infinite number of traces. Therefore, the current problem statement no longer exactly fits the identification-in-the-limit framework introduced in Section \ref{section:inductive-background}. 
+When considering the generalization of hMSC behaviors, the sets of positive and negative traces are $\mathcal{L}^+(Sc) \cup \mathcal{L}(H)$ and $\mathcal{L}^-(Sc)$, respectively. The positive set is no longer a sample as $\mathcal{L}(H)$ might contain an infinite number of traces. Therefore, the current problem statement no longer exactly fits the identification-in-the-limit framework introduced in Section \ref{section:inductive-background}. 
 
 From a theoretical point of view, this means that generalizing hMSC behaviors is a different problem than generalizing MSC behaviors; therefore, further study would be needed to re-state the convergence criteria and the notion of characteristic sample in particular. 
 
@@ -106,7 +106,7 @@ The standard algorithm for capturing the union of regular languages is then used
 
 From an implementation standpoint, the merging-for-determinization process is often implemented under the assumption of a tree invariant property \cite{Lang:1998}. This property states that, when considering two states to be merged, at least one of them is the root of a tree. Such property holds for RPNI and QSM, even when the Blue-Fringe optimization is used. It is a sufficient condition for the determinization process to be finite. 
 
-Even though it is convenient, the tree invariant property is not required \cite{Lambeau:2008}. The main merging loop and the \emph{Merge} function can be implemented without the tree invariant property because the recursive determinization process stops naturally when non determinism is completely reduced. In practice, an implementation of RPNI/QSM may require changing some data structures and associated algorithms to be converted to ASM.
+Even though it is convenient, the tree invariant property is not required \cite{Lambeau:2008}. The main merging loop and the \emph{Merge} function can be implemented without the tree invariant property; indeed, the recursive determinization process stops naturally when non determinism is completely reduced. In practice, an implementation of RPNI/QSM may require changing some data structures and associated algorithms to be converted to ASM.
 
 \item[Consistent] This function does not require specific adaptations either; it is the same as in RPNI or QSM (see Section~\ref{QSM:merging}).
 
