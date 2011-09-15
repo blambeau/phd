@@ -40,7 +40,7 @@ First, let us stress that such alternative approach makes perfect sense. Our exp
 \item Similarly, our approach considers goals and domain properties system-wide. Unless denoting agent requirements specifically, known safety properties could not be used to constrain the induction process. Even in the absence of implied scenarios, the consistency of inferred state machines with goals would be harder to guarantee.
 \end{itemize}
 
-\subsection{The rationale behind grammar induction}
+\subsection{The rationale behind grammar induction\label{subsection:grammar-induction-rationale}}
 
 From the specific standpoint of state machine synthesis, our use of grammar induction is motivated by the need of generalizing system behaviors described in the scenarios. This choice is further discussed here in the broader context of the incremental elaboration of requirements driven by the multi-view building of behavior models.
 
@@ -58,20 +58,26 @@ The consistency of scenarios, state machines and goals is captured by the follow
 \end{align*}
 
 As stated in Section~\ref{section:intro-synthesis}, an horizontal synthesis technique typically uses precise consistency rules backwards. Instead of checking them, horizontal synthesis uses these rules to semi-automatically synthesize model fragments using the information already available in other views. Our inductive state machine synthesis technique is illustrative of such process. It can be seen as synthesizing missing state machines from scenarios, under the control of goals:
-\begin{align}
+\begin{align*}
 &\mathcal{L}^+(\me{Scenarios}) \subseteq \mathcal{L}(?) \subseteq  \Sigma^* \setminus \mathcal{L}^-(\me{Goals})
-\end{align}
+\end{align*}
 
-The choice of grammar induction methods to tackle the synthesis problem is not incidental. More than offering a practical way of generalizing system behaviors illustrated in the scenarios, it provides convergence guarantees towards the target system when the scenarios and goals get rich enough. Moreover, such convergence criterion looks necessary even if state machine synthesis is used as a way of elaborating requirements or completing a multi-view system model\footnote{It should be noted here, though, that discussing the convergence of such elaboration process only makes sense under the assumption that the expected target system exists and is fixed, even if unknown.}.
+The choice of grammar induction methods to tackle the synthesis problem is not incidental. Let us assume that the expected target system is fixed, even if unknown. The problem statement requires the synthesized system to cover all desired behaviors in the scenarios while rejecting all negative ones from the goals. The LTS capturing exactly the lower bound $\mathcal{L}^+(\me{Scenarios})$ provides a trivial solution to this problem. Using this LTS for specifying system behaviors would however lead to a specification changing every time a new scenario is elicited. In contrast, a grammar induction approach guarantees that beyond a given point, the inferred specification will not be affected by the addition of new examples and counterexamples of desired system behaviors. 
 
+To sum up, more than offering a practical way of generalizing system behaviors illustrated in the scenarios, our approach provides a guarantee of convergence towards the target system when the available scenarios and goals capture a sufficiently rich knowledge about the target system. Such convergence criterion looks necessary even if the synthesis of state machines is used as a way of elaborating requirements or completing a multi-view system model\footnote{It should be noted here that, in such case, assuming the expected target system to be fixed is questionable.}.
 
-%\subsection{Rationale behind the generalization step}
+It is known that inductive techniques come at a price of an inductive bias~\cite{Mitchell:1980}. In our case, such bias has to be found in the assumption of structural completeness (see Definition~\ref{structural:completeness}). Every transition in the target system is expected to be used at least once in the input scenarios. Moreover, under this assumption, using grammar induction amounts to search for the \emph{smallest} machine consistent with the available scenarios and goals. In the extreme case where no negative knowledge is available, this state machine is the universal automaton; it has only one state and a self looping transition for every event in the system.
 
-%Our synthesis requirements include ``behavior generalization''. Looking at relation (\ref{relation:inductive-language-refinements}) we might ask ourselves what drives the generalization process and until when. By construction, the first automaton $A_0$ already meets the consistent system view conditions (\ref{relation:inductive-invariant}) and (\ref{relation:inductive-invariant-II}). Therefore, $A_0$ is a valid, yet trivial, solution. Why not simply use it?
+Rather than a requirement on the sample, the assumption of structural completeness must be seen as a limit on the possible generalizations that are allowed from the scenarios. If a transition of the target system is never used in the examples of desired behaviors, no evidence supports its existence and a candidate solution presenting that transition should be discarded. Similarly, rather than a limitation on our approach searching for the smallest consistent machine must be seen as an application of the Occam's principle stating that ``among all models explaining the world equally well, the simplest should be preferred''.
 
-%The answer is to be found in the Occam's principle stating that ``among all models explaining the world equally well, the simplest should be preferred''. Using grammar induction this amounts to searching for the \emph{smallest} automaton consistent with the positive and negative scenarios, also called the \emph{input sample}. The initial automaton $A_0$ is rarely the simplest model according to this criteria. 
+\subsection{Perspectives}
 
-%Looking for the smallest automaton consistent with an input sample is known to be NP-hard \cite{Gold:1978, Angluin:1978}. The RPNI algorithm offers a consistent approximated solution in polynomial time; this solution is the smallest consistent deterministic automaton when the input sample is rich enough, in particular when it forms a so-called \emph{characteristic sample} (see later) \cite{Oncina:1992}.
+The discussion about the convergence of our approach towards the target system in Section~\ref{subsection:grammar-induction-rationale} made use of two (tacit) assumptions.
+\begin{itemize}
+\item The identification-in-the-limit framework provides convergence guarantees only if both positive examples $\mathcal{L}^+(\me{Scenarios})$ and negative examples $\mathcal{L}^-(\me{Goals})$ are finite sets of traces. The departure from this theoretical framework was already observed when introducing ASM (see Section~\ref{subsection:hmsc-induction-algo-adaptation}). 
+
+From an grammar induction standpoint, the discussion in Section~\ref{subsection:grammar-induction-rationale} goes on step further as it amounts to consider the induction of a regular language $\mathcal{L}$ from a positive regular language $\mathcal{L}^+$ under the control of a negative regular language $\mathcal{L}^-$.
+\end{itemize}
 
 %\subsection{Future directions}
 
