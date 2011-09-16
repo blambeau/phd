@@ -1,20 +1,20 @@
 \section{Contributions\label{section:conclusion-contributions}}
 
-The contributions of the thesis are summarized along these two model synthesis axes.
+The contributions of the thesis are summarized below along the horizontal and vertical axes of model synthesis.
 
 \subsection*{Horizontal synthesis}
 
 \begin{itemize}
-\item The thesis has proposed an interactive procedure for synthesizing agent state machines from positive, negative and structured forms of scenarios. This procedure uses grammar induction for generalizing scenario behaviors. It is interactive with an end-user who classifies additional scenarios as positive or negative examples of system behavior.
-\item A technique has been discussed to constrain and prune the search space of inductive state machine synthesis. This allows incorporating various sources of knowledge about the target system. This technique has been instantiated to take fluent definitions, legacy components, and goals and domain properties into account. The pruning technique provide guarantees of the consistency of the synthesized state machines with all such system knowledge. It also speeds up the induction search space for better performances and reduces the number of user interactions.
-\item Our induction technique is supported by a tool. This tool also integrates various checks for the consistency of scenarios, state machines and goals as well as a technique to infer safety properties from scenarios. 
+\item The thesis proposed an interactive procedure for synthesizing agent state machines from positive, negative and structured forms of scenarios. This procedure uses grammar induction for generalizing scenario behaviors. It is interactive with an end-user who classifies additional scenarios as positive or negative examples of system behavior.
+\item A technique was presented to prune the search space of inductive state machine synthesis. This technique allows injecting various sources of system knowledge into the synthesis process. The technique were instantiated for the use of fluent definitions, models of legacy components, and goals and domain properties. The pruning technique provides guarantees for the consistency of the synthesized state machines with all injected knowledge. It also speeds up the induction search space for better performances and reduces the number of user interactions.
+\item Our inductive synthesis technique is supported by a tool. In addition, this tool integrates various checks for the consistency of scenarios, state machines and goals as well as a technique to infer safety properties from scenarios. 
 \item The techniques and tools have been evaluated on case studies and synthetic datasets. In the latter case, a novel evaluation protocol for inductive model synthesis has been proposed and ran as a formal competition.
 \end{itemize}
 
 \subsection*{Vertical synthesis}
 
 \begin{itemize}
-\item This thesis gave a formal semantics to guarded hMSC. This semantics is defined through the introduction of guarded LTS, a kind of labeled transition systems allowing events and guards on transitions. Guarded LTS have been given a declarative trace semantics as well as composition and hiding operators.
+\item This thesis gave a formal semantics for guarded hMSC. This semantics is operationalized through the introduction of guarded LTS, a kind of labeled transition systems allowing events and guards on transitions. Guarded LTS have a trace semantics in terms of pure LTS as well as composition and hiding operators.
 \item Two synthesis algorithms have been proposed to derive guarded hMSC to guarded LTS to pure LTS. Those algorithms have been shown to make guarded process models amenable to a variety of model analyses.
 \item The implementation of a model-checker for guarded hMSC and guarded LTS has been discussed. The thesis also discussed the architecture and important design decisions in the implementation of another toolset aimed at analyzing mission-critical process models.
 \end{itemize}
