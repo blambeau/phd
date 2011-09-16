@@ -18,7 +18,7 @@ As illustrated by the \emph{Machine} boundary in Fig.~\ref{image:train-scenario-
 
 \noindent \textbf{The behavioral view} -- Behaviors capture the dynamic interactions among the agents forming the system; they will be modeled as sequences of events. In an interaction, an event is \emph{synchronously} sent by a source agent and received by a target agent. The same event can in fact be received by several agents at once; a form of \emph{broadcasting} is thus supported. 
 
-Typical examples and counterexamples of system behaviors are specified through positive and negative scenarios involving agent instances, like the one in Fig.~\ref{image:train-scenario-all-agents}. The Message Sequence Charts (MSC) notation will be used to capture scenarios~\cite{ITU:1996}. Higher-level scenarios will be supported by introducing sequences and loops in such descriptions.
+Typical examples and counterexamples of system behavior are specified through positive and negative scenarios involving agent instances, like the one in Fig.~\ref{image:train-scenario-all-agents}. The Message Sequence Charts (MSC) notation will be used to capture scenarios~\cite{ITU:1996}. Higher-level scenarios will be supported by introducing sequences and loops in such descriptions.
 
 In addition to the partial behavior description linking agent instances, the complete behavior of each agent will be modeled at class level through a form of state machine known as labeled transition systems (LTS)~\cite{Keller:1976, Milner:1989}. The behavior of the entire system is obtained by parallel composition~\cite{Hoare:1985} of the agent LTSs. Behavior  projection on specific agents is also supported, in order to get the zoom-in/zoom-out facilities as suggested before.
 

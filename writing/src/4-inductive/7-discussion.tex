@@ -16,7 +16,7 @@ In the light of this objective, our inductive synthesis technique can be seen as
 \item There is an expected target system, composed of agents $Ag_1, \ldots, Ag_n$ whose behavior can be modeled through state machines. The behavior of the system itself is defined through agent composition.
 \item A complete description of system behaviors is not available. Behavioral model \emph{fragments} may however be available; those fragments take various forms:
 \begin{itemize}
-\item Scenarios may describe examples and counterexamples of desired system behaviors.
+\item Scenarios may describe examples and counterexamples of desired system behavior.
 \item The behavior of some agents may be partially or completely captured through definitions of agent state variables and/or known state machines.
 \item Known behavioral goals may define restrictions on agent and system behaviors so as to avoid undesired system histories.
 \end{itemize}
@@ -62,7 +62,7 @@ As stated in Section~\ref{section:intro-synthesis}, an horizontal synthesis tech
 &\mathcal{L}^+(\me{Scenarios}) \subseteq \mathcal{L}(?) \subseteq  \Sigma^* \setminus \mathcal{L}^-(\me{Goals})
 \end{align*}
 
-The choice of grammar induction methods to tackle the synthesis problem is not incidental. Let us assume that the expected target system is fixed, even if unknown. The problem statement requires the synthesized system to cover all desired behaviors in the scenarios while rejecting all negative ones from the goals. The LTS capturing exactly the lower bound $\mathcal{L}^+(\me{Scenarios})$ provides a trivial solution to this problem. Using this LTS for specifying system behaviors would however lead to a specification changing every time a new scenario is elicited. In contrast, a grammar induction approach guarantees that beyond a given point, the inferred specification will not be affected by the addition of new examples and counterexamples of desired system behaviors. 
+The choice of grammar induction methods to tackle the synthesis problem is not incidental. Let us assume that the expected target system is fixed, even if unknown. The problem statement requires the synthesized system to cover all desired behaviors in the scenarios while rejecting all negative ones from the goals. The LTS capturing exactly the lower bound $\mathcal{L}^+(\me{Scenarios})$ provides a trivial solution to this problem. Using this LTS for specifying system behaviors would however lead to a specification changing every time a new scenario is elicited. In contrast, a grammar induction approach guarantees that beyond a given point, the inferred specification will not be affected by the addition of new examples and counterexamples of desired system behavior. 
 
 To sum up, more than offering a practical way of generalizing system behaviors illustrated in the scenarios, our approach provides a guarantee of convergence towards the target system when the available scenarios and goals capture a sufficiently rich knowledge about the target system. Such convergence criterion looks necessary even if the synthesis of state machines is used as a way of elaborating requirements or completing a multi-view system model\footnote{It should be noted here that, in such case, assuming the expected target system to be fixed is questionable; this question is further discussed in next section.}.
 
