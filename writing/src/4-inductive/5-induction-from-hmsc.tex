@@ -68,7 +68,7 @@ From an algorithmic point of view, however, only a few adaptations of RPNI and Q
 
 \subsection{The Automaton State Merging algorithm\label{subsection:automaton-state-merging}}
 
-The algorithm for generalizing hMSC behaviors is our Algorithm~\ref{ASM}, called Automaton State Merging (ASM). As sketched below, its overall structure is very similar to QSM in Section~\ref{section:lts-induction-from-mscs}; the interactive feature is omited here as it raises a few issues that we discuss later. QSM itself being an interactive extension to RPNI, Algorithm~\ref{ASM} is very similar to RPNI itself which might appear suprising at first glance.
+The algorithm for generalizing hMSC behaviors is our Algorithm~\ref{ASM}, called Automaton State Merging (ASM). As sketched below, its overall structure is very similar to QSM in Section~\ref{section:lts-induction-from-mscs}; the interactive feature is omitted here as it raises a few issues that we discuss later. QSM itself being an interactive extension to RPNI, Algorithm~\ref{ASM} is very similar to RPNI itself which might appear surprising at first glance.
 
 The main difference between RPNI/QSM on one side and ASM on the other side lies in the \emph{initial automaton} built by \texttt{Initialize}. RPNI and QSM initially convert the input \emph{sample} as a PTA, hence a tree, whereas ASM converts the input \emph{language} of the hMSC as a LTS, hence a graph. 
 
@@ -135,8 +135,8 @@ If the tree invariant property no longer holds, the \texttt{GenerateQuery} funct
 
 \subsubsection*{Constraints based on domain knowledge}
 
-Even if not supported by our current implementation, the constraint mechanism discussed in Section~\ref{section:inductive-mutliview-consistency} is fully compatible with ASM. Remember that it relies on the partitionning of PTA states according to equivalence relations extracted from domain knowledge. 
+Even if not supported by our current implementation, the constraint mechanism discussed in Section~\ref{section:inductive-mutliview-consistency} is fully compatible with ASM. Remember that it relies on the partitioning of PTA states according to equivalence relations extracted from domain knowledge. 
 
-This partitionning can be performed in a similar way on the LTS returned by \texttt{Initialize} in ASM. Unlike a PTA, however, such LTS may already contain cycles. The preconditions of ASM must therefore be strengthened with additional preconditions requiring the consistency between input scenarios and available domain knowledge, such as fluents and models of legacy components. Fluent definitions, for example, must yield a deterministic value for each fluent in every state of the initial LTS returned by \emph{Initialize}.
+This partitioning can be performed in a similar way on the LTS returned by \texttt{Initialize} in ASM. Unlike a PTA, however, such LTS may already contain cycles. The preconditions of ASM must therefore be strengthened with additional preconditions requiring the consistency between input scenarios and available domain knowledge, such as fluents and models of legacy components. Fluent definitions, for example, must yield a deterministic value for each fluent in every state of the initial LTS returned by \emph{Initialize}.
 
 From an algorithmic standpoint, an effective solution for computing the equivalence relations on the initial LTS relies on specific instantiations of the generic LTS decoration algorithm discussed in \cite{Damas:2011} (see Section~\ref{subsection:qsm-constraints-implementation-notes}).

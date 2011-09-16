@@ -96,7 +96,7 @@ q_0    &= q_u \\
 C_0    &= true
 \end{align*}
 
-In this definition, $q_u$, $q_t$ and $q_f$ denote g-LTS states where the fluent is \emph{unsassigned}, \emph{true} and \emph{false}, respectively (see Fig.~\ref{image:fluent-glts}). Moreover,
+In this definition, $q_u$, $q_t$ and $q_f$ denote g-LTS states where the fluent is \emph{unassigned}, \emph{true} and \emph{false}, respectively (see Fig.~\ref{image:fluent-glts}). Moreover,
 
 \begin{itemize}
 \item The unassigned state $q_u$ is the initial g-LTS state. From there, the \emph{true} and \emph{false} states may be reached through guarded transitions that force the fluent to an initial value consistent with the reached state. These guards will synchronize with the transition labeled by $C_0$ in the super g-LTS, thereby meeting the \emph{admissible start} condition as explained before.
@@ -148,7 +148,7 @@ The first step simply computes the parallel composition of the Super LTS with fl
 
 \subsubsection*{Correctness}
 
-The principle of the synthesis algorithm is illustrated in Fig.~\ref{image:glts2lts-intuition}, that schematizes the g-LTS obtained when composing the super g-LTS with fluent automata:
+The principle of the synthesis algorithm is illustrated in Fig.~\ref{image:glts2lts-intuition}, that illustrates the g-LTS obtained when composing the super g-LTS with fluent automata:
 \begin{itemize}
 \item From the compound initial state, up to $2^{\mid\Phi\mid}$ guarded transitions may appear. They actually correspond to all possible fluent assignments satisfying $C_0$. Unsatisfiable conjunctions are automatically pruned by the g-LTS composition operator (see Definition \ref{definition:glts-composition}).
 \item Each of these transitions leads to a new compound state: $q_0$ on the super g-LTS side and $q_t$ or $q_f$ for each fluent automaton, according to the initial fluent assignment reaching the compound state.

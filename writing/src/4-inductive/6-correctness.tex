@@ -149,7 +149,7 @@ Theorem~\ref{theorem:system-lts-consistency-with-sc} establishing the consistenc
 &\mathcal{L}^+(Sc \setminus \Sigma_{Ag}^c) \subseteq \mathcal{L}(System \setminus \Sigma_{Ag}^c)\label{proof:consistent-agent-view-milestone}
 \end{align}
 
-The ``consistent agent view'' condition (\ref{proof:consistent-agent-view}) is established by substituing the right terms of (\ref{proof-agent-consistency-2}) and (\ref{proof-agent-consistency-3}) in (\ref{proof:consistent-agent-view-milestone}).
+The ``consistent agent view'' condition (\ref{proof:consistent-agent-view}) is established by substituting the right terms of (\ref{proof-agent-consistency-2}) and (\ref{proof-agent-consistency-3}) in (\ref{proof:consistent-agent-view-milestone}).
 
 %%%
 
@@ -170,7 +170,7 @@ This condition results from two main properties:
 \begin{align*}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)
 \end{align*}
-\item Projecting the system LTS on agent alphabets and recomposing their LTS afterwards does not restrict behaviors:
+\item Projecting the system LTS on agent alphabets and composing their LTS afterwards does not restrict behaviors:
 \begin{align*}
 &\mathcal{L}(\mbox{System}) \subseteq \mathcal{L}(\agentscomposed)
 \end{align*}
@@ -194,7 +194,7 @@ Due to the potential presence of implied scenarios, our approach only guarantees
 
 In other words, the induction algorithm ensures that the system LTS excludes all negative scenarios. This property can however be lost after the decomposition and recomposition steps leading to the composed system.
 
-The reason has to be found in the possible occurence of so-called \emph{implied scenarios} \cite{Alur:2000, Uchitel:2004}. Remember from Section~\ref{subsection:background-hmsc} that implied scenarios may appear when a system is specified system-wide while implemented component-wise. 
+The reason has to be found in the possible occurrence of so-called \emph{implied scenarios} \cite{Alur:2000, Uchitel:2004}. Remember from Section~\ref{subsection:background-hmsc} that implied scenarios may appear when a system is specified system-wide while implemented component-wise. 
 
 In our case, the set of implied scenarios is precisely defined as:
 \begin{align}
@@ -206,7 +206,7 @@ Three cases may arise here:
 \begin{itemize}
 \item The set of implied scenarios (\ref{proof:set-of-implied-scenarios}) is empty. 
 
-In this case, the inferred system LTS and the composed system coincide. Therefore, Theorem~\ref{theorem:consistent-system-view-negative} is a trival consequence of Theorem~\ref{theorem:system-lts-consistency-with-sc}.
+In this case, the inferred system LTS and the composed system coincide. Therefore, Theorem~\ref{theorem:consistent-system-view-negative} is a trivial consequence of Theorem~\ref{theorem:system-lts-consistency-with-sc}.
 
 \item The set of implied scenarios (\ref{proof:set-of-implied-scenarios}) only contains examples of desired system behavior.
 
@@ -265,12 +265,12 @@ Every time a scenario question is rejected by the oracle, the scenario collectio
 
 \subsection{Consistency with goals and domain properties\label{subsection:proof-with-domain-knowledge}}
 
-The pre- and postconditions of our approach were strenghtened in the presence of goals and domain properties. In precondition, scenarios and goals are required to be consistent. In postcondition, the synthesized system may not violate goals. In other words, provided the input scenarios and safety properties are consistent, the following postcondition is required to hold:
+The pre- and postconditions of our approach were strengthened in the presence of goals and domain properties. In precondition, scenarios and goals are required to be consistent. In postcondition, the synthesized system may not violate goals. In other words, provided the input scenarios and safety properties are consistent, the following postcondition is required to hold:
 \begin{align}
 &\mathcal{L}^-(\me{Goals}) \cap \mathcal{L}(\agentscomposed) = \emptyset \label{consistency-of-system-lts-with-goals}
 \end{align}
 
-A weaker condition is proven in Theorem~\ref{theorem:system-lts-consistency-with-goals} as implied scenarios may lead to goals being violated after the decomposition and recomposition steps. A few simplicifcations are in order here:
+A weaker condition is proven in Theorem~\ref{theorem:system-lts-consistency-with-goals} as implied scenarios may lead to goals being violated after the decomposition and recomposition steps. A few simplifications are in order here:
 \begin{itemize}
 \item We consider here the case of RPNI; in the absence of classification errors by the oracle, the injection of goals is independent of the scenario questions. 
 \item In accordance with the assumptions of the thesis we consider only safety properties (see \ref{section:background-goals}).
@@ -351,7 +351,7 @@ On one hand, the \emph{Initialize} function implements the synthesis algorithm d
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(A_0) = \emptyset
 \end{align*}
 
-\item[Inductive step:] $A_i$ denotes the current canditate solution. The invariant is assumed to hold for $A_i$.
+\item[Inductive step:] $A_i$ denotes the current candidate solution. The invariant is assumed to hold for $A_i$.
 
 The main induction loop is similar to the one of RPNI. It considers successive quotient automata, which generalize the language captured by the current solution $A_i$. Therefore, the following condition holds:
 \begin{align*}

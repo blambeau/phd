@@ -142,7 +142,7 @@ To overcome this problem, an optimized strategy known as Blue-Fringe \cite{Lang:
 
 Fig.~\ref{Fig:BlueFringe} gives a typical example of a temporary solution produced by the original algorithm. Three state classes can be distinguished in this LTS. The so-called ``red'' states are the consolidated ones (0, 1 and 2 in this example). Outgoing transitions from red states lead to the ``blue'' states unless the latter have already been labeled as red. Blue states form the blue fringe (4 and 5 in this case). All other states are called the ``white'' states. 
 
-The original \texttt{ChooseStatePair} function in Section~\ref{QSM:merging} considers the lowest-rank blue state first (state 4 here) for merge with the lowest-rank red state (0). When this choice leads to a compatible quotient automaton, scenarios are generated to the end-user for classiciation -- in this case, a scenario equivalent to the trace \artifact{<alarm propagated, emergency stop, emergency open>}. 
+The original \texttt{ChooseStatePair} function in Section~\ref{QSM:merging} considers the lowest-rank blue state first (state 4 here) for merge with the lowest-rank red state (0). When this choice leads to a compatible quotient automaton, scenarios are generated to the end-user for classification -- in this case, a scenario equivalent to the trace \artifact{<alarm propagated, emergency stop, emergency open>}. 
 
 The above strategy may lead to multiple queries being generated to avoid overgeneralization. Moreover, such queries may be non-intuitive for the user, \textit{e.g.} the \artifact{alarm propagated} event is sent to the train controller without having been fired by the \artifact{alarm pressed} event to the sensor.
 
