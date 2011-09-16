@@ -81,7 +81,7 @@ This recursive operation of removing non-determinism will be called \textsl{merg
 \begin{figure}[H]
 \centering
 \scalebox{.75}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/algo-steps}}
-\caption{Induction step of the \textsc{QSM} algorithm; \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop}, respectively.\label{Fig:algo:steps}}
+\caption[Induction step of the \textsc{QSM} algorithm]{Induction step of the \textsc{QSM} algorithm; \texttt{a.pres}, \texttt{a.prop}, \texttt{e.open}, \texttt{e.stop} stand for \texttt{alarm pressed, alarm propagated, emergency open, emergency stop}, respectively.\label{Fig:algo:steps}}
 \end{figure}
 
 When two states are merged, the rank of the resulting state is defined as the lowest rank of the pair; in particular, the rank of the merged state when merging $q$ and $q'$ is defined as the rank of $q'$ by construction. If no compatible merging can be found between $q$ and any of its predecessor states according to string ordering, state $q$ is said to be \textsl{consolidated}. In the example, states 0, 1, and 2 are consolidated.
@@ -156,7 +156,7 @@ The strategy can be further refined with a compatibility threshold $\alpha$ as a
 
 \begin{figure}\centering
 \scalebox{.35}{\includegraphics*{src/4-inductive/images/augmented-pta}}
-\caption{Augmented PTA for the scenarios in Fig.~\ref{Fig:init:scen}\label{figure:augmented-pta}.}
+\caption[Augmented PTA]{Augmented PTA for the scenarios in Fig.~\ref{Fig:init:scen}\label{figure:augmented-pta}.}
 \end{figure}
 
 Chapter~\ref{chapter:evaluation} will detail experimental results about the effectiveness of using QSM with and without the Blue-Fringe strategy.

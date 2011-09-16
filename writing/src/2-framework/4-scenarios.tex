@@ -16,7 +16,7 @@ For example, the traces defined by the timeline of the \artifact{Controller} in 
 
 \begin{figure}\centering
 \scalebox{0.45}{\includegraphics{src/2-framework/images/local-trace}}
-\caption{LTS capturing the traces of the MSC in Fig.~\ref{image:train-scenario-all-agents} from the local perspective of the \artifact{Controller} agent.\label{image:local-traces-lts}}
+\caption[LTS capturing the traces of a MSC from the local perspective of an agent]{LTS capturing the traces of the MSC in Fig.~\ref{image:train-scenario-all-agents} from the local perspective of the \artifact{Controller} agent.\label{image:local-traces-lts}}
 \end{figure}
 
 When looking at traces from the perspective of the whole MSC, two possibilities might be envisaged.
@@ -51,7 +51,7 @@ Note that the number of linearizations of a MSC is exponential in the number of 
 
 \begin{figure}\centering
 \scalebox{0.29}{\includegraphics{src/2-framework/images/linearizations}}
-\caption{LTS capturing all event linearizations of the MSC in Fig.~\ref{image:train-scenario-all-agents}. Here, \artifact{alarm-pressed} is abbreviated as \artifact{a-pressed} and \artifact{sig.} stands for \artifact{signal}. \label{image:msc-linearizations}}
+\caption[LTS capturing all event linearizations of a MSC]{LTS capturing all event linearizations of the MSC in Fig.~\ref{image:train-scenario-all-agents}. Here, \artifact{alarm-pressed} is abbreviated as \artifact{a-pressed} and \artifact{sig.} stands for \artifact{signal}. \label{image:msc-linearizations}}
 \end{figure}
 
 \subsection{Negative scenarios\label{subsection:background-negative-scenarios}}
@@ -63,7 +63,7 @@ Positive MSCs capture examples of behavior that the system is expected to exhibi
 \scalebox{0.75}{
   \includegraphics[trim=2mm 2mm 2mm 2mm, clip]{src/2-framework/images/train-negative-scenario}
 }
-\caption{A negative scenario illustrating that the controller may not open doors after having started.\label{image:train-negative-scenario}}
+\caption[A negative scenario]{A negative scenario illustrating that the controller may not open doors after having started.\label{image:train-negative-scenario}}
 \end{figure}
 
 More precisely, a negative MSC is a pair $(P,e)$ where $P$ is a positive MSC and $e$ is a single event label. The positive scenario prefix $P$ is called the $precondition$ and $e$ the \emph{prohibited event}. The intuitive semantics is that, once the precondition has occurred from the system's initial state, $e$ may not be the very \emph{next} event in the system. 
@@ -89,7 +89,7 @@ Note that the negative language of a negative MSC cannot be captured through a p
 \scalebox{0.45}{
   \includegraphics[trim=1mm 1mm 1mm 1mm, clip]{src/2-framework/images/negative-trace-lts}
 }
-\caption{Negative traces for the negative MSC of Fig.~\ref{image:train-negative-scenario}, captured with a LTS extended with an error state\label{image:negative-trace-lts}}
+\caption[Negative traces for a negative MSC]{Negative traces for the negative MSC of Fig.~\ref{image:train-negative-scenario}, captured with a LTS extended with an error state\label{image:negative-trace-lts}}
 \end{figure}
 
 \subsection{Scenario collections\label{subsection:background-scenario-collections}}
@@ -166,7 +166,7 @@ This construction is illustrated in Fig.~\ref{image:train-controller-synthesis} 
 \scalebox{0.85}{
   \includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/2-framework/images/train-controller-synthesis}
 }
-\caption{Synthesis of the \emph{Controller} LTS from the hMSC of Fig.~\ref{image:train-hmsc}.\label{image:train-controller-synthesis}}
+\caption[Synthesis of a LTS from a hMSC]{Synthesis of the \emph{Controller} LTS from the hMSC of Fig.~\ref{image:train-hmsc}.\label{image:train-controller-synthesis}}
 \end{figure}
 
 \item Thanks to the simplicity of the model with strong sequential composition, $\mathcal{L}_{strong}(H)$ can be captured in a similar way. The linear event trace defined by each MSC is used instead of $M_{\downarrow Ag_i}$ in the algorithm above.

@@ -1,0 +1,55 @@
+\makeatletter
+\def\bas#1{%
+\hbox to \hsize{%
+\rlap{\vbox{\raggedright #1}}}}%
+\def\maketitle{%
+\thispagestyle{empty}\vbox to \vsize{%
+\vfill
+\vspace{1cm}
+\begin{center}
+{\huge \textsc \@title} \par
+\vspace{1cm}
+\Large \@author \par
+\vspace{1cm}
+\emph{\@grade} \par
+\vspace{1cm}
+\@date \par
+\vspace{1cm}
+\@blurb \par
+\end{center}
+\vfill
+\vfill
+\bas{}{\large \@jury}{}
+}%
+\cleardoublepage
+}
+\def\date#1{\def\@date{#1}}
+\def\author#1{\def\@author{#1}}
+\def\grade#1{\def\@grade{#1}}
+\def\title#1{\def\@title{#1}}
+\def\blurb#1{\def\@blurb{#1}}
+\def\jury#1{\def\@jury{#1}}
+\date{\today}
+\author{}
+\title{}
+\makeatother
+\title{Synthesizing Multi-View Models of Software Systems}
+\author{Bernard Lambeau}
+\grade{Thesis submitted in partial fulfillment of the requirements for
+the Degree of Doctor in Engineering Sciences}
+\blurb{%
+ICTEAM \\
+Louvain School of Engineering\\
+Universit\'e catholique de Louvain\\ 
+Louvain-la-Neuve\\
+Belgique
+}%
+\jury{
+\noindent \textbf{Members of Jury:} \\
+Prof. Olivier Bonaventure (UCL), President \\
+Prof. Pierre Dupont (UCL), Supervisor \\
+Prof. Jeff Kramer (Imperial College, UK) \\
+Prof. Axel van Lamsweerde (UCL), Supervisor \\
+Prof. Emmanuel Letier (University College London, UK) \\
+Prof. Charles Pecheur (UCL) \\
+}

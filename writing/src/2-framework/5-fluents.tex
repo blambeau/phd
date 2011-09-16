@@ -34,7 +34,7 @@ As prefixes of traces are also traces, we may also think in terms of fluent valu
 
 \begin{figure}[H]\centering
 \scalebox{0.41}{\includegraphics{src/2-framework/images/decorating-trace}}
-\caption{LTS annotated with fluent values along a single trace (\artifact{Closed} is an abbreviate for \artifact{DoorsClosed}).\label{image:fluent-values-along-a-trace}}
+\caption[LTS annotated with fluent values along a single trace]{LTS annotated with fluent values along a single trace (\artifact{Closed} is an abbreviate for \artifact{DoorsClosed}).\label{image:fluent-values-along-a-trace}}
 \end{figure}
 
 As the example suggests, for a set of fluents $\Phi$, an event trace yields an interpretation over $2^\Phi$, that is, an assignment of a Boolean value to each fluent in $\Phi$. We will call it \emph{fluent value assignment} throughout the thesis. 
@@ -56,7 +56,7 @@ Fig.~\ref{image:fluent-values-along-multiple-traces} shows an example of LTS ann
 
 \begin{figure}[H]\centering
 \scalebox{0.41}{\includegraphics{src/2-framework/images/decorating-lts}}
-\caption{Fluent values along multiple traces (\artifact{Closed} is an abbreviate for \artifact{DoorsClosed}).\label{image:fluent-values-along-multiple-traces}}
+\caption[Fluent values along multiple traces]{Fluent values along multiple traces (\artifact{Closed} is an abbreviate for \artifact{DoorsClosed}).\label{image:fluent-values-along-multiple-traces}}
 \end{figure}
 
 A fixpoint algorithm for decorating LTS with fluent value assignments appeared in~\cite{Damas:2005}. This algorithm was generalized for generating weakest state invariants in \cite{Damas:2009}. Very roughly, it consists in annotating the LTS initial state with an initial invariant according to fluent initial values; invariants are then propagated along LTS transitions, according to fluent definitions, and accumulated in states through Boolean disjunction, until a fixpoint is reached. 

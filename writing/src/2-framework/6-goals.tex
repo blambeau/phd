@@ -68,7 +68,7 @@ An example of tester and property automata is given in Fig.~\ref{image:tester-an
 \begin{figure}\centering
 \scalebox{0.41}{\includegraphics{src/2-framework/images/tester-automaton}}
 \scalebox{0.41}{\includegraphics{src/2-framework/images/property-automaton}}
-\caption{Tester ($\mathcal{L}^{-}$ at left) and property ($\mathcal{L}^{+}$ at right) automata for \artifact{Maintain[DoorsClosed While Moving]}, as complements of each other.\label{image:tester-and-property-automata}}
+\caption[Tester and property automata, as complements of each other.]{Tester ($\mathcal{L}^{-}$ at left) and property ($\mathcal{L}^{+}$ at right) automata for \artifact{Maintain[DoorsClosed While Moving]}, as complements of each other.\label{image:tester-and-property-automata}}
 \end{figure}
 
 A procedure for computing tester automata in the case of safety properties is given in \cite{Giannakopoulou:2003}. It consists in building a B\"uchi automaton that recognizes all infinite event-based traces that violate the state-based FLTL property. Given a pure safety property, a canonical form for this automaton can been found; the latter is deterministic, has a complete transition function, and a unique sink accepting state reached by all traces violating the property~\cite{Giannakopoulou:2003}.
