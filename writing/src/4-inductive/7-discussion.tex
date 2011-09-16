@@ -81,7 +81,7 @@ From an grammar induction standpoint, the discussion in Section~\ref{subsection:
 &\mathcal{L}^+~~\subseteq~~?~~\subseteq~~\Sigma^* \setminus \mathcal{L}^-
 \end{align*}
 
-An induction algorithm for tackling such problem was proposed in \cite{Lambeau:2008}, called ASM$^*$. Strictly speaking, the guarantee of convergence for the synthesis of state machines from scenarios and goals in Section~\ref{subsection:grammar-induction-rationale} would require finding a sound notion of characteristic sample for ASM and ASM$^*$. We are however confident that such a candidate exists.
+An induction algorithm for tackling such problem was proposed in \cite{Lambeau:2008}, called ASM$^*$. Strictly speaking, the convergence guarantee for the synthesis of state machines from scenarios and goals in Section~\ref{subsection:grammar-induction-rationale} would require finding a sound notion of characteristic sample for ASM and ASM$^*$. We are however confident that such a candidate exists.
 
 \item Discussing the convergence of an incremental modeling approach only makes sense under the assumption that the expected target system is fixed. Such assumption is hardly realistic in practice. Subsequent modeling cycles introduce additional system features; refactoring steps are often needed as well. Even in such cases, relying on synthesis techniques offering convergence guarantees seems necessary at worse and reasonable at best.
 

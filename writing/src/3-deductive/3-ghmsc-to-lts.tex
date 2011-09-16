@@ -46,14 +46,14 @@ The resulting g-LTS can be further optimized by coalescing states separated by $
 
 \subsection{From guarded LTS to pure LTS\label{subsection:from-glts-to-lts}}
 
-The set of traces accepted by a g-LTS $G$ may be captured by a trace-equivalent LTS. For this, we proceed in two steps:
-\begin{enumerate}[(a)]
+The set of traces accepted by a g-LTS $G$ may be captured by a trace-equivalent LTS. Making so proceeds in two steps:
+\begin{enumerate}[(1)]
 \item First, a parallel composition of g-LTSs is computed so as to meet the various acceptance conditions from Definition \ref{definition:valid-glts-execution} (valid g-LTS execution):
 \begin{itemize}
 \item The first automaton in this composition is a super g-LTS built from $G$ to initially meet the \emph{trace inclusion} and \emph{admissible start} conditions.
 \item To meet the \emph{guard satisfaction} condition, the set of traces of the super g-LTS is pruned further by composing it with fluent automata, one for each fluent.
 \end{itemize}
-\item By construction, all paths admitted by the g-LTS resulting from step~(a) yield valid executions for the initial g-LTS $G$. Therefore, guards and $\tau$-transitions can be safely hidden to obtain a pure LTS; the latter captures all event traces of the trace semantics given in Definition~\ref{definition:glts-trace-semantics}.
+\item By construction, all paths admitted by the g-LTS resulting from step~(1) yield valid executions for the initial g-LTS $G$. Therefore, guards and $\tau$-transitions can be safely hidden to obtain a pure LTS; the latter captures all event traces of the trace semantics given in Definition~\ref{definition:glts-trace-semantics}.
 \end{enumerate}
 
 Let us make each g-LTS in the composition further precise. In the sequel, $G = (Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ will denote the input g-LTS which is transformed to a pure LTS, e.g. the one of Fig.~\ref{image:scheduler-ghmsc-glts}. 
@@ -62,7 +62,7 @@ Let us make each g-LTS in the composition further precise. In the sequel, $G = (
 
 By definition, the input g-LTS $G$ already meets the \emph{trace inclusion} condition: the latter simply requires executions to denote existing paths in the g-LTS.
 
-In order to meet the \emph{admissible start} condition, $G$ is extended by converting its initial condition $C_0$ into an explicit guard from the initial state. More precisely, the super g-LTS is defined by:
+In order to meet the \emph{admissible start} condition, $G$ is extended by converting its initial condition $C_0$ into an explicit guard from a new initial state. More precisely, the super g-LTS is defined by:
 \begin{equation*}
 Super~LTS = (Q \cup \{ q_{start} \}, \Sigma, \Phi, \delta \cup \{(q_{start},C_0,q_0)\},q_{start},true)
 \end{equation*}
@@ -75,9 +75,9 @@ Super~LTS = (Q \cup \{ q_{start} \}, \Sigma, \Phi, \delta \cup \{(q_{start},C_0,
 \caption{The super g-LTS\label{image:super-lts}}
 \end{figure}
 
-The building of the g-LTS is illustrated in Fig~\ref{image:scheduler-ghmsc-glts}. The cloud at right simply denotes the g-LTS $G$ taken as input. A guarded transition labeled by $C_0$ reaches its initial state $q_0$ from a newly introduced one $q_{start}$.
+The super g-LTS is illustrated in Fig~\ref{image:super-lts}. The cloud at right simply denotes the g-LTS $G$ taken as input. A guarded transition labeled by $C_0$ reaches its initial state $q_0$ from a newly introduced one $q_{start}$.
 
-During composition, the introduced guarded transition will synchronize with similar guarded transitions in the fluent automata introduced hereafter. Doing so will prune initial fluent assignments $Init$ that do not satisfy $C_0$, therefore satisfying the \emph{admissible start} condition in a way similar to how guards are satisfied (see below).
+During composition, the introduced guarded transition will synchronize with similar guarded transitions in the fluent automata introduced hereafter. Doing so will prune initial fluent assignments that do not satisfy $C_0$. This will guarantee the satisfaction of the \emph{admissible start} condition in a way similar to the satisfaction of guards (see below).
 
 \subsubsection*{Fluent g-LTS}
 
@@ -96,13 +96,12 @@ q_0    &= q_u \\
 C_0    &= true
 \end{align*}
 
-In this definition, $q_u$, $q_t$ and $q_f$ denote g-LTS states where the fluent is \emph{unassigned}, \emph{true} and \emph{false}, respectively (see Fig.~\ref{image:fluent-glts}). Moreover,
-
+In this definition, $q_u$, $q_t$ and $q_f$ denote g-LTS states where the fluent is \emph{unassigned}, \emph{true} and \emph{false}, respectively (see Fig.~\ref{image:fluent-glts}).
 \begin{itemize}
-\item The unassigned state $q_u$ is the initial g-LTS state. From there, the \emph{true} and \emph{false} states may be reached through guarded transitions that force the fluent to an initial value consistent with the reached state. These guards will synchronize with the transition labeled by $C_0$ in the super g-LTS, thereby meeting the \emph{admissible start} condition as explained before.
-\item A fluent g-LTS may transit from its false state $q_f$ to its true state $q_t$ with the occurrence of events belonging to $Init_{Fl}$ and vice-versa with events belonging to $Term_{Fl}$. In Fig.~\ref{image:fluent-glts}, a transition labeled with a set between brackets is a shortcut denoting one transition for each element of the set.
+\item The unassigned state $q_u$ is the initial g-LTS state. From there, the \emph{true} and \emph{false} states may be reached through guarded transitions that force the fluent to an initial value consistent with the reached state. These guards will synchronize with the transition labeled by $C_0$ in the super g-LTS, thereby meeting the \emph{admissible start} condition.
+\item A fluent g-LTS may transit from its false state $q_f$ to its true state $q_t$ with the occurrence of events belonging to $Init_{Fl}$ and vice-versa, with events belonging to $Term_{Fl}$. In Fig.~\ref{image:fluent-glts}, a transition labeled with a set between brackets is a shortcut denoting one transition for each element of the set.
 \item In each state $q_f$ and $q_t$, a self-looping guard constrains the fluent value to the one denoted by the corresponding state. The conjunction of such guards with the ones of the super g-LTS will force the resulting composition to meet the \emph{guard satisfaction} condition. Indeed, the g-LTS composition operator prunes the conjunctions of guards that are unsatisfiable (see Definition~\ref{definition:glts-composition}).
-\item The two last self-looping transitions labeled with $Init_{Fl}$ and $Term_{Fl}$ are added to avoid over-constraining the composition. That is, initiating (resp. terminating) events might occur even when the fluent is already true (resp. false).
+\item The remaining self-looping transitions labeled with \emph{Init$_{Fl}$} (resp. \\ \emph{Term$_{Fl}$}) from states $q_t$ (resp. $q_f$) is added to avoid over-constraining the composition. That is, initiating (resp. terminating) events may occur even when the fluent is already true (resp. false).
 \end{itemize}
 
 \begin{figure}\centering
@@ -127,7 +126,7 @@ The corresponding fluent automaton is shown in Fig.~\ref{image:second-cycle-flue
 \caption{Fluent g-LTS for $second\_cycle$\label{image:second-cycle-fluent-glts}}
 \end{figure}
 
-\subsubsection*{Composition (a) then hiding (b)}
+\subsubsection*{Composition (1) then hiding (2)}
 
 Putting pieces together, the trace-equivalent LTS of a g-LTS is obtained through the following computation
 \begin{align*}
