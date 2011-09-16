@@ -142,7 +142,7 @@ Note that the guarantee given by the above condition is weaker than the \emph{co
 
 The equivalence relations considered in the previous sections are all invariant under state merging. In other words, a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA; the results of such pre-processing are kept as annotations on PTA states. 
 
-Our implementation reuses the decoration algorithm from \cite{Damas:2006} to propagate fluent values on the PTA (see Section~\ref{subsection:fluents-along-multiple-traces}). Its generalization in~\cite{Damas:2011} may be used as an effective mean to unfold models of legacy components and tester automata on the PTA without additional developments.
+Our implementation reuses the decoration algorithm from \cite{Damas:2006} to propagate fluent values on the PTA (see Section~\ref{subsection:fluents-along-multiple-traces}). Its generalization in~\cite{Damas:2011} may be used as an effective means to unfold models of legacy components and tester automata on the PTA without additional developments.
 
 The principle for constraining state merging through equivalence relations first appeared in~\cite{Coste:1998, Coste:2004}. It can be further instantiated to other equivalence relations not considered here. In particular, it is \emph{not} limited to relations that are invariant under state merging.
 
