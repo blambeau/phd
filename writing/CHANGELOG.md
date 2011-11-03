@@ -2,4 +2,5 @@
   in Section 2.7.
 * The advantages of introducing guarded LTS have been made more explicit in 
   Introduction and Summary sections of Chapter 3.
-
+* References to OMT and Finkelstein's viewpoints have been added in the 
+  introduction when talking about Multi-view modeling.
