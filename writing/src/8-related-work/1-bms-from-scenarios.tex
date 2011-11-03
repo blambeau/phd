@@ -24,7 +24,7 @@ Our grammar induction approach only requires end-user scenarios in the first pla
 
 Makinen and Systa developed an interactive algorithm for synthesizing UML statecharts from sequence diagrams \cite{Makinen:2001}. It is another approach relying on grammatical inference techniques for generalizing examples of system behavior captured in scenarios. This work is inspired from the approach of minimally adequate teacher and the L$^*$ algorithm proposed by Angluin~\cite{Angluin:1987}. 
 
-There are significant differences with our approach though.
+As with our approach, and unlike those discussed in previous section, the technique works with scenarios only and does not require additional state-based annotations. There are significant differences with our approach though.
 \begin{itemize}
 
 \item Their input sequence diagrams capture positive examples of system behavior only. The negative knowledge required to avoid overgeneralization comes from negative answers to membership and equivalence queries asked to an oracle (see below); such negative knowledge does not take the form of end-user negative scenarios.
@@ -36,7 +36,9 @@ There are significant differences with our approach though.
 
 As discussed in Section~\ref{section:inductive-discussion}, tackling the induction problem on a per agent basis is an interesting alternative to our approach. For end-user involvement, however, an per agent approach seems less appropriate than ours; it requires the user to be able to classify traces in a different target language for each agent. It appears much more convenient for the end-user to interact in the scenario language of the global system as this is the language she used in the first place.
 
-Equivalence queries may also prove difficult to answer by an end-user in practice as the agent state machines are unknown. That being said, a certain form of equivalence query might be seen in our approach as well. With the ISIS tool, for example, a visual inspection of agent and system state machines is recommended for validation and triggering of a new modeling cycle if required. Such inspection may typically highlight negative scenarios in case of overgeneralization or new positive scenarios illustrating additional desired features. 
+Equivalence queries may also prove difficult to answer by an end-user in practice as the agent state machines are unknown. That being said, a certain form of equivalence query might be seen in our approach as well. With the ISIS tool, for example, a visual inspection of agent and system state machines is recommended for validation and triggering of a new modeling cycle if required. Such inspection may typically highlight negative scenarios in case of overgeneralization or new positive scenarios illustrating additional desired features.
+
+As the approach is interactive and can be used with only a few scenarios, it proves useful in early phases of system design. Unlike ours, though, such approach does not adapt to richer scenario inputs nor does it take additional models into account such as fluents or goals. In other words, multi-view consistency is not guaranteed by the synthesis process.
 
 %%%
 
