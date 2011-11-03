@@ -10,11 +10,13 @@ Whittle and Schumann proposed a technique for generating UML statecharts from se
 
 In a similar spirit, Kruger et al. proposed a technique for translating MSCs into statecharts \cite{Kruger:2000}. Their algorithm also requires state information, through MSC conditions, as additional input.
 
-Those techniques generalize behaviors described in input scenarios by introducing sequencing, alternatives and loops. In both cases, state annotations provide the semantic basis for guiding the generalization process. 
+Those techniques generalize behaviors described in input scenarios by introducing sequencing, alternatives and loops. State annotations provide the semantic basis for guiding the generalization process. In both cases, those annotations are required for the technique to work; the user of the technique is expected to provide them. 
 
-In our grammar induction approach, behavior generalization is driven by compatible state merging, which is semantically rooted in \emph{event-based} continuations of PTA states. State-based information, such as fluents, is used only for pruning the induction process (see Section~\ref{section:inductive-mutliview-consistency}). 
+This contrasts with a grammar induction approach since, in that case, behavior generalization is driven by compatible state merging, which is semantically rooted in \emph{event-based} continuations of PTA states. In our approach, state-based information such as fluents is used only for pruning the induction process (see Section~\ref{section:inductive-mutliview-consistency}) and is not required for the technique to work.
 
-The strength of our approach is that it does not require additional state-based annotations of scenarios through pre- and postconditions of MSC events. This kind of knowledge appears difficult for end-users to provide in the early steps of system design. Our use of fluents and goals is intended to smoothly integrate state-based knowledge in an incremental way.
+State machine synthesis techniques from scenarios are often used in a requirements engineering context, when the target system is unknown \cite{Weidenhaupt:1998}. Indeed, scenarios are concrete illustrations of the envisionned system. They are easier to provide by end-users than operation specifications in terms of pre- and post- conditions, MSC conditions, goals, state machines, etc. Therefore, scenarios tend to appear early in the design process and form a natural but limited input for state machine synthesis algorithms. 
+
+Our grammar induction approach only requires end-user scenarios in the first place and therefore fits nicely in such contexts. As discussed in Chapter~\ref{chapter:inductive-synthesis} and illustrated in evaluations (Chapter~\ref{chapter:evaluation}) and tool support discussions (Chapter~\ref{chapter:tool-support}), our algorithms also yield a more flexible approach. Indeed it already works with a limited scenario collection but adapts to richer inputs typically made available in subsequent analysis and design iterations. For example, our approach supports taking simple MSC scenarios as input but also works with structured forms of scenarios such as hMSCs. Similarly, fluents and goals are not required in the first place but are intended to smoothly integrate state-based knowledge in an incremental way.
 
 %%%
 
