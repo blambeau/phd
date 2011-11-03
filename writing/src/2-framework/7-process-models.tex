@@ -15,7 +15,7 @@ A g-hMSC defines a strong sequential composition of task nodes; a total ordering
 
 Such synchronization is kept implicit in the process model. However, for reasoning about timing of tasks and manipulating the traces that a g-hMSC accepts (see Chapter \ref{chapter:deductive}), it proves convenient to associate with a task special events for denoting its start and end. For a task $T$ such events will be denoted by $T_{start}$ and $T_{end}$, respectively. They correspond to \emph{broadcasting} interactions, which implies that all agents are supposed to monitor them.
 
-\item[A decision node] states specific conditions for the tasks along outgoing branches to be performed. Each outgoing branch is labeled by a Boolean expression on fluents, called \emph{guard}. A guard must be evaluated to true for the corresponding branch to be followed.
+\item[A decision node] states specific conditions for the tasks along outgoing branches to be performed. Each outgoing branch is labeled by a Boolean expression on fluents, called \emph{guard}. A guard must be evaluated to true for the corresponding branch to be followed. Note that guards capture conditions under which tasks \emph{may} be performed (vs. \emph{must}). In other words, g-hMSC do not provide abstractions to capture the obligation of performing tasks.
 
 For example, the guards in Fig.~\ref{image:scheduler-ghmsc} refer to the three fluents: \emph{second\_cycle}, \emph{date\_conflict} and \emph{resolve\_by\_weakening}. The former is defined as below; the two others are to be defined in terms of events introduced in refinements of other tasks.
 \begin{center}
