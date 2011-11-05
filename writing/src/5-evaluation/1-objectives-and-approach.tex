@@ -1,8 +1,40 @@
 \section{Objectives and approach\label{section:evaluation-objectives-and-approach}}
 
-The aim of this chapter is to answer questions about our inductive synthesis technique, such as: \emph{How well does it work in practice?}, \emph{Is it easy enough to use for an end-user?}, \emph{Is it fast enough for practical cases?} etc. 
+The aim of this chapter is to evaluate our inductive synthesis technique in the light of the thesis objectives. The idea is therefore to check whether our synthesis approach provides an effective way of exploring requirements and conducting system design. Or, in terms of the requirements discussed in Chapter~\ref{chap:introduction},
 
-These questions are difficult to answer in absolute terms. Specific experiments have therefore been conducted to provide some answers. These latter answers are mostly expressed in terms of three specific criteria that have a clear impact on the usability of the synthesis technique.
+\begin{quotation}
+\emph{How well does it help building \emph{adequate}, \emph{complete}, \emph{consistent} and \emph{precise} models for the target system considered?}
+\end{quotation}
+
+Such a question is difficult to answer in absolute terms. Answers can however be provided in two ways:
+\begin{enumerate}
+\item[a)] By comparing the technique with existing ones.
+\item[b)] By using the technique in various experiments while varying controlled parameters.
+\end{enumerate}
+This chapter focusses on the second way of conducting evaluation. A discussion of how our inductive synthesis approach compares and integrates with existing techniques can be found in Chapter~\ref{chapter:related-work}, thereby completing the evaluation given here.
+
+When our synthesis technique is considered in isolation, the question above can already be partially answered. For instance, our technique builds consistent models by construction; it also helps completing them, by design. However, other questions related to the one above cannot be answered so simply:
+\begin{itemize}
+\item How adequate are the synthesized state machines? 
+\item What is the impact of fluent, goal and domain knowledge injection on model adequacy?
+\item Is the approach usable by end-users? 
+\item How many iterations are needed to obtain models considered complete?
+\item Does the inductive technique scales and stays usable on large systems?
+\end{itemize}
+
+Controlled experiments have been conducted to provide answers to those questions. In practice, two kinds of evaluation have been conducted, as reflected by the following sections. The specific evaluation protocols used will be described in each case.
+\begin{itemize}
+
+\item Section \ref{section:evaluation-experiments-on-case-studies} discusses evaluations conducted on three case studies involving multiple models. The aim here is to evaluate the feasibility of inductive LTS synthesis in practice. Our ISIS tool presented in Section \ref{section:tool-support-isis} has been used as an effective support for designing and conducting the evaluations described there.
+
+\item Section \ref{section:evaluation-experiments-on-synthetic-data} complements this case-driven evaluation with experiments conducted on random automata and samples. The aim here is to study the performance of QSM and ASM in a more systematic way using synthetic datasets whose size grows significantly beyond the average one of the case studies. This will also allow us to compare our techniques with state-of-the-art induction algorithms. To achieve sound comparisons, our evaluation protocol inspires from a known benchmark known as Abbadingo \cite{Lang:1998} (see Section~\ref{subsection:evaluation-synthetic-protocol}).
+
+Note that the evaluations on synthetic datasets will not evaluate the use of fluents or goals for constraining induction. The reason is that accurately simulating such domain knowledge raises a certain number of issues about the design of the evaluation protocol.
+\end{itemize}
+
+% TODO: questions/objectives answered from two sides: a) experience gained in an integrated tool. b) systematic collecting of quantitative measures related to the number of scenario questions, ...
+
+In addition to the experience gained when using our techniques on case studies in an integrated tool, These latter answers are mostly expressed in terms of three specific criteria that have a clear impact on the adequacy and usability of the synthesis technique.
 \begin{description}
 \item[Model adequacy] Roughly speaking, \emph{model adequacy} captures \emph{how well} an inferred model matches the expected target behavior model. 
 
@@ -11,7 +43,6 @@ Model adequacy is easy to measure in controlled experiments in which, by design,
 \item In the former case, the adequacy measure simply captures whether the learned model is \emph{the same} as the target model or not, in terms of behavioral equivalence (see Definition~\ref{definition:trace-equivalence}).
 \item In the latter case, an \emph{accuracy} measure will be used; such measure will range from 0.0 to 1.0 dependent on whether the learned model is considered far or close to the target model. This will be estimated through test samples (see Section~\ref{subsection:evaluation-synthetic-protocol}).
 \end{itemize}
-of 
 Note that adequacy is harder to assess on real-world case studies where the target model is unknown. In practice, human inspection of the learned models is required.
 
 \item[Number of scenario questions] The number of queries generated to the oracle is a key measure for the usability of QSM in practice. 
