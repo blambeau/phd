@@ -1,3 +1,13 @@
+# Conclusion
+
+* The conclusion has been revisited in depth. Contributions, significance of 
+  results and strenghts of our approach are much clearer than before.
+* The conclusion now discusses robustness and misclassification open issues.
+* The conclusion now discusses convergence and scalability open issues.
+* The conclusion now discusses lack of knowledge issues and inability to answer
+  scenario questions.
+* This conclusion now discusses implied scenarios and related open issues.
+
 # Evaluation
 
 * What do you evaluate?
