@@ -1,3 +1,12 @@
+# Evaluation
+
+* "What do you evaluate?". The introduction section of Chapter 5 has been 
+  extended to better sell the way evaluations have been conducted and why they
+  have been conducted that way. In particular, it is now much clearer that we 
+  evaluate the _overal effectiveness of inductive synthesis_ through 
+  controlled experiments. Links with thesis objectives in Introduction have been
+  made explicit.
+
 # Related Work
 
 * Strenghts of our approach have been made clearer when compared to statechart 
