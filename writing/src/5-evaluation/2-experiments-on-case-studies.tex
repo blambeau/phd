@@ -2,7 +2,9 @@
 
 QSM and ASM were evaluated on three different case studies of varying complexity. The first one is a mine pump system inspired from~\cite{Joseph:1996} and often used as a ``benchmark'' in the literature. The second case study refers to an extended version of the train system used here as a running example. The third one is a phone system handling communications between a caller and a callee.
 
-\subsection{Evaluation methodology}
+Section \ref{subsection:evaluation-case-study-methodology} details the evaluation methodology. Section \ref{subsection:evaluation-isis-modeling-session} illustrates a typical modeling session in the ISIS tool on the mine pump system. The subsequent sections then further discuss the impact observed on model adequacy, number of scenario questions and induction time of the different induction features, such as using an oracle or the Blue-fringe heuristics.
+
+\subsection{Evaluation methodology\label{subsection:evaluation-case-study-methodology}}
 
 Beyond a practical evaluation of our tool-supported approach to multi-view LTS synthesis, our objective was to assess the impact of constraining induction through fluents, models of external components, domain descriptions and goals. Such impact was measured in terms of the number of generated scenario questions and the adequacy of the synthesized models. Induction time was also measured so as to check that fast interactions with the oracle are observed.
 
@@ -37,6 +39,165 @@ Phone    & 16     & 23     & 33          & 6     & 4     & 11\\\hline
 The size of the scenario collection resulting from Step~\ref{stepA} is shown in Table~\ref{CaseStudies}. $|S^+|$ and $|S^-|$ denote the number of positive and negative scenarios, respectively. The average scenario length is reported in the last column. The size of the target system LTS are also reported in terms of number of different event labels (alphabet size), states, and transitions. 
 
 In order to measure the number of generated scenario questions in Step \ref{stepB}, an oracle was implemented to simulate the end-user. This oracle knows the system LTS for each problem and correctly classifies generated scenario as positive or negative. Note that this is a strong assumption on the oracle, especially when played by an end-user in practice; this issue has been discussed in Section~\ref{section:inductive-discussion}.
+
+The next section illustrates how the ISIS tool were used to build the scenarios, domain properties and goals for the Mine Pump system. Then, results of evaluation experiments will be detailed.
+
+\subsection{Modeling the Mine Pump system with ISIS\label{subsection:evaluation-isis-modeling-session}}
+
+This section shows the ISIS tool in action on a classical Software Engineering benchmark. We consider the following simplified problem statement for the Mine Pump exemplar \cite{Joseph:1996}:
+\begin{quotation}
+\emph{Water percolating into a mine is collected in a sump to be pumped out of the mine. The water level sensor detects when water is above and below a specific level. A pump controller switches the pump on when the water goes above this level and off when it goes below this level. To avoid the risk of explosion, the pump must be operated only when the methane level is below some critical level.}
+\end{quotation}
+
+The tool allows specifying positive and negative scenarios. In addition, if available, other kinds of knowledge can be captured. Such information includes fluents, state machines of legacy components or safety properties to be met by the system.
+
+Fig.~\ref{image:minepump-initial-scenarios} shows two positive scenarios initially drawn from the description above. As stated in Chapter~\ref{chapter:inductive-synthesis}, our inductive technique make the built-in assumption that such input scenarios start in the same initial state. The submitted scenarios thus implicitly specify that the water level is low and the methane level is below the critical level. 
+
+\begin{figure}
+\centering
+\scalebox{0.75}{
+\includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/PumpOnWhenHighAndOffWhenLow}
+}
+\scalebox{0.75}{
+\includegraphics[trim=0mm 0mm 0mm -5mm, clip]{src/5-evaluation/casestudy/PumpOffWhenCriticalMethane}
+}
+\caption{Initial scenarios for the Mine Pump system\label{image:minepump-initial-scenarios}.}
+\end{figure}
+
+The first positive scenario illustrates that the pump should be turned on by the controller when the water level is high and turned off when the water level is low. If the water gets high once again, the controller simply turns the pump on in response. 
+
+The second scenario shows that the pump should be turned off when the methane level becomes critical. As the water is high, the pump is switched back on when the methane level becomes non critical.
+
+\subsubsection*{Running QSM with these two scenarios}
+
+QSM is ran a first time with these two scenarios as input. For our case-study evaluations, QSM was actually used with the Blue-Fringe heuristic and a consolidation threshold of 1 (see Section~\ref{BlueFringe}). This means that two states of the PTA are considered for merging only if they share at least one outgoing event. Such consolidation threshold drastically reduces the number of possible scenario questions; generated questions also tend to be guided by more evidence, which fits the intuition. In our experience, doing so results in a conservative state merging approach that is well suited for building a new specification from scratch.
+
+With such a configuration, only one scenario question is submitted for classification. It is illustrated in Fig.~\ref{image:minepump-scenario-question} and can be rephrased as: ``\emph{after having switched the pump off because of a critical level of methane, may the controller switch the pump on if the water becomes high once again?}''. At least two reasons support the rejection of such a scenario:
+
+\begin{figure}
+\centering
+\scalebox{0.75}{
+\includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/MayWaterBeHighTwice}
+}
+\caption{A first scenario question submitted by QSM on the Mine Pump case study.\label{image:minepump-scenario-question}}
+\end{figure}
+
+\begin{itemize}
+\item A domain property prevents the water from becoming high twice in a row. Observing two ``high'' signals from the water sensor consecutively brings our attention to the fact that the scenario should probably be rejected.
+
+This domain property might be formally captured in two ways: either by a legacy LTS for the water sensor (see Fig.~\ref{image:minepump-water-sensor-lts}) or by a declarative domain property.
+\begin{figure}[H]
+\centering
+\scalebox{0.4}{
+\includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/WaterSensorLTS}
+}
+\label{image:minepump-water-sensor-lts}
+\end{figure}
+
+If the declarative option is chosen, the following LTL safety property can be used to capture the fact that the ``high water'' signal is only observed provided that the current water level is low:
+\begin{align*}
+&\mbox{DomProp[Water]} = \circ(\mbox{high signal}) \Rightarrow \neg \mbox{HighWater}\\
+&\mbox{fluent HighWater} = \textless \{\mbox{high signal}\}, \{\mbox{low signal}\} \textgreater \mbox{initially \emph{false}}
+\end{align*}
+
+\item In addition, the level of methane is still critical in the second part of the scenario question. In such a situation the controller may not switch the pump on.
+
+This second rejection reason might be captured through the following safety goal.
+\begin{align*}
+&\mbox{Avoid[PumpOnWhenMethane]} = \mbox{CriticalMethane} \Rightarrow \circ(\neg \mbox{PumpOn}) \\
+&\mbox{fluent CriticalMethane} = \textless \{\mbox{critical signal}\}, \\ 
+&\{\mbox{not critical signal}\} \textgreater\mbox{initially \emph{false}} \\
+&\mbox{fluent PumpOn} = \textless \{\mbox{on command}\}, \{\mbox{off command}\} \textgreater \mbox{initially \emph{false}}
+\end{align*}
+
+\end{itemize}
+
+Note that the scenario may simply be rejected without further explanation. As illustrated above, the rejection of a scenario is a rich opportunity to declare state variables and identify requirements and domain properties. However such more formal steps are optional and may simply be bypassed by non-experts. Not specifying fluents, domain properties and goals typically lead to more scenario questions.
+
+In our modeling session, only the \artifact{CriticalMethane}, \artifact{HighWater} fluents above were defined. No further scenario questions were submitted for classification. The resulting LTS for the pump controller agent is illustrated in Fig.~\ref{image:minepump-controller-1-annotated}.
+
+\begin{figure}
+\centering
+\scalebox{0.3}{
+  \includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/controller-1-annotated}
+}
+\caption[The annotated LTS of the Pump Controller]{The annotated LTS of the Pump Controller\label{image:minepump-controller-1-annotated}. Here ``sig.'' stands for ``signal'' and ``cmd.'' stands for ``command'', ``High'' stands for ``HighWater'' and ``Critical'' for ``Critical Methane''.}
+\end{figure}
+
+\subsubsection*{A second modeling step}
+
+At this step various choices can be made:
+\begin{itemize}
+\item More positive and negative scenarios can be added to the initial scenario collection. QSM is then ran once again and generates new scenario questions.
+\item The consolidation threshold of Blue-fringe can be lowered. This results in a more aggressive state merging approach, leading to new scenarios to classify as positive or negative system behaviors. Doing so triggers for further identification of domain properties and goals.
+\item Synthesized state machines may be decorated with fluent invariants and inspected by experts. New positive scenarios are typically added to the scenario collection so as to cover missing behaviors. New negative scenarios can be added when over-generalization is detected.
+\item Additional synthesis and/or analysis tools can be launched on the specification, such as an animator or a model checker. In particular, the ISIS tool supports the inference of goals from scenarios~\cite{Damas:2006, Damas:2011}.
+\end{itemize}
+
+The last option was chosen in our case, the ISIS tool being requested to infer maintain goals from the annotated scenarios. Only one property was inferred and submitted for classification:
+\begin{align*}
+\square(\mbox{HighWater} \vee \neg \mbox{CriticalMethane})
+\end{align*}
+
+This property states that either the water is high or the methane is below the critical level. It has to be rejected as those two phenomena are independent of each other. A counterexample scenario must illustrate a situation where the water level is low while the level methane is critical:
+\begin{align*}
+\square(\neg \mbox{HighWater} \wedge \mbox{CriticalMethane})
+\end{align*}
+
+Fig.~\ref{image:minepump-scenario-3} provides such counterexample where the ``critical signal'' event is observed in the initial state. The pump may then be switched on only if the methane level is below the critical level.
+
+\begin{figure}
+\centering
+\scalebox{0.75}{
+\includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/MethaneCriticalWhenWaterIsLow}
+}
+\caption{The methane level may become high when the water is low.\label{image:minepump-scenario-3}}
+\end{figure}
+
+\subsubsection*{Running QSM a second time}
+
+As a new scenario is available, QSM is ran so as to obtain revised agent state machines. With a consolidation threshold of 1, no scenario question is submitted for classification. The revised LTS state machine of the pump controller is shown in Fig.~\ref{image:minepump-controller-2-annotated}.
+\begin{figure}
+\centering
+\scalebox{0.27}{
+  \includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/controller-2-annotated}
+}
+\caption{A second version of the Pump Controller LTS\label{image:minepump-controller-2-annotated}}
+\end{figure}
+
+A manual inspection of this state machine showed that only one transition was missing, that would allow the methane to become critical then not critical from the initial state. This was fixed by simply adding such a loop at the beginning of the third scenario and running QSM once again (see Fig.~\ref{image:minepump-scenario-3-bis}).
+
+\begin{figure}[H]
+\centering
+\scalebox{0.75}{
+\includegraphics[trim=0mm 0mm 0mm 0mm, clip]{src/5-evaluation/casestudy/MethaneCriticalWhenWaterIsLow2}
+}
+\caption{Third scenario revised to include a loop through the methane events.\label{image:minepump-scenario-3-bis}}
+\end{figure}
+
+\subsubsection*{Inferring goals}
+
+From fluent definitions and the four available scenarios (3 positive and 1 negative), the tool was requested to infer goals. Three of them were kept as typical requirements of the mine pump system:
+\begin{itemize}
+
+\item Maintain[PumpOn When HighWater and Not Critical Methane]
+\begin{align*}
+&\mbox{HighWater} \wedge \neg \mbox{CriticalMethane} \Rightarrow \circ(\mbox{PumpOn})
+\end{align*}
+
+\item Avoid[PumpOn When LowWater]
+\begin{align*}
+&\neg \mbox{HighWater} \Rightarrow \circ(\neg \mbox{PumpOn})
+\end{align*}
+
+\item Avoid[PumpOn When CriticalMethane]
+\begin{align*}
+&\mbox{CriticalMethane} \Rightarrow \circ(\neg \mbox{PumpOn})
+\end{align*}
+
+\end{itemize}
+
+These goals were used to prune the induction in controlled experiments. The resulting specification was considered rich enough; it enabled a deeper evaluation of our inductive algorithm by controlling various parameters such as the number of injected goals. A similar process were used on the two other case studies. The results are described in the next sections.
 
 %%%%%
 

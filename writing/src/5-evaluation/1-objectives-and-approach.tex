@@ -1,19 +1,19 @@
 \section{Objectives and approach\label{section:evaluation-objectives-and-approach}}
 
-The aim of this chapter is to evaluate our inductive synthesis technique in the light of the thesis objectives. The idea is to check whether our synthesis approach provides an effective way of exploring requirements and conducting system design. Or, in terms of the requirements discussed in Chapter~\ref{chap:introduction},
+The aim of this chapter is to evaluate our inductive synthesis technique in the light of the thesis objectives. The idea is therefore to check whether our synthesis approach provides an effective way of exploring requirements and conducting system design. Or, in terms of the requirements discussed in Chapter~\ref{chap:introduction},
 
 \begin{quotation}
-\emph{How well does it help building \emph{adequate}, \emph{complete}, \emph{consistent} and \emph{precise} models for the target system considered?}
+\emph{How well does it help building \emph{adequate}, \emph{complete}, \emph{consistent}, and \emph{precise} models for the target system considered?}
 \end{quotation}
 
 Such a question is difficult to answer in absolute terms. Answers can however be provided in two ways:
 \begin{enumerate}
-\item[a)] By comparing the technique with existing ones, either theoretically or on common benchmarks.
-\item[b)] By using the technique in controlled experiments. Here, controlled parameters provide variation points to conduct comparisons.
+\item[a)] By comparing the technique with existing ones, either theoretically, empirically, or through benchmarks.
+\item[b)] By using the technique in dedicated experiments. Controlled parameters then provide variation points to conduct comparisons.
 \end{enumerate}
-This chapter focusses on the second way of conducting evaluation. A discussion of how our inductive synthesis approach compares and integrates with existing techniques can be found in Chapter~\ref{chapter:related-work}, thereby completing the evaluation given here.
+This chapter focusses on the second way of conducting such an evaluation. A discussion of how our inductive synthesis approach compares with and/or integrates with existing techniques can be found in Chapter~\ref{chapter:related-work}.
 
-When our inductive synthesis technique is considered in isolation, the question of how well it performs can already be partially answered. For instance, our technique builds \emph{consistent} models by construction; by design, it also helps \emph{completing} them through scenario questions. However, other related questions cannot be answered so simply:
+When our inductive synthesis technique is considered in isolation, the question of how well it helps building high-quality models can already be partially answered. For instance, our technique synthesizes \emph{consistent} models by construction; by design, it also helps \emph{completing} them through scenario questions which in turn trigger the identification of domain properties and goals. Not all questions can be answered so simply:
 \begin{itemize}
 \item How adequate are the synthesized state machines? 
 \item What is the impact of fluent, goal and domain knowledge injection on model adequacy?
@@ -22,42 +22,46 @@ When our inductive synthesis technique is considered in isolation, the question 
 \item Does the inductive technique scales and stays usable on large systems?
 \end{itemize}
 
-Controlled experiments have thus been conducted to provide answers to those questions. In practice, two kinds of evaluation have been considered, as reflected by the following sections. The specific evaluation protocols used will be described in each case.
+Controlled experiments have thus been conducted to provide answers to those questions. In practice, two kinds of evaluation have been considered, as reflected by the following sections (The specific evaluation protocols used will be described in each case).
 \begin{itemize}
 
-\item Section \ref{section:evaluation-experiments-on-case-studies} discusses evaluations conducted on three case studies involving multiple models. The aim here is to evaluate the feasibility of inductive LTS synthesis in practice. Our ISIS tool presented in Section \ref{section:tool-support-isis} has been used as an effective support for designing and conducting the evaluations described there.
+\item Section \ref{section:evaluation-experiments-on-case-studies} discusses evaluations conducted on three case studies involving multiple models. The aim here is to evaluate the feasibility of inductive LTS synthesis in practice. 
 
-\item Section \ref{section:evaluation-experiments-on-synthetic-data} complements this case-driven evaluation with experiments conducted on random automata and samples. The aim here is to study the performance of QSM and ASM in a more systematic way using synthetic datasets whose size grows significantly beyond the average one of the case studies. This will also allow us to compare our techniques with state-of-the-art induction algorithms. To achieve sound comparisons, our evaluation protocol inspires from a benchmark known as Abbadingo \cite{Lang:1998} (see Section~\ref{subsection:evaluation-synthetic-protocol}).
+Our ISIS tool presented in Section \ref{section:tool-support-isis} has been used as an effective support for designing and conducting the evaluations described there. A typical modeling session in ISIS will be illustrated on one of those case studies; additional black-box results will also be detailed.
+
+\item Section \ref{section:evaluation-experiments-on-synthetic-data} complements this case-driven evaluation with experiments conducted on random automata and samples. The aim here is to study the performance of QSM and ASM in a more systematic way using synthetic datasets whose size grows significantly beyond the average one of the case studies. To achieve sound comparisons, our evaluation protocol inspires from a benchmark known as Abbadingo \cite{Lang:1998}.
+
+The evaluations conducted here allow us to describe what can be expected from our techniques on systems significantly larger than the case studies considered in Section~\ref{section:evaluation-experiments-on-case-studies}. This will also allow us to compare QSM and ASM with state-of-the-art induction algorithms. 
 \end{itemize}
 
-Using the ISIS tool on case-studies provides a first evaluation \emph{in situ}. The overall effectiveness of our multi-view synthesis approach will be illustrated on a typical run. In addition, controlled parameters of the experiments provide comparison points to answer finer-grained evaluation questions. Those controlled parameters are:
+The ISIS modeling session described in Section~\ref{section:evaluation-experiments-on-case-studies} provides a general idea about the effectiveness of our multi-view synthesis approach. In addition, controlled parameters of the various experiments provide comparison points to answer finer-grained evaluation questions. Those controlled parameters are:
 \begin{itemize}
-\item The size the target system LTS, either because a selected case-study or controlled by a random generation procedure.
+\item The size the target system LTS, either a case-study or controlled by a random generation procedure.
 \item The heuristics used for state merging: the RPNI search order or the Blue-fringe optimization.
 \item The presence of absence of an oracle answering scenario questions.
 \item The number of fluents and goals injected to prune the induction process.
 \item The use of control information in scenarios and the richness of such knowledge.
 \end{itemize}
 
-Three measures have been collected when conducting the various experiments. Those measures have a clear impact on the adequacy and usability of the synthesis technique. Therefore, they allow making the link between the controlled parameters and answers to our evaluation questions.
+When conducting the experiments three measures have been collected so as to evaluate results. Those measures have a clear impact on the adequacy and usability of the synthesis technique. Therefore, they allow making the bridge between the controlled parameters and answers to our evaluation questions.
 \begin{description}
 \item[Model adequacy] Roughly speaking, \emph{model adequacy} captures \emph{how well} an inferred model matches the expected target behavior model. 
 
 Model adequacy is easy to measure in controlled experiments in which, by design, the target model is then known. Depending on the experiment, we will use either a binary value or a finer-grained one.
 \begin{itemize}
-\item In the former case, the adequacy measure simply captures whether the learned model is \emph{the same} as the target model or not, in terms of behavioral equivalence (see Definition~\ref{definition:trace-equivalence}).
-\item In the latter case, an \emph{accuracy} measure will be used; such measure will range from 0.0 to 1.0 dependent on whether the learned model is considered far or close to the target model. This will be estimated through test samples (see Section~\ref{subsection:evaluation-synthetic-protocol}).
+\item On case studies the adequacy measure simply captures whether the learned model is \emph{the same} as the target model or not, in terms of behavioral equivalence (see Definition~\ref{definition:trace-equivalence}).
+\item On random datasets an \emph{accuracy} measure will be used; such measure will range from 0.0 to 1.0 dependent on whether the learned model is considered far or close to the target model. This will be estimated through test samples (see Section~\ref{subsection:evaluation-synthetic-protocol}).
 \end{itemize}
 Note that adequacy is harder to assess on real-world case studies where the target model is unknown. In practice, human inspection of the learned models is required.
 
 \item[Number of scenario questions] The number of queries generated to the oracle is a key measure for the usability of QSM in practice. 
 
-This is certainly true when the oracle is a human being. A large number of queries might also be a problem with automated oracles; online oracles may be slow, others might be expensive, etc.
+This is certainly true when the oracle is a human being. However, a large number of queries might also become a problem with automated oracles; indeed, online oracles may be slow, automated oracles might be expensive, etc.
 
-\item[Induction time] The time taken to infer a model deserves special attention. While a reasonable induction time is desirable in any case, fast, real-time interactions are required for usability of QSM by a human oracle.
+\item[Induction time] The time taken to infer a model also deserves special attention. While a reasonable induction time is desirable in any case, fast, real-time interactions are required for usability of QSM by a human oracle.
 \end{description}
 
-Our experiments were designed to isolate the effect on the three measures above of the orthogonal features of our inductive technique. They quantify the gains and costs of the following ones in particular:
+Our experiments were designed to isolate the effect of the orthogonal features of our inductive technique on the three measures above. Roughly, they quantify the gains and costs of the following ones:
 \begin{itemize}
 \item The use of an oracle who can answer scenario questions: a gain is expected in model adequacy at the cost of a longer induction time.
 \item The use of the Blue-fringe heuristic instead of the RPNI search order: a gain in adequacy is expected as well as a reduction of the number of scenario questions;

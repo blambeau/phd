@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<mdep>
+  <po class="be.ac.ucl.info.rq.agentsmdl.model.AgentBasedSpecification" name="Mine Pump">
+    <agents>
+      <agent behaviorLocked="false" externalAgent="Water Sensor" oid="1">
+      </agent>
+      <agent behaviorLocked="false" externalAgent="Methane Sensor" oid="2">
+      </agent>
+      <agent behaviorLocked="false" externalAgent="Controller" oid="3">
+      </agent>
+      <agent behaviorLocked="false" externalAgent="Pump" oid="4">
+      </agent>
+    </agents>
+    <positiveMSCs name="Positive MSCs">
+      <interaction title="Pump on when high, off when low">
+        <lifeline externalEntity-ref="1" oid="5"/>
+        <lifeline externalEntity-ref="2"/>
+        <lifeline externalEntity-ref="3" oid="6"/>
+        <lifeline externalEntity-ref="4" oid="8"/>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="5"/>
+            <outgoingMessage externalOperation="high signal" oid="7"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="6"/>
+            <incomingMessage incomingMessage-ref="7"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="6"/>
+            <outgoingMessage externalOperation="on command" oid="9"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="8"/>
+            <incomingMessage incomingMessage-ref="9"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="5"/>
+            <outgoingMessage externalOperation="low signal" oid="10"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="6"/>
+            <incomingMessage incomingMessage-ref="10"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="6"/>
+            <outgoingMessage externalOperation="off command" oid="11"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="8"/>
+            <incomingMessage incomingMessage-ref="11"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="5"/>
+            <outgoingMessage externalOperation="high signal" oid="12"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="6"/>
+            <incomingMessage incomingMessage-ref="12"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="6"/>
+            <outgoingMessage externalOperation="on command" oid="13"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="8"/>
+            <incomingMessage incomingMessage-ref="13"/>
+          </messageAnchor>
+        </messagesSnapshot>
+      </interaction>
+      <interaction title="Pump off when methane becomes critical">
+        <lifeline externalEntity-ref="1" oid="14"/>
+        <lifeline externalEntity-ref="2" oid="19"/>
+        <lifeline externalEntity-ref="3" oid="15"/>
+        <lifeline externalEntity-ref="4" oid="17"/>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="14"/>
+            <outgoingMessage externalOperation="high signal" oid="16"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="15"/>
+            <incomingMessage incomingMessage-ref="16"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="15"/>
+            <outgoingMessage externalOperation="on command" oid="18"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="17"/>
+            <incomingMessage incomingMessage-ref="18"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="19"/>
+            <outgoingMessage externalOperation="critical signal" oid="20"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="15"/>
+            <incomingMessage incomingMessage-ref="20"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="15"/>
+            <outgoingMessage externalOperation="off command" oid="21"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="17"/>
+            <incomingMessage incomingMessage-ref="21"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="19"/>
+            <outgoingMessage externalOperation="not critical signal" oid="22"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="15"/>
+            <incomingMessage incomingMessage-ref="22"/>
+          </messageAnchor>
+        </messagesSnapshot>
+        <messagesSnapshot>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="15"/>
+            <outgoingMessage externalOperation="on command" oid="23"/>
+          </messageAnchor>
+          <messageAnchor>
+            <attachedEnd attachedEnd-ref="17"/>
+            <incomingMessage incomingMessage-ref="23"/>
+          </messageAnchor>
+        </messagesSnapshot>
+      </interaction>
+    </positiveMSCs>
+    <negativeMSCs name="Negative MSCs"/>
+  </po>
+</mdep>
