@@ -1,7 +1,7 @@
 # Conclusion
 
 * The conclusion has been revisited in depth. Contributions, significance of 
-  results and strenghts of our approach are much clearer than before.
+  results and strenghts of our approach have been clarified.
 * The conclusion now discusses robustness and misclassification open issues.
 * The conclusion now discusses convergence and scalability open issues.
 * The conclusion now discusses lack of knowledge issues and inability to answer
@@ -17,6 +17,13 @@
     way. In particular, it is now much clearer that we evaluate the _overal 
     effectiveness of inductive synthesis_ through controlled experiments. 
     Links with the thesis objectives in Introduction have been made explicit.
+  * A fresh new section has been added when evaluating the approach on case 
+    studies. A modeling session in the ISIS tool is illustrated step-by-step on
+    the Mine Pump. The section show how the pump controller state machine is 
+    inferred. Only two initial scenarios are given as input. Scenario questions
+    trigger the identification of fluents, domain properties and goals. The pump
+    controller is built in three small iterations in the tool, demonstrating the
+    effectiveness of the proposed approach.
   * The conclusion/discussion section of the same chapter has been slighlty 
     extended and revisited to link technical evaluation results to the thesis
     objectives.
