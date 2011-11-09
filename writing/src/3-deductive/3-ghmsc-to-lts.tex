@@ -40,7 +40,7 @@ Fig.~\ref{image:scheduler-ghmsc-glts} illustrates the transformation on the meet
 \item Last, outgoing edges of decision nodes lead to guarded transitions in the g-LTS whereas other edges of the g-hMSC yield $\tau$ transitions.
 \end{itemize}
 
-The resulting g-LTS can be further optimized by coalescing states separated by $\tau$ transitions. The g-LTS state space is thereby reduced; this will speed up the synthesis of a trace-equivalent LTS and the model-checking procedure described in Section \ref{section:tool-model-checker}. 
+The resulting g-LTS can be further optimized by coalescing states separated by $\tau$ transitions, provided the target state has no other incoming transition. The g-LTS state space is thereby reduced; this will speed up the synthesis of a trace-equivalent LTS and the model-checking procedure described in Section \ref{section:tool-model-checker}. 
 
 %However, such optimization breaks the traceability between g-hMSC tasks and g-LTS states. Such traceability turn to be useful in practice for providing users with feedback on the submitted process model itself (see Section \ref{section:tool-clinical-pathway-analyzer}). 
 
@@ -50,7 +50,7 @@ The set of traces accepted by a g-LTS $G$ may be captured by a trace-equivalent 
 \begin{enumerate}[(1)]
 \item First, a parallel composition of g-LTSs is computed so as to meet the various acceptance conditions from Definition \ref{definition:valid-glts-execution} (valid g-LTS execution):
 \begin{itemize}
-\item The first automaton in this composition is a super g-LTS built from $G$ to initially meet the \emph{trace inclusion} and \emph{admissible start} conditions.
+\item The first automaton in this composition is a super g-LTS built from $G$ to initially meet the \emph{trace inclusion} and \emph{admissible start} conditions. This g-LTS actually covers a superset of all admissible event traces and will therefore be pruned.
 \item To meet the \emph{guard satisfaction} condition, the set of traces of the super g-LTS is pruned further by composing it with fluent automata, one for each fluent.
 \end{itemize}
 \item By construction, all paths admitted by the g-LTS resulting from step~(1) yield valid executions for the initial g-LTS $G$. Therefore, guards and $\tau$-transitions can be safely hidden to obtain a pure LTS; the latter captures all event traces of the trace semantics given in Definition~\ref{definition:glts-trace-semantics}.
@@ -81,7 +81,7 @@ During composition, the introduced guarded transition will synchronize with simi
 
 \subsubsection*{Fluent g-LTS}
 
-The \emph{guard satisfaction} condition is enforced by pruning all traces violating guards in the super g-LTS. For this, the latter is composed with fluent automata that keep track of current fluent values and constrain guards accordingly.
+The \emph{guard satisfaction} condition is enforced by pruning all traces violating guards in the super g-LTS. For this, the latter is composed with fluent automata that keep track of current fluent values and constrain guards accordingly. Recall that fluents have undertermined initial values; process models and guarded LTS have an initial condition $C_0$ that constraints their values in the initial state. 
 
 Every fluent $Fl = \textless Init_{Fl}, Term_{Fl} \textgreater $ yields a g-LTS $(Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ where:
 \begin{align*}
@@ -167,7 +167,7 @@ We can now show that these executions are valid g-LTS executions for the input g
 
 The hiding step removes all guards, yielding a pure LTS that precisely captures the trace semantics from Definition \ref{definition:glts-trace-semantics}. 
 
-In practice, it is convenient to enhance the hiding step so as to preserve the initial fluent value assignments $g_0$ labeling the transitions issued of the initial g-LTS state. This amounts to capture the set of valid g-LTS traces from Definition~\ref{definition:valid-glts-traces}. Making so allows providing the user with a better feedback when using the synthesis algorithm for model-checking g-hMSC and g-LTS (see Section~\ref{section:tool-model-checker}).
+In practice, it is convenient to enhance the hiding step so as to preserve the initial fluent value assignments $g_0$ labeling the transitions issued of the initial g-LTS state. This amounts capturing the set of valid g-LTS traces from Definition~\ref{definition:valid-glts-traces}. Doing so allows providing the user with a better feedback when using the synthesis algorithm for model-checking g-hMSC and g-LTS (see Section~\ref{section:tool-model-checker}).
 
 \subsubsection*{Example}
 

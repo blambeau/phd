@@ -18,7 +18,7 @@ This section introduces QSM, a Query driven State-Merging synthesis technique. Q
 \end{itemize}
 \end{quote}
 
-The specification of QSM is similar to the synthesis problem statement in Section~\ref{subsection:inductive-synthesis-statement}. The main differences are related to the presence of the oracle and the fact that the decomposition step is not implemented by QSM itself. Moreover, remember from Section~\ref{subsection:background-scenario-consistency} that requiring the consistency of the input scenario collection amounts to require all scenarios to start in the same system state.
+The specification of QSM is similar to the synthesis problem statement in Section~\ref{subsection:inductive-synthesis-statement}. The main differences are related to the presence of the oracle and the fact that the decomposition step is not implemented by QSM itself. Moreover, remember from Section~\ref{subsection:background-scenario-consistency} that requiring the consistency of the input scenario collection implies that all scenarios start in the same system state.
 
 Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm; RPNI can be seen as a particular instance without the inner-most while loop. Roughly, the induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs from the initial LTS. The process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. This process terminates when no state pairs can still be considered for merging.
 
@@ -48,7 +48,7 @@ $A_{new} \leftarrow$ {\tt Merge$(A,q,q')$}\\
 
 In Algorithm \ref{QSM}, the \texttt{Initialize} function returns an initial candidate LTS built from the scenario collection. This function computes $\mathcal{L}^+(Sc)$, the set of positive scenario traces, according to the trace semantics defined in Chapter~\ref{chapter:framework}. Those traces are captured through a PTA; as the positive sample is prefix-closed, this PTA has all accepting states.
 
-Next, pairs of states are iteratively chosen from the current solution according to the \texttt{ChooseStatePair} function\footnote{The assignment in the corresponding \textbf{while} loop is assumed to be \textit{true} whenever a valid state pairs is returned by \texttt{ChooseStatePairs}. When no more state pairs are considered for merging, \texttt{ChooseStatePairs} returns \textit{(nil,nil)} and the assignment is evaluated to \textit{false.} This abuse of notation in the pseudo-code allows to keep it more concise. A similar remark also applies to the inner \textbf{while} loop of the \textsc{QSM} algorithm.}. The quotient automaton obtained by merging such states, and possibly some additional states, is computed by the \texttt{Merge} function. The consistency of this quotient automaton is then checked by the \texttt{Consistent} function using available negative scenarios in the collection. The various functions are more precisely specified hereafter.
+Next, pairs of states are iteratively chosen from the current solution according to the \texttt{ChooseStatePair} function\footnote{The assignment in the corresponding \textbf{while} loop is assumed to be \textit{true} whenever a valid state pairs is returned by \texttt{ChooseStatePairs}. When no more state pairs are considered for merging, \texttt{ChooseStatePairs} returns \textit{(nil,nil)} and the assignment is evaluated to \textit{false.} This abuse of notation in the pseudo-code allows to keep it more concise. A similar remark also applies to the inner \textbf{while} loop of the \textsc{QSM} algorithm.}. The quotient automaton obtained by merging such states, and possibly some additional states, is computed by the \texttt{Merge} function. By construction, the obtained quotient automaton covers all positive scenarios (see Definition~\ref{definition:quotient-automaton}). Its consistency with available negative scenarios is then checked by the \texttt{Consistent} function. The various functions are more precisely specified hereafter.
 
 When consistent, new scenarios are generated through the \texttt{GenerateQuery} function. These scenarios are submitted to the end-user for classification (see Section~\ref{QSM:query}). The scenario collection is then refined with these scenarios, according to their classification. If all generated scenarios are classified as positive, the quotient automaton becomes the current candidate solution. The process is iterated until no more pair of states can be considered for merging. When a generated scenario is classified as negative, the algorithm is recursively called on the extended scenario collection.
 
@@ -122,15 +122,13 @@ Consider the example in Fig.~\ref{Fig:algo:steps} with selected state pair $q=3,
 
 \end{description}
 
-The QSM algorithm has a polynomial time complexity in the size of the learning sample $\mathcal{L}^+(Sc)$, see \cite{Dupont:2008}. 
-
-When the algorithm receives a characteristic sample in the initial scenario collection, no additional scenario can be classified as negative. As a consequence, QSM will not be called recursively anymore; it stops by returning the target model. 
+The QSM algorithm has a polynomial time complexity in the size of the learning sample, see Section~\ref{subsection:qsm-complexity-analysis}. When it algorithm receives a characteristic sample in the initial scenario collection, no additional scenario can be classified as negative. As a consequence, QSM will not be called recursively anymore; it stops by returning the target model. 
 
 Chapter~\ref{chapter:evaluation} will detail an experimental study of the actual sample size required to observe the convergence of \textsc{QSM} and the number of queries submitted to the end-user.
 
 \subsection{Reducing the number of queries: the blue-fringe optimization\label{BlueFringe}}
 
-The order in which states are considered for merging by the \texttt{ChooseStatePair} function in Section~\ref{QSM:merging} follows from the implicit assumption that the current sample is characteristic. Two states are considered compatible for merging if there is no suffix to distinguish among them. This can lead to a significant number of scenarios being generated to the end-user in case the initial sample is sparse and actually not characteristic for the target system LTS. 
+The order in which states are considered for merging by \texttt{ChooseStatePair} in Section~\ref{QSM:merging} follows from the implicit assumption that the current sample is characteristic. Two states are considered compatible for merging if there is no suffix to distinguish among them. This can lead to a significant number of scenarios being generated to the end-user in case the initial sample is sparse and actually not characteristic for the target system LTS. 
 
 To overcome this problem, an optimized strategy known as Blue-Fringe \cite{Lang:1998} can be used. The difference lies in the way state pairs are considered for merging. The general idea is to detect incompatible state pairs early and, subsequently, to first consider state pairs for which compatibility has the highest chance to be confirmed by the user through positive classification. The resulting ``please confirm'' interaction may also appear more appealing to the user.
 
@@ -146,11 +144,11 @@ The original \texttt{ChooseStatePair} function in Section~\ref{QSM:merging} cons
 
 The above strategy may lead to multiple queries being generated to avoid overgeneralization. Moreover, such queries may be non-intuitive for the user, \textit{e.g.} the \artifact{alarm propagated} event is sent to the train controller without having been fired by the \artifact{alarm pressed} event to the sensor.
 
-To select a state pair for merging, the Blue-Fringe strategy evaluates all (red, blue) state pairs first. The \texttt{ChooseStatePair} function will now call the \texttt{Merge} and \texttt{Compatible} functions before selecting the next state pair. If a blue state is found to be incompatible with all current red states, it is immediately promoted to red; the blue fringe is updated accordingly and the process of evaluating all (red, blue) pairs is iterated. When no blue state is found to be incompatible with red states, the most compatible (red, blue) pair is selected for merging. This is dictated by a scoring mechanism implemented in the \texttt{Compatible} function (see below).
+To select a state pair for merging, the Blue-Fringe strategy evaluates all (red, blue) state pairs first. The \texttt{ChooseStatePair} function will now call the \texttt{Merge} and \texttt{Consistent} functions before selecting the next state pair. If a blue state is found to be incompatible with all current red states, it is immediately promoted to red; the blue fringe is updated accordingly and the process of evaluating all (red, blue) pairs is iterated. When no blue state is found to be incompatible with red states, the most compatible (red, blue) pair is selected for merging. This is dictated by a scoring mechanism implemented in the \texttt{Consistent} function (see below).
 
 When implementing the Blue-Fringe strategy, it appears convenient to adapt \texttt{Initialize} so as to build an \emph{augmented} prefix tree acceptor. Such PTA captures the negative traces in $\mathcal{L}^-(Sc)$ in addition to the positive traces in $\mathcal{L}^+(Sc)$. States reached by a negative trace are tagged as error states; they are depicted in black, as in Fig. \ref{figure:augmented-pta}. 
 
-The \texttt{Compatible} function is also updated to return a compatibility score instead of a Boolean value. The score is defined as $-\infty$ when merging the current (red, blue) pair would lead to merging an accepting state and an error state during merging for determinization\footnote{in the case of a prefix-closed language, non-error states are all accepting; this is not true for any regular language.}; this score indicates an incompatible merging. Otherwise, the compatibility score measures how many accepting states have been merged together. The (red, blue) pair with the highest compatibility score is considered first. 
+The \texttt{Consistent} function is also updated to return a compatibility score instead of a Boolean value. The score is defined as $-\infty$ when merging the current (red, blue) pair would lead to merging an accepting state and an error state during merging for determinization\footnote{in the case of a prefix-closed language, non-error states are all accepting; this is not true for any regular language.}; this score indicates an incompatible merging. Otherwise, the compatibility score measures how many accepting states have been merged together. The (red, blue) pair with the highest compatibility score is considered first. 
 
 The strategy can be further refined with a compatibility threshold $\alpha$ as additional input parameter. Two states are considered to be compatible if their compatibility score is above that threshold. This additional parameter controls the level of generalization since increasing $\alpha$ decreases the number of state pairs that are considered compatible for merging; it therefore decreases the number of generated queries.
 
@@ -161,13 +159,13 @@ The strategy can be further refined with a compatibility threshold $\alpha$ as a
 
 Chapter~\ref{chapter:evaluation} will detail experimental results about the effectiveness of using QSM with and without the Blue-Fringe strategy.
 
-\subsection{Complexity analysis}
+\subsection{Complexity analysis\label{subsection:qsm-complexity-analysis}}
 
 The QSM algorithm has a polynomial time complexity in the size of the learning sample. An upper bound on the time complexity can be derived as follows.
 \begin{itemize}
 \item Let $n\in \cal{O}(||S_+||+||S_-||)$ denote the number of states of the PTA built from the initial collection of scenarios. 
 \item For a fixed collection of scenarios, there are ${\cal O}(n^2)$ state pairs which are considered for merging.
-The \texttt{Merge} and \texttt{Compatible} functions have a time complexity linear in $n$. The \texttt{GenerateQuery} can be implemented as a side product of the \texttt{Merge} function and does not change its complexity.
+The \texttt{Merge} and \texttt{Consistent} functions have a time complexity linear in $n$. The \texttt{GenerateQuery} can be implemented as a side product of the \texttt{Merge} function and does not change its complexity.
 \item The function \texttt{CheckWithEndUser} is assumed to run in constant time.
 \end{itemize}
 

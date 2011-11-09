@@ -18,9 +18,9 @@ The experiments here were made on random LTS of increasing sizes in the range $n
 
 Inspired from Abbadingo, the randomly generated LTS were trimmed to remove unreachable states, and minimized to obtain canonical target machines (see Section \ref{section:background-state-machines}). Moreover, only automata without terminating state were kept for the experiments. Such states typically capture deadlocks in multi-agent systems and should therefore be avoided.
 
-In order to build learning and test samples for a given target LTS, an initial set of $n^2$ different strings was first synthesized. These strings were randomly generated without replacement using a uniform distribution over the collection of all binary strings of length $[0, p+5]$, where $p$ is the depth of the automaton. (The depth of an automaton is defined as the length of the longest shortest path from the initial state to any other state.) This bound was chosen so as to ensure that deepest states have a good chance of being reached by at least one input string of a sample. This is a necessary condition for structural completeness of the sample (see Section \ref{section:inductive-background}), which was not guaranteed however.
+In order to build learning and test samples for a given target LTS of size $n$, an initial set of $n^2$ different strings was first synthesized. These strings were randomly generated without replacement using a uniform distribution over the collection of all binary strings of length $[0, p+5]$, where $p$ is the depth of the automaton. (The depth of an automaton is defined as the length of the longest shortest path from the initial state to any other state.) This bound was chosen so as to ensure that deepest states have a good chance of being reached by at least one input string of a sample. This is a necessary condition for structural completeness of the sample (see Section \ref{section:inductive-background}), which was not guaranteed however.
 
-Our procedure for generating samples ensures them to contain positive and negative strings in roughly equal proportion.
+Our procedure for generating samples ensures them to contain positive and negative strings in roughly equal proportion. Roughly, this is a consequence of the kind of automata considered.
  
 A maximal sample size of $\frac{n^2}{2}$ strings was experimentally observed as offering the convergence for all tested algorithms (RPNI, Blue-fringe, QSM-rpni, QSM-fringe and ASM). The learning experiments were conducted on increasing proportions of this nominal training sample, i.e. 3\%, 6\%, 12.5\%, 25\%, 50\% and 100\%.
 
@@ -41,8 +41,8 @@ Figure~\ref{image:evaluation-qsm-accuracy} reports the proportion of independent
 \begin{figure}[t]
 \centering
 \scalebox{.25}{
-  \includegraphics[trim=0mm  21mm 45mm 0mm, clip, page=1]{src/5-evaluation/images/accuracy}
-  \includegraphics[trim=30mm 21mm 35mm 0mm, clip, page=2]{src/5-evaluation/images/accuracy}
+  \includegraphics[trim=0mm  0mm 45mm 0mm, clip, page=1]{src/5-evaluation/images/accuracy}
+  \includegraphics[trim=30mm 0mm 35mm 0mm, clip, page=2]{src/5-evaluation/images/accuracy}
 }\vspace{0.35cm}
 \scalebox{.25}{
   \includegraphics[trim=0mm  0mm 45mm 0mm, clip, page=3]{src/5-evaluation/images/accuracy}
@@ -76,8 +76,8 @@ Figure~\ref{image:evaluation-qsm-number-of-questions} shows the number of genera
 \begin{figure}
 \centering
 \scalebox{.25}{
-  \includegraphics[trim=0mm  21mm 45mm 0mm, clip, page=1]{src/5-evaluation/images/queries}
-  \includegraphics[trim=30mm 21mm 35mm 0mm, clip, page=2]{src/5-evaluation/images/queries}
+  \includegraphics[trim=0mm  0mm 45mm 0mm, clip, page=1]{src/5-evaluation/images/queries}
+  \includegraphics[trim=30mm 0mm 35mm 0mm, clip, page=2]{src/5-evaluation/images/queries}
 }\vspace{0.35cm}
 \scalebox{.25}{
   \includegraphics[trim=0mm  0mm 45mm 0mm, clip, page=3]{src/5-evaluation/images/queries}
@@ -100,8 +100,8 @@ As seen there, the RPNI, Blue-fringe and QSM algorithms go through different pha
 \begin{figure}[t]
 \centering
 \scalebox{.25}{
-  \includegraphics[trim=0mm  21mm 45mm 0mm, clip, page=1]{src/5-evaluation/images/time}
-  \includegraphics[trim=30mm 21mm 35mm 0mm, clip, page=2]{src/5-evaluation/images/time}
+  \includegraphics[trim=0mm  0mm 45mm 0mm, clip, page=1]{src/5-evaluation/images/time}
+  \includegraphics[trim=30mm 0mm 35mm 0mm, clip, page=2]{src/5-evaluation/images/time}
 }\vspace{0.35cm}
 \scalebox{.25}{
   \includegraphics[trim=0mm  0mm 45mm 0mm, clip, page=3]{src/5-evaluation/images/time}

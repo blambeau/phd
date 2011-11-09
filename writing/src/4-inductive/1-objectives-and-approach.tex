@@ -20,7 +20,7 @@ System = (Ag_1 \parallel \ldots \parallel Ag_n)
 \underline{Such that}~$Sc$ and $System$ are consistent.
 \end{quote}
 
-The consistency condition covers the three following criteria, discussed in Section~\ref{subsection:background-scenario-consistency}.
+In accordance with our framework hypotheses in Chapter~\ref{chapter:framework}, we implicitly assume that the synthesized system is represented through a minimal state machine. The consistency condition covers the three following criteria, discussed in Section~\ref{subsection:background-scenario-consistency}.
 
 \begin{description}
 \item[Structural consistency:] the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective interface.
@@ -32,7 +32,7 @@ The consistency condition covers the three following criteria, discussed in Sect
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)         \label{relation:inductive-statement-positive}\\
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(System) = \emptyset, \label{relation:inductive-statement-negative}
 \end{align}
-where $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ encode the scenario collection in terms of positive and negative event traces, respectively.
+where $\mathcal{L}^+(Sc)$ and $\mathcal{L}^-(Sc)$ encode the scenario collection in terms of positive and negative event traces, respectively. We implicitly assume here the most general case where a partial ordering among MSC events is used.
 
 \end{description}
 
@@ -52,7 +52,7 @@ Covering more behaviors is allowed by our formal statement but not enforced. The
 
 \item End-users are most likely unable to provide a comprehensive set of scenarios from the beginning, including state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore work even if only a few scenarios are available when the synthesis starts.
 
-\item Both positive and negative scenarios should be taken into account. Negative scenarios appear fairly common in the material provided by stakeholders. They naturally illustrate violations of implicit goals in a way easier to specify.
+\item Both positive and negative scenarios should be taken into account. Negative scenarios appear fairly common in the material provided by stakeholders. They naturally illustrate violations of implicit goals in a way that is easier to specify.
 
 \item In an interactive approach, a more comprehensible set of scenarios is likely to be \emph{eventually} available. The synthesis should smoothly accommodate new scenarios and further information arising in the later phases of the synthesis. For example, the synthesis should be able to take a hMSC as input. 
 

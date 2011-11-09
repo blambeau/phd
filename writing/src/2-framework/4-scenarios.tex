@@ -10,7 +10,7 @@ We consider \emph{positive} scenarios, that are examples of behaviors that the s
 
 As in~\cite{Uchitel:2004}, MSCs are given a trace semantics. We will consider that a MSC defines a set of traces; the latter are expressed through a LTS. Two kinds of traces are considered: those from the local perspective of a single timeline and those from the global perspective of the complete MSC. We discuss each of these views in turn.
 
-As time in a MSC evolves from top to bottom, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines one simple trace; such trace is a \emph{maximal} trace in that it includes all events in which the agent participates. This trace and all its suffixes can be captured by a LTS. Given a MSC $M$ and an agent $Ag$, we will denote such LTS by $M_{\downarrow Ag}$.
+As time in a MSC evolves from top to bottom, the order in which events are sent and received along a particular timeline defines a total order. Therefore, from the perspective of a single agent, a MSC defines one simple trace; such trace is a \emph{maximal} trace in that it includes all events in which the agent participates. This trace and all its prefixes can be captured by a LTS. Given a MSC $M$ and an agent $Ag$, we will denote such LTS by $M_{\downarrow Ag}$.
 
 For example, the traces defined by the timeline of the \artifact{Controller} in the MSC of Fig.~\ref{image:train-scenario-all-agents} are precisely captured by the LTS in Fig.~\ref{image:local-traces-lts}. 
 
@@ -73,7 +73,7 @@ We now make the trace semantics of negative MSCs precise. First, the preconditio
 \mathcal{L}^{+}(N) = \mathcal{L}(P)
 \end{align}
 
-As in previous section, we consider the general framework with partial ordering here.
+In accordance with the previous section, we implicitely assume the general framework with partial ordering here.
 
 A negative MSC $N = (P,e)$ defines a set of negative traces $\mathcal{L}^{-}$:
 \begin{align}
