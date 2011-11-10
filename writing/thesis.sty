@@ -1,5 +1,10 @@
+\hoffset 16.5mm
+\oddsidemargin 0pt
+\evensidemargin 0pt
+
 \usepackage{float}
 %\usepackage{times}
+\usepackage[vlined,algoruled,linesnumbered,rightnl]{algorithm2e}
 \usepackage[pdftex]{graphicx}
 \usepackage{latexsym}
 \usepackage{rotating}
@@ -10,6 +15,12 @@
 \usepackage{amsthm}
 \usepackage{setspace} % \singlespacing, \onehalfspacing, and \doublespacing
 \usepackage{enumerate}
+
+\newcommand{\artifact}[1]{\texttt{#1}}
+\newcommand{\me}[1]{\mbox{\emph{#1}}}
+\newcommand{\aside}[1]{\texttt{Note} --~#1~--~\texttt{End of Note}}
+\newcommand{\agentscomposed}{Ag_1 \parallel \ldots \parallel Ag_n}
+\newcommand{\system}{S = (Ag_1 \parallel \ldots \parallel Ag_n)}
 
 % Try uncommenting the following line if fonts don't
 % display correctly in the PDF file.
@@ -226,8 +237,8 @@
 \newtheorem{lemma}{Lemma}[chapter]
 \numberwithin{equation}{chapter}
 
-\usepackage{sectsty}
-\allsectionsfont{\usefont{OT1}{phv}{bc}{n}\selectfont}
+%\usepackage{sectsty}
+%\allsectionsfont{\usefont{OT1}{phv}{bc}{n}\selectfont}
 
 
 

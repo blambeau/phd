@@ -84,8 +84,3 @@
 * Section 5.3.1: the fact that induction samples are balanced because of the 
   kind of automata considered has been clarified.
 * Section 5.3.x: the absisse scale has been clarified in plots.
-
-
-
-
-
