@@ -40,8 +40,6 @@ An interactive technique is then presented for synthesizing behavior models from
 
 The proposed techniques are implemented by tools, whose architecture is briefly described. Our inductive synthesizer has been evaluated in depth on various case studies and on synthetic datasets. These evaluations resulted in an online protocol and platform for evaluating inductive synthesis techniques.
 
-# Notice biographique (maximum 2000 caractères espaces compris)
-
 # Numéro de collection
 
 344
