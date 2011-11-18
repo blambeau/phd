@@ -1,6 +1,6 @@
 \section{Running examples\label{section:background-running-examples}}
 
-This section introduces the two running examples that will be used throughout the thesis. Section \ref{subsection:background-train-system} introduces a simple train control system. Section \ref{subsection:background-meeting-scheduler} introduces the meeting scheduler \cite{Feather:1997}.
+This section introduces the two running examples that will be used throughout the thesis. Section \ref{subsection:background-train-system} introduces a simple train control system. Section \ref{subsection:background-meeting-scheduler} introduces a meeting scheduler system \cite{Feather:1997}.
 
 \subsection{A simple train control system\label{subsection:background-train-system}}
 
@@ -25,7 +25,7 @@ A meeting initiator issues a meeting request, specifying the expected participan
 
 A date conflict occurs when no date can be found that fits all participant constraints. In such case, the initiator may extend the date range or request some participants to weaken their constraints; a new scheduling cycle is then required. Otherwise, the meeting is planned at a date meeting all constraints.
 
-A soft goal requires meetings to be scheduled as quickly as possible once initiated; another one requires interactions with participants to be minimized. In the simplified version considered here, only two scheduling cycles are allowed; the meeting is automatically planned after that. In such case, we will assume that the best date is chosen so as to maximize the number of attending participants. We also ignore features like meeting cancellations, meeting locations, and so on.
+A soft goal requires meetings to be scheduled as quickly as possible once initiated; another one requires interactions with participants to be minimized. In the simplified version considered here, only two scheduling cycles are allowed; the meeting is automatically planned after that. In such case, we will assume that the best date is chosen so as to maximize the number of participants attending. We also ignore features like meeting cancellations, meeting locations, and so on.
 
 \begin{figure}[H]\centering
 \scalebox{0.60}{

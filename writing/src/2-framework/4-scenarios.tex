@@ -29,9 +29,9 @@ A MSC would then define a total order among all events. This leads to a straight
 
 \noindent \textbf{Partial event ordering} -- When considering concurrent systems, a partial ordering among events appears more adequate~\cite{ITU:1996, Uchitel:2003}. 
 
-Consider for example the events \artifact{start-signal} and \artifact{alarm-pressed} at the beginning of the MSC shown in Fig.~\ref{image:train-scenario-all-agents}. These two events capture unrelated message passing between different agents; therefore, they can not be considered strictly ordered over time -- e.g. the passenger might push the alarm button when the \artifact{start-signal} is already sent but before \artifact{start} has been propagated; or maybe even before \artifact{start-signal}; and so on. 
+Consider for example the events \artifact{start-signal} and \artifact{alarm-pressed} at the beginning of the MSC shown in Fig.~\ref{image:train-scenario-all-agents}. These two events capture unrelated message passing between different agents; therefore, they cannot be considered strictly ordered over time -- e.g. the passenger might push the alarm button when the \artifact{start-signal} is already sent but before \artifact{start} has been propagated; or maybe even before \artifact{start-signal}; and so on. 
 
-To account for such situations, one has to consider that the traces defined by a MSC are \emph{linearizations} of the partial order among MSC events \cite{Alur:2000}. In other words, linearizations capture all possible sequences of events that respect the total ordering defined by the timelines. We do not formalize the structure of Message Sequence Charts and their linearizations here, and refer to~\cite{Uchitel:2003} for such mathematical characterization. 
+To account for such situations, we need to consider that the traces defined by a MSC are \emph{linearizations} of the partial order among MSC events \cite{Alur:2000}. In other words, linearizations capture all possible sequences of events that respect the total ordering defined by the timelines. We do not formalize the structure of Message Sequence Charts and their linearizations here, and refer to~\cite{Uchitel:2003} for such mathematical characterization. 
 
 Let $M$ denote a MSC. The set of traces it defines from the local and global perspectives are related as follows:
 \begin{align}
@@ -42,7 +42,7 @@ Let $M$ denote a MSC. The set of traces it defines from the local and global per
 \end{align}
 
 \begin{itemize}
-\item Relation (\ref{equation:msc-composition-1}) states that the set of traces under a partial ordering includes those under a total ordering. Clearly, the model with partial ordering is more general than the one with total ordering. This means that everything that is true for the former is also true for the latter. Unless stated otherwise, we will therefore assume the general framework with partial ordering. In particular, we will no longer make the $partial$ and $total$ subscripting explicit when stating other language relations in the following sections.
+\item Relation (\ref{equation:msc-composition-1}) states that the set of traces under a partial ordering includes those under a total ordering. Clearly, the model with partial ordering is more general than the one with total ordering. This means that everything that is true for the former is also true for the latter. Unless stated otherwise, we will therefore assume the general framework with \emph{partial ordering}. In particular, we will no longer make the $partial$ and $total$ subscripting explicit when stating other language relations in the following sections.
 
 \item Relation (\ref{equation:msc-composition}) provides a way of computing all linearizations of a MSC as an acyclic transition system through LTS composition. Such LTS is illustrated in Fig.~\ref{image:msc-linearizations} for the MSC in Fig.\ref{image:train-scenario-all-agents}. As shown there, the latter accepts six different linearizations due to the possible interleavings of its first four events. By construction, such LTS has only one initial state (the leftmost one) and only one terminating state (the rightmost one).
 \end{itemize}
@@ -73,7 +73,7 @@ We now make the trace semantics of negative MSCs precise. First, the preconditio
 \mathcal{L}^{+}(N) = \mathcal{L}(P)
 \end{align}
 
-In accordance with the previous section, we implicitely assume the general framework with partial ordering here.
+In accordance with the previous section, we implicitly assume the general framework with partial ordering here.
 
 A negative MSC $N = (P,e)$ defines a set of negative traces $\mathcal{L}^{-}$:
 \begin{align}
@@ -96,7 +96,7 @@ Note that the negative language of a negative MSC cannot be captured through a p
 
 Systems are generally illustrated through multiple positive and negative scenarios. We will therefore consider scenario collections $Sc = (S^+,S^-)$ where $S^+$ and $S^-$ are finite, possibly empty, sets of positive MSCs and negative MSCs, respectively.
 
-An important assumption when using scenario collections is that all scenarios, positive or negative, start in the same system state.
+A common assumption when using scenario collections is that \emph{all scenarios, positive or negative, start in the same system state}. In section~\ref{subsection:background-hmsc} we will show how this assumption can be removed.
 
 Under this assumption, the trace semantics of a scenario collection is captured via the union operator on languages. A scenario collection $Sc = (S^+,S^-)$ defines a positive and a negative language. For the former, the definition below takes into account the fact that negative scenarios define positive traces in addition to negative ones:
 \begin{align*}
@@ -120,13 +120,13 @@ The two following sections define the trace semantics of hMSCs. We first restric
 
 \subsubsection*{hMSCs composed from bMSCs only\label{subsubsection:hMSC-bMSC-only}}
 
-A trace semantics for hMSCs provides an answer to the question: \emph{what traces are captured by a hMSC?} This apparently simple question has a fairly complex answer. The reasons are manifold; we summarize here then slightly extend the characterization provided in~\cite{Uchitel:2004}.
+A trace semantics for hMSCs provides an answer to the question: \emph{what traces are captured by a hMSC?} This apparently simple question has a fairly complex answer. The reasons are manifold; we slightly extend the characterization provided in~\cite{Uchitel:2004}.
 
 \noindent \textbf{Bounding hMSCs} -- As explained in \cite{Henriksen:2000}, some hMSCs do not define regular languages. In that case, they have sets of traces that cannot be captured by a LTS. Our framework must therefore be restricted to regular hMSCs. Under a total ordering of events inside bMSCs, hMSCs are regular. Under a partial ordering, a sufficient condition for a hMSC to be regular is that it does not contain a cycle in which two disjoint sets of agents interact independently of each other. We will make the assumption of \emph{bounded} hMSCs in the sequel.
 
 \noindent \textbf{Composing bMSCs} -- In addition to the partial or total ordering of events in bMSCs, two possibilities arise as to how a system evolves from a bMSC to another inside a hMSC. The first one, called \emph{strong sequential composition}, assumes that all agents wait until all events of a bMSC have occurred before moving to the next one. This means that there is an implicit synchronization scheme used by the agents to know when a scenario has been completed. The other one, called \emph{weak sequential composition}, allows an agent to move from a bMSC to another one without having to synchronize with the other agents. 
 
-In view of the independence between the assumptions of partial/total event ordering and weak/strong sequential composition, four combinations actually exist. To keep things simple enough and avoid bizarre concurrency models\footnote{in particular, such models are very sensitive to the decomposition of a hMSC into bMSCs. For example splitting a bMSC node into smaller bMSCs might change the set of accepted traces of the hMSC.}, we do not consider partial (resp. total) ordering with strong (resp. weak) sequential composition. In the sequel, therefore, strong (resp. weak) sequential composition will entail total (resp. partial) ordering of MSC events. In the sequel, we will refer to this as the \emph{stable composition} hypothesis. 
+In view of the independence between the assumptions of partial/total event ordering and weak/strong sequential composition, four combinations actually exist. To keep things simple enough and avoid bizarre concurrency models\footnote{In particular, such models are very sensitive to the decomposition of a hMSC into bMSCs. For example splitting a bMSC node into smaller bMSCs might change the set of accepted traces of the hMSC.}, we do not consider partial (resp. total) ordering with strong (resp. weak) sequential composition. In the sequel, therefore, strong (resp. weak) sequential composition will entail total (resp. partial) ordering of MSC events. In the sequel, we will refer to this as the \emph{stable composition} hypothesis. 
 
 \noindent \textbf{Trace semantics} -- Under the assumption of bounded hMSC with stable composition, the trace analysis for hMSCs is very similar to MSCs. It leads to language relations similar to the ones given for the latter in Section~\ref{subsection:background-positive-scenarios} -- see (\ref{equation:msc-composition-1}) and (\ref{equation:msc-composition}) in particular:
 \begin{align}
@@ -151,12 +151,12 @@ Another way of defining the set of traces of a hMSC consists in considering the 
 \mathcal{L}_{arch}(H) &= \mathcal{L}(H_{\downarrow Ag_1} \parallel \ldots \parallel H_{\downarrow Ag_n})
 \end{align}
 
-To sum up, defining the trace semantics of a hMSC $H$ leads to considering three sets of traces, namely $\mathcal{L}_{strong}(H)$, $\mathcal{L}_{weak}(H)$ and $\mathcal{L}_{arch}(H)$. The former two consider the global perspective of the hMSC whereas the latter consider the local perspective of agent timelines. Moreover, $\mathcal{L}_{strong}(H)$ assumes a strong sequential composition of bMSC nodes with total event ordering whereas $\mathcal{L}_{weak}(H)$ and $\mathcal{L}_{arch}(H)$ both assume weak sequential composition and partial ordering. These three languages are related as follows:
+To sum up, defining the trace semantics of a hMSC $H$ leads to considering three sets of traces, namely $\mathcal{L}_{strong}(H)$, $\mathcal{L}_{weak}(H)$ and $\mathcal{L}_{arch}(H)$. The first two sets consider the global perspective of the hMSC whereas the third set considers the local perspective of agent timelines. Moreover, $\mathcal{L}_{strong}(H)$ assumes a strong sequential composition of bMSC nodes with total event ordering whereas $\mathcal{L}_{weak}(H)$ and $\mathcal{L}_{arch}(H)$ both assume weak sequential composition and partial ordering. These three languages are related as follows:
 \begin{align*}
 &\mathcal{L}_{strong}(H) \subseteq \mathcal{L}_{weak}(H) \subseteq \mathcal{L}_{arch}(H)
 \end{align*}
 
-In practice, compositional algorithms allow capturing these three languages with LTS:
+In practice, compositional algorithms allow capturing these three languages through LTS:
 \begin{itemize}
 \item An algorithm for synthesizing a LTS for $\mathcal{L}_{arch}(H)$ may be found in \cite{Uchitel:2003}. For a given agent $Ag_{i}$, the LTS $H_{\downarrow Ag_i}$ is synthesized by connecting the LTSs $M_{\downarrow Ag_i}$ corresponding to each bMSC $M$ with $\tau$ transitions, according to their possible continuations given by hMSC edges. 
 
@@ -187,7 +187,7 @@ An important difference should be noted among the relations between MSC language
 
 Note the equality between $\mathcal{L}_{partial}(M)$ and $\mathcal{L}_{arch}(M)$ in (\ref{relation:msc-total-language}) and the set inclusion between $\mathcal{L}_{weak}(H)$ and $\mathcal{L}_{arch}(H)$ in (\ref{relation:hmsc-strong-language}). 
 
-The traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ capture the set of \emph{implied} scenarios of a hMSC specification~\cite{Alur:2000, Uchitel:2004}. Implied scenarios occur when a system is designed globally while implemented component-wise. They capture traces that follow different paths in the hMSC when projected on individual agent timelines. Implied scenarios will be mostly ignored in the thesis; we will discuss their impact on our inductive technique in Section~\ref{section:inductive-correctness}.
+The traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ capture the set of \emph{implied} scenarios of a hMSC specification~\cite{Alur:2000, Uchitel:2004}. Implied scenarios occur when a system is designed globally while implemented component-wise. They capture traces that follow different paths in the hMSC when projected on individual agent timelines. Implied scenarios will be mostly ignored in the thesis; we will however discuss their impact on our inductive technique in Section~\ref{section:inductive-correctness}.
 
 \subsubsection*{hMSCs composed from finer-grained hMSCs\label{subsubsection:hMSC-with-sub-hMSC}}
 
@@ -199,7 +199,7 @@ In practice, this flat hMSC must not be explicitly constructed when the LTS for 
 
 \subsection{Consistency between the scenario and state machine views\label{subsection:background-scenario-consistency}}
 
-The trace semantics of scenarios can be explicitly related to the one of agent and system state machines. This section defines consistency rules between those two views, thereby explaining the similarity between relations (\ref{equation:system-composition}), (\ref{equation:msc-composition}) and (\ref{equation:hsmc-traces-by-agent-composition}).
+The trace semantics of scenarios can be explicitly related to the trace semantics of agent and system state machines. This section defines consistency rules between those two views, thereby explaining the similarity between relations (\ref{equation:system-composition}), (\ref{equation:msc-composition}) and (\ref{equation:hsmc-traces-by-agent-composition}).
 
 \subsubsection*{Positive MSCs}
 
@@ -232,13 +232,13 @@ which provides the negative counterpart of (\ref{condition:consistent-system-vie
 
 A scenario collection $Sc = (S^+,S^-)$ and a system $S$ are said to be consistent if and only if each positive and each negative MSC of the collection is itself consistent with $S$. 
 
-Conditions (\ref{condition:consistent-system-view}) and (\ref{condition:consistent-system-view-neg}) can be formulated in terms of the positive and negative languages of the collection as follows:
+Conditions (\ref{condition:consistent-system-view}) and (\ref{condition:consistent-system-view-neg}) can be formulated in terms of the positive and negative languages of the scenario collection as follows:
 \begin{align}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(S) \\
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(S) = \emptyset
 \end{align}
 
-Observe that a scenario collection may only be consistent if all its scenarios, positive or negative, start in the same system state.
+Note that a scenario collection may only be consistent if all its scenarios, positive or negative, start in the same system state.
 
 A set $S^+$ of positive scenarios and a set $S^-$ of negative scenarios are consistent with each other if there exists a system which is consistent with them taken as a collection $Sc = (S^+,S^-)$. 
 
@@ -261,7 +261,7 @@ where $\mathcal{L}_{arch}(H) = \mathcal{L}(H_{\downarrow Ag_1} \parallel \ldots 
 
 These conditions are the counterpart of those given previously for MSCs. They have a similar interpretation, \emph{mutatis mutandis}. 
 
-Last, it is sometimes convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. 
+It is sometimes convenient to distinguish between a hMSC that describes all behaviors of a system and one that only illustrates a subset of them. This leads to the notion of hMSC completeness. 
 
 A hMSC $H$ is \emph{complete} for a system $\system$ if it is consistent with it and defines the same language, that is, if the following condition holds:
 \begin{align}

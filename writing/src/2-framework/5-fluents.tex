@@ -4,7 +4,7 @@ Miller and Shanahan define fluents as ``\emph{time-varying properties of the wor
 
 Fluents will allow us to integrate event-based and state-based specification styles within a simple framework~\cite{Giannakopoulou:2003}. 
 
-A fluent $Fl$ is thus a proposition defined by a set $Init_{Fl}$ of initiating events, a set $Term_{Fl}$ of terminating events, and an initial value $Initially_{Fl}$ that can be true or false. The sets of initiating and terminating events must be disjoint. The concrete syntax for fluent definitions is the following~\cite{Giannakopoulou:2003}:
+A fluent $Fl$ is a proposition defined by a set $Init_{Fl}$ of initiating events, a set $Term_{Fl}$ of terminating events, and an initial value $Initially_{Fl}$ that can be true or false. The sets of initiating and terminating events must be disjoint. The concrete syntax for fluent definitions is the following~\cite{Giannakopoulou:2003}:
 
 \begin{center}
 fluent $Fl = \textless Init_{Fl}, Term_{Fl} \textgreater $ initially $Initially_{Fl}$
@@ -59,15 +59,15 @@ Fig.~\ref{image:fluent-values-along-multiple-traces} shows an example of LTS ann
 \caption[Fluent values along multiple traces]{Fluent values along multiple traces (\artifact{Closed} is an abbreviate for \artifact{DoorsClosed}).\label{image:fluent-values-along-multiple-traces}}
 \end{figure}
 
-A fixpoint algorithm for decorating LTS with fluent value assignments appeared in~\cite{Damas:2005}. This algorithm was generalized for generating weakest state invariants in \cite{Damas:2009}. Very roughly, it consists in annotating the LTS initial state with an initial invariant according to fluent initial values; invariants are then propagated along LTS transitions, according to fluent definitions, and accumulated in states through Boolean disjunction, until a fixpoint is reached. 
+A fixpoint algorithm for decorating LTS with fluent value assignments appeared in~\cite{Damas:2005}. This algorithm was generalized for generating weakest state invariants in \cite{Damas:2009, Damas:2011}. Very roughly, it consists in annotating the LTS initial state with an initial invariant according to fluent initial values; invariants are then propagated along LTS transitions, according to fluent definitions, and accumulated in states through Boolean disjunction, until a fixpoint is reached. 
 
-Binary decision diagrams~\cite{Bryant:1986} can be used for concisely encoding and efficiently manipulating Boolean formulas (see Chapter~\ref{chapter:tool-support}). This algorithm has been further generalized in~\cite{Damas:2011} for handling other kinds of decorations than state invariants.
+Binary decision diagrams~\cite{Bryant:1986} can be used for concisely encoding and efficiently manipulating Boolean formulas (see Chapter~\ref{chapter:tool-support}). This algorithm has been further generalized ~\cite{Damas:2011} into a fully generic version whose instantiations support other kinds of decorations beside state invariants.
 
 \subsection{Integrating fluents in multi-view models}
 
 Fluents provide a general mechanism for integrating event-based and state-based specifications. We will use them for integrating agents, their state machines, and scenarios. The next section extends such integration by introducing fluent-based goals and domain properties.
 
-We will restrict our use of fluents to the ones that are monitorable and controllable by the agents forming the system~\cite{Letier:2002}. 
+Our use of fluents will be restricted to the ones that are monitorable and controllable by the agents forming the system~\cite{Letier:2002}. 
 
 A fluent is \emph{monitorable} by an agent if all its initiating and terminating events can be either sent or received by this agent. It is \emph{controllable} if all initiating and terminating events can be sent by the agent. 
 

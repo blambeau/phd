@@ -2,7 +2,7 @@
 
 In our framework, the behavior of an agent will be modeled by a specific kind of finite state machine called \emph{labeled transition system} (LTS). This formalism, initially introduced by Keller for reasoning about parallel programs~\cite{Keller:1976}, has been intensively used for specifying and analyzing concurrent systems, e.g. in~\cite{Milner:1989, Clarke:1989, Magee:1997}. 
 
-A LTS is made of a set of states and a set of transitions between them (see Fig.~\ref{image:framework-start-stop}). Each transition has an \emph{event} label -- sometimes called \emph{symbol} or \emph{action} label. A state is labeled with a number to distinguish it from other states. An \emph{initial state} is designated graphically by an incoming arrow with no source state (e.g. state 0 in Fig. \ref{image:framework-start-stop}). 
+A LTS is made of a set of states and a set of transitions between them (see Fig.~\ref{image:framework-start-stop}). Each transition has an \emph{event} label -- sometimes called \emph{symbol} or \emph{action} label. A state is labeled with a unique number to distinguish it from other states. An \emph{initial state} is denoted graphically by an incoming arrow with no source state (e.g. state 0 in Fig. \ref{image:framework-start-stop}). 
 
 \begin{figure}
 \centering\scalebox{0.50}{
@@ -93,7 +93,7 @@ P \equiv_{tr} Q \mbox{~if and only if~} \mathcal{L}(P) = \mathcal{L}(Q)
 \label{definition:trace-equivalence}
 \end{definition}
 
-Under trace equivalence, LTS inherit important operators and properties from their connection with regular languages. Main results are summarized in next section.
+Under trace equivalence, LTS inherit operators and properties from their connection with regular languages. Some important results are summarized in the next section.
 
 \subsection{Labeled transition systems and regular languages\label{section:background-lts-and-regular-languages}}
 
@@ -110,7 +110,7 @@ A finite automaton is a 5-tuple \\ $(Q,\Sigma,\delta,q_{init},F)$ where
 \end{itemize}
 \end{definition}
 
-The only difference between LTS and finite automata is that the latter distinguish between \emph{accepting} states ($F \subseteq Q$) and \emph{non-accepting} ones ($Q \setminus F$). Accepting states will be depicted with double circles. Only traces that end in an accepting state are accepted by a finite automaton.
+The only difference between LTS and finite automata is that the latter distinguish between \emph{accepting} states ($F \subseteq Q$) and \emph{non-accepting} ones ($Q \setminus F$). Accepting states will be depicted with double circles. Unlike LTS, only traces that end in an accepting state are accepted by a finite automaton.
 
 A finite automaton is shown in Fig.~\ref{image:finite-automaton}. State 0 is accepting whereas state 1 is non-accepting. As a consequence, this automaton accepts the trace $\artifact{<a b b>}$ but not the trace \artifact{<a b>}.
 
@@ -122,7 +122,7 @@ A finite automaton is shown in Fig.~\ref{image:finite-automaton}. State 0 is acc
 
 A LTS is a standard automaton in which all states are accepting, that is $F = Q$. Our choice of trace equivalence allows us to make use of many results from standard automata theory. In particular,
 \begin{itemize}
-\item Standard automata, deterministic or non-deterministic, capture the well-studied class of \emph{regular} languages~\cite{Hopcroft:1979}. As they only have accepting states, LTS capture the subclass of \emph{prefix-closed} regular languages. The term ``prefix-closed'' means that all prefixes of accepted traces are also accepted traces: 
+\item Standard automata, both deterministic and non-deterministic, capture the well-studied class of \emph{regular} languages~\cite{Hopcroft:1979}. As they only have accepting states, LTS capture the subclass of \emph{prefix-closed} regular languages. The term ``prefix-closed'' means that all prefixes of accepted traces are also accepted traces: 
 \begin{equation*}
 prefixes(\mathcal{L}(P)) = \mathcal{L(P)}
 \end{equation*}
@@ -141,7 +141,7 @@ The next two sections define two additional operators on LTS, namely \emph{compo
 
 \subsection{Systems as agent compositions\label{subsection:lts-composition}}
 
-A system is composed of active agents whose behavior is explicitly modeled by a LTS. The behavior of the system itself is defined through parallel composition~\cite{Hoare:1985}. In this setting agents execute asynchronously but synchronize on shared events. A system made of $n$ agents is defined as:
+A system is composed of active agents whose behavior is explicitly modeled by a LTS. The behavior of the system itself is defined through parallel composition~\cite{Hoare:1985}. In this setting, agents execute asynchronously but synchronize on shared events. A system made of $n$ agents is defined as:
 \begin{equation}
 System = Ag_1 \parallel \ldots \parallel Ag_n
 \label{equation:parallel-composition}
@@ -155,10 +155,10 @@ The trace semantics of a system composed of $n$ agents whose behavior is modeled
 \label{equation:system-composition}
 \end{equation}
 
-The LTS composition operator computes the interleaving of all traces accepted by the two LTS under the constraint that they synchronize on shared labels. It is both commutative and associative, allowing us to write~(\ref{equation:parallel-composition}) and (\ref{equation:system-composition}) without ambiguity. 
+The LTS composition operator computes the interleaving of all traces accepted by the two LTS under the constraint that they synchronize on shared labels. This operator is both commutative and associative, allowing us to write~(\ref{equation:parallel-composition}) and (\ref{equation:system-composition}) without ambiguity. 
 
 \begin{definition}[LTS composition]
-Let $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ denote two LTS. Their \emph{composition} is another LTS 
+Let $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ denote two LTS. Their \emph{composition} define the following LTS:
 \begin{center}
 $P \parallel Q = (S_1 \times S_2,\Sigma_1\cup\Sigma_2,\delta,(q_1,q_2))$
 \end{center}
@@ -183,9 +183,9 @@ $P \parallel Q$ is thus defined on the Cartesian product of the sets of states o
 \item The last rule forces the two LTS to transit together on all shared labels but $\tau$.
 \end{itemize}
 
-A composed LTS can be easily computed constructively by exploring the state space from its initial state until no new state pair is discovered. 
+A composed LTS can be easily computed in a constructive way by exploring the state space from its initial state until no new state pair is discovered. 
 
-Observe that the relation between the traces accepted by the composition of two LTS $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ and the traces accepted by each of them individually is as follows:
+Note the following relation between the traces accepted by the composition of two LTS $P = (S_1,\Sigma_1,\delta_1,q_{1})$ and $Q = (S_2,\Sigma_2,\delta_2,q_{2})$ and the traces accepted by each of them individually:
 \begin{equation*}
 \forall s \in \mathcal{L}(P \parallel Q)\mbox{,~} s|_{\Sigma_1} \in \mathcal{L}(P) \mbox{~and~} s|_{\Sigma_2} \in \mathcal{L}(Q)
 \end{equation*}
@@ -229,7 +229,7 @@ In our example, a suitable LTS for the black-box machine is given by:
 \begin{align*}
 \mbox{\emph{Machine'}} &= (\mbox{\emph{Machine}} \setminus \mbox{\emph{Internals}})^\Delta~,
 \end{align*}
-where \emph{Machine} is the composition between the controller, actuators and sensors given previously and \emph{Internals} is the set of events internal to the machine -- here, $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{open-signal}, \ldots\}$ (see Fig.~\ref{image:train-scenario-all-agents}).
+where \emph{Machine} is the composition between the controller, actuators and sensors given previously, and \emph{Internals} is the set of events internal to the machine -- here, $\{\artifact{start-signal}, \artifact{stop-signal}, \artifact{open-signal}, \ldots\}$ (see Fig.~\ref{image:train-scenario-all-agents}).
 
 Given a LTS $P = (Q,\Sigma,\delta,q_{init})$ and a set of labels $I$, the relation between the languages of $P$ and $P \setminus I$ is defined as follows:
 \begin{equation*}
