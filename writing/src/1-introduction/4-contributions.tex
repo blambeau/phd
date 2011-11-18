@@ -1,15 +1,15 @@
 \section{Overview of contributions\label{section:intro-contributions}}
 
-This section summarizes the main contributions of the thesis. Section \ref{subsection:intro-contrib-grammar-induction} lists the thesis contributions to grammar induction techniques. The latter provide a basis for the inductive synthesis of state machines from scenarios. The thesis contributions along this horizontal axis of model synthesis are summarized in Section \ref{subsection:intro-contrib-inductive-synthesis}. Section \ref{subsection:intro-contib-supporting-process-models} lists those related to vertical synthesis of behavior models from process models.
+This section summarizes the main contributions of the thesis. Section \ref{subsection:intro-contrib-grammar-induction} lists contributions related to grammar induction. They provide a basis for the inductive synthesis of state machines from scenarios. The contributions along this horizontal axis of model synthesis are summarized in Section \ref{subsection:intro-contrib-inductive-synthesis}. Section \ref{subsection:intro-contib-supporting-process-models} lists those related to the vertical synthesis of LTS behavior models from process models.
 
 %%%
 
 \subsection{Extended techniques for grammar induction\label{subsection:intro-contrib-grammar-induction}}
 
 \begin{itemize}
-\item The thesis presents a new induction algorithm called Query-Driven State Merging (QSM). This algorithm is an interactive extension of state-of-the-art algorithms in grammar induction, namely RPNI and Blue-fringe \cite{Oncina:1992, Lang:1998}. QSM extends those algorithms with an oracle, typically, an end-user. The oracle interacts with the induction process by answering so-called ``membership queries'', that is, by classifying generated strings as positive or negative elements of the induced regular language.
-\item The thesis presents the Automaton State Merging (ASM) algorithm as further induction technique. This algorithm allows generalizing a positive \emph{language} as opposed to a positive \emph{sample} -- that is, a finite set of induction strings. The generalization process is made under the control of a negative sample.
-\item The thesis describes a new protocol for evaluating grammar induction algorithms, called Stamina. This protocol is an alternative to the existing Abbadingo procedure \cite{Lang:1998}; it has been designed for samples defined on large alphabets and obtained from the target automaton itself. Samples and automata considered in Stamina are more representative of execution traces, scenarios and state machines encountered in software engineering contexts.
+\item The thesis presents a new induction algorithm called Query-Driven State Merging (QSM). This algorithm is an interactive extension of state-of-the-art algorithms in grammar induction, namely RPNI and Blue-fringe \cite{Oncina:1992, Lang:1998}. QSM extends those algorithms with an oracle -- typically, an end-user. The oracle interacts with the induction process by answering so-called ``membership queries'', that is, by classifying generated strings as positive or negative elements of the induced regular language.
+\item The thesis presents the Automaton State Merging (ASM) algorithm as an additional induction technique. This algorithm allows generalizing a positive \emph{language} as opposed to a positive \emph{sample} -- that is, a finite set of induction strings. The generalization process is made under the control of a negative sample.
+\item The thesis describes a new protocol for evaluating grammar induction algorithms, called Stamina. This protocol is an alternative to the existing Abbadingo procedure \cite{Lang:1998}; it has been designed for samples defined on larger alphabets and obtained from the target automaton itself. Samples and automata considered in Stamina are more representative of the scenarios and state machines encountered in software engineering models.
 \end{itemize}
 
 %%%
@@ -17,9 +17,9 @@ This section summarizes the main contributions of the thesis. Section \ref{subse
 \subsection{Horizontal synthesis of behavior models\label{subsection:intro-contrib-inductive-synthesis}}
 \begin{itemize}
 \item The thesis provides algorithms for inductively synthesizing state machines models from MSC scenarios and high-level MSCs. These algorithms rely on QSM and ASM to generalize the system behaviors illustrated in scenarios. QSM is used to synthesize state machines from collections of MSCs; the end-user interacts with the synthesis process by classifying generated scenario questions as examples or counterexamples of desired system behavior. ASM is used to synthesize state machines from high-level MSCs.
-\item The thesis shows how various sources of system knowledge can be incorporated to constrain the synthesis process so as to ensure the consistency of the synthesized state machines with such knowledge. A general constraint mechanism is instantiated to inject knowledge from fluent state variables, goals and domain properties, and behavior models of legacy components. The injection of such knowledge prunes the induction search space thereby speeding-up the synthesis process and reducing the number of user interactions.
-\item The thesis present in-depth evaluations of QSM, ASM, and the resulting inductive synthesis technique. Evaluations were conducted on common case studies from the literature and complemented with experiments on synthetic datasets. The benefits of introducing user interactions and injecting available system knowledge in the induction process are illustrated and quantified in both cases.
-\item A tool supporting our inductive synthesis approach is also described. This tool were successfully used for the evaluation of our approach on case studies.
+\item The thesis shows how various sources of knowledge about the target system can be incorporated to constrain the synthesis process so as to ensure the consistency of the synthesized state machines with that knowledge. A general constraint mechanism is instantiated to inject knowledge about state variables, goals, and domain properties, and behavior models of legacy components. The injection of such knowledge prunes the induction search space, thereby speeding-up the synthesis process and reducing the number of user interactions.
+\item The thesis provides in-depth evaluations of QSM, ASM, and our resulting inductive synthesis techniques. The evaluations were conducted on common case studies from the literature and complemented with experiments on synthetic datasets. The benefits of introducing user interactions through scenario questions and of injecting system knowledge in the induction process are illustrated and quantified in both cases.
+\item A tool supporting our inductive synthesis approach is also described. This tool was successfully used for the evaluation of our approach on case studies.
 \end{itemize}
 
 %%%
@@ -27,7 +27,7 @@ This section summarizes the main contributions of the thesis. Section \ref{subse
 \subsection{Vertical synthesis of formal process models\label{subsection:intro-contib-supporting-process-models}}
 
 \begin{itemize}
-\item The thesis provides a formal trace semantics for the process language of guarded hMSCs described in \cite{Damas:2011}. This trace semantics is defined in terms of guarded LTS; it supports the model checking of process models thanks to a trace-based model-checker adapted from the one in LTSA \cite{Magee:1999}. 
+\item The thesis provides a formal trace semantics for the g-hMSC process language described in \cite{Damas:2011}. This trace semantics is defined in terms of guarded LTS; it supports the model-checking of process models thanks to a trace-based model checker adapted from LTSA \cite{Magee:1999}. 
 \item The thesis extends LTS state machines with guarded transitions defined on fluents. It provides a declarative trace semantics for such guarded LTS. It also proposes a composition operator for them together with an algorithm for capturing their semantics as pure LTS.
-\item The thesis describes the implementation of a compositional model-checker for guarded hMSC and guarded LTS. It also describes key aspects in the implementation of a tool aimed at supporting the modeling of guarded processes and the analysis of such models. 
+\item The thesis describes the implementation of a compositional model checker for g-hMSC and g-LTS models. It also describes key aspects in the implementation of a toolset aimed at supporting the modeling of guarded processes and the analysis of such models. 
 \end{itemize}

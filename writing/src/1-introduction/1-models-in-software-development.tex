@@ -1,6 +1,6 @@
 \section{Models and their use in software system development\label{section:intro-models}}
 
-Models are increasingly recognized as an effective means for elaborating requirements and exploring designs of software systems. A model is an abstract representation of the target system, where key features are highlighted, specified and inter-related to each other \cite{VanLamsweerde:2009}. Models are widely used at different steps of the software development process and for different software-related purposes.
+Models are increasingly recognized as an effective means for elaborating requirements and exploring designs of software systems. A \emph{model} is an abstract representation of the target system, where key features are highlighted, specified and inter-related to each other \cite{VanLamsweerde:2009}. Models are widely used at different steps of the software development process and for different software-related purposes.
 
 %%%
 
@@ -10,22 +10,22 @@ Models are increasingly recognized as an effective means for elaborating require
 \item They allow them to abstract from multiple details in order to focus on key system aspects.
 \item They provide a basis for early detection and fixing of errors.
 \end{itemize}
-Model-oriented approaches to requirements elaboration include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. The models there explain how system goals may be refined in lower-level goals and how the latter are operationalized in operations and constraints. Goals in such frameworks capture prescriptive statements of intent to be satisfied by the agents forming the system. KAOS puts emphasis more on semi-formal and formal reasoning about behavioral goals. These are goals prescribing system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals; these are goals that cannot be established in a clear-cut sense.
+Model-oriented approaches to requirements elaboration include KAOS \cite{VanLamsweerde:2009} and NFR/i$^*$ \cite{Mylopoulos:1992, Yu:1993}. The models there capture how system goals may be refined in lower-level goals and how the latter are operationalized in operations and constraints. \emph{Goals} in such frameworks capture prescriptive statements of intent to be satisfied by the agents forming the system. KAOS puts emphasis more on semi-formal and formal reasoning about behavioral goals. These are goals prescribing system behaviors declaratively. In NFR/i$^*$, the emphasis is more on qualitative reasoning on soft goals; these are goals that cannot be established in a clear-cut sense.
 
 %%%
 
-\emph{Software design} may be driven by Model Driven Engineering approaches (MDE), often based on UML models \cite{OMG:2004} or Domain Specific Languages \cite{VanDeursen:2000, Fowler:2010}. Such approaches model the application domain rather than the computing elements. The use of models for software design has advantages too:
+\emph{Software design} may be driven by Model Driven Engineering approaches (MDE), often based on UML models \cite{OMG:2004} or Domain Specific Languages \cite{VanDeursen:2000, Fowler:2010}. Such approaches model the application domain rather than the computing elements. The use of models for software design has multiple benefits too:
 \begin{itemize}
-\item Models enforce the separation between the abstract domain concepts and their concrete implementation. They allow engineers to focus on each aspect at the adequate level of abstraction.
-\item Code fragments can often be generated from models; this appears less error-prone and time consuming than manually translating models to code. In case of domain specific languages, models may even be already executable. 
+\item Models enforce the separation between abstract domain concepts and their concrete implementation. They allow engineers to focus on each aspect at the adequate level of abstraction.
+\item Code fragments can often be generated from models; this appears less error-prone and time consuming than manually translating models to code. In case of domain-specific languages, models may even be already executable. 
 \item Design models also yield a natural documentation for the software and the underlying design decisions. 
 \end{itemize}
 
 %%%
 
-On another hand, \emph{work processes} may be captured by graphical models. Such models take various forms, e.g., flowchart style such as Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005} or diagrams in the Business Process Modeling Notation (BPMN) \cite{OMG:2008} or task trees, e.g. Little-Jil \cite{Clarke:2008}. Modeling here proves useful too.
+On another hand, \emph{work processes} may be captured by graphical models. Such models take various forms, e.g., flowchart-style models such as Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005} or diagrams in the Business Process Modeling Notation (BPMN) \cite{OMG:2008} or task trees, e.g. Little-Jil \cite{Clarke:2008}. Modeling here proves useful too.
 \begin{itemize}
 \item Process models may be analyzed and verified before translating them to work organization on the field. Early errors and bottlenecks may thereby be detected.
-\item Process model analysis may also result in restructuring work organization for better performance.
+\item Model analysis may also result in restructuring work organization for better performance.
 \item Process models may be partly or fully enacted to trigger the execution of necessary tasks, issue reminders to process actors, control the automated scheduling and processing of tasks.
 \end{itemize}
