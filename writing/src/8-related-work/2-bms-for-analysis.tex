@@ -1,42 +1,42 @@
 \section{Deriving behavior models for analysis\label{section:related-for-analysis}}
 
-Section~\ref{section:related-for-analysis-1} focusses on the analysis of process models. Section~\ref{section:related-for-analysis-2} discusses approaches to model-checking of scenario specifications. Section~\ref{section:related-for-analysis-2} briefly discusses how implied scenarios can be used for validating structural system designs.
+Section~\ref{section:related-for-analysis-1} focusses on the analysis of process models. Section~\ref{section:related-for-analysis-2} discusses approaches to the model-checking of scenario specifications. Section~\ref{section:related-for-analysis-2} briefly discusses how implied scenarios can be used for validating structural system designs.
 
 %%%
 
 \subsection{Analyzing process models\label{section:related-for-analysis-1}}
 
-The technique detailed in Chapter~\ref{chapter:deductive} for capturing the trace semantics of guarded hMSC models aims at enabling a variety of analyses on process models. The model checking of guarded hMSCs was discussed in Section~\ref{section:tool-model-checker}. 
+The technique detailed in Chapter~\ref{chapter:deductive} for capturing the trace semantics of g-hMSC models aims at enabling a variety of analyses on process models. The model checking of g-hMSCs was discussed in Section~\ref{section:tool-model-checker}. 
 
-Specific analysis techniques on such models are detailed in a companion thesis~\cite{Damas:2011}. These include guard analysis, including completeness, disjointness and satisfiability checks; task precondition checks; analysis of non-functional requirements on the process such as timing, cost and dose constraints. All these techniques are performed at the g-LTS level (see Section~\ref{section:deductive-glts}). They use various instantiations of a fully generic g-LTS state decoration algorithm briefly mentioned in Section~\ref{subsection:fluents-along-multiple-traces}.
+A variety of analysis techniques on such models are detailed in a companion thesis~\cite{Damas:2011}. They include the analysis of guards at decision points, including their completeness, disjointness and satisfiability; task precondition checks; analysis of non-functional requirements on the process about timing, cost or doses. All these techniques are performed at the g-LTS level (see Section~\ref{section:deductive-glts}). They use various instantiations of a fully generic g-LTS state decoration algorithm~\cite{Damas:2011} briefly mentioned in Section~\ref{subsection:fluents-along-multiple-traces}.
 
-Many process languages were proposed in the literature, e.g., UML Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005}, BPMN \cite{OMG:2008} and Little-Jil \cite{Clarke:2008}. The main advantages of guarded hMSCs over these is their emphasis on \emph{decisions-based} processes, where decision nodes refer to fluent-based guards on outgoing branches.
+Many process languages were proposed in the literature, e.g., UML Activity Diagrams \cite{OMG:2004}, YAWL \cite{Vanderaalst:2005}, BPMN \cite{OMG:2008} and Little-Jil \cite{Clarke:2008}. The main advantage of g-hMSCs over these is their emphasis on \emph{decisions-based} processes, where decision nodes regulate outgoing branches through guards on fluents and variables tracking the state of the environment in which the process operates.
 
 Efforts were recently made to adapt verification technology to process models. Typically, a state machine model is derived from the input model and then checked against properties. For example, structural consistency constraints on UML activity diagrams can be checked using the NuSMV model checker~\cite{Eshuis:2006}. Similar constraints can be verified on Little-JIL process models after task conversion into LTS~\cite{Lerner:2004}; this technique uses the LTSA model checker~\cite{Magee:1999}. LTSA was also used for deadlock analysis and model-checking of workflow schemas formalized in FSP/LTS~\cite{Karamanolis:2000}.
 
 %%%
 
-\subsection{Model checking of scenario specifications\label{section:related-for-analysis-2}}
+\subsection{Model-checking of scenario specifications\label{section:related-for-analysis-2}}
 
-Theoretical results for the model checking of Message Sequence Charts were pioneered by Alur et al. \cite{Alur:1999, Alur:2000}. These results provide a basis for practical approaches to model checking through automaton synthesis; the authors, however, do not provide practical algorithms for doing so.
+Theoretical results for the model-checking of Message Sequence Charts were pioneered by Alur et al. \cite{Alur:1999, Alur:2000}. These results provide a basis for practical approaches to model checking through automaton synthesis; the authors, however, do not provide practical algorithms for doing so.
 
-The semantic links between MSC, hMSC and LTS appeared in \cite{Uchitel:2001, Uchitel:2001b}, enabling the model-checking and animation of hMSC models in LTSA \cite{Uchitel:2003, Magee:1999}. In particular, a synthesis algorithm is given there; it yields FSP specifications for capturing the traces of each agent involved in a hMSC (see Section~\ref{subsection:background-hmsc}). 
+The semantic links between MSC, hMSC and LTS appeared in \cite{Uchitel:2001, Uchitel:2001b}, enabling the model-checking and animation of hMSC models in LTSA \cite{Uchitel:2003, Magee:1999}. In particular, a ``synthesis'' algorithm yields FSP specifications for capturing the traces of each agent involved in a hMSC (see Section~\ref{subsection:background-hmsc}). 
 
-This technique could be seen as a way of synthesizing agent state machines from scenarios. However, it is a derivative, not inductive, as no behavior generalization is involved. Moreover, state machines are not intended to be seen or manipulated directly by the end-user. Our work took the synthesis algorithm from \cite{Uchitel:2003} as the definition of the operational semantics for hMSC and a practical way for model-checking them.
+This technique might be seen as a way of synthesizing agent state machines from scenarios. However, it is derivational rather than inductive; no behavior generalization is involved. In other words, it amounts to refactoring a set of known behaviors without discovering new ones. Moreover, the state machines are not intended to be seen or manipulated directly by the end-user. Our work borrowed the synthesis algorithm from \cite{Uchitel:2003} as definition for the operational semantics of hMSC. This algorithm also provides a practical way of model-checking them.
 
 %%%
 
 \subsection{Deriving implied scenarios for structural validation\label{section:related-for-analysis-3}}
 
-Implied scenarios are behaviors that are not explicitly found in scenario specifications but can be shown to appear in system implementations meeting those specifications~\cite{Alur:2000, Uchitel:2004}. Implied scenarios are inherent to distributed systems; the latter often described system-wise but implemented component-wise. Capturing all possible interleavings of agent behaviors in scenario specifications is generally impossible.
+Implied scenarios are behaviors that are not explicitly found in scenario specifications but can be shown to appear in system implementations meeting those specifications~\cite{Alur:2000, Uchitel:2004}. Implied scenarios are inherent to distributed systems; the latter are often described system-wise but implemented component-wise. Capturing all possible interleavings of agent behaviors in scenario specifications is generally impossible.
 
-A technique is described in \cite{Uchitel:2004} for validating a hMSC specification with experts. For a hMSC $H$, implied scenarios are defined as traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ (see Section \ref{subsection:background-hmsc}). Implied scenarios denoting maximal traces are enumerated and submitted to the user for classification as positive or negative. Accepted scenarios enrich the initial scenario specification as new examples of desired system behavior. Rejected scenarios are more problematic as they capture traces that will necessarily be exhibited by any system consistent with the hMSC.
+A technique is described in \cite{Uchitel:2004} for validating a hMSC specification with domain experts. For a hMSC $H$, implied scenarios are defined as traces in $\mathcal{L}_{arch}(H) \setminus \mathcal{L}_{weak}(H)$ (see Section \ref{subsection:background-hmsc}). Implied scenarios denoting maximal traces are enumerated and submitted to the user for classification as positive or negative. Accepted scenarios enrich the initial scenario specification as new examples of desired system behavior. Rejected scenarios are more problematic as they capture traces that will necessarily be exhibited by any system consistent with the hMSC.
 
 This technique can thus be used for validating the system decomposition in terms of agents and their respective interfaces. The presence of rejected implied scenarios is indeed an indication that the system decomposition should be refactored.
 
-As discussed in Section~\ref{section:inductive-correctness}, implied scenarios may also appear with our techniques. The algorithm from \cite{Uchitel:2004} might be easily adapted to validate system designs in our context; the set of implied scenarios to consider is defined as follows:
+As deeply discussed in Section~\ref{section:inductive-correctness}, implied scenarios may also appear with our techniques. The algorithm from \cite{Uchitel:2004} might be easily adapted to validate system designs in our context; the set of implied scenarios to consider is defined as follows:
 \begin{align*}
-\mathcal{L}(\agentscomposed) \setminus \mathcal{L}(\mbox{System})
+\mathcal{L}(\agentscomposed) \setminus \mathcal{L}(\mbox{System}),
 \end{align*}
 where \emph{System} denotes the system LTS induced by QSM or ASM.
 

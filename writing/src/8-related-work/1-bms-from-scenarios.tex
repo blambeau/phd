@@ -1,6 +1,6 @@
 \section{Inductive synthesis of behavior models from scenarios\label{section:related-from-scenarios}}
 
-This section compares existing techniques for synthesizing state machines from scenarios with the inductive approach introduced in Chapter~\ref{chapter:inductive-synthesis}. A more complete survey of such techniques can be found in \cite{Liang:2006}.
+This section compares our inductive approach introduced in Chapter~\ref{chapter:inductive-synthesis} with existing techniques for synthesizing state machines from scenarios. A more complete survey of those techniques can be found in \cite{Liang:2006}.
 
 %%%
 
@@ -12,62 +12,57 @@ In a similar spirit, Kruger et al. proposed a technique for translating MSCs int
 
 Those techniques generalize behaviors described in input scenarios by introducing sequencing, alternatives and loops. State annotations provide the semantic basis for guiding the generalization process. This contrasts with a grammar induction approach since, in that case, behavior generalization is driven by compatible state merging, which is semantically rooted in \emph{event-based} continuations of PTA states. 
 
-In comparison with those, our approach presents the following strengths:
+In comparison with those techniques, our approach has the following strengths:
 \begin{itemize}
-\item State machine synthesis techniques from scenarios are often used in a requirements engineering contexts, when the target system is unknown \cite{Weidenhaupt:1998}. They are easier to provide by end-users than operation specifications in terms of pre- and post- conditions, MSC conditions, goals, state machines, etc. 
+\item State machine synthesis techniques from scenarios are often in the requirements engineering phase, where the target system is unknown \cite{Weidenhaupt:1998}. Event-based scenarios are likely to be more easily provided by end-users than operation specifications in terms of pre- and post- conditions, MSC conditions, etc. 
 
-Our technique nicely fits such contexts as it uses a very simple input scenario language in terms of simple MSCs. In contrast, the techniques in \cite{Kruger:2000} and \cite{Whittle:2000} require state annotations; the user of the technique is expected to provide them. In our case, fluent annotations are used to prune the induction process when available; however, they remain optional.
+Our technique uses a very simple input scenario language. In contrast, the techniques in \cite{Kruger:2000} and \cite{Whittle:2000} require state annotations; the user of the technique is expected to provide these. In our case, fluent annotations are used to prune the induction process when available; however, they remain optional.
 
-\item As discussed in Chapter~\ref{chapter:inductive-synthesis} and illustrated in evaluations (Chapter~\ref{chapter:evaluation}) and tool support discussions (Chapter~\ref{chapter:tool-support}), our algorithms also yield a flexible synthesis approach. Indeed it already works with a limited input but adapts to richer ones typically made available in subsequent analysis and design iterations. 
+\item As discussed in Chapter~\ref{chapter:inductive-synthesis}, illustrated in our evaluations (Chapter~\ref{chapter:evaluation}), and further discussed in our toolset presentation (Chapter~\ref{chapter:tool-support}), our algorithms support a flexible synthesis approach. This approach already works with limited input and adapts to richer ones as they are typically made available in subsequent analysis phases and design iterations. 
 
-For instance, our approach supports taking simple MSC scenarios as input but also works with structured forms of scenarios such as hMSCs. Similarly, fluents and goals are not required in the first place but are intended to smoothly integrate state-based knowledge in an incremental way.
+In particular, our approach supports simple MSC scenarios as input while also working with structured forms of scenarios such as hMSCs. Similarly, fluents and goals are not required in the first place but are intended to smoothly integrate state-based knowledge in an incremental way.
 \end{itemize}
 
 %%%
 
 \subsection{Minimally adequate teacher approach}
 
-Makinen and Systa developed an interactive algorithm for synthesizing UML statecharts from sequence diagrams \cite{Makinen:2001}. It is another approach relying on grammatical inference techniques for generalizing examples of system behavior captured in scenarios. This work is inspired from the approach of minimally adequate teacher and the L$^*$ algorithm proposed by Angluin~\cite{Angluin:1987}. 
+Makinen and Systa developed an interactive algorithm for synthesizing UML statecharts from sequence diagrams \cite{Makinen:2001}. This is another approach relying on grammatical inference techniques for generalizing examples of system behavior captured in scenarios. This work is inspired from the approach of minimally adequate teacher and the L$^*$ algorithm proposed by Angluin~\cite{Angluin:1987}. 
 
-As with our approach, and unlike those discussed in previous section, the technique works with scenarios only and does not require additional state-based annotations. There are significant differences with our approach though.
+As with our approach, and unlike those discussed in the previous section, the technique works with scenarios only and does not require additional state-based annotations. There are significant differences with our approach though.
 \begin{itemize}
 
-\item Their input sequence diagrams capture positive examples of system behavior only. The negative knowledge required to avoid overgeneralization comes from negative answers to membership and equivalence queries asked to an oracle (see below); such negative knowledge does not take the form of end-user negative scenarios.
+\item Their input sequence diagrams capture positive examples of system behavior only. The negative knowledge required to avoid overgeneralization comes from negative answers to membership and equivalence queries asked to an oracle (see below); such negative knowledge does not take the high-level form of end-user negative scenarios.
 
 \item Grammar induction is applied on a per agent basis. In other words, induction traces are sequences of events seen by a single agent along its scenario timeline. The alphabet of possible events and the learning strings are specific to each agent; the learning problem is tackled separately for each of them.
 
-\item The interacting user is asked to answer both membership and equivalence queries. Membership queries are traces to be classified as positive or negative examples of agent behavior; they amount to our scenario queries. Equivalence queries, in contrast, require the ability to classify state machine candidates as correctly capturing the complete behavior of a specific agent.
+\item The interacting user is asked to answer both membership and equivalence queries. Membership queries are traces to be classified as positive or negative examples of agent behavior; they amount to our scenario queries (in a less user-friendly form). Equivalence queries, in contrast, require the ability to classify state machine candidates as correctly capturing the complete behavior of a specific agent.
 \end{itemize}
 
-As discussed in Section~\ref{section:inductive-discussion}, tackling the induction problem on a per agent basis is an interesting alternative to our approach. For end-user involvement, however, an approach per agent seems less appropriate than ours; it requires the user to be able to classify traces in a different target language for each agent. It appears much more convenient for the end-user to interact in the scenario language of the global system as this is the language she used in the first place.
+As discussed in Section~\ref{section:inductive-discussion}, tackling the induction problem on a per agent basis is an interesting alternative to our approach. For end-user involvement, however, a per-agent approach seems less appropriate than ours; it requires the user to be able to classify traces in a different target language for each agent. It appears much more convenient for the end-user to interact in the input scenario language of the global system as this is the language she used in the first place.
 
-Equivalence queries may also prove difficult to answer by an end-user in practice as the agent state machines are unknown. That being said, a certain form of equivalence query might be seen in our approach as well. With the ISIS tool, for example, a visual inspection of agent and system state machines is recommended for validation and triggering of a new modeling cycle if required. Such inspection may typically highlight negative scenarios in case of overgeneralization or new positive scenarios illustrating additional desired features.
+Equivalence queries may also prove difficult to answer by an end-user in practice as the agent state machines are unknown. That being said, a certain form of equivalence query might be seen in our approach as well. With the ISIS tool, for example, a visual inspection of agent and system state machines is recommended for validation and the triggering of a new modeling cycle if required. Such inspection may typically highlight negative scenarios in case of overgeneralization or new positive scenarios illustrating additional desired features (see Section~\ref{subsection:evaluation-isis-modeling-session}).
 
-As the approach is interactive and can be used with only a few scenarios, it proves useful in early phases of system design. Unlike ours, though, such approach does not adapt to richer scenario inputs nor does it take additional models into account such as fluents or goals. In other words, multi-view consistency is not guaranteed by the synthesis process.
+As their approach is interactive and can be used with only a few scenarios, it proves useful in the early phases of system design. Unlike ours, though, the approach does not adapt to richer scenario inputs. It does not take additional knowledge into account such as fluents or goals. In other words, multi-view consistency is not guaranteed by their synthesis process.
 
 %%%
 
 \subsection{Play in/Play out with Live Sequence Charts}
 
-Harel et al. proposed a technique in \cite{Harel:2005} for synthesizing statecharts from Live Sequence Charts (LSCs) \cite{Damm:2001}. LSCs are an extension of MSCs that distinguish between allowed and required behaviors. In other words, LSCs allowing capturing both \emph{existential} scenarios (behaviors that \emph{may} be exhibited by the target system) and \emph{universal} ones (behaviors that \emph{must} be exhibited). 
+Harel et al. proposed a technique in \cite{Harel:2005} for synthesizing statecharts from Live Sequence Charts (LSCs) \cite{Damm:2001}. LSCs are an extension of MSCs that distinguish between allowed and required behaviors. In other words, LSCs allow both \emph{existential} scenarios (behaviors that \emph{may} be exhibited by the target system) and \emph{universal} ones (behaviors that \emph{must} be exhibited) to be captured.
 
-LSCs, and the underlying statechart synthesis technique, are used in the Play in/Play out approach for iterative system analysis and design~\cite{Harel:2003, Harel:2003b}. In such approach, LSCs model all desired system behaviors, providing a complete design for the system. The approach may be summarized as follows:
+LSCs, and the underlying statechart synthesis technique, are used in the Play in/Play out approach for iterative system analysis and design~\cite{Harel:2003, Harel:2003b}. In this approach, LSCs model all desired system behaviors, providing a complete design for the system. The approach may be summarized as follows:
 \begin{itemize}
-\item A LSC specification is built or completed in a \emph{Play in} phase. The user commonly deals with graphical user interfaces (GUI), not LSCs themselves. That is, a \emph{Play engine} allows the user to build and manipulate GUI components. The engine automatically builds LSCs capturing stimuli played in the GUI and expected responses from the system as specified by the user. Additional tools allows introducing loops, conditions, and other high-level constructs in scenarios played in.
-\item In a \emph{Play out} phase, the LSC specification is ran in the engine. In contrast to the \emph{Play in} phase, the engine executes here the specification as if it was the implemented target system. This allows identifying design errors early, incompletely specified behaviors, etc. 
+\item A LSC specification is built or completed in a \emph{Play in} phase. The user interacts through a graphical user interface (GUI) of the target system, without seeing the LSCs themselves. That is, a \emph{Play engine} allows the user to build and manipulate GUI components. The engine automatically builds LSCs capturing stimuli played in the GUI together with expected responses from the system as specified by the user. Additional tools allow introducing loops, conditions, and other high-level constructs in played-in scenarios.
+\item In a \emph{Play out} phase, the LSC specification is executed. In contrast to the \emph{Play in} phase, the specification is executed here as if it was the implemented target system. This allows identifying design errors early, behaviors incompletely specified, etc. 
 \item Scenarios played out are captured through LSCs. The latter therefore yield new examples and counterexamples for trigerring a new \emph{Play in} phase. The approach thus provides an iterative and interactive way of building reactive systems through scenarios.
 \end{itemize}
 
-The Play in/Play out engine and our ISIS tool are similar in that both provide integrated approaches for iterative system design through scenarios. Important differences however exist between the underlying approaches:
+The Play in/Play out engine and our ISIS tool are somewhat similar in that both provide integrated approaches for iterative system design through scenarios. Important differences however exist between the underlying approaches.
 \begin{itemize}
-\item The Play in/Play out approach constrats with our multi-view modeling approach. In the former case, LSC scenarios are the only models seen by the end-user; they capture the complete system specification. This is rather different than making a visible distinction between scenarios, state machines and goals. 
+\item The Play in/Play out approach constrats with our multi-view modeling approach. LSC scenarios are the only models seen by the user; they are expected to capture the complete system specification. This is rather different than making a clear distinction between scenarios, state machines and goals. 
 
-An approach capturing different system dimensions through different models proves useful in contexts where end-users are involved. Indeed, it leads to modeling languages that are simpler to use and enforce separation of concerns. 
+Approaches capturing different system facets through different models prove useful in contexts where end-users are involved. Indeed, they lead to modeling languages that tend to be simpler to use while enforcing a separation of concerns. 
 
-For example, while Live Sequence Charts provide a rich notation they also have a rather complex execution semantics. This makes them harder to use and validate by end-users than Message Sequence Charts.
-
-\item When it comes to structural hypotheses on the target system, the Play in/Play out approach is more opinionated than ours. For example, it puts a strong emphasis on the GUIs of the target system and their use by human agents. Supporting tools therefore prove very effective through dedicated abstractions for such systems.
-
-Our approach does not make strong structural assumptions and is therefore a bit more generic. The ISIS tool, for example, might equally be used to analyze human/machine interactions, explore system requirements, or design multi-agent protocols. This comes at the price of concrete support for specific contexts, such a GUI design and manipulation. It also makes code generation harder because scenarios and state machines provide a rather abstract view of the target system.
+In particular, Live Sequence Charts have a rather complex execution semantics. This makes them harder to use and validate by end-users than Message Sequence Charts.
 \end{itemize}
-
