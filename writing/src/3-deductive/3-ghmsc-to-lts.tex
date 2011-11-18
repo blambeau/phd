@@ -1,16 +1,16 @@
 \section{From guarded hMSC to pure LTS\label{section:deductive-glts-to-lts}}
 
-This section presents algorithms for explicitly capturing the traces of a guarded hMSC through a pure LTS. Section \ref{subsection:from-ghmsc-to-glts} provides an algorithm for transforming a g-hMSC into a g-LTS. Section \ref{subsection:from-glts-to-lts} then shows that the set of event traces admitted by a g-LTS can be captured through a LTS.
+This section presents algorithms for explicitly capturing the traces of a g-hMSC through a pure LTS. Section \ref{subsection:from-ghmsc-to-glts} provides an algorithm for transforming a g-hMSC into a g-LTS. Section \ref{subsection:from-glts-to-lts} then shows that the set of event traces admitted by a g-LTS can be captured through a LTS.
 
 \subsection{From guarded hMSC to guarded LTS\label{subsection:from-ghmsc-to-glts}}
 
-A guarded hMSC can be transformed into an equivalent g-LTS. The latter abstracts from the agents and captures the set of global behaviors covered by the g-hMSC. The transformation algorithm extends the technique introduced in Section \ref{subsection:background-hmsc} to synthesize a LTS capturing the traces of hMSC \cite{Uchitel:2004}. 
+A g-hMSC can be transformed into an equivalent g-LTS. The latter abstracts from the agents and captures the set of global behaviors covered by the g-hMSC. The transformation algorithm extends the technique introduced in Section \ref{subsection:background-hmsc} to synthesize a LTS capturing hMSC traces \cite{Uchitel:2004}. 
 
-\noindent \textbf{Handling nodes} -- Every hMSC node yields a behaviorally equivalent sub-LTS (see dashed rectangles at bottom of Fig~\ref{image:scheduler-ghmsc-glts}).
+\noindent \textbf{Handling nodes} -- Every g-hMSC node yields a behaviorally equivalent sub-LTS (see dashed rectangles at bottom of Fig~\ref{image:scheduler-ghmsc-glts}).
 \begin{enumerate}[(a)]
 \item A terminal MSC node is transformed into a sub-LTS collecting the linear event sequence from the scenario. For a MSC $M$, the LTS captures the set of traces $\mathcal{L}_{total}(M)$ defined in Section \ref{subsection:background-positive-scenarios}.
-\item For a node expanded into a finer-grained hMSC, the procedure is applied recursively to obtain the corresponding sub-LTS.
-\item A decision node is rewritten as a sub-LTS reduced to one simple state and no event. The same applies to the \emph{start} and \emph{end} nodes of the hMSC.
+\item For a node expanded into a finer-grained g-hMSC, the procedure is applied recursively to obtain the corresponding sub-LTS.
+\item A decision node is rewritten as a sub-LTS reduced to one simple state and no event. The same applies to the \emph{start} and \emph{end} nodes of the g-hMSC.
 \end{enumerate}
 
 In cases (a) and (b), the special events $\mbox{\emph{Task}}_{start}$ and $\mbox{\emph{Task}}_{end}$ are added as first and last events of the corresponding sub-LTS, respectively.
@@ -26,17 +26,17 @@ In cases (a) and (b), the special events $\mbox{\emph{Task}}_{start}$ and $\mbox
 \caption[Transforming a g-hMSC into a g-LTS: the meeting scheduler example]{Transforming a g-hMSC (top) into a g-LTS (bottom): the meeting scheduler example\label{image:scheduler-ghmsc-glts}}
 \end{figure}
 
-\noindent \textbf{Handling edges} -- The edges in the guarded hMSC yield transitions between the \emph{terminal} and \emph{initial} states of the sub-LTS corresponding to their \emph{source} and \emph{target} nodes, respectively.
+\noindent \textbf{Handling edges} -- The edges in the g-hMSC yield transitions between the \emph{terminal} and \emph{initial} states of the sub-LTS corresponding to their \emph{source} and \emph{target} nodes, respectively.
 \begin{itemize}
 \item An outgoing edge of a decision node is further labeled by the corresponding guard to yield a guarded transition in the g-LTS.
 \item Any other edge is simply converted to a $\tau$ transition.
 \end{itemize}
 
-Fig.~\ref{image:scheduler-ghmsc-glts} illustrates the transformation on the meeting scheduling process. The guarded hMSC at top yields the guarded LTS at bottom.
+Fig.~\ref{image:scheduler-ghmsc-glts} illustrates the transformation on the meeting scheduling process. The g-hMSC on top yields the g-LTS at the bottom.
 \begin{itemize}
 \item In the g-LTS, task ``boundaries'' are kept visible through dashed rectangles surrounding the different sub-LTS.  Similarly, dashed diamonds show which g-LTS states come from decision nodes. 
-\item The task \emph{Initiate Meeting} is converted as a sub-LTS capturing the linear event sequence defined by its MSC. The event sequence is extended with the special events $\mbox{\emph{InitiateMeeting}}_{start}$ and $\mbox{\emph{InitiateMeeting}}_{end}$.
-\item Converting the other tasks is similar, the algorithm being applied recursively on finer-grained hMSC. The figure shows that \emph{start} and \emph{end} events are introduced for each of those tasks as well. 
+\item The task \emph{Initiate Meeting} is converted into a sub-LTS capturing the linear event sequence defined by its MSC. The event sequence is extended with the special events $\mbox{\emph{InitiateMeeting}}_{start}$ and $\mbox{\emph{InitiateMeeting}}_{end}$.
+\item Converting the other tasks is similar, the algorithm being applied recursively on finer-grained g-hMSC. The figure shows that \emph{start} and \emph{end} events are introduced for each of those tasks as well. 
 \item Last, outgoing edges of decision nodes lead to guarded transitions in the g-LTS whereas other edges of the g-hMSC yield $\tau$ transitions.
 \end{itemize}
 
@@ -46,9 +46,9 @@ The resulting g-LTS can be further optimized by coalescing states separated by $
 
 \subsection{From guarded LTS to pure LTS\label{subsection:from-glts-to-lts}}
 
-The set of traces accepted by a g-LTS $G$ may be captured by a trace-equivalent LTS. Making so proceeds in two steps:
+The set of traces accepted by a g-LTS $G$ may now be captured by a trace-equivalent LTS. There are two steps.
 \begin{enumerate}[(1)]
-\item First, a parallel composition of g-LTSs is computed so as to meet the various acceptance conditions from Definition \ref{definition:valid-glts-execution} (valid g-LTS execution):
+\item First, a parallel composition of g-LTSs is computed so as to meet the various acceptance conditions from Definition \ref{definition:valid-glts-execution} (valid g-LTS execution).
 \begin{itemize}
 \item The first automaton in this composition is a super g-LTS built from $G$ to initially meet the \emph{trace inclusion} and \emph{admissible start} conditions. This g-LTS actually covers a superset of all admissible event traces and will therefore be pruned.
 \item To meet the \emph{guard satisfaction} condition, the set of traces of the super g-LTS is pruned further by composing it with fluent automata, one for each fluent.
@@ -60,7 +60,7 @@ Let us make each g-LTS in the composition further precise. In the sequel, $G = (
 
 \subsubsection*{Super g-LTS}
 
-By definition, the input g-LTS $G$ already meets the \emph{trace inclusion} condition: the latter simply requires executions to denote existing paths in the g-LTS.
+By definition, the input g-LTS $G$ already meets the \emph{trace inclusion} condition: the latter simply requires executions to correspond to existing paths in the g-LTS.
 
 In order to meet the \emph{admissible start} condition, $G$ is extended by converting its initial condition $C_0$ into an explicit guard from a new initial state. More precisely, the super g-LTS is defined by:
 \begin{equation*}
@@ -75,13 +75,13 @@ Super~LTS = (Q \cup \{ q_{start} \}, \Sigma, \Phi, \delta \cup \{(q_{start},C_0,
 \caption{The super g-LTS\label{image:super-lts}}
 \end{figure}
 
-The super g-LTS is illustrated in Fig~\ref{image:super-lts}. The cloud at right simply denotes the g-LTS $G$ taken as input. A guarded transition labeled by $C_0$ reaches its initial state $q_0$ from a newly introduced one $q_{start}$.
+The super g-LTS is illustrated in Fig~\ref{image:super-lts}. The cloud at there simply denotes the g-LTS $G$ taken as input. A guarded transition labeled by $C_0$ reaches its initial state $q_0$ from a newly introduced one $q_{start}$.
 
 During composition, the introduced guarded transition will synchronize with similar guarded transitions in the fluent automata introduced hereafter. Doing so will prune initial fluent assignments that do not satisfy $C_0$. This will guarantee the satisfaction of the \emph{admissible start} condition in a way similar to the satisfaction of guards (see below).
 
 \subsubsection*{Fluent g-LTS}
 
-The \emph{guard satisfaction} condition is enforced by pruning all traces violating guards in the super g-LTS. For this, the latter is composed with fluent automata that keep track of current fluent values and constrain guards accordingly. Recall that fluents have undertermined initial values; process models and guarded LTS have an initial condition $C_0$ that constraints their values in the initial state. 
+The \emph{guard satisfaction} condition is enforced by pruning all traces violating guards in the super g-LTS. For this, the super g-LTS is composed with fluent automata that keep track of current fluent values and constrain guards accordingly. Recall that fluents have undertermined initial values; process models and guarded LTS have an initial condition $C_0$ that constrains their values in the initial state. 
 
 Every fluent $Fl = \textless Init_{Fl}, Term_{Fl} \textgreater $ yields a g-LTS $(Q,\Sigma,\Phi,\delta,q_{0},C_{0})$ where:
 \begin{align*}
@@ -99,9 +99,9 @@ C_0    &= true
 In this definition, $q_u$, $q_t$ and $q_f$ denote g-LTS states where the fluent is \emph{unassigned}, \emph{true} and \emph{false}, respectively (see Fig.~\ref{image:fluent-glts}).
 \begin{itemize}
 \item The unassigned state $q_u$ is the initial g-LTS state. From there, the \emph{true} and \emph{false} states may be reached through guarded transitions that force the fluent to an initial value consistent with the reached state. These guards will synchronize with the transition labeled by $C_0$ in the super g-LTS, thereby meeting the \emph{admissible start} condition.
-\item A fluent g-LTS may transit from its false state $q_f$ to its true state $q_t$ with the occurrence of events belonging to $Init_{Fl}$ and vice-versa, with events belonging to $Term_{Fl}$. In Fig.~\ref{image:fluent-glts}, a transition labeled with a set between brackets is a shortcut denoting one transition for each element of the set.
+\item A fluent g-LTS may transit from its \emph{false} state $q_f$ to its \emph{true} state $q_t$ with the occurrence of events belonging to $Init_{Fl}$ and vice-versa, with events belonging to $Term_{Fl}$. In Fig.~\ref{image:fluent-glts}, a transition labeled with a set between brackets is a shortcut denoting one transition for each element of the set.
 \item In each state $q_f$ and $q_t$, a self-looping guard constrains the fluent value to the one denoted by the corresponding state. The conjunction of such guards with the ones of the super g-LTS will force the resulting composition to meet the \emph{guard satisfaction} condition. Indeed, the g-LTS composition operator prunes the conjunctions of guards that are unsatisfiable (see Definition~\ref{definition:glts-composition}).
-\item The remaining self-looping transitions labeled with \emph{Init$_{Fl}$} (resp. \\ \emph{Term$_{Fl}$}) from states $q_t$ (resp. $q_f$) is added to avoid over-constraining the composition. That is, initiating (resp. terminating) events may occur even when the fluent is already true (resp. false).
+\item The remaining self-looping transitions labeled with \emph{Init$_{Fl}$} (resp. \\ \emph{Term$_{Fl}$}) from states $q_t$ (resp. $q_f$) is added to avoid over-constraining the composition. That is, initiating (resp. terminating) events may occur even when the fluent is already \emph{true} (resp. \emph{false}).
 \end{itemize}
 
 \begin{figure}\centering
@@ -113,7 +113,7 @@ In this definition, $q_u$, $q_t$ and $q_f$ denote g-LTS states where the fluent 
 
 For example, consider the following fluent for the meeting scheduler exemplar:
 \begin{center}
-fluent $second\_cycle = \textless \{ ExtendDateRange_{end}, \newline WeakenConstraints_{end} \},
+fluent $second\_cycle = \newline \textless \{ ExtendDateRange_{end}, WeakenConstraints_{end} \}, \newline
  \{ InitiateMeeting_{end} \} \textgreater $\\
 \end{center}
 
@@ -126,12 +126,12 @@ The corresponding fluent automaton is shown in Fig.~\ref{image:second-cycle-flue
 \caption{Fluent g-LTS for $second\_cycle$\label{image:second-cycle-fluent-glts}}
 \end{figure}
 
-\subsubsection*{Composition (1) then hiding (2)}
+\subsubsection*{Composition automata and hiding guard/$\tau$ labels}
 
-Putting pieces together, the trace-equivalent LTS of a g-LTS is obtained through the following computation
+Putting pieces together, the trace-equivalent LTS of a g-LTS is obtained through the following computation:
 \begin{align*}
 &Composition = (Super~LTS \parallel Fl_1 \parallel \ldots \parallel Fl_n)\\
-&Traces      = Composition \setminus \mathcal{P}(2^\Phi)
+&Traces      = Composition \setminus \mathcal{P}(2^\Phi),
 \end{align*}
 where $Fl_i$ denotes the fluent automaton of the i-th fluent.
 
@@ -145,18 +145,18 @@ The first step simply computes the parallel composition of the Super LTS with fl
 \caption{Principle of the composition algorithm for computing the valid traces of a g-LTS.\label{image:glts2lts-intuition}}
 \end{figure}
 
-\subsubsection*{Correctness}
+\subsubsection*{Correctness of the synthesis}
 
-The principle of the synthesis algorithm is illustrated in Fig.~\ref{image:glts2lts-intuition}, that illustrates the g-LTS obtained when composing the super g-LTS with fluent automata:
+The principle of the synthesis algorithm is illustrated in Fig.~\ref{image:glts2lts-intuition}, showing the g-LTS obtained when composing the super g-LTS with fluent automata:
 \begin{itemize}
 \item From the compound initial state, up to $2^{\mid\Phi\mid}$ guarded transitions may appear. They actually correspond to all possible fluent assignments satisfying $C_0$. Unsatisfiable conjunctions are automatically pruned by the g-LTS composition operator (see Definition \ref{definition:glts-composition}).
-\item Each of these transitions leads to a new compound state: $q_0$ on the super g-LTS side and $q_t$ or $q_f$ for each fluent automaton, according to the initial fluent assignment reaching the compound state.
+\item Each of these transitions leads to a new compound state, namely $q_0$ on the super g-LTS side and $q_t$ or $q_f$ for each fluent automaton, according to the initial fluent assignment reaching the compound state.
 \item From every such state, the input g-LTS $G$ is systematically explored; unsatisfiable guards are pruned according to the current fluent values. The latter are tracked by fluent automata that transit from $q_f$ to $q_t$ with the occurrence of initiating and terminating events.
 \end{itemize}
 
 Admissible paths from the initial state of such automaton yield sequences of transition labels of the following form:
 \begin{align*}\textless g_0~l_0~l_1~l_2~l_3~\ldots~l_n \textgreater \end{align*}
-where $g_0$ is a guard and $l_i$ is either a guard or an event label. By construction, $g_0$ actually reduces to a fluent value assignment, that is, a Boolean guard with only one admissible interpretation. Therefore, such sequences denote g-LTS executions (see Definition~\ref{definition:glts-execution}).
+where $g_0$ is a guard and $l_i$ is either a guard or an event label. By construction, $g_0$ actually reduces to a fluent value assignment, that is, a Boolean guard with only one admissible value assignment. Therefore, such sequences denote g-LTS executions (see Definition~\ref{definition:glts-execution}).
 
 We can now show that these executions are valid g-LTS executions for the input g-LTS $G$ (see Definition~\ref{definition:valid-glts-execution}):
 \begin{itemize}
@@ -165,24 +165,24 @@ We can now show that these executions are valid g-LTS executions for the input g
 \item The \emph{admissible guards} condition is met since unsatisfiable guards are systematically pruned during composition.
 \end{itemize}
 
-The hiding step removes all guards, yielding a pure LTS that precisely captures the trace semantics from Definition \ref{definition:glts-trace-semantics}. 
+The \emph{hiding} step removes all guards, yielding a pure LTS that precisely captures the trace semantics from Definition \ref{definition:glts-trace-semantics}. 
 
-In practice, it is convenient to enhance the hiding step so as to preserve the initial fluent value assignments $g_0$ labeling the transitions issued of the initial g-LTS state. This amounts capturing the set of valid g-LTS traces from Definition~\ref{definition:valid-glts-traces}. Doing so allows providing the user with a better feedback when using the synthesis algorithm for model-checking g-hMSC and g-LTS (see Section~\ref{section:tool-model-checker}).
+In practice, it is convenient to enhance the \emph{hiding} step so as to preserve the initial fluent value assignments $g_0$ labeling the transitions issued of the initial g-LTS state. This amounts capturing the set of valid g-LTS traces from Definition~\ref{definition:valid-glts-traces}. Doing so allows providing the user with a better feedback when using the synthesis algorithm for model-checking g-hMSC and g-LTS (see Section~\ref{section:tool-model-checker}).
 
 \subsubsection*{Example}
 
-Figure~\ref{image:scheduler-lts} shows the resulting LTS obtained on the meeting scheduling example from Fig.~\ref{image:scheduler-ghmsc-glts}. The task refinements are not entirely unfolded there; only events used in fluent definitions were kept:
+Figure~\ref{image:scheduler-lts} shows the resulting LTS obtained on the meeting scheduling example from Fig.~\ref{image:scheduler-ghmsc-glts}. The task refinements are not entirely unfolded there; only events used in fluent definitions were kept.
 \begin{itemize}
 \item The \emph{no\_remaining\_solution} event, for example, denotes an initiating event of the \emph{date\_conflict} fluent; it belongs to the refinement of the \emph{AcquireConstraints} task. 
 \item The events \emph{click\_extend} and \emph{click\_weaken} suggest buttons allowing the meeting initiator to select resolution heuristics when a conflict occurs. They appear in the definition of the fluent \emph{resolve\_by\_weakening}. 
 \item A transition labeled with `$\ldots$' denotes a sequence of events not shown for readability.
 \end{itemize}
 
-Unlike the original g-hMSC and its g-LTS reformulation, this LTS does not contain any loop. This happens because the $second\_cycle$ fluent prevents indefinite meeting arbitration. In other words, in our example the technique unfolds the process models as three possible scenarios. 
+Unlike the original g-hMSC and its g-LTS reformulation, this LTS does not contain any loop. This happens because the $second\_cycle$ fluent prevents indefinite meeting arbitration. In other words, in our example the technique unfolds the process models into three possible scenarios. 
 \begin{itemize}
 \item In the rightmost one, no date conflict arises and the meeting is scheduled immediately after having acquired the constraints. 
 \item In the middle one, a conflict occurs and is resolved by weakening the participant constraints. 
-\item In the left most one, the resolution consists in extending the date range and collecting constraints one again. \item In the last two cases, even if the absence of an optimal solution triggers a new date conflict, the meeting is scheduled. 
+\item In the leftmost one, the resolution consists in extending the date range and collecting constraints one again. \item In the last two cases, even if the absence of an optimal solution triggers a new date conflict, the meeting is scheduled. 
 \end{itemize}
 
 \begin{figure}

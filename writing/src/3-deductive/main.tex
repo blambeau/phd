@@ -1,6 +1,6 @@
 \chapter{Derivation of State Machine Models from Process Models\label{chapter:deductive}}
 
-This chapter shows how LTS state machines can be synthesized from g-hMSC process models. Section \ref{section:deductive-motivation} motivates such derivation and outlines the approach. Section \ref{section:deductive-glts} introduces guarded labeled transition systems (g-LTS) as an intermediate formalism between guarded hMSCs and LTS state machines. Algorithms for transforming process models into guarded and non-guarded transition systems are detailed in Section \ref{section:deductive-glts-to-lts}.
+This chapter shows how LTS state machines can be synthesized from g-hMSC process models. Section \ref{section:deductive-motivation} motivates such derivation and outlines the approach. Section \ref{section:deductive-glts} introduces guarded labeled transition systems (g-LTS) as an intermediate formalism between guarded hMSCs and LTS state machines. Algorithms for transforming process models into guarded and then guard-free transition systems are detailed in Section \ref{section:deductive-glts-to-lts}.
 
 \input{src/3-deductive/1-motivation}
 \input{src/3-deductive/2-glts}
@@ -8,4 +8,4 @@ This chapter shows how LTS state machines can be synthesized from g-hMSC process
 
 \section*{Summary}
 
-This chapter has shown how state machines can be derived from processes in the guarded hMSC modeling language. The main aim of such transformation is to make such processes amenable to analysis such as model-checking. For this, a trace-based semantics for guarded hMSC has been defined. This semantics is operationalized through labeled transition systems. A guarded flavor of LTS has been introduced as a powerful intermediate form in the transformation from guarded hMSC to pure LTS. Indeed, guarded LTS are a structured form of LTS avoiding state explosion and enabling efficient symbolic analyses of the corresponding process model (e.g.~\cite{Damas:2011}). Synthesis algorithms from guarded hMSC to guarded LTS to LTS have been discussed.
+This chapter has shown how state machines can be derived from process models captured in the g-hMSC language. The main objective of this transformation is to make such processes amenable to analysis such as model-checking. For this, a trace-based semantics for g-hMSC has been defined. This semantics is defined in terms of labeled transition systems. A guarded flavor of LTS has been introduced as a powerful intermediate form in the transformation from guarded hMSC to pure LTS; g-LTS are a structured form of LTS avoiding state explosion; they enable a variety of symbolic analyses involving guards~\cite{Damas:2009, Damas:2011}. Synthesis algorithms from g-hMSC to g-LTS to LTS have been discussed.
