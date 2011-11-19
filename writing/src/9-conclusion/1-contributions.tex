@@ -1,20 +1,20 @@
-\subsection*{Summary of contributions\label{section:conclusion-contributions}}
+\section{Summary of technical contributions\label{section:conclusion-contributions}}
 
-The contributions of the thesis are summarized below along the horizontal and vertical axes of model synthesis.
+The contributions of the thesis are summarized below along the horizontal and vertical dimensions of model synthesis.
 
-\subsubsection*{Horizontal synthesis}
+\subsection*{Horizontal synthesis}
 
 \begin{itemize}
-\item The thesis proposed an interactive procedure for synthesizing agent state machines from positive, negative and structured forms of scenarios. This procedure uses grammar induction for generalizing scenario behaviors. It is interactive with an end-user who classifies additional scenarios as positive or negative examples of system behavior.
-\item A technique was presented to prune the search space of inductive state machine synthesis. This technique allows injecting various sources of system knowledge into the synthesis process. The technique were instantiated for the use of fluent definitions, models of legacy components, and goals and domain properties. The pruning technique provides guarantees for the consistency of the synthesized state machines with all injected knowledge. It also speeds up the induction search space for better performances and reduces the number of user interactions.
-\item Our inductive synthesis technique is supported by a tool. In addition, this tool integrates various checks for the consistency of scenarios, state machines and goals as well as a technique to infer safety properties from scenarios. 
-\item The techniques and tools have been evaluated on case studies and synthetic datasets. In the latter case, a novel evaluation protocol for inductive model synthesis has been proposed and ran as a formal competition.
+\item The thesis proposed an interactive procedure for synthesizing agent state machines from positive, negative and structured forms of scenarios. This procedure adapts grammar induction techniques for generalizing scenario behaviors. It is interactive with an end-user in the loop who classifies additional scenarios as positive or negative examples of system behavior. As a side effect, our technique can be used for scenario elicitation.
+\item A technique was presented for pruning the induction search space. This technique allows injecting various sources of system knowledge into the synthesis process. It was instantiated to integrate fluent definitions, models of legacy components, and goals and domain properties. The pruning technique guarantees the consistency of the synthesized state machines with all such knowledge. It also significantly speeds up the induction process and reduces the number of user interactions.
+\item Our inductive synthesis technique is supported by a tool. This tool further integrates various checks for the consistency of scenarios, state machines and goals together with a technique for inferring safety properties from scenarios~\cite{Damas:2011}. 
+\item The techniques and tools were evaluated on case studies and synthetic datasets. In the latter case, a novel evaluation protocol for inductive model synthesis has been proposed and ran as a formal competition on the Internet.
 \end{itemize}
 
-\subsubsection*{Vertical synthesis}
+\subsection*{Vertical synthesis}
 
 \begin{itemize}
-\item This thesis gave a formal semantics for guarded hMSC. This semantics is operationalized through the introduction of guarded LTS, a kind of labeled transition systems allowing events and guards on transitions. Guarded LTS have a trace semantics in terms of pure LTS as well as composition and hiding operators.
-\item Two synthesis algorithms were proposed to derive guarded hMSC to guarded LTS to pure LTS. Those algorithms were shown to make guarded process models amenable to a variety of analyses.
-\item The implementation of a model-checker for guarded hMSC and guarded LTS were also discussed. Moreover, the thesis discussed the architecture and important design decisions in the implementation of another toolset aimed at analyzing mission-critical process models.
+\item The thesis provides a formal semantics for the g-hMSC process modeling language in terms of g-LTS. g-LTS are a kind of labeled transition systems allowing events or guards on transitions. They have a trace semantics in terms of pure LTS together with dedicated composition and hiding operators.
+\item Two synthesis algorithms were proposed to derive g-LTS models from g-hMSC models and then pure event-based LTS models from g-LTSs. Those algorithms were shown to make decision-based process models amenable to a variety of analyses.
+\item The implementation of a model-checker for g-hMSC and g-LTS was also discussed. Moreover, the thesis discussed the architecture and important design decisions in the implementation of another toolset aimed at analyzing mission-critical process models.
 \end{itemize}

@@ -1,0 +1,42 @@
+\section{Open issues and perspectives}
+
+This section discusses open issues with our techniques and states a few perpectives for future work.
+
+\subsection*{Incremental building of multi-view models}
+
+For incremental model building to converge towards the desired system model, we need to assume that the latter actually exists, at least theoretically. This is arguable, since the system is unknown. During modeling, different alternatives are explored; some design decisions are rejected whereas others are selected on the way towards a better model.
+
+In practice, this means that system modeling is a highly non linear, trial-and-error process. Model refactoring techniques seem therefore important to complement synthesis and analysis techniques. The availability of all of such techniques in integrated environments would support a more effective exploration and design process. 
+
+For example, a modeling bottleneck in the ISIS tool is the lack of support for scenario refactoring. This may prevent some design explorations and may even hurt the modeling process when such refactoring is required -- due to the presence of negative implied scenarios for example. If such refactoring were to be formally supported, our  synthesis technique would allow the user to effectively rebuild state machines from refactored scenarios. The investigation of the intertwined usage of refactoring, synthesis and analysis techniques is thus an interesting perspective for additional support.
+
+This raises the question of what makes user guidance effective in an environment integrating multiple techniques. As discussed in Chapter~\ref{chapter:tool-support}, the ISIS and Gisele tools differ in the way such guidance is implemented. In the former case, the available techniques and analyses are made contextually available and executed on demand. In the latter case, the analyses run in the background; real-time feedback is provided as the user navigates through the process model. Both approaches were shown to present advantages and drawbacks.
+
+\subsection*{Convergence and scalability of the synthesis process}
+
+Our choice of grammar induction for incremental state machine synthesis is partly motivated by the convergence criterion it provides towards adequate models of the target system (see Section~\ref{section:inductive-discussion}). The soundness of such theoretical convergence has been argued to be for the synthesis of behavior models from both scenarios and goals (see Section~\ref{related-for-requirements-2}). As discussed in Section~\ref{section:inductive-discussion}, work remains to be done to root our ASM$^*$ algorithm on such a sound theoretical framework.
+
+Even if convergence guarantees are provided, QSM raises an issue about the number of scenarios submitted for classification by the end-user. As seen in the experiments, additional knowledge such as fluent definitions and goal specifications help reducing the number of questions to be rejected. However, the number of accepted scenarios does not similarly reduce. This may lead to a scalability problem for interactive synthesis on very large models.
+
+One way to tackle this problem would be to explore new ways of interacting with the user. The latter might for example ask to terminate the induction process earlier. The visual inspection of generated state machines would yield a form of equivalence queries. Otherwise, we might investigate ways of mitigating the lack of user control by injecting further domain knowledge or automating the oracle (see e.g., \cite{Walkinshaw:2007}).
+
+\subsection*{Lack of knowledge and classification errors}
+
+One difficulty with incremental system modeling is related to the lack of system knowledge. When using the interactive feature of QSM for example, the user might be faced with a scenario question for which she does not have a clear classification answer. In such situation, ``don't know'' answers are worth investigating. Another approach would consist of allowing the end-user to defer some scenario questions so that they can be answered later as more system knowledge is being gained.
+
+An open issue related to the previous one is the robustness against possible misclassification of scenario questions by the end-user. Traditional ways of dealing with noisy inputs include probabilistic learning methods. Such methods could be adapted in our context, especially in presence of multiple stakeholders.
+
+Multi-view modeling actually provides another way of dealing with classification errors. For example, domain knowledge and goals may help detecting and/or correcting such mistakes. Indeed, misclassification typically leads to consistency checks failing if domain properties and goals are available. Those failures can be effectively fixed provided they are detected soon enough. Once again, a better integration of model analysis and model synthesis techniques might prove very useful here.
+
+\subsection*{Implied scenarios}
+
+The potential nuisance of implied scenarios has been discussed in Section~\ref{section:inductive-correctness}. Implied scenarios occur when a distributed system is designed globally while implemented component-wise. In our framework, problematic implied scenarios are system behaviors correctly rejected by the system inductively synthesized, as required by a goal for instance, but exhibited in the system when individial agent state machines are composed.
+
+Existing techniques, such as ~\cite{Uchitel:2004}, may be adapted to our framework in order to detect implied scenarios and submit them as additional scenario questions to the end-user (see Section~\ref{section:related-for-analysis-3}). Even with the availability of such a detection technique, implied scenarios still raise important open issues.
+\begin{itemize}
+\item The presence of negative implied scenarios requires refactoring of the system decomposition and agent interfaces. An important issue with implied scenarios is the lack of scenario refactoring techniques to systematically eliminate them.
+\item Another important problem occurs when we don't know whether an implied scenario should be accepted or rejected. This is related to the problem of lack of knowledge previously discussed. Implied scenarios whose status is unclear stay potentially harmful until a decision is made about them.
+\item The late discovery of harmful implied scenarios may be due to an inadequate use of the multi-view modeling framework or to weaknesses of the formal framework itself. For example, our definition of negative scenario borrowed from \cite{Uchitel:2002} should probably be revisited. Indeed, such scenarios define negative system traces only; in particular, they do not define a negative trace in the state machine of the agent that sends the proscribed event. In other words, negative scenarios do not capture a restriction on the behavior of a single agent. Similarly, goals are considered system-wide. Considering only goals that are realizable by at least one agent is often sufficient to avoid related implied scenario problems in the first place.
+\end{itemize}
+
+While those restrictions and open issues might limit the applicability of our techniques in specific cases, they also pave the way for numerous improvements and research in multi-view model synthesis.
