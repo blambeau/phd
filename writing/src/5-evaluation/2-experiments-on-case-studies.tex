@@ -70,7 +70,7 @@ The second scenario shows that the pump should be turned off when the methane le
 
 \subsubsection*{Running QSM with these two scenarios}
 
-QSM is ran a first time with these two scenarios as input. For our case-study evaluations, QSM was actually used with the Blue-Fringe heuristic and a consolidation threshold of 1 (see Section~\ref{BlueFringe}). This means that two states of the PTA are considered for merging only if they share at least one outgoing event. Such consolidation threshold drastically reduces the number of possible scenario questions; generated questions also tend to be guided by more evidence, which fits the intuition. In our experience, doing so results in a conservative state merging approach that is well suited for building a new specification from scratch.
+QSM is ran a first time with these two scenarios as input. For our case-study evaluations, QSM was actually used with the Blue-Fringe heuristic and a consolidation threshold of 1 (see Section~\ref{BlueFringe}). This means that two states of the PTA are considered for merging only if they share at least one outgoing event. Such consolidation threshold drastically reduces the number of possible scenario questions; generated questions also tend to be guided by more evidence, which fits the intuition. In our experience, doing so results in a conservative state-merging approach that is well suited for building a new specification from scratch.
 
 With such a configuration, only one scenario question is submitted for classification. It is illustrated in Fig.~\ref{image:minepump-scenario-question} and can be rephrased as: ``\emph{after having switched the pump off because of a critical level of methane, may the controller switch the pump on if the water becomes high once again?}''. At least two reasons support the rejection of such a scenario:
 
@@ -103,16 +103,18 @@ If the declarative option is chosen, the following LTL safety property can be us
 \item In addition, the level of methane is still critical in the second part of the scenario question. In such a situation the controller may not switch the pump on.
 
 This second rejection reason might be captured through the following safety goal.
-\begin{align*}
-&\mbox{Avoid[PumpOnWhenMethane]} = \mbox{CriticalMethane} \Rightarrow \circ(\neg \mbox{PumpOn}) \\
-&\mbox{fluent CriticalMethane} = \textless \{\mbox{critical signal}\}, \\ 
-&\{\mbox{not critical signal}\} \textgreater\mbox{initially \emph{false}} \\
-&\mbox{fluent PumpOn} = \textless \{\mbox{on command}\}, \{\mbox{off command}\} \textgreater \mbox{initially \emph{false}}
-\end{align*}
+\begin{tabbing}
+$\mbox{Avoid}$ \= $\mbox{[PumpOnWhen Methane]} = $ \\
+\> $\mbox{CriticalMethane} \Rightarrow \circ(\neg \mbox{PumpOn})$ \\
+$\mbox{fluent CriticalMethane} = $ \\
+\> $\textless \{\mbox{critical signal}\}, \{\mbox{not critical signal}\} \textgreater\mbox{initially \emph{false}}$ \\
+$\mbox{fluent PumpOn} = $ \\
+\> $\textless \{\mbox{on command}\}, \{\mbox{off command}\} \textgreater \mbox{initially \emph{false}}$
+\end{tabbing}
 
 \end{itemize}
 
-Note that the scenario may simply be rejected without further explanation. As illustrated above, the rejection of a scenario is a rich opportunity to declare state variables and identify requirements and domain properties. However such more formal steps are optional and may simply be bypassed by non-experts. Not specifying fluents, domain properties and goals typically lead to more scenario questions.
+Note that the scenario might be rejected without further explanation. As illustrated above, the rejection of a scenario is a rich opportunity to declare state variables and identify requirements and domain properties. However such more formal steps are optional and may simply be bypassed by non-experts. Not specifying fluents, domain properties and goals typically lead to more scenario questions.
 
 In our modeling session, only the \artifact{CriticalMethane}, \artifact{HighWater} fluents above were defined. No further scenario questions were submitted for classification. The resulting LTS for the pump controller agent is illustrated in Fig.~\ref{image:minepump-controller-1-annotated}.
 

@@ -13,13 +13,13 @@ Such a question is difficult to answer in absolute terms. Answers can however be
 \end{enumerate}
 This chapter focusses on the second way of conducting such an evaluation. A discussion of how our inductive synthesis approach compares with and/or integrates with existing techniques can be found in Chapter~\ref{chapter:related-work}.
 
-When our inductive synthesis technique is considered in isolation, the question of how well it helps building high-quality models can already be partially answered. For instance, our technique synthesizes \emph{consistent} models by construction; by design, it also helps \emph{completing} them through scenario questions which in turn trigger the identification of domain properties and goals. Not all questions can be answered so simply:
+When our inductive synthesis technique is considered in isolation, the question of how well it helps building high-quality models can already be partially answered. For instance, our technique synthesizes \emph{consistent} models by construction. By design, it also helps \emph{completing} them through scenario questions which in turn trigger the identification of domain properties and goals. Not all questions can be answered so simply:
 \begin{itemize}
 \item How adequate are the synthesized state machines? 
 \item What is the impact of fluent, goal and domain knowledge injection on model adequacy?
 \item Is the approach usable by end-users? 
 \item How many iterations are needed to obtain models considered complete?
-\item Does the inductive technique scales and stays usable on large systems?
+\item Does the inductive technique scale and remains usable on large models?
 \end{itemize}
 
 Controlled experiments have thus been conducted to provide answers to those questions. In practice, two kinds of evaluation have been considered, as reflected by the following sections (The specific evaluation protocols used will be described in each case).
@@ -36,18 +36,18 @@ The evaluations conducted here allow us to describe what can be expected from ou
 
 The ISIS modeling session described in Section~\ref{section:evaluation-experiments-on-case-studies} provides a general idea about the effectiveness of our multi-view synthesis approach. In addition, controlled parameters of the various experiments provide comparison points to answer finer-grained evaluation questions. Those controlled parameters are:
 \begin{itemize}
-\item The size the target system LTS, either a case-study or controlled by a random generation procedure.
+\item The size the target system LTS, from a case-study or one controlled by a random generation procedure.
 \item The heuristics used for state merging: the RPNI search order or the Blue-fringe optimization.
 \item The presence of absence of an oracle answering scenario questions.
 \item The number of fluents and goals injected to prune the induction process.
 \item The use of control information in scenarios and the richness of such knowledge.
 \end{itemize}
 
-When conducting the experiments three measures have been collected so as to evaluate results. Those measures have a clear impact on the adequacy and usability of the synthesis technique. Therefore, they allow making the bridge between the controlled parameters and answers to our evaluation questions.
+When conducting the experiments, three measures have been collected so as to evaluate results. Those measures have a clear impact on the adequacy and usability of the synthesis technique. Therefore, they allow making the bridge between the controlled parameters and answers to our evaluation questions.
 \begin{description}
 \item[Model adequacy] Roughly speaking, \emph{model adequacy} captures \emph{how well} an inferred model matches the expected target behavior model. 
 
-Model adequacy is easy to measure in controlled experiments in which, by design, the target model is then known. Depending on the experiment, we will use either a binary value or a finer-grained one.
+Model adequacy is easy to measure in controlled experiments in which, by design, the target model is known. Depending on the experiment, we will use either a binary value or a finer-grained one.
 \begin{itemize}
 \item On case studies the adequacy measure simply captures whether the learned model is \emph{the same} as the target model or not, in terms of behavioral equivalence (see Definition~\ref{definition:trace-equivalence}).
 \item On random datasets an \emph{accuracy} measure will be used; such measure will range from 0.0 to 1.0 dependent on whether the learned model is considered far or close to the target model. This will be estimated through test samples (see Section~\ref{subsection:evaluation-synthetic-protocol}).
