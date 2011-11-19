@@ -41,9 +41,9 @@ describes train door states as being either closed ($DoorsClosed = true$) or ope
 
 Such descriptions can be effectively used to constrain the induction process so that the synthesized System LTS conforms to them. The idea is to decorate each state of the PTA with the value of every fluent. This can be done using a symbolic execution algorithm \cite{Damas:2006, Damas:2011} (see Section~\ref{section:background-fluents}).
 
-The pruning rule for constraining the induction process is here to \emph{avoid merging inconsistent states} according to these decorations. 
+The pruning rule for constraining the induction process here is to \emph{avoid merging inconsistent states according to these decorations}. 
 
-The specific equivalence relation is thus the set of state pairs where both states have the same fluent value assignment. The decoration of the merged state is simply inherited from the states being merged.
+The specific equivalence relation is thus the set of state pairs where both states have \emph{the same fluent value assignment}. The decoration of the merged state is simply inherited from the states being merged.
 \begin{quote}
 \emph{Two states will be considered for merging if they have the same value for every fluent.}
 \end{quote}
@@ -72,7 +72,7 @@ For example, Fig.~\ref{Fig.:alarm-sensor} shows the LTS for a legacy alarm senso
 
 A LTS model of an external component can constrain the induction process so that the synthesized system LTS conforms to it. The idea is to decorate the PTA with states of the external LTS by unfolding the latter onto the PTA. Such decoration is performed by jointly visiting the PTA and the external LTS; the latter synchronizes on shared events and remains in its current state on other events.
 
-Fig.~\ref{Fig.:alarm-unfolded-pta} shows the result of unfolding the alarm sensor LTS from Fig.~\ref{Fig.:alarm-sensor} on the augmented PTA built from the scenarios described in Fig.~\ref{Fig:init:scen}. Each state of the PTA is labeled with the number of the corresponding state in the alarm sensor LTS. 
+Fig.~\ref{Fig.:alarm-unfolded-pta} shows the result of unfolding the alarm sensor LTS from Fig.~\ref{Fig.:alarm-sensor} on the augmented PTA built from the scenarios described in Fig.~\ref{Fig:init:scen}. Each state of the PTA is labeled with the number of corresponding states in the alarm-sensor LTS. 
 
 \begin{figure}
 \centering
@@ -130,7 +130,7 @@ The pruning rule for constraining the induction process is now to \emph{avoid me
 \emph{Two states will be considered for merging if they have the same property tester state.}
 \end{quote}
 
-This pruning technique guarantees the consistency between the synthesized System LTS and the considered goals and domain properties. In other words, for every goal or domain property $G$ injected in the synthesis process, the following consistency condition holds (see Section \ref{subsection:background-goals-consistency}):
+This pruning technique guarantees the consistency between the synthesized system LTS and the considered goals and domain properties. In other words, for every goal or domain property $G$ injected in the synthesis process, the following consistency condition holds (see Section \ref{subsection:background-goals-consistency}):
 \begin{align*}
 \mathcal{L}^-(G) \cap \mathcal{L}(System) &= \emptyset,
 \end{align*}
@@ -140,17 +140,17 @@ Note that the guarantee given by the above condition is weaker than the \emph{co
 
 \subsection{Discussion\label{subsection:qsm-constraints-implementation-notes}}
 
-The equivalence relations considered in the previous sections are all invariant under state merging. In other words, a state derived by merging some states simply inherits their relation. This allows each relation to be computed only once on the initial PTA; the results of such pre-processing are kept as annotations on PTA states. 
+The equivalence relations considered in the previous sections are all invariant under state merging. In other words, a state derived by merging some states simply inherits their relation. This allows \emph{each relation to be computed only once on the initial PTA}; the results of such pre-processing are kept as annotations on PTA states. 
 
-Our implementation reuses the decoration algorithm from \cite{Damas:2006} to propagate fluent values on the PTA (see Section~\ref{subsection:fluents-along-multiple-traces}). Its generalization in~\cite{Damas:2011} may be used as an effective means to unfold models of legacy components and tester automata on the PTA without additional developments.
+Our implementation reuses the decoration algorithm from \cite{Damas:2006} to propagate fluent values on the PTA (see Section~\ref{subsection:fluents-along-multiple-traces}). Its generalization in~\cite{Damas:2011} may be used as an effective means for unfolding models of legacy components and tester automata on the PTA without additional developments.
 
 The principle for constraining state merging through equivalence relations first appeared in~\cite{Coste:1998, Coste:2004}. It can be further instantiated to other equivalence relations not considered here. In particular, it is \emph{not} limited to relations that are invariant under state merging.
 
 As an illustrative example, consider the following generalization of the way fluent values are used to constrain the induction process. We know from Section~\ref{subsection:fluents-along-multiple-traces} that the states of any LTS can be annotated with invariants defined on fluents. Let $inv$ denote the function mapping each PTA state to its state invariant; let also denote by \emph{Dom} a domain property that must be met in every state of the system LTS. Consider the following pruning rule:
-\begin{quote}
-\emph{Two states $q$ and $q'$ will be considered for merging if $inv(q) \wedge inv(q') \models \mbox{Dom}$}
-\end{quote}
+\begin{center}
+\emph{Two states $q$ and $q'$ will be considered for merging if \\ $inv(q) \wedge inv(q') \models \mbox{Dom}$}
+\end{center}
 
 The equivalence relation here is the set of state pairs whose conjunction of invariants satisfies the domain property. This equivalence relation is \emph{not} invariant under state merging. The merging constraint can however be enforced; to achieve this, the compound state resulting from merging $q$ and $q'$ has to be annotated by the conjunction of their state invariants; this new invariant is then used in subsequent state merging.
 
-In the general case of DFA induction\footnote{that is, in contrast to LTS induction}, a similar mechanism is needed to implement the Blue-fringe optimization with an augmented PTA. In that case, an error state may be merged with a non accepting state provided the result is not merged later with an accepting one. That is, the relation capturing the equivalence of states in terms of their continuations is not invariant under state merging.
+In the general case of DFA induction, in contrast to LTS induction, a similar mechanism is needed to implement the Blue-fringe optimization with an augmented PTA. In that case, an error state may be merged with a non accepting state provided the result is not merged later with an accepting one. That is, the relation capturing the equivalence of states in terms of their continuations is not invariant under state merging.

@@ -5,7 +5,7 @@ Let us step back a little before closing this chapter. This section is aimed at 
 \item \emph{What problem are we trying to solve?}
 \item \emph{Why do we solve it in this way?}
 \end{itemize}
-In addition to revisiting our synthesis technique and discussing some perspectives, answers to those questions will allow us to compare our approach with alternative ones. Such comparisons will be conducted in Chapter~\ref{chapter:related-work}. 
+In addition to revisiting our synthesis technique and discussing some perspectives, answers to those questions will allow us to compare our approach with alternative ones. Such comparisons will be made in Chapter~\ref{chapter:related-work}. 
 
 Let us start with the former question, ``what problem are we trying to solve?''. 
 
@@ -33,25 +33,25 @@ The following sections revisit and discuss design choices of our synthesis appro
 
 The choice of tackling the synthesis of \emph{agent} state machines through the inference of a \emph{system} state machine has not been much motivated so far. Why not inferring one state machine by agent and composing them afterwards, instead of going the other way round?
 
-First, let us stress that such alternative approach makes perfect sense. Our experience in exploring it even suggests that it might provided very good results in terms of behavior generalization. That being said, a few points would need to be adapted and/or taken into account to further explore it.
+First, let us stress that such alternative approach makes perfect sense. Our experience in exploring it even suggests that it might provide very good results in terms of behavior generalization. That being said, a few points would need to be adapted and/or taken into account to further explore it.
 \begin{itemize}
 \item Scenario questions would not be available for guiding the inductive process in a per agent approach. The interactive feature might be adapted but it would require the user to be able to classify agent traces. This seems less convenient as it amounts to interact with the end-user in a different language for each agent. Moreover, interactions would not occur in the language used by the end-user for specifying scenarios in the first place. 
-\item Our definition of negative scenarios is borrowed from \cite{Uchitel:2002}. Such definition amounts to consider negative system traces only. An effective use of the negative scenarios for the independent synthesis of agent state machines would need this definition to be adapted. Such negative knowledge were previously shown required for guiding the induction process towards good generalizations.
+\item Our definition of negative scenarios is borrowed from \cite{Uchitel:2002}. Such definition amounts to consider negative system traces only. An effective use of the negative scenarios for the independent synthesis of agent state machines would need this definition to be adapted. Such negative knowledge is required for guiding the induction process towards good generalizations.
 \item Similarly, our approach considers system-wide goals and domain properties. Unless capturing agent requirements specifically, available safety properties cannot be used to constrain the induction process on a per agent basis. Even in the absence of implied scenarios, the consistency of inferred state machines with goals might be harder to guarantee.
 \end{itemize}
 
 \subsection{The rationale behind grammar induction\label{subsection:grammar-induction-rationale}}
 
-From the specific standpoint of state machine synthesis, our use of grammar induction was motivated by the need of generalizing system behaviors described in the scenarios. This choice is further discussed here in the light of the incremental elaboration of requirements discussed in Section~\ref{section:inductive-discussion}.
+From the specific standpoint of state machine synthesis, our use of grammar induction was motivated by the need to generalize system behaviors described in the scenarios. This choice is further discussed here in the light of the incremental elaboration of requirements discussed in Section~\ref{section:inductive-discussion}.
 
-To keep things simple enough, the use of fluent state variables and models of legacy components, the structure of scenarios, the decomposition step of our approach, and implied scenarios are ignored here. In other words, we focus here on pure behavioral aspects in the triangle composed of scenarios, state machines and goals \cite{Damas:2006, Uchitel:2007}.
+To keep things simple enough, the use of fluent state variables and models of legacy components, the structure of scenarios, the decomposition step of our approach, and implied scenarios are ignored aspects here. In other words, we focus here on pure behavioral aspects in the triangle composed of scenarios, state machines and goals \cite{Damas:2006, Uchitel:2007}.
 \begin{itemize}
 \item On one side, positive scenarios capture a lower bound on system behaviors. Scenarios capture behaviors that the system \emph{must} exhibit. The enrichment of the scenario language in the transition from QSM to ASM amounts capturing these positive behaviors through a (prefix-closed) regular language. Let $\mathcal{L}^+(\me{Scenarios})$ denote this language. 
-\item On the other side, negative scenarios and goals capture an upper bound on system behaviors. They capture behaviors that the system \emph{may not} exhibit. The system traces violating safety properties are known to be captured by the class of regular languages (see Section~\ref{subsection:background-property-and-tester-automata}). Negative scenarios generally illustrate violations of safety properties; they may be ignored without loss of generality. Let then denote undesired system behaviors by $\mathcal{L}^-(\me{Goals})$.
-\item Somewhere between those bounds, agent state machines may be seen as capturing the exact behaviors exhibited by the system. Provided those state machines are known, $\mathcal{L}(\agentscomposed)$ denotes the system behaviors. 
+\item On the other side, negative scenarios and goals capture an upper bound on system behaviors. They capture behaviors that the system \emph{may not} exhibit. The system traces violating safety properties are known to be captured by the class of regular languages (see Section~\ref{subsection:background-property-and-tester-automata}). Negative scenarios generally illustrate violations of safety properties; they may be ignored without loss of generality. Let $\mathcal{L}^-(\me{Goals})$ then denote undesired system behaviors.
+\item Somewhere between those bounds, agent state machines may be seen as capturing the exact behaviors exhibited by the system. Provided those state machines are known, $\mathcal{L}(\agentscomposed)$ denotes those system behaviors. 
 \end{itemize}
 
-The consistency of scenarios, state machines and goals are known to be captured by the following conditions (see Chapter~\ref{chapter:framework}).
+The consistency of scenarios, state machines and goals are known to be captured by the following conditions (see Chapter~\ref{chapter:framework}):
 \begin{align*}
 &\mathcal{L}^+(\me{Scenarios}) \subseteq \mathcal{L}(\agentscomposed) \\
 &\mathcal{L}^-(\me{Goals}) \cap \mathcal{L}(\agentscomposed) = \emptyset

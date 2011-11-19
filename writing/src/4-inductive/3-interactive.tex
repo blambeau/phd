@@ -1,28 +1,28 @@
 \section{Interactive LTS synthesis from MSC collections\label{section:lts-induction-from-mscs}}
 
-This section introduces QSM, a Query driven State-Merging synthesis technique. QSM specification is as follows:
+This section introduces QSM, a Query driven State-Merging synthesis technique. Its specification is as follows:
 
 \begin{quote}
 \underline{Given}
 \begin{itemize}
 \item A consistent MSC collection showing typical examples and counterexamples of system behavior:
 \begin{align*}Sc = (S^+,S^-)\end{align*}
-\item An \emph{oracle} correctly classifying system traces as positive or negative examples of desired system behavior
+\item An \emph{oracle} correctly classifying system traces as positive or negative examples of desired system behavior,
 \end{itemize}
-\underline{Synthesize}~a LTS capturing system behaviors,
-\begin{align*}System\end{align*}
-\underline{Such that}
+\underline{synthesize}~a LTS capturing system behaviors,
+\begin{align*}System,\end{align*}
+\underline{such that}
 \begin{itemize}
 \item $Sc$ is correctly extended with the answers to scenario questions by the oracle, and
 \item \emph{System} is consistent with the extended scenario collection.
 \end{itemize}
 \end{quote}
 
-The specification of QSM is similar to the synthesis problem statement in Section~\ref{subsection:inductive-synthesis-statement}. The main differences are related to the presence of the oracle and the fact that the decomposition step is not implemented by QSM itself. Moreover, remember from Section~\ref{subsection:background-scenario-consistency} that requiring the consistency of the input scenario collection implies that all scenarios start in the same system state.
+The specification of QSM is similar to the synthesis problem statement in Section~\ref{subsection:inductive-synthesis-statement}. The main difference comes from the presence of the oracle and the fact that the decomposition step is not implemented by QSM itself. Moreover, remember from Section~\ref{subsection:background-scenario-consistency} that requiring the consistency of the input scenario collection implies that all scenarios start in the same system state.
 
-Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm; RPNI can be seen as a particular instance without the inner-most while loop. Roughly, the induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs from the initial LTS. The process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. This process terminates when no state pairs can still be considered for merging.
+Algorithm~\ref{QSM} gives the pseudo-code of the \textsc{QSM} algorithm. RPNI can be seen as a particular instance without the inner-most while loop. Roughly, the induction process starts by constructing an initial LTS covering all positive scenarios only. The LTS is then successively generalized under the control of the available negative scenarios and newly generated scenarios classified by the end-user. This generalization is carried out by successively merging well-selected state pairs from the initial LTS. The process is such that, at any step, the current LTS is consistent with all positive scenarios and all negative ones, including the interactively classified ones. This process terminates when no state pairs can still be considered for merging.
 
-In the sequel, two states will be said compatible for merging (resp. incompatible) if the quotient LTS which results from their merging is consistent (resp. inconsistent) with the current scenario collection.
+In the sequel, two states will be said \emph{compatible} for merging (resp. \emph{incompatible}) if the quotient LTS resulting from their merging is consistent (resp. inconsistent) with the current scenario collection.
 
 \begin{algorithm}
 {
@@ -48,11 +48,11 @@ $A_{new} \leftarrow$ {\tt Merge$(A,q,q')$}\\
 
 In Algorithm \ref{QSM}, the \texttt{Initialize} function returns an initial candidate LTS built from the scenario collection. This function computes $\mathcal{L}^+(Sc)$, the set of positive scenario traces, according to the trace semantics defined in Chapter~\ref{chapter:framework}. Those traces are captured through a PTA; as the positive sample is prefix-closed, this PTA has all accepting states.
 
-Next, pairs of states are iteratively chosen from the current solution according to the \texttt{ChooseStatePair} function\footnote{The assignment in the corresponding \textbf{while} loop is assumed to be \textit{true} whenever a valid state pairs is returned by \texttt{ChooseStatePairs}. When no more state pairs are considered for merging, \texttt{ChooseStatePairs} returns \textit{(nil,nil)} and the assignment is evaluated to \textit{false.} This abuse of notation in the pseudo-code allows to keep it more concise. A similar remark also applies to the inner \textbf{while} loop of the \textsc{QSM} algorithm.}. The quotient automaton obtained by merging such states, and possibly some additional states, is computed by the \texttt{Merge} function. By construction, the obtained quotient automaton covers all positive scenarios (see Definition~\ref{definition:quotient-automaton}). Its consistency with available negative scenarios is then checked by the \texttt{Consistent} function. The various functions are more precisely specified hereafter.
+Next, pairs of states are iteratively chosen from the current solution according to the \texttt{ChooseStatePair} function\footnote{The assignment in the corresponding \textbf{while} loop is assumed to be \textit{true} whenever a valid state pair is returned by \texttt{ChooseStatePairs}. When no more state pairs are considered for merging, \texttt{ChooseStatePairs} returns \textit{(nil,nil)} and the assignment is evaluated to \textit{false.} This abuse of notation in the pseudo-code allows to be more concise. A similar remark also applies to the inner \textbf{while} loop of the \textsc{QSM} algorithm.}. The quotient automaton obtained by merging such states, and possibly some additional states, is computed by the \texttt{Merge} function. By construction, the obtained quotient automaton covers all positive scenarios (see Definition~\ref{definition:quotient-automaton}). Its consistency with available negative scenarios is then checked by the \texttt{Consistent} function. The various functions are more precisely specified hereafter.
 
-When consistent, new scenarios are generated through the \texttt{GenerateQuery} function. These scenarios are submitted to the end-user for classification (see Section~\ref{QSM:query}). The scenario collection is then refined with these scenarios, according to their classification. If all generated scenarios are classified as positive, the quotient automaton becomes the current candidate solution. The process is iterated until no more pair of states can be considered for merging. When a generated scenario is classified as negative, the algorithm is recursively called on the extended scenario collection.
+When consistent, new scenarios are generated through the \texttt{GenerateQuery} function. These scenarios are submitted to the end-user for classification (see Section~\ref{QSM:query}). The scenario collection is then refined with these scenarios according to their classification. If all generated scenarios are classified as positive, the quotient automaton becomes the current candidate solution. The process is iterated until no more pair of states can be considered for merging. When a generated scenario is classified as negative, the algorithm is recursively called on the extended scenario collection.
 
-Section~\ref{QSM:merging} describes the general process of merging compatible state pairs while Section~\ref{QSM:query} focuses on the generation of queries submitted to the end-user. Section~\ref{BlueFringe} discusses an optimization of the search order implemented in \texttt{ChooseStatePair} known as the the Blue-Fringe strategy~\cite{Lang:1998}.
+Section~\ref{QSM:merging} describes the general process of merging compatible state pairs while Section~\ref{QSM:query} focuses on the generation of queries submitted to the end-user. Section~\ref{BlueFringe} discusses an optimization of the search order implemented in \texttt{ChooseStatePair}, known as the the Blue-Fringe strategy~\cite{Lang:1998}.
 
 \subsection{Merging compatible state pairs\label{QSM:merging}}
 
@@ -60,7 +60,7 @@ The various functions that control how merging is performed from an initial auto
 
 \begin{description}
 
-\item[Initialize] The \texttt{Initialize} function returns the prefix tree acceptor built for $\mathcal{L}^+(S)$. Remember that this set includes traces from both the positive scenarios and the preconditions of the negative ones. The PTA built from the initial scenario collection in Figure~\ref{Fig:init:scen} is shown on top of Figure~\ref{Fig:algo:steps}. For simplicity, these scenarios define a total order on their events; in other words, they admit one linearization only (see Section~\ref{section:background-scenarios}). 
+\item[Initialize] The \texttt{Initialize} function returns the PTA built for $\mathcal{L}^+(S)$. Remember that this set includes traces from both the positive scenarios and the preconditions of the negative ones. The PTA built from the initial scenario collection in Figure~\ref{Fig:init:scen} is shown on top of Figure~\ref{Fig:algo:steps}. For simplicity, these scenarios define a total order on their events; in other words, they admit one linearization only (see Section~\ref{section:background-scenarios}). 
 
 \begin{figure}
 \centering
@@ -98,7 +98,7 @@ This section describes how queries are generated in the \textsc{QSM} algorithm a
 
 \item[GenerateQuery] When an intermediate solution is consistent with the available scenarios, new scenarios are generated for classification by the end-user as positive or negative. The aim is to avoid overgeneralization by enriching the possibly limited collection of initial scenarios. The notion of characteristic sample drives the identification of which new scenarios should be generated as queries. 
 
-As we saw in Section~\ref{subsection:gi-background-rpni}, a sample is characteristic of a regular language $L$ if it contains enough positive and negative information. On the one hand, the required positive information is the set of short prefixes $Sp(L)$ which form the shortest histories leading to each state of the canonical automaton $A(L)$. This positive information must also include all elements of the kernel $N(L)$; indeed they represent all system transitions, that is, all shortest histories followed by any admissible event. If such positive information is available, $A(L)$ can always be derived from the PTA by an appropriate set of merging operations. On the other hand, the negative traces provide the necessary information to make incompatible the merging of states that should be kept distinct. A negative trace which would exclude the merging of a state pair $(q, q')$ can simply be made of the shortest history leading to $q'$ followed by any continuation from state $q$, as detailed below.
+As we saw it in Section~\ref{subsection:gi-background-rpni}, a sample is characteristic of a regular language $L$ if it contains enough positive and negative information. On the one hand, the required positive information is the set of short prefixes $Sp(L)$ which form the shortest histories leading to each state of the canonical automaton $A(L)$. This positive information must also include all elements of the kernel $N(L)$; they represent all system transitions, that is, all shortest histories followed by any admissible event. If such positive information is available, $A(L)$ can always be derived from the PTA by an appropriate set of merging operations. On the other hand, the negative traces provide the necessary information to make incompatible the merging of states that should be kept distinct. A negative trace which would exclude the merging of a state pair $(q, q')$ can simply be made of the shortest history leading to $q'$ followed by any continuation from state $q$, as detailed below.
 
 Consider the current solution of our induction algorithm when a pair of states $(q, q')$ is selected for merging (line 5 in Algorithm \ref{QSM}). By construction, $q'$ is always a consolidated state at this step of the algorithm; that is, $q'$ is considered to be in $Sp(L)$. State $q$ is always both the root of a tree and the child of a consolidated state. In other words, $q$ is situated at one symbol of a consolidated state -- that is, $q$ is considered to be in $N(L)$. States $q$ and $q'$ are compatible according to the available negative scenarios; they would be merged by the standard RPNI algorithm. 
 
@@ -114,15 +114,15 @@ Let $A$ denote the current solution, $L(A)$ the language generated by $A$, and $
 
 A generated scenario is built from a system trace $xu$ such that $xu \in L(A_{new})\setminus L(A)$. It can be further decomposed as $xvw$ such that $xv \in L(A)$. The trace $xu$ is thus constructed as the short prefix of $q'$ concatenated with a suffix of $q$ in the current solution, provided the entire behavior is not yet accepted by $A$. 
 
-Such system trace can be converted in a MSC using the structural information provided by a context diagram \cite{Jackson:1995}. The scenario is made of two parts: the first part $xv$ is an already accepted behavior whereas the second part $w$ provides a continuation to be checked for acceptance by the end-user. When submitted to the end-user, the generated scenario can always be rephrased as a question: after having executed the first episode ($xv$), can the system continue with the second episode ($w$)? 
+Such system trace can be converted in a MSC using the structural information provided by a context diagram \cite{Jackson:1995}. The scenario is made of two parts: the first part $xv$ is an already accepted behavior whereas the second part $w$ provides a continuation to be checked for acceptance by the end-user. When submitted to the end-user, the generated scenario can always be rephrased as a question: ``after having executed the first episode ($xv$), can the system continue with the second episode ($w$)?''.
 
-Consider the example in Fig.~\ref{Fig:algo:steps} with selected state pair $q=3, q'=0$. As $q'$ is the root of the PTA, its short prefix is the empty trace $\lambda$. The suffixes of $q$ here yield a simple generated question (see Fig.~\ref{Fig:generated:question}), which can be rephrased as follows: \emph{when having started and stopped the train, can the controller restart it?} As we can see, the first episode of this scenario in Fig.~\ref{Fig:algo:steps} is already accepted by $A$ whereas the entire behavior is accepted in $A_{new}$.
+Consider the example in Fig.~\ref{Fig:algo:steps} with selected state pair $(q=3, q'=0)$. As $q'$ is the root of the PTA, its short prefix is the empty trace $\lambda$. The suffixes of $q$ here yield a simple generated question (see Fig.~\ref{Fig:generated:question}), which can be rephrased as follows: ``\emph{when having started and stopped the train, can the controller restart it?}''. As we can see, the first episode of this scenario in Fig.~\ref{Fig:algo:steps} is already accepted by $A$ whereas the entire behavior is accepted in $A_{new}$.
 
 \item[CheckWithEndUser] Whenever a new scenario is generated, it is submitted as a query to the end-user. If the end-user classifies the $Query$ as positive, it is added to the collection of positive scenarios. This addition extends the search space as it extends $S^+$ and consequently the PTA. However, this extension is implicit as the new solution $A_{new}$ is, by construction, also a quotient automaton of this extended PTA. When the $Query$ is classified as negative, the induction process is recursively started on the extended scenario collection.
 
 \end{description}
 
-The QSM algorithm has a polynomial time complexity in the size of the learning sample, see Section~\ref{subsection:qsm-complexity-analysis}. When it algorithm receives a characteristic sample in the initial scenario collection, no additional scenario can be classified as negative. As a consequence, QSM will not be called recursively anymore; it stops by returning the target model. 
+The QSM algorithm has a polynomial time complexity in the size of the learning sample, see Section~\ref{subsection:qsm-complexity-analysis}. When it receives a characteristic sample in the initial scenario collection, no additional scenario can be classified as negative. As a consequence, QSM will not be called recursively anymore; it stops by returning the target model. 
 
 Chapter~\ref{chapter:evaluation} will detail an experimental study of the actual sample size required to observe the convergence of \textsc{QSM} and the number of queries submitted to the end-user.
 
@@ -135,7 +135,7 @@ To overcome this problem, an optimized strategy known as Blue-Fringe \cite{Lang:
 \begin{figure}
 \centering
 \scalebox{.55}{\includegraphics[trim=3mm 3mm 3mm 3mm, clip]{src/4-inductive/images/blue-fringe}}
-\caption{Consolidated states (red) and states on the fringe (blue) in a temporary solution\label{Fig:BlueFringe}.}
+\caption{Consolidated states (also called ``red states'') and states on the fringe (``blue states'') in a temporary solution\label{Fig:BlueFringe}.}
 \end{figure}
 
 Fig.~\ref{Fig:BlueFringe} gives a typical example of a temporary solution produced by the original algorithm. Three state classes can be distinguished in this LTS. The so-called ``red'' states are the consolidated ones (0, 1 and 2 in this example). Outgoing transitions from red states lead to the ``blue'' states unless the latter have already been labeled as red. Blue states form the blue fringe (4 and 5 in this case). All other states are called the ``white'' states. 
@@ -169,13 +169,13 @@ The \texttt{Merge} and \texttt{Consistent} functions have a time complexity line
 \item The function \texttt{CheckWithEndUser} is assumed to run in constant time.
 \end{itemize}
 
-For a fixed scenario collection, that is, abstracting from the recursive calls, the time complexity is the same as for the RPNI algorithm; it is upper bounded by ${\cal O}(n^3)$. This bound is obviously not very tight. It assumes that all pairs of states considered by \texttt{ChooseStatePairs} appears to be incompatible,  which is a very pessimistic assumption. Practical experiments often show that the actual complexity is much closer to the lower bound $\Omega(n)$. 
+For a fixed scenario collection, if we abstract from the recursive calls, the time complexity is the same as for the RPNI algorithm; it is upper-bounded by ${\cal O}(n^3)$. This bound is obviously not very tight. It assumes that all pairs of states considered by \texttt{ChooseStatePairs} appears to be incompatible,  which is a very pessimistic assumption. Practical experiments often show that the actual complexity is much closer to the lower bound $\Omega(n)$. 
 
 The global complexity of QSM depends on the number of recursive calls, that is, the number of times a new scenario
 submitted to the end-user is classified as negative. The way new scenarios are generated by the \texttt{GenerateQuery} function guarantees that the PTA built from the extended scenario collection has at most ${\cal O}(n^2)$ states.
 During the whole incremental learning process, there is at most one query for each transition in this tree.  Consequently, the number of queries is bounded by ${\cal O}(n^2)$ and the global QSM complexity by ${\cal O}(n^5)$.
 
 When QSM received a characteristic sample in the initial scenario collection (or any scenario collection considered when calling it recursively), it is guaranteed that no additional scenario can be classified as negative.
-It follows that QSM will not be called recursively anymore and stops by returning the target model. Note that the size of such a characteristic sample is not necessarily reduced by the fact that any prefix of a positive scenario is also a positive scenario since the number of negative examples it must contain is not affected by this property. 
+It follows that QSM will not be called recursively anymore and stops by returning the target model. Note that the size of such a characteristic sample is not necessarily reduced by the fact that any prefix of a positive scenario is also a positive scenario, since the number of negative examples it must contain is not affected by this property. 
 
 An experimental study of the actual sample size required to observe the convergence of \textsc{QSM} and the number of queries submitted to the end-user is detailed in Chapter~\ref{chapter:evaluation}.

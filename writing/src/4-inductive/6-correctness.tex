@@ -12,11 +12,11 @@ In view of the initial problem statement in Section~\ref{subsection:inductive-sy
 \caption{Inductive synthesis steps and products.\label{figure:synthesis-flow-model}} 
 \end{figure}
 
-Fig.~\ref{figure:synthesis-flow-model} summarizes our synthesis approach. It shows the algorithms used together with their input/output in terms of behavior models and associated languages. Such figure can be read as follows:
+Fig.~\ref{figure:synthesis-flow-model} summarizes our synthesis approach. It shows the algorithms used together with their input/output in terms of behavior models and associated languages. The figure can be read as follows:
 \begin{itemize}
 \item From scenarios, a system LTS is inferred using RPNI, QSM or ASM. 
 \item LTS hiding and minimization is then used to obtain a canonical state machine for each agent. 
-\item From the system view point, the result of our synthesis approach is precisely captured by the composition of those state machines.
+\item From the system point of view, the result of our synthesis approach is precisely captured by the composition of those state machines.
 \end{itemize}
 
 In this figure and in the following discussions,
@@ -33,11 +33,11 @@ Remember from Section~\ref{subsection:inductive-synthesis-statement} that, under
 \begin{itemize}
 \item The \emph{structural consistency} condition requires input scenarios and synthesized agent state machines to agree on the respective agent interfaces. 
 
-In the case of QSM, structural consistency must also hold for answers to scenario questions. In the case of ASM, this is applied to the input hMSC as well.
+In the case of QSM, structural consistency must also hold for answers to scenario questions. In the case of ASM, this must be the case for the input hMSC as well.
 
-\item The \emph{consistent agent view} condition requires each synthesized agent state machine to cover the positive behaviors along the corresponding scenario timeline.
+\item The \emph{consistent agent view} condition requires each synthesized agent state machine to cover the positive behaviors along the corresponding scenario timeline:
 \begin{align}
-\mathcal{L}^+(Sc_{\downarrow Ag}) \subseteq \mathcal{L}(Ag)\mbox{~for each agent $Ag$}\label{proof:consistent-agent-view}
+\mathcal{L}^+(Sc_{\downarrow Ag}) \subseteq \mathcal{L}(Ag)\mbox{~for each agent $Ag$,}\label{proof:consistent-agent-view}
 \end{align}
 where $Sc_{\downarrow Ag}$ denotes the positive behaviors along $Ag$'s timeline in a scenario collection $Sc = (S^+, S^-)$:
 \begin{align}
@@ -51,19 +51,19 @@ In the case of QSM, (\ref{proof:consistent-agent-view}) must hold even when $Sc$
 \mathcal{L}^+(Sc_{\downarrow Ag}) = \bigcup_{P \in S^+} \mathcal{L}(P_{\downarrow Ag})~\cup~\bigcup_{N \in S^{-}} \mathcal{L}^{+}(N_{\downarrow Ag})~\cup~\mathcal{L}(H_{\downarrow Ag})\label{proof:lemma-sc-projection-asm}
 \end{align}
 
-\item The \emph{consistent system view} requires the composed system to cover all positive scenarios and reject all negative ones. 
+\item The \emph{consistent system view} requires the composed system to cover all positive scenarios and reject all negative ones: 
 \begin{align}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(\agentscomposed)\label{proof:consistent-system-view-1}\\
 &\mathcal{L}^-(Sc) \cap      \mathcal{L}(\agentscomposed) = \emptyset\label{proof:consistent-system-view-2}
 \end{align}
 
-In the case of QSM, $Sc$ is assumed to contain answers to scenario questions. In the case of ASM, $Sc$ denote the input hMSC together with the scenario collection.
+In the case of QSM, $Sc$ is assumed to contain answers to scenario questions. In the case of ASM, $Sc$ denotes the input hMSC together with the scenario collection.
 
-When goals are injected in the induction process, this postcondition must be strengthened with the following condition requiring the goals to be rejected by the synthesized system:
+When goals are injected in the induction process, this postcondition must be strengthened with the following condition requiring all traces violating the goals to be rejected by the synthesized system:
 \begin{align}
 &\mathcal{L}^-(\me{Goals}) \cap      \mathcal{L}(\agentscomposed) = \emptyset
 \end{align}
-where $\mathcal{L}^-(\me{Goals})$ denotes the union of all system traces violating at least one known goal.
+where $\mathcal{L}^-(\me{Goals})$ denotes the union of all system traces violating at least one known goal:
 \begin{align}
 &\mathcal{L}^-(\me{Goals}) = \mathcal{L}^-(G_1) \cup \ldots \cup \mathcal{L}^-(G_n)
 \end{align}
@@ -80,7 +80,7 @@ This section demonstrates that RPNI yields a system LTS consistent with the inpu
 
 \begin{theorem}
 \label{theorem:system-lts-consistency-with-sc}
-The system LTS synthesized by RPNI covers all positive scenarios and rejects all negative ones.
+The system LTS synthesized by RPNI covers all positive scenarios and rejects all negative ones:
 \begin{align*}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)\\
 &\mathcal{L}^-(Sc) \cap      \mathcal{L}(System) = \emptyset
@@ -166,7 +166,7 @@ When using the RPNI induction algorithm, the composed system synthesized by the 
 \begin{proof}
 This condition results from two main properties:
 \begin{itemize}
-\item Theorem~\ref{theorem:system-lts-consistency-with-sc} establishing the consistency of the inferred system LTS.
+\item Theorem~\ref{theorem:system-lts-consistency-with-sc} establishing the consistency of the inferred system LTS:
 \begin{align*}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)
 \end{align*}

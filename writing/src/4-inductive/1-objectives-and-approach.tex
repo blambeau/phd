@@ -13,21 +13,21 @@ In its simplest form, the problem of synthesizing LTS state machines from MSC sc
 \begin{align*}
 Sc = (S^+,S^-),
 \end{align*}
-\underline{Synthesize}~the system as a composition of agent LTSs:
+\underline{synthesize}~the system as a composition of agent LTSs:
 \begin{align*}
-System = (Ag_1 \parallel \ldots \parallel Ag_n)
+System = (Ag_1 \parallel \ldots \parallel Ag_n),
 \end{align*}
-\underline{Such that}~$Sc$ and $System$ are consistent.
+\underline{such that}~$Sc$ and $System$ are consistent.
 \end{quote}
 
 In accordance with our framework hypotheses in Chapter~\ref{chapter:framework}, we implicitly assume that the synthesized system is represented through a minimal state machine. The consistency condition covers the three following criteria, discussed in Section~\ref{subsection:background-scenario-consistency}.
 
 \begin{description}
-\item[Structural consistency:] the state machine and scenario views are \emph{structurally} consistent, that is, they agree on the agent decomposition and their respective interface.
+\item[Structural consistency:] the state machine and scenario views must be \emph{structurally} consistent, that is, they must agree on the agent decomposition and their respective interface.
 
-\item[Consistent agent view:] each timeline of the positive scenarios in $S^+$ specifies an existing path in the corresponding agent state machine. Similarly, each timeline of the positive precondition of a negative scenario in $S^-$ specifies an existing path in the corresponding agent state machine. 
+\item[Consistent agent view:] each timeline of the positive scenarios in $S^+$ must specify an existing path in the corresponding agent state machine. Similarly, each timeline of the positive precondition of a negative scenario in $S^-$ must specify an existing path in the corresponding agent state machine. 
 
-\item[Consistent system view:] the system covers all positive scenarios and the preconditions of all negatives ones; it also excludes all negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
+\item[Consistent system view:] the system state machine must cover all positive scenarios and the preconditions of all negatives ones; it must also exclude all negative scenarios. The precise conditions from Section~\ref{subsection:background-scenario-consistency} are:
 \begin{align}
 &\mathcal{L}^+(Sc) \subseteq \mathcal{L}(System)         \label{relation:inductive-statement-positive}\\
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(System) = \emptyset, \label{relation:inductive-statement-negative}
@@ -50,15 +50,15 @@ Covering more behaviors is allowed by our formal statement but not enforced. The
 \item[Incremental synthesis] -- Rather than requiring the whole scenario collection to be available at the beginning, the synthesis should accommodate new scenario examples and counterexamples incrementally as they arise during the synthesis process.
 \begin{itemize}
 
-\item End-users are most likely unable to provide a comprehensive set of scenarios from the beginning, including state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore work even if only a few scenarios are available when the synthesis starts.
+\item End-users are most likely unable to provide a comprehensive set of scenarios from the beginning, possibly including state assertions along scenario episodes or flowcharts on such episodes. The synthesis approach should therefore work even if only a few scenarios are available when the synthesis starts.
 
-\item Both positive and negative scenarios should be taken into account. Negative scenarios appear fairly common in the material provided by stakeholders. They naturally illustrate violations of implicit goals in a way that is easier to specify.
+\item Both positive and negative scenarios should be taken into account. Negative scenarios appear fairly common in the material provided by stakeholders. They naturally illustrate violations of implicit goals in a way that might be easier to specify.
 
-\item In an interactive approach, a more comprehensible set of scenarios is likely to be \emph{eventually} available. The synthesis should smoothly accommodate new scenarios and further information arising in the later phases of the synthesis. For example, the synthesis should be able to take a hMSC as input. 
+\item In an interactive approach, a more comprehensive set of scenarios is likely to be \emph{eventually} available. The synthesis should smoothly accommodate new scenarios and further information arising in the later phases of the synthesis. For example, the synthesis should be able to take a hMSC as input. 
 
 \end{itemize}
 
-\item[Multi-view synthesis] -- The possibility of ``richer'' input specifications should be taken into account in the synthesis process, such as fluents or goals. Such specifications are not \emph{required} as input; they may however improve the synthesis when available. 
+\item[Multi-view synthesis] -- The possibility of ``richer'' input specifications should be taken into account in the synthesis process, including for example fluent definitions or goal specifications. Such specifications are not \emph{required} as input; they may however improve the synthesis when available. 
 
 \noindent Our problem statement must therefore be strengthened: 
 \begin{itemize}
@@ -86,9 +86,9 @@ Figure~\ref{image:inductive-synthesis-overview} shows the two main steps of our 
 
 This step extends grammar induction techniques developed in \cite{Oncina:1992} to synthesize a system LTS covering all positive traces and excluding all negative ones. The generalization strategy is borrowed from the RPNI algorithm (RPNI stands for Regular Positive and Negative Inference) developed in the context of grammar induction \cite{Oncina:1992}, see Section \ref{section:inductive-background} hereafter. Roughly, it proceeds as follows.
 
-An initial LTS $A_0$ is built as a first solution; it has the shape of a tree that accepts all positive scenario traces but does not generalize behaviors. To achieve such generalization, the initial LTS is incrementally refined as automata $A_1,\ldots,A_n$ by merging well-chosen state pairs (see Fig.~\ref{Fig:algo:steps} on page~\pageref{Fig:algo:steps} for an illustration of this process).
+An initial LTS $A_0$ is built as a first solution; it has the shape of a tree that accepts all positive scenario traces but does not generalize behaviors. Next, to achieve such generalization, this initial LTS is incrementally refined into automata $A_1,\ldots,A_n$ by merging well-chosen state pairs (see Fig.~\ref{Fig:algo:steps} on page~\pageref{Fig:algo:steps} for an illustration of this process).
 
-This process is such that the two relations below hold. Relation~(\ref{equation:generalization-step-1}) states that the initial LTS $A_0$ is a valid solution when it comes to accepting the positive traces. Relation~(\ref{relation:inductive-language-refinements}) states that the generalization process is monotonic in that the behaviors accepted by an intermediate solution will remain accepted by every of its successors, up to the final LTS $A_n$.
+This process is such that the two relations below hold. Relation~(\ref{equation:generalization-step-1}) states that the initial LTS $A_0$ is a valid solution when it comes to accepting all positive traces. Relation~(\ref{relation:inductive-language-refinements}) states that the generalization process is monotonic in that the behaviors accepted by an intermediate solution will remain accepted by every of its successors, up to the final LTS $A_n$.
 \begin{align}
 &\mathcal{L}^+(Sc) = \mathcal{L}(A_0) \label{equation:generalization-step-1}\\
 &\mathcal{L}(A_0) \subseteq \mathcal{L}(A_1) \subseteq \ldots \subseteq \mathcal{L}(A_n)
@@ -101,11 +101,11 @@ To avoid overgeneralization, this process is performed under the control of the 
 &\mathcal{L}^-(Sc) \cap \mathcal{L}(A_i) = \emptyset \label{relation:inductive-invariant-II}
 \end{align}
 
-This invariant provides a proof argument if compared to relations (\ref{relation:inductive-statement-positive}) and (\ref{relation:inductive-statement-negative}). Correctness arguments will be detailed in Section~\ref{section:inductive-correctness}.
+This invariant provides a proof argument when compared to relations (\ref{relation:inductive-statement-positive}) and (\ref{relation:inductive-statement-negative}). Correctness arguments will be detailed in Section~\ref{section:inductive-correctness}.
 
 \subsubsection*{The decomposition step}
 
-In a second step, a LTS for each agent is computed by projecting the system LTS onto their respective alphabet. For an agent $Ag$ the projection of the system LTS $S$ is given by:
+In this second step, a LTS for each agent is computed by projecting the system LTS onto their respective alphabet. For an agent $Ag$ the projection of the system LTS $S$ is given by:
 \begin{align}
 (S \setminus \Sigma_{Ag}^c)^\Delta
 \label{definition:decomposition-step}
@@ -126,6 +126,4 @@ Section~\ref{section:lts-induction-from-mscs} will therefore introduce the Query
 
 Our multi-view synthesis requirement is tackled in Section~\ref{section:inductive-mutliview-consistency}. QSM is extended there so as to allow the injection of additional information that constrains the induction and prunes the inductive search space for better performance. Such additional information may include global definitions of fluents; declarative domain properties; behavior models of external components; and goals that the system is expected to satisfy. The extended QSM thereby guarantees the consistency of synthesized state machines with all other models.
 
-Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios (see Section \ref{subsection:background-hmsc}). Section~\ref{section:inductive-from-hMSC} shows how hMSCs can be added to scenario collections as input of the generalization process. In this setting, negative scenarios and other models can still be used to constrain induction so as to achieve multi-view consistency. Accepting hMSCs as input also allows us to remove some assumptions about input scenarios the were required by the previous algorithms.
-
-Taking hMSCs as input implies both a theoretical and practical shift of perspective. It leads us considering the generalization of state machines under the control of safety properties as a synthesis technique that naturally succeeds the generalization of positive scenario behaviors under the control of negative ones. This perspective is further discussed in Section~\ref{section:inductive-discussion}.
+Managing the consistency of a large scenario collection is challenging; hMSCs partly address this through a structured form of scenarios (see Section \ref{subsection:background-hmsc}). Section~\ref{section:inductive-from-hMSC} shows how hMSCs can be added to scenario collections as input of the generalization process. In this setting, negative scenarios and other models can still be used to constrain induction so as to achieve multi-view consistency. Accepting hMSCs as input also allows us to remove the requirement stating that all input scenarios start in the same system state.
