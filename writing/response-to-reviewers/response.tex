@@ -1,0 +1,61 @@
+\documentclass[11pt,oneside,a4paper]{article}
+\title{Synthesizing Multi-View Models of \\ Software Systems \\
+       Recent changes in response to the Jury's comments}
+\author{Bernard Lambeau -- blambeau@gmail.com}
+\begin{document}
+\maketitle
+
+\subsection*{Conclusion}
+
+\begin{itemize}
+\item The conclusion has been revisited in depth. Contributions, significance of results and strengths of our approach have all been clarified.
+\item The conclusion now discusses open issues about the robustness against misclassification of scenario questions by the end-user.
+\item The conclusion now also discusses open issues about the convergence process and the scalability of our approach on larger systems than those considered in the case studies.
+\item The conclusion also discusses issues related to lack of knowledge and the inability to answer scenario questions.
+\item Implied scenarios and their related open issues are adressed as well.
+\end{itemize}
+
+\subsection*{What do we evaluate?}
+
+\begin{itemize}
+\item The introduction section in Chapter 5 has been extended to better present the way our evaluations have been conducted and why they were conducted that way. In particular, it is now much clearer that we evaluate the overall effectiveness of inductive synthesis through controlled experiments. Links with the thesis objectives as stated in the Introduction have been made explicit.
+\item A fresh new section has been added for the evaluation of our approach on case studies. A modeling session with the ISIS tool is illustrated step-by-step on the Mine Pump. The section shows how the pump controller's state machine is inferred. Only two initial scenarios are given as input. Scenario questions trigger the identification of fluents, domain properties and goals. The pump controller is built through three small modeling iterations with the tool, demonstrating the effectiveness of the proposed approach to build a multi-view, adequate, complete and consistent specification for such a system.
+\item The conclusion/discussion section in Chapter 5 has been slighlty extended and revisited to link the results of our technical evaluation to the thesis objectives.
+\end{itemize}
+
+\subsection*{Scalability}
+
+\begin{itemize}
+\item The scalability of the approach has been further discussed in the conclusion section of Chapter 5. In particular, the approach is shown to scale up as we consider model adequacy/accuracy, induction time and real time usage. 
+\item We make it explicit that the number of positive scenario questions  might lead to a scalability problem when QSM is used on large systems. A possible solution to this problem is suggested; this problem is further discussed in the Conclusion.
+\item No new plot has been added to show how the approach scales up in terms of time or number of scenario questions as the size of the target system increases. The reason is that the soundness of such plots would be questionable because of comparisons based on unrelated richness of the corresponding samples -- a learning sample of 100\% is richer for large target systems than for small ones, according to some unknown proportion.
+\end{itemize}
+
+\subsection*{Related Work}
+
+\begin{itemize}
+\item The strengths of our approach have been made clearer when compared to statechart synthesis by Whittle and Schuman [WS00] and Kruger et al. [Kr00] (Section 8.1.1)
+\item The strengths of our approach have been made clearer when compared to the minimally adequate teacher approach [MS01] (Section 8.1.2).
+\item A comparison has been added with Harel's Play in/play out approach [HM03] in Section 8.1.3. The strengths and limitations of both approaches are now discussed.
+\end{itemize}
+
+\subsection*{Miscellaneous}
+
+\begin{itemize}
+\item Introduction: references to OMT and the work on viewpoints by Nuseibeh et al. have been added when talking about multi-view modeling.
+\item Section 2.4.2: a remark has been added about our implicit use of the partial ordering framework with negative scenarios.
+\item Section 2.7: the \emph{may} vs \emph{must} aspects of decision nodes in process models have been clarified.
+\item Chapter 3: the benefits of introducing guarded LTS have been made more explicit in the introduction and summary subsections (as well as in the thesis conclusion).
+\item Section 3.3.1: we clarified the conditions under which a g-LTS obtained from a corresponding g-hMSC can be simplified by tau transitions removal.
+\item Section 3.3.2: an explanation why the super g-LTS is called ``super'' has been added (superset of admissible traces).
+\item Section 3.3.2: we added a note about fluents with undetermined initial values in the construction of fluent g-LTS.
+\item Section 4.1.1: we added a note about our implicit assumption that the synthesized system is captured through a minimal automaton.
+\item Section 4.1.1: we added a note about our implicit use of the general MSC framework with partial event ordering.
+\item Section 4.3: we recalled the fact that any quotient automaton still covers positive scenarios by construction.
+\item Section 4.3.3 and following: incorrect references to the Compatible function have been replaced by references to the Consistent one.
+\item Section 5.2.7: we added a note about the small target state machines used in the case studies.
+\item Section 5.3.1: the fact that induction samples are balanced because of the type of automata considered has been clarified.
+\item Section 5.3.x: the scale on the x-axis has been clarified in the plots shown there.
+\end{itemize}
+
+\end{document}
