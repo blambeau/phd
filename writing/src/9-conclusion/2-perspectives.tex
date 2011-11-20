@@ -1,6 +1,6 @@
 \section{Open issues and perspectives}
 
-This section discusses open issues with our techniques and states a few perpectives for future work.
+This section lists some open issues with our techniques and discusses a few perpectives for future work.
 
 \subsection*{Incremental building of multi-view models}
 
@@ -14,7 +14,7 @@ This raises the question of what makes user guidance effective in an environment
 
 \subsection*{Convergence and scalability of the synthesis process}
 
-Our choice of grammar induction for incremental state machine synthesis is partly motivated by the convergence criterion it provides towards adequate models of the target system (see Section~\ref{section:inductive-discussion}). The soundness of such theoretical convergence has been argued to be for the synthesis of behavior models from both scenarios and goals (see Section~\ref{related-for-requirements-2}). As discussed in Section~\ref{section:inductive-discussion}, work remains to be done to root our ASM$^*$ algorithm on such a sound theoretical framework.
+Our choice of grammar induction for incremental state machine synthesis is partly motivated by the convergence criterion it provides towards adequate models of the target system (see Section~\ref{section:inductive-discussion}). The soundness of such theoretical convergence has been argued to be required for the synthesis of behavior models from both scenarios and goals (see Section~\ref{related-for-requirements-2}). As discussed in Section~\ref{section:inductive-discussion}, work remains to be done to root our ASM$^*$ algorithm on such a sound theoretical framework.
 
 Even if convergence guarantees are provided, QSM raises an issue about the number of scenarios submitted for classification by the end-user. As seen in the experiments, additional knowledge such as fluent definitions and goal specifications help reducing the number of questions to be rejected. However, the number of accepted scenarios does not similarly reduce. This may lead to a scalability problem for interactive synthesis on very large models.
 
@@ -30,11 +30,11 @@ Multi-view modeling actually provides another way of dealing with classification
 
 \subsection*{Implied scenarios}
 
-The potential nuisance of implied scenarios has been discussed in Section~\ref{section:inductive-correctness}. Implied scenarios occur when a distributed system is designed globally while implemented component-wise. In our framework, problematic implied scenarios are system behaviors correctly rejected by the system inductively synthesized, as required by a goal for instance, but exhibited in the system when individial agent state machines are composed.
+The potential nuisance of implied scenarios has been discussed in Section~\ref{section:inductive-correctness}. Implied scenarios occur when a distributed system is designed globally while implemented component-wise. In our framework, problematic implied scenarios are system behaviors correctly rejected by the system synthesized globally, as required by a goal for instance, but exhibited in the system when individual agent state machines are composed.
 
-Existing techniques, such as ~\cite{Uchitel:2004}, may be adapted to our framework in order to detect implied scenarios and submit them as additional scenario questions to the end-user (see Section~\ref{section:related-for-analysis-3}). Even with the availability of such a detection technique, implied scenarios still raise important open issues.
+Existing techniques, such as ~\cite{Uchitel:2004}, might be adapted to our framework in order to detect implied scenarios and submit them as additional scenario questions to the end-user (see Section~\ref{section:related-for-analysis-3}). Even with the availability of such a detection technique, implied scenarios still raise important open issues.
 \begin{itemize}
-\item The presence of negative implied scenarios requires refactoring of the system decomposition and agent interfaces. An important issue with implied scenarios is the lack of scenario refactoring techniques to systematically eliminate them.
+\item The presence of negative implied scenarios requires refactoring of the system decomposition and agent interfaces. An important issue with implied scenarios is the lack of systematic guidance and scenario refactoring techniques to eliminate them.
 \item Another important problem occurs when we don't know whether an implied scenario should be accepted or rejected. This is related to the problem of lack of knowledge previously discussed. Implied scenarios whose status is unclear stay potentially harmful until a decision is made about them.
 \item The late discovery of harmful implied scenarios may be due to an inadequate use of the multi-view modeling framework or to weaknesses of the formal framework itself. For example, our definition of negative scenario borrowed from \cite{Uchitel:2002} should probably be revisited. Indeed, such scenarios define negative system traces only; in particular, they do not define a negative trace in the state machine of the agent that sends the proscribed event. In other words, negative scenarios do not capture a restriction on the behavior of a single agent. Similarly, goals are considered system-wide. Considering only goals that are realizable by at least one agent is often sufficient to avoid related implied scenario problems in the first place.
 \end{itemize}
