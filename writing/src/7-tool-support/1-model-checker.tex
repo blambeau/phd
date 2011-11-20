@@ -24,7 +24,7 @@ Guarded automata allow us to capture standard automata, B\"uchi automata, fluent
 
 The composition operator on guarded automata extends the one described in Section \ref{subsection:glts-operators} by making a distinction between accepting and non-accepting states. This operator reduces to g-LTS composition when the composed automata have accepting states only; it reduces to LTS composition if they don't have guards. 
 
-The composition operator requires computing the conjunctions of guards and checking their satisfiability. Our tool uses Binary Decision Diagrams (BDD) to implement this efficiently \cite{Bryant:1986}. 
+The composition operator requires computing guard conjunctions and checking their satisfiability. Our tool uses Binary Decision Diagrams (BDD) to implement this efficiently \cite{Bryant:1986}. 
 
 \item LTSA checks temporal properties for a specific initial state, specified through an initial value for each fluent. Guarded models use an initial condition $C_0$ instead (see Sections~\ref{section:background-process-models} and \ref{section:deductive-glts}). Such condition actually captures a class of fluent initial states. 
 

@@ -35,7 +35,7 @@ In cases (a) and (b), the special events $\mbox{\emph{Task}}_{start}$ and $\mbox
 Fig.~\ref{image:scheduler-ghmsc-glts} illustrates the transformation on the meeting scheduling process. The g-hMSC on top yields the g-LTS at the bottom.
 \begin{itemize}
 \item In the g-LTS, task ``boundaries'' are kept visible through dashed rectangles surrounding the different sub-LTS.  Similarly, dashed diamonds show which g-LTS states come from decision nodes. 
-\item The task \emph{Initiate Meeting} is converted into a sub-LTS capturing the linear event sequence defined by its MSC. The event sequence is extended with the special events $\mbox{\emph{InitiateMeeting}}_{start}$ and $\mbox{\emph{InitiateMeeting}}_{end}$.
+\item The task \emph{Initiate Meeting} is converted into a sub-LTS capturing the linear event sequence defined by its MSC. This sequence is extended with the special events $\mbox{\emph{InitiateMeeting}}_{start}$ and $\mbox{\emph{InitiateMeeting}}_{end}$.
 \item Converting the other tasks is similar, the algorithm being applied recursively on finer-grained g-hMSC. The figure shows that \emph{start} and \emph{end} events are introduced for each of those tasks as well. 
 \item Last, outgoing edges of decision nodes lead to guarded transitions in the g-LTS whereas other edges of the g-hMSC yield $\tau$ transitions.
 \end{itemize}
