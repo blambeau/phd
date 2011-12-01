@@ -1,6 +1,0 @@
-deterministic LOCKER = (press -> request -> unlock -> WAIT | press -> request -> LOCKER),
-WAIT = (timeout -> lock -> LOCKER | pickup -> free -> return -> lock -> LOCKER).
-
-fluent Present = <return,pickup> initially 1
-fluent Locked  = <lock,unlock> initially 1
-assert Fix = [](!Locked -> X(!Present || X(Locked)))
